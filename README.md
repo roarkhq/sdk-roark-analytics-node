@@ -20,7 +20,7 @@ const roark = new RoarkAnalytics({
 });
 
 // Start analyzing a call
-const audioStream = getAudioStreamSomehow(); // Your audio stream
+const audioStream = // Your audio stream
 const call = await roark.listen(audioStream, {
   phoneNumber: '+1234567890',
 });
