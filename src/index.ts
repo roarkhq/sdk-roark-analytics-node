@@ -30,7 +30,7 @@ class RoarkAnalytics {
    * @param metadata - Call metadata including phone number and optional customer information
    * @returns A promise that resolves with the call analysis session
    */
-  async live(stream: ReadableStream, metadata: CallMetadata) {
+  async listen(stream: ReadableStream, metadata: CallMetadata) {
     if (!metadata.phoneNumber) {
       throw new Error('Phone number is required in call metadata');
     }
