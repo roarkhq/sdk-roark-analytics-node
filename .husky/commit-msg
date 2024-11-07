@@ -1,0 +1,6 @@
+#!/bin/sh
+# This is a commit-msg hook script
+. "$(dirname -- "$0")/_/husky.sh"
+
+# This runs commitlint to ensure our commit messages abide the commit lint standards
+npx --no -- commitlint --edit ${1} || (echo '\nThis package is commitizen friendly (commitizen.github.io/cz-cli)\n\nTry running:\n$ bun install -g commitizen\n$ git cz\n' && exit 1)
