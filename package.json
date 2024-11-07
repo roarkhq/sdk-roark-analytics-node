@@ -1,12 +1,12 @@
 {
-  "name": "@roark-ai/template-npm-package",
+  "name": "@roark-ai/roark-sdk",
   "module": "src/index.ts",
   "main": "src/index.ts",
   "version": "0.0.0-semantic-release",
   "type": "module",
   "prettier": "@roark-ai/config-prettier",
   "repository": {
-    "url": "git+https://github.com/roark-ai/template-npm-package.git"
+    "url": "git+https://github.com/roark-ai/roark-sdk.git"
   },
   "scripts": {
     "lint": "eslint .",
@@ -46,7 +46,8 @@
     "@commitlint/config-conventional": "^19.5.0",
     "@roark-ai/config-eslint": "latest",
     "@roark-ai/config-prettier": "latest",
-    "semantic-release": "^24.1.3"
+    "semantic-release": "^24.1.3",
+    "ws": "^8.18.0"
   },
   "release": {
     "branches": [
