@@ -9,8 +9,8 @@ import { fileURLToPath } from 'node:url'
 import prettier from 'eslint-plugin-prettier'
 
 // These rules are taken from the shared
-// [@roark-ai/config-eslint](https://github.com/roark-ai/config-eslint) package
-import roarkLint from '@roark-ai/config-eslint/rules/node.cjs'
+// [@zgfoundry/config-eslint](https://github.com/roark-ai/config-eslint) package
+import roarkLint from '@zgfoundry/config-eslint/rules/node.cjs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
