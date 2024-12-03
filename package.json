@@ -6,7 +6,7 @@
   "type": "module",
   "prettier": "@zgfoundry/config-prettier",
   "repository": {
-    "url": "git+https://github.com/roark-ai/roark-sdk.git"
+    "url": "git+https://github.com/zgfoundry/roark-sdk.git"
   },
   "scripts": {
     "lint": "eslint .",
