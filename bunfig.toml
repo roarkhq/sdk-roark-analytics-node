@@ -1,2 +1,2 @@
 [install.scopes]
-@zgfoundry = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
+@roarkhq = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
