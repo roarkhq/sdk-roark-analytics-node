@@ -5,7 +5,7 @@ import * as Core from '../core';
 
 export class Calls extends APIResource {
   /**
-   * Upload a call recording.
+   * Upload a new call recording
    */
   create(body: CallCreateParams, options?: Core.RequestOptions): Core.APIPromise<CallCreateResponse> {
     return this._client.post('/call', { body, ...options });
@@ -69,32 +69,42 @@ export namespace CallCreateResponse {
 }
 
 export interface CallCreateParams {
+  /**
+   * The original direction of the call
+   */
   direction: 'INBOUND' | 'OUTBOUND';
+
+  /**
+   * URL of source recording
+   */
+  sourceRecordingUrl: string;
 
   startedAt: string;
 
   /**
-   * Participant contact information
+   * Agent information
    */
   agent?: CallCreateParams.Agent;
 
   agentSpokeFirst?: boolean;
 
   /**
-   * Participant contact information
+   * Customer information
    */
   customer?: CallCreateParams.Customer;
 
   isTest?: boolean;
 
-  sourceRecordingUrl?: string;
-
+  /**
+   * URL of source stereo recording. While optional it allows for a richer audio
+   * player
+   */
   stereoRecordingUrl?: string;
 }
 
 export namespace CallCreateParams {
   /**
-   * Participant contact information
+   * Agent information
    */
   export interface Agent {
     name?: string;
@@ -103,7 +113,7 @@ export namespace CallCreateParams {
   }
 
   /**
-   * Participant contact information
+   * Customer information
    */
   export interface Customer {
     name?: string;
