@@ -1,5 +1,5 @@
 {
-  "name": "roark-analytics",
+  "name": "@roarkanalytics/sdk",
   "version": "0.0.1-alpha.0",
   "description": "The official TypeScript library for the Petstore API",
   "author": "Petstore <example@example.com>",
@@ -46,8 +46,8 @@
     "typescript": "^4.8.2"
   },
   "imports": {
-    "roark-analytics": ".",
-    "roark-analytics/*": "./src/*"
+    "@roarkanalytics/sdk": ".",
+    "@roarkanalytics/sdk/*": "./src/*"
   },
   "exports": {
     ".": {

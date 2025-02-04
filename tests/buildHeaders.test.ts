@@ -1,5 +1,5 @@
 import { inspect } from 'node:util';
-import { buildHeaders, type HeadersLike, type NullableHeaders } from 'roark-analytics/internal/headers';
+import { buildHeaders, type HeadersLike, type NullableHeaders } from '@roarkanalytics/sdk/internal/headers';
 
 function inspectNullableHeaders(headers: NullableHeaders) {
   return `NullableHeaders {${[

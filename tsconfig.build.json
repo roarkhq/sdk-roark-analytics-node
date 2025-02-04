@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "roark-analytics/*": ["dist/src/*"],
-      "roark-analytics": ["dist/src/index.ts"],
+      "@roarkanalytics/sdk/*": ["dist/src/*"],
+      "@roarkanalytics/sdk": ["dist/src/index.ts"],
     },
     "noEmit": false,
     "declaration": true,

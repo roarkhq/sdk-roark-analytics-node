@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIPromise } from 'roark-analytics/api-promise';
+import { APIPromise } from '@roarkanalytics/sdk/api-promise';
 
 import util from 'node:util';
-import Petstore from 'roark-analytics';
-import { APIUserAbortError } from 'roark-analytics';
+import Petstore from '@roarkanalytics/sdk';
+import { APIUserAbortError } from '@roarkanalytics/sdk';
 const defaultFetch = fetch;
 
 describe('instantiate client', () => {

@@ -10,7 +10,7 @@ module.exports = {
       {
         patterns: [
           {
-            group: ['roark-analytics', 'roark-analytics/*'],
+            group: ['@roarkanalytics/sdk', '@roarkanalytics/sdk/*'],
             message: 'Use a relative import, not a package import.',
           },
         ],
