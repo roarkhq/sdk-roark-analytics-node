@@ -7,8 +7,8 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^roark-analytics$': '<rootDir>/src/index.ts',
-    '^roark-analytics/(.*)$': '<rootDir>/src/$1',
+    '^@roarkanalytics/sdk$': '<rootDir>/src/index.ts',
+    '^@roarkanalytics/sdk/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/ecosystem-tests/',

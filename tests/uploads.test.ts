@@ -1,6 +1,6 @@
 import fs from 'fs';
-import type { ResponseLike } from 'roark-analytics/internal/uploads';
-import { toFile } from 'roark-analytics/uploads';
+import type { ResponseLike } from '@roarkanalytics/sdk/internal/uploads';
+import { toFile } from '@roarkanalytics/sdk/uploads';
 
 class MyClass {
   name: string = 'foo';
