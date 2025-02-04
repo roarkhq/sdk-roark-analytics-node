@@ -1,14 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
-import { APIPromise } from '../api-promise';
-import { RequestOptions } from '../internal/request-options';
+import * as Core from '../core';
 
 export class Calls extends APIResource {
   /**
    * Upload a call recording.
    */
-  create(body: CallCreateParams, options?: RequestOptions): APIPromise<CallCreateResponse> {
+  create(body: CallCreateParams, options?: Core.RequestOptions): Core.APIPromise<CallCreateResponse> {
     return this._client.post('/call', { body, ...options });
   }
 }

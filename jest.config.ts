@@ -8,6 +8,7 @@ const config: JestConfigWithTsJest = {
   },
   moduleNameMapper: {
     '^@roarkanalytics/sdk$': '<rootDir>/src/index.ts',
+    '^@roarkanalytics/sdk/_shims/auto/(.*)$': '<rootDir>/src/_shims/auto/$1-node',
     '^@roarkanalytics/sdk/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
