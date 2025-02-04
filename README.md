@@ -27,7 +27,7 @@ const client = new Roark({
 });
 
 async function main() {
-  const call = await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T07:16:58.722Z' });
+  const call = await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' });
 
   console.log(call.data);
 }
@@ -48,7 +48,7 @@ const client = new Roark({
 });
 
 async function main() {
-  const params: Roark.CallCreateParams = { direction: 'INBOUND', startedAt: '2025-02-04T07:16:58.722Z' };
+  const params: Roark.CallCreateParams = { direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' };
   const call: Roark.CallCreateResponse = await client.calls.create(params);
 }
 
@@ -67,7 +67,7 @@ a subclass of `APIError` will be thrown:
 ```ts
 async function main() {
   const call = await client.calls
-    .create({ direction: 'INBOUND', startedAt: '2025-02-04T07:16:58.722Z' })
+    .create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' })
     .catch(async (err) => {
       if (err instanceof Roark.APIError) {
         console.log(err.status); // 400
@@ -111,7 +111,7 @@ const client = new Roark({
 });
 
 // Or, configure per-request:
-await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T07:16:58.722Z' }, {
+await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' }, {
   maxRetries: 5,
 });
 ```
@@ -128,7 +128,7 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T07:16:58.722Z' }, {
+await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -150,13 +150,13 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 const client = new Roark();
 
 const response = await client.calls
-  .create({ direction: 'INBOUND', startedAt: '2025-02-04T07:16:58.722Z' })
+  .create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
 const { data: call, response: raw } = await client.calls
-  .create({ direction: 'INBOUND', startedAt: '2025-02-04T07:16:58.722Z' })
+  .create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(call.data);
@@ -264,7 +264,7 @@ const client = new Roark({
 
 // Override per-request:
 await client.calls.create(
-  { direction: 'INBOUND', startedAt: '2025-02-04T07:16:58.722Z' },
+  { direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' },
   {
     httpAgent: new http.Agent({ keepAlive: false }),
   },
