@@ -1,6 +1,6 @@
 import fs from 'fs';
-import type { ResponseLike } from '@roarkanalytics/sdk/internal/uploads';
-import { toFile } from '@roarkanalytics/sdk/uploads';
+import { toFile, type ResponseLike } from '@roarkanalytics/sdk/uploads';
+import { File } from '@roarkanalytics/sdk/_shims/index';
 
 class MyClass {
   name: string = 'foo';
@@ -9,7 +9,7 @@ class MyClass {
 function mockResponse({ url, content }: { url: string; content?: Blob }): ResponseLike {
   return {
     url,
-    blob: async () => content || new Blob([]),
+    blob: async () => content as any,
   };
 }
 
@@ -62,15 +62,4 @@ describe('toFile', () => {
     expect(file.name).toEqual('input.jsonl');
     expect(file.type).toBe('jsonl');
   });
-});
-
-test('missing File error message', async () => {
-  // @ts-ignore
-  globalThis.File = undefined;
-
-  await expect(
-    toFile(mockResponse({ url: 'https://example.com/my/audio.mp3' })),
-  ).rejects.toMatchInlineSnapshot(
-    `[Error: \`File\` is not defined as a global which is required for file uploads]`,
-  );
 });
