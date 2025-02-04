@@ -26,13 +26,13 @@ The full API of this library can be found in [api.md](api.md).
 import Petstore from 'roark-analytics';
 
 const client = new Petstore({
-  apiKey: process.env['PETSTORE_API_KEY'], // This is the default and can be omitted
+  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
 async function main() {
-  const order = await client.store.createOrder({ petId: 1, quantity: 1, status: 'placed' });
+  const call = await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' });
 
-  console.log(order.id);
+  console.log(call.data);
 }
 
 main();
@@ -47,11 +47,12 @@ This library includes TypeScript definitions for all request params and response
 import Petstore from 'roark-analytics';
 
 const client = new Petstore({
-  apiKey: process.env['PETSTORE_API_KEY'], // This is the default and can be omitted
+  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
 async function main() {
-  const response: Petstore.StoreInventoryResponse = await client.store.inventory();
+  const params: Petstore.CallCreateParams = { direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' };
+  const call: Petstore.CallCreateResponse = await client.calls.create(params);
 }
 
 main();
@@ -68,15 +69,17 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const response = await client.store.inventory().catch(async (err) => {
-    if (err instanceof Petstore.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
+  const call = await client.calls
+    .create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' })
+    .catch(async (err) => {
+      if (err instanceof Petstore.APIError) {
+        console.log(err.status); // 400
+        console.log(err.name); // BadRequestError
+        console.log(err.headers); // {server: 'nginx', ...}
+      } else {
+        throw err;
+      }
+    });
 }
 
 main();
@@ -111,7 +114,7 @@ const client = new Petstore({
 });
 
 // Or, configure per-request:
-await client.store.inventory({
+await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' }, {
   maxRetries: 5,
 });
 ```
@@ -128,7 +131,7 @@ const client = new Petstore({
 });
 
 // Override per-request:
-await client.store.inventory({
+await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -149,13 +152,17 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new Petstore();
 
-const response = await client.store.inventory().asResponse();
+const response = await client.calls
+  .create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' })
+  .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: response, response: raw } = await client.store.inventory().withResponse();
+const { data: call, response: raw } = await client.calls
+  .create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(response);
+console.log(call.data);
 ```
 
 ### Making custom/undocumented requests

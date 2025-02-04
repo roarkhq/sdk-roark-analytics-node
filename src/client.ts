@@ -10,7 +10,6 @@ import type { APIResponseProps } from './internal/parse';
 import { getPlatformHeaders } from './internal/detect-platform';
 import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
-import * as qs from './internal/qs';
 import { VERSION } from './version';
 import * as Errors from './error';
 import * as Uploads from './uploads';
@@ -19,32 +18,10 @@ import { APIPromise } from './api-promise';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
-import {
-  APIResponse,
-  Pet,
-  PetCreateParams,
-  PetFindByStatusParams,
-  PetFindByStatusResponse,
-  PetFindByTagsParams,
-  PetFindByTagsResponse,
-  PetUpdateByIDParams,
-  PetUpdateParams,
-  PetUploadImageParams,
-  Pets,
-} from './resources/pets';
-import {
-  User,
-  UserCreateParams,
-  UserCreateWithListParams,
-  UserLoginParams,
-  UserLoginResponse,
-  UserResource,
-  UserUpdateParams,
-} from './resources/user';
+import { CallCreateParams, CallCreateResponse, Calls } from './resources/calls';
 import { readEnv } from './internal/utils/env';
 import { logger } from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
-import { Store, StoreCreateOrderParams, StoreInventoryResponse } from './resources/store/store';
 
 const safeJSON = (text: string) => {
   try {
@@ -75,9 +52,9 @@ const isLogLevel = (key: string | undefined): key is LogLevel => {
 
 export interface ClientOptions {
   /**
-   * Defaults to process.env['PETSTORE_API_KEY'].
+   * JWT token for authentication
    */
-  apiKey?: string | undefined;
+  bearerToken?: string | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
@@ -152,7 +129,7 @@ type FinalizedRequestInit = RequestInit & { headers: Headers };
  * API Client for interfacing with the Petstore API.
  */
 export class Petstore {
-  apiKey: string;
+  bearerToken: string;
 
   baseURL: string;
   maxRetries: number;
@@ -169,7 +146,7 @@ export class Petstore {
   /**
    * API Client for interfacing with the Petstore API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['PETSTORE_API_KEY'] ?? undefined]
+   * @param {string | undefined} [opts.bearerToken=process.env['ROARK_API_BEARER_TOKEN'] ?? undefined]
    * @param {string} [opts.baseURL=process.env['PETSTORE_BASE_URL'] ?? https://petstore3.swagger.io/api/v3] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -180,17 +157,17 @@ export class Petstore {
    */
   constructor({
     baseURL = readEnv('PETSTORE_BASE_URL'),
-    apiKey = readEnv('PETSTORE_API_KEY'),
+    bearerToken = readEnv('ROARK_API_BEARER_TOKEN'),
     ...opts
   }: ClientOptions = {}) {
-    if (apiKey === undefined) {
+    if (bearerToken === undefined) {
       throw new Errors.PetstoreError(
-        "The PETSTORE_API_KEY environment variable is missing or empty; either provide it, or instantiate the Petstore client with an apiKey option, like new Petstore({ apiKey: 'My API Key' }).",
+        "The ROARK_API_BEARER_TOKEN environment variable is missing or empty; either provide it, or instantiate the Petstore client with an bearerToken option, like new Petstore({ bearerToken: 'My Bearer Token' }).",
       );
     }
 
     const options: ClientOptions = {
-      apiKey,
+      bearerToken,
       ...opts,
       baseURL: baseURL || `https://petstore3.swagger.io/api/v3`,
     };
@@ -213,7 +190,7 @@ export class Petstore {
 
     this._options = options;
 
-    this.apiKey = apiKey;
+    this.bearerToken = bearerToken;
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -225,11 +202,27 @@ export class Petstore {
   }
 
   protected authHeaders(opts: FinalRequestOptions): Headers | undefined {
-    return new Headers({ api_key: this.apiKey });
+    return new Headers({ Authorization: `Bearer ${this.bearerToken}` });
   }
 
+  /**
+   * Basic re-implementation of `qs.stringify` for primitive types.
+   */
   protected stringifyQuery(query: Record<string, unknown>): string {
-    return qs.stringify(query, { arrayFormat: 'comma' });
+    return Object.entries(query)
+      .filter(([_, value]) => typeof value !== 'undefined')
+      .map(([key, value]) => {
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+        }
+        if (value === null) {
+          return `${encodeURIComponent(key)}=`;
+        }
+        throw new Errors.PetstoreError(
+          `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
+        );
+      })
+      .join('&');
   }
 
   private getUserAgent(): string {
@@ -639,45 +632,15 @@ export class Petstore {
 
   static toFile = Uploads.toFile;
 
-  pets: API.Pets = new API.Pets(this);
-  store: API.Store = new API.Store(this);
-  user: API.UserResource = new API.UserResource(this);
+  calls: API.Calls = new API.Calls(this);
 }
-Petstore.Pets = Pets;
-Petstore.Store = Store;
-Petstore.UserResource = UserResource;
+Petstore.Calls = Calls;
 export declare namespace Petstore {
   export type RequestOptions = Opts.RequestOptions;
 
   export {
-    Pets as Pets,
-    type APIResponse as APIResponse,
-    type Pet as Pet,
-    type PetFindByStatusResponse as PetFindByStatusResponse,
-    type PetFindByTagsResponse as PetFindByTagsResponse,
-    type PetCreateParams as PetCreateParams,
-    type PetUpdateParams as PetUpdateParams,
-    type PetFindByStatusParams as PetFindByStatusParams,
-    type PetFindByTagsParams as PetFindByTagsParams,
-    type PetUpdateByIDParams as PetUpdateByIDParams,
-    type PetUploadImageParams as PetUploadImageParams,
+    Calls as Calls,
+    type CallCreateResponse as CallCreateResponse,
+    type CallCreateParams as CallCreateParams,
   };
-
-  export {
-    Store as Store,
-    type StoreInventoryResponse as StoreInventoryResponse,
-    type StoreCreateOrderParams as StoreCreateOrderParams,
-  };
-
-  export {
-    UserResource as UserResource,
-    type User as User,
-    type UserLoginResponse as UserLoginResponse,
-    type UserCreateParams as UserCreateParams,
-    type UserUpdateParams as UserUpdateParams,
-    type UserCreateWithListParams as UserCreateWithListParams,
-    type UserLoginParams as UserLoginParams,
-  };
-
-  export type Order = API.Order;
 }
