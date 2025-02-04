@@ -12,7 +12,7 @@ describe('resource calls', () => {
   test('create: only required params', async () => {
     const responsePromise = client.calls.create({
       direction: 'INBOUND',
-      startedAt: '2025-02-04T07:35:21.260Z',
+      startedAt: '2025-02-04T07:54:19.947Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -26,7 +26,7 @@ describe('resource calls', () => {
   test('create: required and optional params', async () => {
     const response = await client.calls.create({
       direction: 'INBOUND',
-      startedAt: '2025-02-04T07:35:21.260Z',
+      startedAt: '2025-02-04T07:54:19.947Z',
       agent: { name: 'Sales Agent', phoneNumber: '+15551234567' },
       agentSpokeFirst: true,
       customer: { name: 'John Doe', phoneNumber: '+15557654321' },
