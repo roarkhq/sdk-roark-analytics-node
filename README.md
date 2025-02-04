@@ -1,6 +1,6 @@
 # Petstore TypeScript API Library
 
-[![NPM version](https://img.shields.io/npm/v/roark-analytics.svg)](https://npmjs.org/package/roark-analytics) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/roark-analytics)
+[![NPM version](https://img.shields.io/npm/v/@roarkanalytics/sdk.svg)](https://npmjs.org/package/@roarkanalytics/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@roarkanalytics/sdk)
 
 This library provides convenient access to the Petstore REST API from server-side TypeScript or JavaScript.
 
@@ -11,11 +11,8 @@ It is generated with [Stainless](https://www.stainlessapi.com/).
 ## Installation
 
 ```sh
-npm install git+ssh://git@github.com:roarkhq/sdk-roark-analytics-node.git
+npm install @roarkanalytics/sdk
 ```
-
-> [!NOTE]
-> Once this package is [published to npm](https://app.stainlessapi.com/docs/guides/publish), this will become: `npm install roark-analytics`
 
 ## Usage
 
@@ -23,7 +20,7 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import Petstore from 'roark-analytics';
+import Petstore from '@roarkanalytics/sdk';
 
 const client = new Petstore({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
@@ -44,7 +41,7 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import Petstore from 'roark-analytics';
+import Petstore from '@roarkanalytics/sdk';
 
 const client = new Petstore({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
@@ -236,7 +233,7 @@ which can be used to inspect or alter the `Request` or `Response` before/after e
 
 ```ts
 import { fetch } from 'undici'; // as one example
-import Petstore from 'roark-analytics';
+import Petstore from '@roarkanalytics/sdk';
 
 const client = new Petstore({
   fetch: async (url: RequestInfo, init?: RequestInit): Promise<Response> => {
@@ -256,7 +253,7 @@ This is intended for debugging purposes only and may change in the future withou
 If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
 
 ```ts
-import Petstore from 'roark-analytics';
+import Petstore from '@roarkanalytics/sdk';
 
 const client = new Petstore({
   fetchOptions: {
@@ -273,7 +270,7 @@ options to requests:
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
 
 ```ts
-import Petstore from 'roark-analytics';
+import Petstore from '@roarkanalytics/sdk';
 import * as undici from 'undici';
 
 const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
@@ -287,7 +284,7 @@ const client = new Petstore({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
 
 ```ts
-import Petstore from 'roark-analytics';
+import Petstore from '@roarkanalytics/sdk';
 
 const client = new Petstore({
   fetchOptions: {
@@ -299,7 +296,7 @@ const client = new Petstore({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
 
 ```ts
-import Petstore from 'npm:roark-analytics';
+import Petstore from 'npm:@roarkanalytics/sdk';
 
 const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
 const client = new Petstore({

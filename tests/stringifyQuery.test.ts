@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { Petstore } from 'roark-analytics';
+import { Petstore } from '@roarkanalytics/sdk';
 
 const { stringifyQuery } = Petstore.prototype as any;
 
