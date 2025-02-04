@@ -1,10 +1,10 @@
-# Petstore TypeScript API Library
+# Roark Node API Library
 
 [![NPM version](https://img.shields.io/npm/v/@roarkanalytics/sdk.svg)](https://npmjs.org/package/@roarkanalytics/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@roarkanalytics/sdk)
 
-This library provides convenient access to the Petstore REST API from server-side TypeScript or JavaScript.
+This library provides convenient access to the Roark REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [app.stainlessapi.com](https://app.stainlessapi.com/docs). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.roark.ai](https://docs.roark.ai). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainlessapi.com/).
 
@@ -20,14 +20,14 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 
-const client = new Petstore({
+const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
 async function main() {
-  const call = await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' });
+  const call = await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T06:23:19.633Z' });
 
   console.log(call.data);
 }
@@ -41,15 +41,15 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 
-const client = new Petstore({
+const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
 async function main() {
-  const params: Petstore.CallCreateParams = { direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' };
-  const call: Petstore.CallCreateResponse = await client.calls.create(params);
+  const params: Roark.CallCreateParams = { direction: 'INBOUND', startedAt: '2025-02-04T06:23:19.633Z' };
+  const call: Roark.CallCreateResponse = await client.calls.create(params);
 }
 
 main();
@@ -67,9 +67,9 @@ a subclass of `APIError` will be thrown:
 ```ts
 async function main() {
   const call = await client.calls
-    .create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' })
+    .create({ direction: 'INBOUND', startedAt: '2025-02-04T06:23:19.633Z' })
     .catch(async (err) => {
-      if (err instanceof Petstore.APIError) {
+      if (err instanceof Roark.APIError) {
         console.log(err.status); // 400
         console.log(err.name); // BadRequestError
         console.log(err.headers); // {server: 'nginx', ...}
@@ -106,12 +106,12 @@ You can use the `maxRetries` option to configure or disable this:
 <!-- prettier-ignore -->
 ```js
 // Configure the default for all requests:
-const client = new Petstore({
+const client = new Roark({
   maxRetries: 0, // default is 2
 });
 
 // Or, configure per-request:
-await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' }, {
+await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T06:23:19.633Z' }, {
   maxRetries: 5,
 });
 ```
@@ -123,12 +123,12 @@ Requests time out after 1 minute by default. You can configure this with a `time
 <!-- prettier-ignore -->
 ```ts
 // Configure the default for all requests:
-const client = new Petstore({
+const client = new Roark({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
 // Override per-request:
-await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' }, {
+await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T06:23:19.633Z' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -147,16 +147,16 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 
 <!-- prettier-ignore -->
 ```ts
-const client = new Petstore();
+const client = new Roark();
 
 const response = await client.calls
-  .create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' })
+  .create({ direction: 'INBOUND', startedAt: '2025-02-04T06:23:19.633Z' })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
 const { data: call, response: raw } = await client.calls
-  .create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' })
+  .create({ direction: 'INBOUND', startedAt: '2025-02-04T06:23:19.633Z' })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(call.data);
@@ -208,23 +208,21 @@ validate or strip extra properties from the response from the API.
 
 ### Customizing the fetch client
 
-By default, this library expects a global `fetch` function is defined.
+By default, this library uses `node-fetch` in Node, and expects a global `fetch` function in other environments.
 
-If you want to use a different `fetch` function, you can either polyfill the global:
-
-```ts
-import fetch from 'my-fetch';
-
-globalThis.fetch = fetch;
-```
-
-Or pass it to the client:
+If you would prefer to use a global, web-standards-compliant `fetch` function even in a Node environment,
+(for example, if you are running Node with `--experimental-fetch` or using NextJS which polyfills with `undici`),
+add the following import before your first import `from "Roark"`:
 
 ```ts
-import fetch from 'my-fetch';
-
-const client = new Petstore({ fetch });
+// Tell TypeScript and the package to use the global web fetch instead of node-fetch.
+// Note, despite the name, this does not add any polyfills, but expects them to be provided if needed.
+import '@roarkanalytics/sdk/shims/web';
+import Roark from '@roarkanalytics/sdk';
 ```
+
+To do the inverse, add `import "@roarkanalytics/sdk/shims/node"` (which does import polyfills).
+This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/roarkhq/sdk-roark-analytics-node/tree/main/src/_shims#readme)).
 
 ### Logging and middleware
 
@@ -233,9 +231,9 @@ which can be used to inspect or alter the `Request` or `Response` before/after e
 
 ```ts
 import { fetch } from 'undici'; // as one example
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 
-const client = new Petstore({
+const client = new Roark({
   fetch: async (url: RequestInfo, init?: RequestInit): Promise<Response> => {
     console.log('About to make a request', url, init);
     const response = await fetch(url, init);
@@ -245,68 +243,33 @@ const client = new Petstore({
 });
 ```
 
-Note that if given a `PETSTORE_LOG=debug` environment variable, this library will log all requests and responses automatically.
+Note that if given a `DEBUG=true` environment variable, this library will log all requests and responses automatically.
 This is intended for debugging purposes only and may change in the future without notice.
 
-### Fetch options
+### Configuring an HTTP(S) Agent (e.g., for proxies)
 
-If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
+By default, this library uses a stable agent for all http/https requests to reuse TCP connections, eliminating many TCP & TLS handshakes and shaving around 100ms off most requests.
 
+If you would like to disable or customize this behavior, for example to use the API behind a proxy, you can pass an `httpAgent` which is used for all requests (be they http or https), for example:
+
+<!-- prettier-ignore -->
 ```ts
-import Petstore from '@roarkanalytics/sdk';
+import http from 'http';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
-const client = new Petstore({
-  fetchOptions: {
-    // `RequestInit` options
-  },
+// Configure the default for all requests:
+const client = new Roark({
+  httpAgent: new HttpsProxyAgent(process.env.PROXY_URL),
 });
-```
 
-#### Configuring proxies
-
-To modify proxy behavior, you can provide custom `fetchOptions` that add runtime-specific proxy
-options to requests:
-
-<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
-
-```ts
-import Petstore from '@roarkanalytics/sdk';
-import * as undici from 'undici';
-
-const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
-const client = new Petstore({
-  fetchOptions: {
-    dispatcher: proxyAgent,
+// Override per-request:
+await client.calls.create(
+  { direction: 'INBOUND', startedAt: '2025-02-04T06:23:19.633Z' },
+  {
+    httpAgent: new http.Agent({ keepAlive: false }),
   },
-});
+);
 ```
-
-<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
-
-```ts
-import Petstore from '@roarkanalytics/sdk';
-
-const client = new Petstore({
-  fetchOptions: {
-    proxy: 'http://localhost:8888',
-  },
-});
-```
-
-<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
-
-```ts
-import Petstore from 'npm:@roarkanalytics/sdk';
-
-const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
-const client = new Petstore({
-  fetchOptions: {
-    client: httpClient,
-  },
-});
-```
-
-## Frequently Asked Questions
 
 ## Semantic versioning
 
@@ -322,7 +285,7 @@ We are keen for your feedback; please open an [issue](https://www.github.com/roa
 
 ## Requirements
 
-TypeScript >= 4.9 is supported.
+TypeScript >= 4.5 is supported.
 
 The following runtimes are supported:
 

@@ -1,6 +1,6 @@
 {
   "include": ["src", "tests", "examples"],
-  "exclude": [],
+  "exclude": ["src/_shims/**/*-deno.ts"],
   "compilerOptions": {
     "target": "es2020",
     "lib": ["es2020"],
@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {
+      "@roarkanalytics/sdk/_shims/auto/*": ["src/_shims/auto/*-node"],
       "@roarkanalytics/sdk/*": ["src/*"],
       "@roarkanalytics/sdk": ["src/index.ts"]
     },
