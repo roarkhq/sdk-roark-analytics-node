@@ -27,7 +27,11 @@ const client = new Roark({
 });
 
 async function main() {
-  const call = await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' });
+  const call = await client.calls.create({
+    direction: 'INBOUND',
+    sourceRecordingUrl: 'https://example.com/recording.mp3',
+    startedAt: '2025-02-04T23:59:46.849Z',
+  });
 
   console.log(call.data);
 }
@@ -48,7 +52,11 @@ const client = new Roark({
 });
 
 async function main() {
-  const params: Roark.CallCreateParams = { direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' };
+  const params: Roark.CallCreateParams = {
+    direction: 'INBOUND',
+    sourceRecordingUrl: 'https://example.com/recording.mp3',
+    startedAt: '2025-02-04T23:59:46.849Z',
+  };
   const call: Roark.CallCreateResponse = await client.calls.create(params);
 }
 
@@ -67,7 +75,11 @@ a subclass of `APIError` will be thrown:
 ```ts
 async function main() {
   const call = await client.calls
-    .create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' })
+    .create({
+      direction: 'INBOUND',
+      sourceRecordingUrl: 'https://example.com/recording.mp3',
+      startedAt: '2025-02-04T23:59:46.849Z',
+    })
     .catch(async (err) => {
       if (err instanceof Roark.APIError) {
         console.log(err.status); // 400
@@ -111,7 +123,7 @@ const client = new Roark({
 });
 
 // Or, configure per-request:
-await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' }, {
+await client.calls.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-04T23:59:46.849Z' }, {
   maxRetries: 5,
 });
 ```
@@ -128,7 +140,7 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' }, {
+await client.calls.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-04T23:59:46.849Z' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -150,13 +162,21 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 const client = new Roark();
 
 const response = await client.calls
-  .create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' })
+  .create({
+    direction: 'INBOUND',
+    sourceRecordingUrl: 'https://example.com/recording.mp3',
+    startedAt: '2025-02-04T23:59:46.849Z',
+  })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
 const { data: call, response: raw } = await client.calls
-  .create({ direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' })
+  .create({
+    direction: 'INBOUND',
+    sourceRecordingUrl: 'https://example.com/recording.mp3',
+    startedAt: '2025-02-04T23:59:46.849Z',
+  })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(call.data);
@@ -264,7 +284,11 @@ const client = new Roark({
 
 // Override per-request:
 await client.calls.create(
-  { direction: 'INBOUND', startedAt: '2025-02-04T07:35:21.260Z' },
+  {
+    direction: 'INBOUND',
+    sourceRecordingUrl: 'https://example.com/recording.mp3',
+    startedAt: '2025-02-04T23:59:46.849Z',
+  },
   {
     httpAgent: new http.Agent({ keepAlive: false }),
   },
