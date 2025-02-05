@@ -183,13 +183,13 @@ describe('instantiate client', () => {
     test('empty env variable', () => {
       process.env['ROARK_BASE_URL'] = ''; // empty
       const client = new Roark({ bearerToken: 'My Bearer Token' });
-      expect(client.baseURL).toEqual('https://customer.api.roark.ai');
+      expect(client.baseURL).toEqual('https://customer.api.roark.ai/v1');
     });
 
     test('blank env variable', () => {
       process.env['ROARK_BASE_URL'] = '  '; // blank
       const client = new Roark({ bearerToken: 'My Bearer Token' });
-      expect(client.baseURL).toEqual('https://customer.api.roark.ai');
+      expect(client.baseURL).toEqual('https://customer.api.roark.ai/v1');
     });
   });
 
