@@ -27,13 +27,13 @@ const client = new Roark({
 });
 
 async function main() {
-  const call = await client.calls.create({
+  const callAnalysis = await client.callAnalysis.create({
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-05T00:18:46.832Z',
+    startedAt: '2025-02-05T04:42:55.468Z',
   });
 
-  console.log(call.data);
+  console.log(callAnalysis.data);
 }
 
 main();
@@ -52,12 +52,12 @@ const client = new Roark({
 });
 
 async function main() {
-  const params: Roark.CallCreateParams = {
+  const params: Roark.CallAnalysisCreateParams = {
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-05T00:18:46.832Z',
+    startedAt: '2025-02-05T04:42:55.468Z',
   };
-  const call: Roark.CallCreateResponse = await client.calls.create(params);
+  const callAnalysis: Roark.CallAnalysisCreateResponse = await client.callAnalysis.create(params);
 }
 
 main();
@@ -74,11 +74,11 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const call = await client.calls
+  const callAnalysis = await client.callAnalysis
     .create({
       direction: 'INBOUND',
       sourceRecordingUrl: 'https://example.com/recording.mp3',
-      startedAt: '2025-02-05T00:18:46.832Z',
+      startedAt: '2025-02-05T04:42:55.468Z',
     })
     .catch(async (err) => {
       if (err instanceof Roark.APIError) {
@@ -123,7 +123,7 @@ const client = new Roark({
 });
 
 // Or, configure per-request:
-await client.calls.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-05T00:18:46.832Z' }, {
+await client.callAnalysis.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-05T04:42:55.468Z' }, {
   maxRetries: 5,
 });
 ```
@@ -140,7 +140,7 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.calls.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-05T00:18:46.832Z' }, {
+await client.callAnalysis.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-05T04:42:55.468Z' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -161,25 +161,25 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new Roark();
 
-const response = await client.calls
+const response = await client.callAnalysis
   .create({
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-05T00:18:46.832Z',
+    startedAt: '2025-02-05T04:42:55.468Z',
   })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: call, response: raw } = await client.calls
+const { data: callAnalysis, response: raw } = await client.callAnalysis
   .create({
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-05T00:18:46.832Z',
+    startedAt: '2025-02-05T04:42:55.468Z',
   })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(call.data);
+console.log(callAnalysis.data);
 ```
 
 ### Making custom/undocumented requests
@@ -283,11 +283,11 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.calls.create(
+await client.callAnalysis.create(
   {
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-05T00:18:46.832Z',
+    startedAt: '2025-02-05T04:42:55.468Z',
   },
   {
     httpAgent: new http.Agent({ keepAlive: false }),

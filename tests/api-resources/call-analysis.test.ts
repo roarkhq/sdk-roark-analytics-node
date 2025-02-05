@@ -8,12 +8,12 @@ const client = new Roark({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource calls', () => {
+describe('resource callAnalysis', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.calls.create({
+    const responsePromise = client.callAnalysis.create({
       direction: 'INBOUND',
       sourceRecordingUrl: 'https://example.com/recording.mp3',
-      startedAt: '2025-02-05T00:18:46.832Z',
+      startedAt: '2025-02-05T04:42:55.468Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -25,10 +25,10 @@ describe('resource calls', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.calls.create({
+    const response = await client.callAnalysis.create({
       direction: 'INBOUND',
       sourceRecordingUrl: 'https://example.com/recording.mp3',
-      startedAt: '2025-02-05T00:18:46.832Z',
+      startedAt: '2025-02-05T04:42:55.468Z',
       agent: { name: 'Sales Agent', phoneNumber: '+15551234567' },
       agentSpokeFirst: true,
       customer: { name: 'John Doe', phoneNumber: '+15557654321' },

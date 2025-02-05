@@ -5,7 +5,11 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
-import { CallCreateParams, CallCreateResponse, Calls } from './resources/calls';
+import {
+  CallAnalysis,
+  CallAnalysisCreateParams,
+  CallAnalysisCreateResponse,
+} from './resources/call-analysis';
 
 export interface ClientOptions {
   /**
@@ -120,7 +124,7 @@ export class Roark extends Core.APIClient {
     this.bearerToken = bearerToken;
   }
 
-  calls: API.Calls = new API.Calls(this);
+  callAnalysis: API.CallAnalysis = new API.CallAnalysis(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -158,14 +162,14 @@ export class Roark extends Core.APIClient {
   static fileFromPath = Uploads.fileFromPath;
 }
 
-Roark.Calls = Calls;
+Roark.CallAnalysis = CallAnalysis;
 export declare namespace Roark {
   export type RequestOptions = Core.RequestOptions;
 
   export {
-    Calls as Calls,
-    type CallCreateResponse as CallCreateResponse,
-    type CallCreateParams as CallCreateParams,
+    CallAnalysis as CallAnalysis,
+    type CallAnalysisCreateResponse as CallAnalysisCreateResponse,
+    type CallAnalysisCreateParams as CallAnalysisCreateParams,
   };
 }
 
