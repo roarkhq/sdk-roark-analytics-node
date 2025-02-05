@@ -13,7 +13,7 @@ describe('resource callAnalysis', () => {
     const responsePromise = client.callAnalysis.create({
       direction: 'INBOUND',
       sourceRecordingUrl: 'https://example.com/recording.mp3',
-      startedAt: '2025-02-05T04:42:55.468Z',
+      startedAt: '2025-02-05T06:23:32.716Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -28,7 +28,7 @@ describe('resource callAnalysis', () => {
     const response = await client.callAnalysis.create({
       direction: 'INBOUND',
       sourceRecordingUrl: 'https://example.com/recording.mp3',
-      startedAt: '2025-02-05T04:42:55.468Z',
+      startedAt: '2025-02-05T06:23:32.716Z',
       agent: { name: 'Sales Agent', phoneNumber: '+15551234567' },
       agentSpokeFirst: true,
       customer: { name: 'John Doe', phoneNumber: '+15557654321' },
