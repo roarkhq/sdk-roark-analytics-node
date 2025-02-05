@@ -3,20 +3,23 @@
 import { APIResource } from '../resource';
 import * as Core from '../core';
 
-export class Calls extends APIResource {
+export class CallAnalysis extends APIResource {
   /**
    * Upload a new call recording
    */
-  create(body: CallCreateParams, options?: Core.RequestOptions): Core.APIPromise<CallCreateResponse> {
-    return this._client.post('/call', { body, ...options });
+  create(
+    body: CallAnalysisCreateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CallAnalysisCreateResponse> {
+    return this._client.post('/call-analysis', { body, ...options });
   }
 }
 
-export interface CallCreateResponse {
-  data: CallCreateResponse.Data;
+export interface CallAnalysisCreateResponse {
+  data: CallAnalysisCreateResponse.Data;
 }
 
-export namespace CallCreateResponse {
+export namespace CallAnalysisCreateResponse {
   export interface Data {
     id: string;
 
@@ -68,7 +71,7 @@ export namespace CallCreateResponse {
   }
 }
 
-export interface CallCreateParams {
+export interface CallAnalysisCreateParams {
   /**
    * The original direction of the call
    */
@@ -84,14 +87,14 @@ export interface CallCreateParams {
   /**
    * Agent information
    */
-  agent?: CallCreateParams.Agent;
+  agent?: CallAnalysisCreateParams.Agent;
 
   agentSpokeFirst?: boolean;
 
   /**
    * Customer information
    */
-  customer?: CallCreateParams.Customer;
+  customer?: CallAnalysisCreateParams.Customer;
 
   isTest?: boolean;
 
@@ -102,7 +105,7 @@ export interface CallCreateParams {
   stereoRecordingUrl?: string;
 }
 
-export namespace CallCreateParams {
+export namespace CallAnalysisCreateParams {
   /**
    * Agent information
    */
@@ -122,6 +125,9 @@ export namespace CallCreateParams {
   }
 }
 
-export declare namespace Calls {
-  export { type CallCreateResponse as CallCreateResponse, type CallCreateParams as CallCreateParams };
+export declare namespace CallAnalysis {
+  export {
+    type CallAnalysisCreateResponse as CallAnalysisCreateResponse,
+    type CallAnalysisCreateParams as CallAnalysisCreateParams,
+  };
 }
