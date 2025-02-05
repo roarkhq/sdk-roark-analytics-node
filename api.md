@@ -6,4 +6,4 @@ Types:
 
 Methods:
 
-- <code title="post /call-analysis">client.callAnalysis.<a href="./src/resources/call-analysis.ts">create</a>({ ...params }) -> CallAnalysisCreateResponse</code>
+- <code title="post /v1/call-analysis">client.callAnalysis.<a href="./src/resources/call-analysis.ts">create</a>({ ...params }) -> CallAnalysisCreateResponse</code>

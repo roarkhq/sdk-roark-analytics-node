@@ -11,7 +11,7 @@ export class CallAnalysis extends APIResource {
     body: CallAnalysisCreateParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<CallAnalysisCreateResponse> {
-    return this._client.post('/call-analysis', { body, ...options });
+    return this._client.post('/v1/call-analysis', { body, ...options });
   }
 }
 
