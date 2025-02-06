@@ -30,7 +30,7 @@ async function main() {
   const callAnalysis = await client.callAnalysis.create({
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-06T01:03:09.416Z',
+    startedAt: '2025-02-06T01:29:16.978Z',
   });
 
   console.log(callAnalysis.data);
@@ -55,7 +55,7 @@ async function main() {
   const params: Roark.CallAnalysisCreateParams = {
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-06T01:03:09.416Z',
+    startedAt: '2025-02-06T01:29:16.978Z',
   };
   const callAnalysis: Roark.CallAnalysisCreateResponse = await client.callAnalysis.create(params);
 }
@@ -78,7 +78,7 @@ async function main() {
     .create({
       direction: 'INBOUND',
       sourceRecordingUrl: 'https://example.com/recording.mp3',
-      startedAt: '2025-02-06T01:03:09.416Z',
+      startedAt: '2025-02-06T01:29:16.978Z',
     })
     .catch(async (err) => {
       if (err instanceof Roark.APIError) {
@@ -123,7 +123,7 @@ const client = new Roark({
 });
 
 // Or, configure per-request:
-await client.callAnalysis.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-06T01:03:09.416Z' }, {
+await client.callAnalysis.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-06T01:29:16.978Z' }, {
   maxRetries: 5,
 });
 ```
@@ -140,7 +140,7 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.callAnalysis.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-06T01:03:09.416Z' }, {
+await client.callAnalysis.create({ direction: 'INBOUND', sourceRecordingUrl: 'https://example.com/recording.mp3', startedAt: '2025-02-06T01:29:16.978Z' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -165,7 +165,7 @@ const response = await client.callAnalysis
   .create({
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-06T01:03:09.416Z',
+    startedAt: '2025-02-06T01:29:16.978Z',
   })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
@@ -175,7 +175,7 @@ const { data: callAnalysis, response: raw } = await client.callAnalysis
   .create({
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-06T01:03:09.416Z',
+    startedAt: '2025-02-06T01:29:16.978Z',
   })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
@@ -287,7 +287,7 @@ await client.callAnalysis.create(
   {
     direction: 'INBOUND',
     sourceRecordingUrl: 'https://example.com/recording.mp3',
-    startedAt: '2025-02-06T01:03:09.416Z',
+    startedAt: '2025-02-06T01:29:16.978Z',
   },
   {
     httpAgent: new http.Agent({ keepAlive: false }),
