@@ -16,109 +16,98 @@ export class CallAnalysis extends APIResource {
 }
 
 export interface CallAnalysisCreateResponse {
+  /**
+   * Analysis job with associated call context
+   */
   data: CallAnalysisCreateResponse.Data;
 }
 
 export namespace CallAnalysisCreateResponse {
+  /**
+   * Analysis job with associated call context
+   */
   export interface Data {
-    id: string;
-
-    direction: 'INBOUND' | 'OUTBOUND';
-
-    interfaceType: 'PHONE' | 'WEB';
-
-    isTest: boolean;
-
-    startedAt: string;
-
-    status: 'RINGING' | 'IN_PROGRESS' | 'ENDED' | null;
+    call: Data.Call;
 
     /**
-     * Participant contact information
+     * Analysis job ID for tracking progress
      */
-    agent?: Data.Agent;
+    jobId: string;
 
-    /**
-     * Participant contact information
-     */
-    customer?: Data.Customer;
-
-    endedAt?: string | null;
-
-    endedReason?: string | null;
-
-    summary?: string | null;
+    status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
   }
 
   export namespace Data {
-    /**
-     * Participant contact information
-     */
-    export interface Agent {
-      name?: string;
+    export interface Call {
+      id: string;
 
-      phoneNumber?: string;
+      callDirection: 'INBOUND' | 'OUTBOUND';
+
+      isTest: boolean;
+
+      participants: Array<Call.Participant>;
+
+      startedAt: string;
+
+      status: 'RINGING' | 'IN_PROGRESS' | 'ENDED' | null;
+
+      durationMs?: number | null;
+
+      endedAt?: string | null;
+
+      endedReason?: string | null;
+
+      summary?: string | null;
     }
 
-    /**
-     * Participant contact information
-     */
-    export interface Customer {
-      name?: string;
+    export namespace Call {
+      export interface Participant {
+        role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_AGENT' | 'SIMULATED_CUSTOMER';
 
-      phoneNumber?: string;
+        spokeFirst: boolean;
+
+        name?: string;
+
+        phoneNumber?: string;
+      }
     }
   }
 }
 
 export interface CallAnalysisCreateParams {
   /**
-   * The original direction of the call
+   * Exactly two participants in the call
    */
-  direction: 'INBOUND' | 'OUTBOUND';
+  participants: Array<CallAnalysisCreateParams.Participant>;
 
   /**
-   * URL of source recording
+   * URL of source recording (must be an accessible WAV file). Can be a signed URL.
    */
-  sourceRecordingUrl: string;
+  recordingUrl: string;
 
   startedAt: string;
 
-  /**
-   * Agent information
-   */
-  agent?: CallAnalysisCreateParams.Agent;
+  callDirection?: 'INBOUND' | 'OUTBOUND';
 
-  agentSpokeFirst?: boolean;
+  endedReason?: string;
 
-  /**
-   * Customer information
-   */
-  customer?: CallAnalysisCreateParams.Customer;
+  interfaceType?: 'PHONE' | 'WEB';
 
   isTest?: boolean;
 
   /**
-   * URL of source stereo recording. While optional it allows for a richer audio
-   * player
+   * URL of source stereo recording in WAV format. Must be accessible. Can be a
+   * signed URL. While optional it allows for a richer audio player
    */
   stereoRecordingUrl?: string;
 }
 
 export namespace CallAnalysisCreateParams {
-  /**
-   * Agent information
-   */
-  export interface Agent {
-    name?: string;
+  export interface Participant {
+    role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_AGENT' | 'SIMULATED_CUSTOMER';
 
-    phoneNumber?: string;
-  }
+    spokeFirst: boolean;
 
-  /**
-   * Customer information
-   */
-  export interface Customer {
     name?: string;
 
     phoneNumber?: string;
