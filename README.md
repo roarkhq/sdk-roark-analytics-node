@@ -33,7 +33,7 @@ async function main() {
       { role: 'AGENT', spokeFirst: false },
     ],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-07T13:01:56.604Z',
+    startedAt: '2025-02-07T13:37:33.456Z',
   });
 
   console.log(callAnalysis.data);
@@ -61,7 +61,7 @@ async function main() {
       { role: 'AGENT', spokeFirst: false },
     ],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-07T13:01:56.604Z',
+    startedAt: '2025-02-07T13:37:33.456Z',
   };
   const callAnalysis: Roark.CallAnalysisCreateResponse = await client.callAnalysis.create(params);
 }
@@ -87,7 +87,7 @@ async function main() {
         { role: 'AGENT', spokeFirst: false },
       ],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-02-07T13:01:56.604Z',
+      startedAt: '2025-02-07T13:37:33.456Z',
     })
     .catch(async (err) => {
       if (err instanceof Roark.APIError) {
@@ -132,7 +132,7 @@ const client = new Roark({
 });
 
 // Or, configure per-request:
-await client.callAnalysis.create({ participants: [{ role: 'AGENT', spokeFirst: true }, { role: 'AGENT', spokeFirst: false }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-02-07T13:01:56.604Z' }, {
+await client.callAnalysis.create({ participants: [{ role: 'AGENT', spokeFirst: true }, { role: 'AGENT', spokeFirst: false }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-02-07T13:37:33.456Z' }, {
   maxRetries: 5,
 });
 ```
@@ -149,7 +149,7 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.callAnalysis.create({ participants: [{ role: 'AGENT', spokeFirst: true }, { role: 'AGENT', spokeFirst: false }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-02-07T13:01:56.604Z' }, {
+await client.callAnalysis.create({ participants: [{ role: 'AGENT', spokeFirst: true }, { role: 'AGENT', spokeFirst: false }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-02-07T13:37:33.456Z' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -177,7 +177,7 @@ const response = await client.callAnalysis
       { role: 'AGENT', spokeFirst: false },
     ],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-07T13:01:56.604Z',
+    startedAt: '2025-02-07T13:37:33.456Z',
   })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
@@ -190,7 +190,7 @@ const { data: callAnalysis, response: raw } = await client.callAnalysis
       { role: 'AGENT', spokeFirst: false },
     ],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-07T13:01:56.604Z',
+    startedAt: '2025-02-07T13:37:33.456Z',
   })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
@@ -305,7 +305,7 @@ await client.callAnalysis.create(
       { role: 'AGENT', spokeFirst: false },
     ],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-07T13:01:56.604Z',
+    startedAt: '2025-02-07T13:37:33.456Z',
   },
   {
     httpAgent: new http.Agent({ keepAlive: false }),

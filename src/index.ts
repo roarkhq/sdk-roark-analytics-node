@@ -10,6 +10,7 @@ import {
   CallAnalysisCreateParams,
   CallAnalysisCreateResponse,
 } from './resources/call-analysis';
+import { Health, HealthGetResponse } from './resources/health';
 
 export interface ClientOptions {
   /**
@@ -124,6 +125,7 @@ export class Roark extends Core.APIClient {
     this.bearerToken = bearerToken;
   }
 
+  health: API.Health = new API.Health(this);
   callAnalysis: API.CallAnalysis = new API.CallAnalysis(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
@@ -162,9 +164,12 @@ export class Roark extends Core.APIClient {
   static fileFromPath = Uploads.fileFromPath;
 }
 
+Roark.Health = Health;
 Roark.CallAnalysis = CallAnalysis;
 export declare namespace Roark {
   export type RequestOptions = Core.RequestOptions;
+
+  export { Health as Health, type HealthGetResponse as HealthGetResponse };
 
   export {
     CallAnalysis as CallAnalysis,
