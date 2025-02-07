@@ -76,6 +76,16 @@ export namespace CallAnalysisCreateResponse {
 
 export interface CallAnalysisCreateParams {
   /**
+   * Direction of the call (INBOUND or OUTBOUND)
+   */
+  callDirection: 'INBOUND' | 'OUTBOUND';
+
+  /**
+   * Interface type of the call (PHONE or WEB)
+   */
+  interfaceType: 'PHONE' | 'WEB';
+
+  /**
    * Exactly two participants in the call
    */
   participants: Array<CallAnalysisCreateParams.Participant>;
@@ -85,14 +95,19 @@ export interface CallAnalysisCreateParams {
    */
   recordingUrl: string;
 
+  /**
+   * When the call started (ISO 8601 format)
+   */
   startedAt: string;
 
-  callDirection?: 'INBOUND' | 'OUTBOUND';
-
+  /**
+   * Reason why the call ended (optional)
+   */
   endedReason?: string;
 
-  interfaceType?: 'PHONE' | 'WEB';
-
+  /**
+   * Whether this is a test call
+   */
   isTest?: boolean;
 
   /**
