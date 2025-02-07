@@ -11,9 +11,12 @@ const client = new Roark({
 describe('resource callAnalysis', () => {
   test('create: only required params', async () => {
     const responsePromise = client.callAnalysis.create({
-      direction: 'INBOUND',
-      sourceRecordingUrl: 'https://example.com/recording.mp3',
-      startedAt: '2025-02-07T11:47:10.108Z',
+      participants: [
+        { role: 'AGENT', spokeFirst: true },
+        { role: 'AGENT', spokeFirst: false },
+      ],
+      recordingUrl: 'https://example.com/recording.wav',
+      startedAt: '2025-02-07T13:01:56.604Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -26,14 +29,17 @@ describe('resource callAnalysis', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.callAnalysis.create({
-      direction: 'INBOUND',
-      sourceRecordingUrl: 'https://example.com/recording.mp3',
-      startedAt: '2025-02-07T11:47:10.108Z',
-      agent: { name: 'Sales Agent', phoneNumber: '+15551234567' },
-      agentSpokeFirst: true,
-      customer: { name: 'John Doe', phoneNumber: '+15557654321' },
+      participants: [
+        { role: 'AGENT', spokeFirst: true, name: 'Sales Agent', phoneNumber: '+15551234567' },
+        { role: 'AGENT', spokeFirst: false, name: 'John Doe', phoneNumber: '+15557654321' },
+      ],
+      recordingUrl: 'https://example.com/recording.wav',
+      startedAt: '2025-02-07T13:01:56.604Z',
+      callDirection: 'INBOUND',
+      endedReason: 'endedReason',
+      interfaceType: 'PHONE',
       isTest: false,
-      stereoRecordingUrl: 'https://example.com',
+      stereoRecordingUrl: 'https://example.com/recording_stereo.wav',
     });
   });
 });
