@@ -11,12 +11,14 @@ const client = new Roark({
 describe('resource callAnalysis', () => {
   test('create: only required params', async () => {
     const responsePromise = client.callAnalysis.create({
+      callDirection: 'INBOUND',
+      interfaceType: 'PHONE',
       participants: [
         { role: 'AGENT', spokeFirst: true },
         { role: 'AGENT', spokeFirst: false },
       ],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-02-07T13:37:33.456Z',
+      startedAt: '2025-02-07T14:13:41.276Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -29,15 +31,15 @@ describe('resource callAnalysis', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.callAnalysis.create({
+      callDirection: 'INBOUND',
+      interfaceType: 'PHONE',
       participants: [
         { role: 'AGENT', spokeFirst: true, name: 'Sales Agent', phoneNumber: '+15551234567' },
         { role: 'AGENT', spokeFirst: false, name: 'John Doe', phoneNumber: '+15557654321' },
       ],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-02-07T13:37:33.456Z',
-      callDirection: 'INBOUND',
+      startedAt: '2025-02-07T14:13:41.276Z',
       endedReason: 'endedReason',
-      interfaceType: 'PHONE',
       isTest: false,
       stereoRecordingUrl: 'https://example.com/recording_stereo.wav',
     });
