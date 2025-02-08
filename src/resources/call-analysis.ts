@@ -64,11 +64,11 @@ export namespace CallAnalysisCreateResponse {
       export interface Participant {
         role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_AGENT' | 'SIMULATED_CUSTOMER';
 
-        spokeFirst: boolean;
-
         name?: string;
 
         phoneNumber?: string;
+
+        spokeFirst?: boolean;
       }
     }
   }
@@ -121,11 +121,11 @@ export namespace CallAnalysisCreateParams {
   export interface Participant {
     role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_AGENT' | 'SIMULATED_CUSTOMER';
 
-    spokeFirst: boolean;
-
     name?: string;
 
     phoneNumber?: string;
+
+    spokeFirst?: boolean;
   }
 }
 

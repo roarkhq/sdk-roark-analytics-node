@@ -13,12 +13,9 @@ describe('resource callAnalysis', () => {
     const responsePromise = client.callAnalysis.create({
       callDirection: 'INBOUND',
       interfaceType: 'PHONE',
-      participants: [
-        { role: 'AGENT', spokeFirst: true },
-        { role: 'AGENT', spokeFirst: false },
-      ],
+      participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-02-07T14:13:41.276Z',
+      startedAt: '2025-02-07T23:54:52.479Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -34,11 +31,11 @@ describe('resource callAnalysis', () => {
       callDirection: 'INBOUND',
       interfaceType: 'PHONE',
       participants: [
-        { role: 'AGENT', spokeFirst: true, name: 'Sales Agent', phoneNumber: '+15551234567' },
-        { role: 'AGENT', spokeFirst: false, name: 'John Doe', phoneNumber: '+15557654321' },
+        { role: 'AGENT', name: 'Sales Agent', phoneNumber: '+15551234567', spokeFirst: true },
+        { role: 'AGENT', name: 'John Doe', phoneNumber: '+15557654321', spokeFirst: false },
       ],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-02-07T14:13:41.276Z',
+      startedAt: '2025-02-07T23:54:52.479Z',
       endedReason: 'endedReason',
       isTest: false,
       stereoRecordingUrl: 'https://example.com/recording_stereo.wav',
