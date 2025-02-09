@@ -3,6 +3,7 @@
 export {
   CallAnalysis,
   type CallAnalysisCreateResponse,
+  type CallAnalysisRetrieveResponse,
   type CallAnalysisCreateParams,
 } from './call-analysis';
 export { Health, type HealthGetResponse } from './health';

@@ -13,6 +13,13 @@ export class CallAnalysis extends APIResource {
   ): Core.APIPromise<CallAnalysisCreateResponse> {
     return this._client.post('/v1/call-analysis', { body, ...options });
   }
+
+  /**
+   * Fetch a call analysis job by ID
+   */
+  retrieve(jobId: string, options?: Core.RequestOptions): Core.APIPromise<CallAnalysisRetrieveResponse> {
+    return this._client.get(`/v1/call-analysis/${jobId}`, options);
+  }
 }
 
 export interface CallAnalysisCreateResponse {
@@ -23,6 +30,65 @@ export interface CallAnalysisCreateResponse {
 }
 
 export namespace CallAnalysisCreateResponse {
+  /**
+   * Analysis job with associated call context
+   */
+  export interface Data {
+    call: Data.Call;
+
+    /**
+     * Analysis job ID for tracking progress
+     */
+    jobId: string;
+
+    status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
+  }
+
+  export namespace Data {
+    export interface Call {
+      id: string;
+
+      callDirection: 'INBOUND' | 'OUTBOUND';
+
+      isTest: boolean;
+
+      participants: Array<Call.Participant>;
+
+      startedAt: string;
+
+      status: 'RINGING' | 'IN_PROGRESS' | 'ENDED' | null;
+
+      durationMs?: number | null;
+
+      endedAt?: string | null;
+
+      endedReason?: string | null;
+
+      summary?: string | null;
+    }
+
+    export namespace Call {
+      export interface Participant {
+        role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_AGENT' | 'SIMULATED_CUSTOMER';
+
+        name?: string;
+
+        phoneNumber?: string;
+
+        spokeFirst?: boolean;
+      }
+    }
+  }
+}
+
+export interface CallAnalysisRetrieveResponse {
+  /**
+   * Analysis job with associated call context
+   */
+  data: CallAnalysisRetrieveResponse.Data;
+}
+
+export namespace CallAnalysisRetrieveResponse {
   /**
    * Analysis job with associated call context
    */
@@ -132,6 +198,7 @@ export namespace CallAnalysisCreateParams {
 export declare namespace CallAnalysis {
   export {
     type CallAnalysisCreateResponse as CallAnalysisCreateResponse,
+    type CallAnalysisRetrieveResponse as CallAnalysisRetrieveResponse,
     type CallAnalysisCreateParams as CallAnalysisCreateParams,
   };
 }

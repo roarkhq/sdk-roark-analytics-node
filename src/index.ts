@@ -9,6 +9,7 @@ import {
   CallAnalysis,
   CallAnalysisCreateParams,
   CallAnalysisCreateResponse,
+  CallAnalysisRetrieveResponse,
 } from './resources/call-analysis';
 import { Health, HealthGetResponse } from './resources/health';
 
@@ -174,6 +175,7 @@ export declare namespace Roark {
   export {
     CallAnalysis as CallAnalysis,
     type CallAnalysisCreateResponse as CallAnalysisCreateResponse,
+    type CallAnalysisRetrieveResponse as CallAnalysisRetrieveResponse,
     type CallAnalysisCreateParams as CallAnalysisCreateParams,
   };
 }
