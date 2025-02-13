@@ -32,7 +32,7 @@ async function main() {
     interfaceType: 'PHONE',
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-13T08:48:22.725Z',
+    startedAt: '2025-02-13T09:03:18.574Z',
   });
 
   console.log(callAnalysis.data);
@@ -59,7 +59,7 @@ async function main() {
     interfaceType: 'PHONE',
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-13T08:48:22.725Z',
+    startedAt: '2025-02-13T09:03:18.574Z',
   };
   const callAnalysis: Roark.CallAnalysisCreateResponse = await client.callAnalysis.create(params);
 }
@@ -84,7 +84,7 @@ async function main() {
       interfaceType: 'PHONE',
       participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-02-13T08:48:22.725Z',
+      startedAt: '2025-02-13T09:03:18.574Z',
     })
     .catch(async (err) => {
       if (err instanceof Roark.APIError) {
@@ -129,7 +129,7 @@ const client = new Roark({
 });
 
 // Or, configure per-request:
-await client.callAnalysis.create({ callDirection: 'INBOUND', interfaceType: 'PHONE', participants: [{ role: 'AGENT' }, { role: 'AGENT' }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-02-13T08:48:22.725Z' }, {
+await client.callAnalysis.create({ callDirection: 'INBOUND', interfaceType: 'PHONE', participants: [{ role: 'AGENT' }, { role: 'AGENT' }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-02-13T09:03:18.574Z' }, {
   maxRetries: 5,
 });
 ```
@@ -146,7 +146,7 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.callAnalysis.create({ callDirection: 'INBOUND', interfaceType: 'PHONE', participants: [{ role: 'AGENT' }, { role: 'AGENT' }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-02-13T08:48:22.725Z' }, {
+await client.callAnalysis.create({ callDirection: 'INBOUND', interfaceType: 'PHONE', participants: [{ role: 'AGENT' }, { role: 'AGENT' }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-02-13T09:03:18.574Z' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -173,7 +173,7 @@ const response = await client.callAnalysis
     interfaceType: 'PHONE',
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-13T08:48:22.725Z',
+    startedAt: '2025-02-13T09:03:18.574Z',
   })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
@@ -185,7 +185,7 @@ const { data: callAnalysis, response: raw } = await client.callAnalysis
     interfaceType: 'PHONE',
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-13T08:48:22.725Z',
+    startedAt: '2025-02-13T09:03:18.574Z',
   })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
@@ -299,7 +299,7 @@ await client.callAnalysis.create(
     interfaceType: 'PHONE',
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-13T08:48:22.725Z',
+    startedAt: '2025-02-13T09:03:18.574Z',
   },
   {
     httpAgent: new http.Agent({ keepAlive: false }),
