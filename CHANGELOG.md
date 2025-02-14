@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.141.1 (2025-02-14)
+
+Full Changelog: [v0.141.0...v0.141.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.141.0...v0.141.1)
+
+### Bug Fixes
+
+* **client:** fix export map for index exports ([#465](https://github.com/roarkhq/sdk-roark-analytics-node/issues/465)) ([69126eb](https://github.com/roarkhq/sdk-roark-analytics-node/commit/69126ebb3e1a768e4303c5b7dceacd02ac27ea2e))
+
 ## 0.141.0 (2025-02-14)
 
 Full Changelog: [v0.140.0...v0.141.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.140.0...v0.141.0)
