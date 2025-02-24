@@ -71,6 +71,8 @@ export namespace CallAnalysisCreateResponse {
       export interface Participant {
         role: 'AGENT' | 'CUSTOMER';
 
+        isSimulated?: boolean;
+
         name?: string;
 
         phoneNumber?: string;
@@ -130,6 +132,8 @@ export namespace CallAnalysisRetrieveResponse {
       export interface Participant {
         role: 'AGENT' | 'CUSTOMER';
 
+        isSimulated?: boolean;
+
         name?: string;
 
         phoneNumber?: string;
@@ -186,6 +190,8 @@ export interface CallAnalysisCreateParams {
 export namespace CallAnalysisCreateParams {
   export interface Participant {
     role: 'AGENT' | 'CUSTOMER';
+
+    isSimulated?: boolean;
 
     name?: string;
 
