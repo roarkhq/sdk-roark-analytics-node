@@ -73,9 +73,9 @@ export namespace CallAnalysisCreateResponse {
 
         isSimulated?: boolean;
 
-        name?: string;
+        name?: string | null;
 
-        phoneNumber?: string;
+        phoneNumber?: string | null;
 
         spokeFirst?: boolean;
       }
@@ -134,9 +134,9 @@ export namespace CallAnalysisRetrieveResponse {
 
         isSimulated?: boolean;
 
-        name?: string;
+        name?: string | null;
 
-        phoneNumber?: string;
+        phoneNumber?: string | null;
 
         spokeFirst?: boolean;
       }
@@ -193,9 +193,9 @@ export namespace CallAnalysisCreateParams {
 
     isSimulated?: boolean;
 
-    name?: string;
+    name?: string | null;
 
-    phoneNumber?: string;
+    phoneNumber?: string | null;
 
     spokeFirst?: boolean;
   }
