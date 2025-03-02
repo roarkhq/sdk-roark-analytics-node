@@ -64,6 +64,8 @@ export namespace CallAnalysisCreateResponse {
 
       endedReason?: string | null;
 
+      properties?: Record<string, unknown> | null;
+
       summary?: string | null;
     }
 
@@ -125,6 +127,8 @@ export namespace CallAnalysisRetrieveResponse {
 
       endedReason?: string | null;
 
+      properties?: Record<string, unknown> | null;
+
       summary?: string | null;
     }
 
@@ -179,6 +183,12 @@ export interface CallAnalysisCreateParams {
    * Whether this is a test call
    */
   isTest?: boolean;
+
+  /**
+   * Custom properties to include with the call. These can be used for filtering and
+   * will show in the call details page
+   */
+  properties?: Record<string, unknown>;
 
   /**
    * URL of source stereo recording in WAV format. Must be accessible. Can be a
