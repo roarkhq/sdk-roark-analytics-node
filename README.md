@@ -59,7 +59,7 @@ async function main() {
     interfaceType: 'PHONE',
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-16T08:36:47.264Z',
+    startedAt: '2025-02-16T08:06:59.689Z',
   };
   const callAnalysis: Roark.CallAnalysisCreateResponse = await client.callAnalysis.create(params);
 }
@@ -173,7 +173,7 @@ const response = await client.callAnalysis
     interfaceType: 'PHONE',
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-16T08:36:47.264Z',
+    startedAt: '2025-02-16T08:06:59.689Z',
   })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
@@ -185,7 +185,7 @@ const { data: callAnalysis, response: raw } = await client.callAnalysis
     interfaceType: 'PHONE',
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-02-16T08:36:47.264Z',
+    startedAt: '2025-02-16T08:06:59.689Z',
   })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
