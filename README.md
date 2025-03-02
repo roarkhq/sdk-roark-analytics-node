@@ -33,6 +33,11 @@ async function main() {
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
     startedAt: '2025-03-02T16:43:27.374Z',
+    properties: {
+        // any custom properties
+        'agent_name': 'Ava',
+        'business_id': 'customer-business-id'
+    }
   });
 
   console.log(callAnalysis.data);
@@ -60,6 +65,11 @@ async function main() {
     participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
     recordingUrl: 'https://example.com/recording.wav',
     startedAt: '2025-03-02T16:43:27.374Z',
+    properties: {
+        // any custom properties
+        'agent_name': 'Ava',
+        'business_id': 'customer-business-id'
+    }
   };
   const callAnalysis: Roark.CallAnalysisCreateResponse = await client.callAnalysis.create(params);
 }
