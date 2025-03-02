@@ -69,11 +69,13 @@ export namespace CallAnalysisCreateResponse {
 
     export namespace Call {
       export interface Participant {
-        role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_AGENT' | 'SIMULATED_CUSTOMER';
+        role: 'AGENT' | 'CUSTOMER';
 
-        name?: string;
+        isSimulated?: boolean;
 
-        phoneNumber?: string;
+        name?: string | null;
+
+        phoneNumber?: string | null;
 
         spokeFirst?: boolean;
       }
@@ -128,11 +130,13 @@ export namespace CallAnalysisRetrieveResponse {
 
     export namespace Call {
       export interface Participant {
-        role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_AGENT' | 'SIMULATED_CUSTOMER';
+        role: 'AGENT' | 'CUSTOMER';
 
-        name?: string;
+        isSimulated?: boolean;
 
-        phoneNumber?: string;
+        name?: string | null;
+
+        phoneNumber?: string | null;
 
         spokeFirst?: boolean;
       }
@@ -185,11 +189,13 @@ export interface CallAnalysisCreateParams {
 
 export namespace CallAnalysisCreateParams {
   export interface Participant {
-    role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_AGENT' | 'SIMULATED_CUSTOMER';
+    role: 'AGENT' | 'CUSTOMER';
 
-    name?: string;
+    isSimulated?: boolean;
 
-    phoneNumber?: string;
+    name?: string | null;
+
+    phoneNumber?: string | null;
 
     spokeFirst?: boolean;
   }
