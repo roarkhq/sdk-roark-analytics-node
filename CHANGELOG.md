@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.172.0 (2025-02-24)
+
+Full Changelog: [v0.171.0...v0.172.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.171.0...v0.172.0)
+
+### Features
+
+* Create dependabot.yml ([1ea45ca](https://github.com/roarkhq/sdk-roark-analytics-node/commit/1ea45ca9a5051df4e0a371508f8a049cbeb77975))
+
 ## 0.171.0 (2025-02-16)
 
 Full Changelog: [v0.170.0...v0.171.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.170.0...v0.171.0)
