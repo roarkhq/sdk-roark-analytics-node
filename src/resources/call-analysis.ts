@@ -191,10 +191,20 @@ export interface CallAnalysisCreateParams {
   properties?: Record<string, unknown>;
 
   /**
+   * Retell call ID if call is being imported from Retell
+   */
+  retellCallId?: string;
+
+  /**
    * URL of source stereo recording in WAV format. Must be accessible. Can be a
    * signed URL. While optional it allows for a richer audio player
    */
   stereoRecordingUrl?: string;
+
+  /**
+   * Vapi call ID if call is being imported from Vapi
+   */
+  vapiCallId?: string;
 }
 
 export namespace CallAnalysisCreateParams {

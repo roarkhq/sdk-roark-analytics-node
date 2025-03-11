@@ -15,7 +15,7 @@ describe('resource callAnalysis', () => {
       interfaceType: 'PHONE',
       participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-03-11T19:09:18.779Z',
+      startedAt: '2025-03-11T21:16:26.357Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -47,11 +47,13 @@ describe('resource callAnalysis', () => {
         },
       ],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-03-11T19:09:18.779Z',
+      startedAt: '2025-03-11T21:16:26.357Z',
       endedReason: 'endedReason',
       isTest: false,
       properties: { business_name: 'bar', business_id: 'bar' },
+      retellCallId: 'retellCallId',
       stereoRecordingUrl: 'https://example.com',
+      vapiCallId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
 
