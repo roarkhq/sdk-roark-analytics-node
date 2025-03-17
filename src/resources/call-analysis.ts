@@ -226,15 +226,15 @@ export namespace CallAnalysisCreateParams {
   }
 
   export interface ToolInvocation {
-    description: string;
-
     name: string;
 
     parameters: Record<string, ToolInvocation.UnionMember0 | unknown>;
 
-    result: Record<string, unknown>;
+    result: string | Record<string, unknown>;
 
     startOffsetMs: number;
+
+    description?: string;
 
     endOffsetMs?: number;
   }
