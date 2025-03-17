@@ -202,6 +202,11 @@ export interface CallAnalysisCreateParams {
   stereoRecordingUrl?: string;
 
   /**
+   * List of tool invocations made during the call
+   */
+  toolInvocations?: Array<CallAnalysisCreateParams.ToolInvocation>;
+
+  /**
    * Vapi call ID if call is being imported from Vapi
    */
   vapiCallId?: string;
@@ -218,6 +223,30 @@ export namespace CallAnalysisCreateParams {
     phoneNumber?: string | null;
 
     spokeFirst?: boolean;
+  }
+
+  export interface ToolInvocation {
+    description: string;
+
+    name: string;
+
+    parameters: Record<string, ToolInvocation.UnionMember0 | unknown>;
+
+    result: Record<string, unknown>;
+
+    startOffsetMs: number;
+
+    endOffsetMs?: number;
+  }
+
+  export namespace ToolInvocation {
+    export interface UnionMember0 {
+      description?: string;
+
+      type?: 'string' | 'number' | 'boolean';
+
+      value?: unknown;
+    }
   }
 }
 
