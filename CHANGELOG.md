@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.218.0 (2025-03-20)
+
+Full Changelog: [v0.217.0...v0.218.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.217.0...v0.218.0)
+
+### Features
+
+* **api:** api update ([#878](https://github.com/roarkhq/sdk-roark-analytics-node/issues/878)) ([339dfb3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/339dfb3077b865694ef49e7228e69b26d7b4ec3d))
+
+
+### Chores
+
+* **exports:** cleaner resource index imports ([#875](https://github.com/roarkhq/sdk-roark-analytics-node/issues/875)) ([f51b6dd](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f51b6ddd327988f04671af419ce7be57ac3030be))
+* **exports:** stop using path fallbacks ([#877](https://github.com/roarkhq/sdk-roark-analytics-node/issues/877)) ([9bd72ef](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9bd72ef7dd3df245a942fbf7eae799fa4c8b5103))
+
 ## 0.217.0 (2025-03-20)
 
 Full Changelog: [v0.216.0...v0.217.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.216.0...v0.217.0)
