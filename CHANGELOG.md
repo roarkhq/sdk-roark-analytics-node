@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.223.1 (2025-03-22)
+
+Full Changelog: [v0.223.0...v0.223.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.223.0...v0.223.1)
+
+### Bug Fixes
+
+* avoid type error in certain environments ([#895](https://github.com/roarkhq/sdk-roark-analytics-node/issues/895)) ([8264168](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8264168d100c89f750cdd34f91264facefb40db5))
+
 ## 0.223.0 (2025-03-21)
 
 Full Changelog: [v0.222.0...v0.223.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.222.0...v0.223.0)
