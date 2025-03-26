@@ -165,7 +165,8 @@ export interface CallAnalysisCreateParams {
   participants: Array<CallAnalysisCreateParams.Participant>;
 
   /**
-   * URL of source recording (must be an accessible WAV file). Can be a signed URL.
+   * URL of source recording (must be an accessible WAV or MP3 file). Can be a signed
+   * URL.
    */
   recordingUrl: string;
 
