@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.230.1 (2025-03-28)
+
+Full Changelog: [v0.230.0...v0.230.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.230.0...v0.230.1)
+
+### Bug Fixes
+
+* **internal:** work around https://github.com/vercel/next.js/issues/76881 ([#920](https://github.com/roarkhq/sdk-roark-analytics-node/issues/920)) ([9eccea1](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9eccea172270cea98eabc75075e51b9b22046f9b))
+
 ## 0.230.0 (2025-03-26)
 
 Full Changelog: [v0.229.0...v0.230.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.229.0...v0.230.0)
