@@ -15,7 +15,7 @@ describe('resource callAnalysis', () => {
       interfaceType: 'PHONE',
       participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-03-28T20:28:49.653Z',
+      startedAt: '2025-03-29T11:13:51.025Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -47,7 +47,7 @@ describe('resource callAnalysis', () => {
         },
       ],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-03-28T20:28:49.653Z',
+      startedAt: '2025-03-29T11:13:51.025Z',
       endedReason: 'endedReason',
       isTest: false,
       properties: { business_name: 'bar', business_id: 'bar' },
@@ -55,11 +55,23 @@ describe('resource callAnalysis', () => {
       stereoRecordingUrl: 'https://example.com',
       toolInvocations: [
         {
-          name: 'name',
-          parameters: { foo: { description: 'description', type: 'string', value: {} } },
-          result: 'string',
-          startOffsetMs: 0,
-          description: 'description',
+          name: 'getDentalAppointments',
+          parameters: {},
+          result: { appointments: 'bar' },
+          startOffsetMs: 2000,
+          description: 'Get available dental appointments',
+          endOffsetMs: 0,
+        },
+        {
+          name: 'bookAppointment',
+          parameters: {
+            patientName: 'John Doe',
+            patientPhone: '+1234567890',
+            appointmentType: { description: 'Type of dental appointment', type: 'string', value: 'cleaning' },
+          },
+          result: 'Success',
+          startOffsetMs: 7000,
+          description: 'Book an appointment for the client',
           endOffsetMs: 0,
         },
       ],
