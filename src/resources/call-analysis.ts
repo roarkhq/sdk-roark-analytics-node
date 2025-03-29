@@ -227,16 +227,35 @@ export namespace CallAnalysisCreateParams {
   }
 
   export interface ToolInvocation {
+    /**
+     * Name of the tool that was invoked
+     */
     name: string;
 
+    /**
+     * Parameters provided to the tool during invocation
+     */
     parameters: Record<string, ToolInvocation.UnionMember0 | unknown>;
 
+    /**
+     * Result returned by the tool after execution. Can be a string or a JSON object
+     */
     result: string | Record<string, unknown>;
 
+    /**
+     * Offset in milliseconds from the start of the call when the tool was invoked
+     */
     startOffsetMs: number;
 
+    /**
+     * Description of when the tool should be invoked
+     */
     description?: string;
 
+    /**
+     * Offset in milliseconds from the start of the call when the tool execution
+     * completed. Used to calculate duration of the tool execution
+     */
     endOffsetMs?: number;
   }
 
