@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.244.0 (2025-04-03)
+
+Full Changelog: [v0.243.0...v0.244.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.243.0...v0.244.0)
+
+### Features
+
+* **api:** api update ([#965](https://github.com/roarkhq/sdk-roark-analytics-node/issues/965)) ([8ec95f6](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8ec95f69e91f442b8bdf00e5278f5ad5abacf9f5))
+
+
+### Chores
+
+* **internal:** add aliases for Record and Array ([#963](https://github.com/roarkhq/sdk-roark-analytics-node/issues/963)) ([8e41643](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8e4164339f2ce461894f1e246ab4450f9aed9508))
+
 ## 0.243.0 (2025-04-03)
 
 Full Changelog: [v0.242.0...v0.243.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.242.0...v0.243.0)
