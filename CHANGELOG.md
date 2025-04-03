@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.243.0 (2025-04-03)
+
+Full Changelog: [v0.242.0...v0.243.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.242.0...v0.243.0)
+
+### Features
+
+* **api:** api update ([#959](https://github.com/roarkhq/sdk-roark-analytics-node/issues/959)) ([6081315](https://github.com/roarkhq/sdk-roark-analytics-node/commit/60813153266228dd7a12136b4868c0be7e88d9af))
+
+
+### Bug Fixes
+
+* **client:** send `X-Stainless-Timeout` in seconds ([#961](https://github.com/roarkhq/sdk-roark-analytics-node/issues/961)) ([9c828ef](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9c828ef6266ec62e5c28f40f9b102a9889d6c8a3))
+
 ## 0.242.0 (2025-04-03)
 
 Full Changelog: [v0.241.0...v0.242.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.241.0...v0.242.0)
