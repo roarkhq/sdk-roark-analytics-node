@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.248.1 (2025-04-04)
+
+Full Changelog: [v0.248.0...v0.248.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.248.0...v0.248.1)
+
+### Bug Fixes
+
+* **api:** improve type resolution when importing as a package ([#979](https://github.com/roarkhq/sdk-roark-analytics-node/issues/979)) ([27b89ad](https://github.com/roarkhq/sdk-roark-analytics-node/commit/27b89ad2d7223f773b73316b974bb194dd900933))
+
 ## 0.248.0 (2025-04-04)
 
 Full Changelog: [v0.247.0...v0.248.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.247.0...v0.248.0)
