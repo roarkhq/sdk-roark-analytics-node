@@ -15,7 +15,7 @@ describe('resource callAnalysis', () => {
       interfaceType: 'PHONE',
       participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-04-07T16:18:46.237Z',
+      startedAt: '2025-04-07T17:55:39.896Z',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -47,7 +47,7 @@ describe('resource callAnalysis', () => {
         },
       ],
       recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-04-07T16:18:46.237Z',
+      startedAt: '2025-04-07T17:55:39.896Z',
       endedReason: 'endedReason',
       isTest: false,
       properties: { business_name: 'bar', business_id: 'bar' },
