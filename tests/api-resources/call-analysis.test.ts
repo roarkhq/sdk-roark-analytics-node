@@ -12,8 +12,8 @@ describe('resource callAnalysis', () => {
   test('create: only required params', async () => {
     const responsePromise = client.callAnalysis.create({
       callDirection: 'INBOUND',
-      interfaceType: 'PHONE',
-      participants: [{ role: 'AGENT' }, { role: 'AGENT' }],
+      interfaceType: 'WEB',
+      participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
       recordingUrl: 'https://example.com/recording.wav',
       startedAt: '2025-04-08T01:08:47.686Z',
     });
@@ -29,7 +29,7 @@ describe('resource callAnalysis', () => {
   test('create: required and optional params', async () => {
     const response = await client.callAnalysis.create({
       callDirection: 'INBOUND',
-      interfaceType: 'PHONE',
+      interfaceType: 'WEB',
       participants: [
         {
           role: 'AGENT',
@@ -39,7 +39,7 @@ describe('resource callAnalysis', () => {
           spokeFirst: true,
         },
         {
-          role: 'AGENT',
+          role: 'CUSTOMER',
           isSimulated: true,
           name: 'John Doe',
           phoneNumber: '+15557654321',
