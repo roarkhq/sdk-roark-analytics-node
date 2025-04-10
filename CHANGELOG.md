@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.255.0 (2025-04-10)
+
+Full Changelog: [v0.254.0...v0.255.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.254.0...v0.255.0)
+
+### Features
+
+* **api:** api update ([bf109f0](https://github.com/roarkhq/sdk-roark-analytics-node/commit/bf109f085a9355d0b135359d0ecff1e020f64f3a))
+
+
+### Chores
+
+* **internal:** reduce CI branch coverage ([8a0605c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8a0605cb0e3dbc26f2311e585fb6c79c11ca8800))
+* **internal:** upload builds and expand CI branch coverage ([e024e59](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e024e59fafabdb5be16d2d6778f5cd6a2db625ae))
+* **tests:** improve enum examples ([#1000](https://github.com/roarkhq/sdk-roark-analytics-node/issues/1000)) ([626f26a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/626f26a32f9d38c63303061c781cab0f0441bdc8))
+
 ## 0.254.0 (2025-04-08)
 
 Full Changelog: [v0.253.0...v0.254.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.253.0...v0.254.0)
