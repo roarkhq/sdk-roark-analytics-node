@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.268.0 (2025-04-23)
+
+Full Changelog: [v0.267.0...v0.268.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.267.0...v0.268.0)
+
+### Features
+
+* **api:** api update ([8d3b72a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8d3b72acb5615e9a0e4730921274adac02adc8f8))
+
+
+### Chores
+
+* **ci:** add timeout thresholds for CI jobs ([4ef8195](https://github.com/roarkhq/sdk-roark-analytics-node/commit/4ef8195f8af3b99b5d3adda345da1aedc07d21f7))
+
 ## 0.267.0 (2025-04-23)
 
 Full Changelog: [v0.266.0...v0.267.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.266.0...v0.267.0)
