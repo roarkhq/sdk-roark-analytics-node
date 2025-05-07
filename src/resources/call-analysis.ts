@@ -6,6 +6,17 @@ import * as Core from '../core';
 export class CallAnalysis extends APIResource {
   /**
    * Upload a new call recording
+   *
+   * @example
+   * ```ts
+   * const callAnalysis = await client.callAnalysis.create({
+   *   callDirection: 'INBOUND',
+   *   interfaceType: 'WEB',
+   *   participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
+   *   recordingUrl: 'https://example.com/recording.wav',
+   *   startedAt: '2025-05-06T17:52:46.958Z',
+   * });
+   * ```
    */
   create(
     body: CallAnalysisCreateParams,
@@ -16,6 +27,13 @@ export class CallAnalysis extends APIResource {
 
   /**
    * Fetch a call analysis job by ID
+   *
+   * @example
+   * ```ts
+   * const callAnalysis = await client.callAnalysis.retrieve(
+   *   'jobId',
+   * );
+   * ```
    */
   retrieve(jobId: string, options?: Core.RequestOptions): Core.APIPromise<CallAnalysisRetrieveResponse> {
     return this._client.get(`/v1/call-analysis/${jobId}`, options);
