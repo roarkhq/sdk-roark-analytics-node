@@ -14,7 +14,7 @@ export class CallAnalysis extends APIResource {
    *   interfaceType: 'WEB',
    *   participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
    *   recordingUrl: 'https://example.com/recording.wav',
-   *   startedAt: '2025-05-08T00:40:31.913Z',
+   *   startedAt: '2025-05-08T09:54:14.305Z',
    * });
    * ```
    */
