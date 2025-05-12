@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.289.0 (2025-05-12)
+
+Full Changelog: [v0.288.0...v0.289.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.288.0...v0.289.0)
+
+### Features
+
+* **api:** api update ([ef3e422](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ef3e422481d7cf16dc7ea9db0bca271d6f5b6bf3))
+* **api:** api update ([22cfc94](https://github.com/roarkhq/sdk-roark-analytics-node/commit/22cfc94910ca94b92395fde7e7d9f7502c69f728))
+
 ## 0.288.0 (2025-05-11)
 
 Full Changelog: [v0.287.0...v0.288.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.287.0...v0.288.0)
