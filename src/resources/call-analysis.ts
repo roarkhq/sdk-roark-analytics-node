@@ -14,7 +14,7 @@ export class CallAnalysis extends APIResource {
    *   interfaceType: 'WEB',
    *   participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
    *   recordingUrl: 'https://example.com/recording.wav',
-   *   startedAt: '2025-05-16T09:25:08.077Z',
+   *   startedAt: '2025-05-16T09:40:28.626Z',
    * });
    * ```
    */
@@ -194,9 +194,26 @@ export interface CallAnalysisCreateParams {
   startedAt: string;
 
   /**
-   * Reason why the call ended (optional)
+   * Additional context on why the call terminated with the endedStatus
    */
   endedReason?: string;
+
+  /**
+   * High-level call end status, indicating how the call terminated
+   */
+  endedStatus?:
+    | 'AGENT_ENDED_CALL'
+    | 'AGENT_TRANSFERRED_CALL'
+    | 'AGENT_ERROR'
+    | 'CUSTOMER_ENDED_CALL'
+    | 'VOICE_MAIL_REACHED'
+    | 'SILENCE_TIME_OUT'
+    | 'PHONE_CALL_PROVIDER_CONNECTION_ERROR'
+    | 'CUSTOMER_DID_NOT_ANSWER'
+    | 'CUSTOMER_BUSY'
+    | 'DIAL_ERROR'
+    | 'MAX_DURATION_REACHED'
+    | 'UNKNOWN';
 
   /**
    * Whether this is a test call
