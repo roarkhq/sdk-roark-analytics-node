@@ -1,17 +1,45 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
+import { isRequestOptions } from '../core';
 import * as Core from '../core';
 
 export class Evaluations extends APIResource {
   /**
-   * Create evaluation jobs for either a dataset of calls or a single call
+   * Create evaluation jobs for a dataset of calls
    */
   create(
     body: EvaluationCreateParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<EvaluationCreateResponse> {
     return this._client.post('/v1/evaluations', { body, ...options });
+  }
+
+  /**
+   * Retrieve details of a specific evaluation job
+   */
+  retrieve(jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+    return this._client.get(`/v1/evaluations/${jobId}`, options);
+  }
+
+  /**
+   * Retrieve paginated details of a specific evaluation job runs
+   */
+  getRuns(
+    jobId: string,
+    query?: EvaluationGetRunsParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown>;
+  getRuns(jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  getRuns(
+    jobId: string,
+    query: EvaluationGetRunsParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown> {
+    if (isRequestOptions(query)) {
+      return this.getRuns(jobId, {}, query);
+    }
+    return this._client.get(`/v1/evaluations/${jobId}/runs`, { query, ...options });
   }
 }
 
@@ -33,14 +61,19 @@ export namespace EvaluationCreateResponse {
   }
 }
 
+export type EvaluationRetrieveResponse = unknown;
+
+export type EvaluationGetRunsResponse = unknown;
+
 export interface EvaluationCreateParams {
   /**
-   * List of evaluators to evaluate the calls or "all" to evaluate all evaluators
+   * List of evaluators slugs to evaluate the calls or "all" to evaluate all
+   * evaluators
    */
   evaluators: Array<string> | 'all';
 
   /**
-   * Call to evaluate
+   * Call input to evaluate
    */
   call?: EvaluationCreateParams.Call;
 
@@ -49,7 +82,7 @@ export interface EvaluationCreateParams {
 
 export namespace EvaluationCreateParams {
   /**
-   * Call to evaluate
+   * Call input to evaluate
    */
   export interface Call {
     /**
@@ -192,7 +225,7 @@ export namespace EvaluationCreateParams {
 
   export interface Dataset {
     /**
-     * List of calls to evaluate
+     * List of calls input to evaluate
      */
     calls: Array<Dataset.Call>;
 
@@ -344,9 +377,24 @@ export namespace EvaluationCreateParams {
   }
 }
 
+export interface EvaluationGetRunsParams {
+  /**
+   * Number of items to return per page
+   */
+  limit?: string;
+
+  /**
+   * Cursor for the next page of items
+   */
+  nextCursor?: string;
+}
+
 export declare namespace Evaluations {
   export {
     type EvaluationCreateResponse as EvaluationCreateResponse,
+    type EvaluationRetrieveResponse as EvaluationRetrieveResponse,
+    type EvaluationGetRunsResponse as EvaluationGetRunsResponse,
     type EvaluationCreateParams as EvaluationCreateParams,
+    type EvaluationGetRunsParams as EvaluationGetRunsParams,
   };
 }
