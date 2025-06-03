@@ -5,7 +5,14 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
-import { EvaluationCreateParams, EvaluationCreateResponse, Evaluations } from './resources/evaluations';
+import {
+  EvaluationCreateParams,
+  EvaluationCreateResponse,
+  EvaluationGetRunsParams,
+  EvaluationGetRunsResponse,
+  EvaluationRetrieveResponse,
+  Evaluations,
+} from './resources/evaluations';
 import { Health, HealthGetResponse } from './resources/health';
 
 export interface ClientOptions {
@@ -170,7 +177,10 @@ export declare namespace Roark {
   export {
     Evaluations as Evaluations,
     type EvaluationCreateResponse as EvaluationCreateResponse,
+    type EvaluationRetrieveResponse as EvaluationRetrieveResponse,
+    type EvaluationGetRunsResponse as EvaluationGetRunsResponse,
     type EvaluationCreateParams as EvaluationCreateParams,
+    type EvaluationGetRunsParams as EvaluationGetRunsParams,
   };
 }
 

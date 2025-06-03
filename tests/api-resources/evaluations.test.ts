@@ -84,4 +84,53 @@ describe('resource evaluations', () => {
       },
     });
   });
+
+  test('retrieve', async () => {
+    const responsePromise = client.evaluations.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('retrieve: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.evaluations.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+        path: '/_stainless_unknown_path',
+      }),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
+
+  test('getRuns', async () => {
+    const responsePromise = client.evaluations.getRuns('jobId');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('getRuns: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.evaluations.getRuns('jobId', { path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Roark.NotFoundError,
+    );
+  });
+
+  test('getRuns: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.evaluations.getRuns(
+        'jobId',
+        { limit: '10', nextCursor: 'nextCursor' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
 });
