@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
-  Evaluations,
+  Evaluation,
   type EvaluationCreateResponse,
   type EvaluationRetrieveResponse,
   type EvaluationGetRunsResponse,
   type EvaluationCreateParams,
   type EvaluationGetRunsParams,
-} from './evaluations';
+} from './evaluation';
 export { Health, type HealthGetResponse } from './health';

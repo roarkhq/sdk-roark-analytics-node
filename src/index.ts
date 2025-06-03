@@ -6,13 +6,13 @@ import * as Errors from './error';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import {
+  Evaluation,
   EvaluationCreateParams,
   EvaluationCreateResponse,
   EvaluationGetRunsParams,
   EvaluationGetRunsResponse,
   EvaluationRetrieveResponse,
-  Evaluations,
-} from './resources/evaluations';
+} from './resources/evaluation';
 import { Health, HealthGetResponse } from './resources/health';
 
 export interface ClientOptions {
@@ -129,7 +129,7 @@ export class Roark extends Core.APIClient {
   }
 
   health: API.Health = new API.Health(this);
-  evaluations: API.Evaluations = new API.Evaluations(this);
+  evaluation: API.Evaluation = new API.Evaluation(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -168,14 +168,14 @@ export class Roark extends Core.APIClient {
 }
 
 Roark.Health = Health;
-Roark.Evaluations = Evaluations;
+Roark.Evaluation = Evaluation;
 export declare namespace Roark {
   export type RequestOptions = Core.RequestOptions;
 
   export { Health as Health, type HealthGetResponse as HealthGetResponse };
 
   export {
-    Evaluations as Evaluations,
+    Evaluation as Evaluation,
     type EvaluationCreateResponse as EvaluationCreateResponse,
     type EvaluationRetrieveResponse as EvaluationRetrieveResponse,
     type EvaluationGetRunsResponse as EvaluationGetRunsResponse,
