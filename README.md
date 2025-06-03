@@ -27,15 +27,9 @@ const client = new Roark({
 });
 
 async function main() {
-  const callAnalysis = await client.callAnalysis.create({
-    callDirection: 'INBOUND',
-    interfaceType: 'WEB',
-    participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
-    recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-06-02T16:16:48.075Z',
-  });
+  const evaluation = await client.evaluations.create({ evaluators: ['string'] });
 
-  console.log(callAnalysis.data);
+  console.log(evaluation.data);
 }
 
 main();
@@ -54,14 +48,8 @@ const client = new Roark({
 });
 
 async function main() {
-  const params: Roark.CallAnalysisCreateParams = {
-    callDirection: 'INBOUND',
-    interfaceType: 'WEB',
-    participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
-    recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-06-02T16:16:48.075Z',
-  };
-  const callAnalysis: Roark.CallAnalysisCreateResponse = await client.callAnalysis.create(params);
+  const params: Roark.EvaluationCreateParams = { evaluators: ['string'] };
+  const evaluation: Roark.EvaluationCreateResponse = await client.evaluations.create(params);
 }
 
 main();
@@ -78,23 +66,15 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const callAnalysis = await client.callAnalysis
-    .create({
-      callDirection: 'INBOUND',
-      interfaceType: 'WEB',
-      participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
-      recordingUrl: 'https://example.com/recording.wav',
-      startedAt: '2025-06-02T16:16:48.075Z',
-    })
-    .catch(async (err) => {
-      if (err instanceof Roark.APIError) {
-        console.log(err.status); // 400
-        console.log(err.name); // BadRequestError
-        console.log(err.headers); // {server: 'nginx', ...}
-      } else {
-        throw err;
-      }
-    });
+  const evaluation = await client.evaluations.create({ evaluators: ['string'] }).catch(async (err) => {
+    if (err instanceof Roark.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 }
 
 main();
@@ -129,7 +109,7 @@ const client = new Roark({
 });
 
 // Or, configure per-request:
-await client.callAnalysis.create({ callDirection: 'INBOUND', interfaceType: 'WEB', participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-06-02T16:16:48.075Z' }, {
+await client.evaluations.create({ evaluators: ['string'] }, {
   maxRetries: 5,
 });
 ```
@@ -146,7 +126,7 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.callAnalysis.create({ callDirection: 'INBOUND', interfaceType: 'WEB', participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }], recordingUrl: 'https://example.com/recording.wav', startedAt: '2025-06-02T16:16:48.075Z' }, {
+await client.evaluations.create({ evaluators: ['string'] }, {
   timeout: 5 * 1000,
 });
 ```
@@ -167,29 +147,15 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new Roark();
 
-const response = await client.callAnalysis
-  .create({
-    callDirection: 'INBOUND',
-    interfaceType: 'WEB',
-    participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
-    recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-06-02T16:16:48.075Z',
-  })
-  .asResponse();
+const response = await client.evaluations.create({ evaluators: ['string'] }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: callAnalysis, response: raw } = await client.callAnalysis
-  .create({
-    callDirection: 'INBOUND',
-    interfaceType: 'WEB',
-    participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
-    recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-06-02T16:16:48.075Z',
-  })
+const { data: evaluation, response: raw } = await client.evaluations
+  .create({ evaluators: ['string'] })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(callAnalysis.data);
+console.log(evaluation.data);
 ```
 
 ### Making custom/undocumented requests
@@ -293,14 +259,8 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.callAnalysis.create(
-  {
-    callDirection: 'INBOUND',
-    interfaceType: 'WEB',
-    participants: [{ role: 'AGENT' }, { role: 'CUSTOMER' }],
-    recordingUrl: 'https://example.com/recording.wav',
-    startedAt: '2025-06-02T16:16:48.075Z',
-  },
+await client.evaluations.create(
+  { evaluators: ['string'] },
   {
     httpAgent: new http.Agent({ keepAlive: false }),
   },

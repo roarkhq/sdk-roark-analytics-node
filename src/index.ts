@@ -5,12 +5,7 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
-import {
-  CallAnalysis,
-  CallAnalysisCreateParams,
-  CallAnalysisCreateResponse,
-  CallAnalysisRetrieveResponse,
-} from './resources/call-analysis';
+import { EvaluationCreateParams, EvaluationCreateResponse, Evaluations } from './resources/evaluations';
 import { Health, HealthGetResponse } from './resources/health';
 
 export interface ClientOptions {
@@ -127,7 +122,7 @@ export class Roark extends Core.APIClient {
   }
 
   health: API.Health = new API.Health(this);
-  callAnalysis: API.CallAnalysis = new API.CallAnalysis(this);
+  evaluations: API.Evaluations = new API.Evaluations(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -166,17 +161,16 @@ export class Roark extends Core.APIClient {
 }
 
 Roark.Health = Health;
-Roark.CallAnalysis = CallAnalysis;
+Roark.Evaluations = Evaluations;
 export declare namespace Roark {
   export type RequestOptions = Core.RequestOptions;
 
   export { Health as Health, type HealthGetResponse as HealthGetResponse };
 
   export {
-    CallAnalysis as CallAnalysis,
-    type CallAnalysisCreateResponse as CallAnalysisCreateResponse,
-    type CallAnalysisRetrieveResponse as CallAnalysisRetrieveResponse,
-    type CallAnalysisCreateParams as CallAnalysisCreateParams,
+    Evaluations as Evaluations,
+    type EvaluationCreateResponse as EvaluationCreateResponse,
+    type EvaluationCreateParams as EvaluationCreateParams,
   };
 }
 
