@@ -5,7 +5,7 @@ import * as Core from '../core';
 
 export class Evaluations extends APIResource {
   /**
-   * Create evaluation jobs for a dataset of calls
+   * Create evaluation jobs for either a dataset of calls or a single call
    */
   create(
     body: EvaluationCreateParams,
