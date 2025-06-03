@@ -4,7 +4,7 @@ import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
 
-export class Evaluations extends APIResource {
+export class Evaluation extends APIResource {
   /**
    * Create evaluation jobs for a dataset of calls
    */
@@ -12,14 +12,14 @@ export class Evaluations extends APIResource {
     body: EvaluationCreateParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<EvaluationCreateResponse> {
-    return this._client.post('/v1/evaluations', { body, ...options });
+    return this._client.post('/v1/evaluation', { body, ...options });
   }
 
   /**
    * Retrieve details of a specific evaluation job
    */
   retrieve(jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
-    return this._client.get(`/v1/evaluations/${jobId}`, options);
+    return this._client.get(`/v1/evaluation/${jobId}`, options);
   }
 
   /**
@@ -39,7 +39,7 @@ export class Evaluations extends APIResource {
     if (isRequestOptions(query)) {
       return this.getRuns(jobId, {}, query);
     }
-    return this._client.get(`/v1/evaluations/${jobId}/runs`, { query, ...options });
+    return this._client.get(`/v1/evaluation/${jobId}/runs`, { query, ...options });
   }
 }
 
@@ -389,7 +389,7 @@ export interface EvaluationGetRunsParams {
   nextCursor?: string;
 }
 
-export declare namespace Evaluations {
+export declare namespace Evaluation {
   export {
     type EvaluationCreateResponse as EvaluationCreateResponse,
     type EvaluationRetrieveResponse as EvaluationRetrieveResponse,

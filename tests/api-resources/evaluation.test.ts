@@ -8,9 +8,9 @@ const client = new Roark({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource evaluations', () => {
+describe('resource evaluation', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.evaluations.create({ evaluators: ['string'] });
+    const responsePromise = client.evaluation.create({ evaluators: ['string'] });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,7 +21,7 @@ describe('resource evaluations', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.evaluations.create({
+    const response = await client.evaluation.create({
       evaluators: ['string'],
       call: {
         callDirection: 'INBOUND',
@@ -86,7 +86,7 @@ describe('resource evaluations', () => {
   });
 
   test('retrieve', async () => {
-    const responsePromise = client.evaluations.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.evaluation.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -99,14 +99,14 @@ describe('resource evaluations', () => {
   test('retrieve: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.evaluations.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      client.evaluation.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
         path: '/_stainless_unknown_path',
       }),
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
   test('getRuns', async () => {
-    const responsePromise = client.evaluations.getRuns('jobId');
+    const responsePromise = client.evaluation.getRuns('jobId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -118,7 +118,7 @@ describe('resource evaluations', () => {
 
   test('getRuns: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.evaluations.getRuns('jobId', { path: '/_stainless_unknown_path' })).rejects.toThrow(
+    await expect(client.evaluation.getRuns('jobId', { path: '/_stainless_unknown_path' })).rejects.toThrow(
       Roark.NotFoundError,
     );
   });
@@ -126,7 +126,7 @@ describe('resource evaluations', () => {
   test('getRuns: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.evaluations.getRuns(
+      client.evaluation.getRuns(
         'jobId',
         { limit: '10', nextCursor: 'nextCursor' },
         { path: '/_stainless_unknown_path' },

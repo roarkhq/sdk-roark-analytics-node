@@ -27,7 +27,7 @@ const client = new Roark({
 });
 
 async function main() {
-  const evaluation = await client.evaluations.create({ evaluators: ['string'] });
+  const evaluation = await client.evaluation.create({ evaluators: ['string'] });
 
   console.log(evaluation.data);
 }
@@ -49,7 +49,7 @@ const client = new Roark({
 
 async function main() {
   const params: Roark.EvaluationCreateParams = { evaluators: ['string'] };
-  const evaluation: Roark.EvaluationCreateResponse = await client.evaluations.create(params);
+  const evaluation: Roark.EvaluationCreateResponse = await client.evaluation.create(params);
 }
 
 main();
@@ -66,7 +66,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const evaluation = await client.evaluations.create({ evaluators: ['string'] }).catch(async (err) => {
+  const evaluation = await client.evaluation.create({ evaluators: ['string'] }).catch(async (err) => {
     if (err instanceof Roark.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -109,7 +109,7 @@ const client = new Roark({
 });
 
 // Or, configure per-request:
-await client.evaluations.create({ evaluators: ['string'] }, {
+await client.evaluation.create({ evaluators: ['string'] }, {
   maxRetries: 5,
 });
 ```
@@ -126,7 +126,7 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.evaluations.create({ evaluators: ['string'] }, {
+await client.evaluation.create({ evaluators: ['string'] }, {
   timeout: 5 * 1000,
 });
 ```
@@ -147,11 +147,11 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new Roark();
 
-const response = await client.evaluations.create({ evaluators: ['string'] }).asResponse();
+const response = await client.evaluation.create({ evaluators: ['string'] }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: evaluation, response: raw } = await client.evaluations
+const { data: evaluation, response: raw } = await client.evaluation
   .create({ evaluators: ['string'] })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
@@ -259,7 +259,7 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.evaluations.create(
+await client.evaluation.create(
   { evaluators: ['string'] },
   {
     httpAgent: new http.Agent({ keepAlive: false }),
