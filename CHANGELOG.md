@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.328.0 (2025-06-04)
+
+Full Changelog: [v0.327.0...v0.328.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.327.0...v0.328.0)
+
+### Features
+
+* **api:** api update ([f93e716](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f93e7165b3a5519085d791ff9477b4ffd93cd0ad))
+
+
+### Chores
+
+* **docs:** use top-level-await in example snippets ([3ac865f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/3ac865fa817d34d58bd9f82ee7d07f923157245a))
+
 ## 0.327.0 (2025-06-04)
 
 Full Changelog: [v0.326.0...v0.327.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.326.0...v0.327.0)
