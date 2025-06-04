@@ -18,7 +18,7 @@ export class Evaluation extends APIResource {
   /**
    * Retrieve details of a specific evaluation job
    */
-  getJob(jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  getJob(jobId: string, options?: Core.RequestOptions): Core.APIPromise<EvaluationGetJobResponse> {
     return this._client.get(`/v1/evaluation/job/${jobId}`, options);
   }
 
@@ -29,13 +29,13 @@ export class Evaluation extends APIResource {
     jobId: string,
     query?: EvaluationGetJobRunsParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown>;
-  getJobRuns(jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  ): Core.APIPromise<EvaluationGetJobRunsResponse>;
+  getJobRuns(jobId: string, options?: Core.RequestOptions): Core.APIPromise<EvaluationGetJobRunsResponse>;
   getJobRuns(
     jobId: string,
     query: EvaluationGetJobRunsParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<EvaluationGetJobRunsResponse> {
     if (isRequestOptions(query)) {
       return this.getJobRuns(jobId, {}, query);
     }
@@ -61,9 +61,259 @@ export namespace EvaluationCreateJobResponse {
   }
 }
 
-export type EvaluationGetJobResponse = unknown;
+export interface EvaluationGetJobResponse {
+  /**
+   * Evaluation job response payload
+   */
+  data: EvaluationGetJobResponse.Data;
+}
 
-export type EvaluationGetJobRunsResponse = unknown;
+export namespace EvaluationGetJobResponse {
+  /**
+   * Evaluation job response payload
+   */
+  export interface Data {
+    /**
+     * ID of the evaluation job
+     */
+    id: string;
+
+    /**
+     * Status of the evaluation job
+     */
+    status: 'PENDING' | 'PROCESSING' | 'SUCCESS' | 'FAILURE';
+
+    /**
+     * Call being evaluated
+     */
+    call?: Data.Call;
+
+    /**
+     * Dataset being evaluated
+     */
+    dataset?: Data.Dataset;
+  }
+
+  export namespace Data {
+    /**
+     * Call being evaluated
+     */
+    export interface Call {
+      /**
+       * ID of the call being evaluated
+       */
+      id: string | null;
+    }
+
+    /**
+     * Dataset being evaluated
+     */
+    export interface Dataset {
+      /**
+       * ID of the dataset
+       */
+      id: string | null;
+
+      /**
+       * Calls in the dataset
+       */
+      calls: Array<Dataset.Call>;
+    }
+
+    export namespace Dataset {
+      export interface Call {
+        /**
+         * ID of the call
+         */
+        id: string | null;
+      }
+    }
+  }
+}
+
+export interface EvaluationGetJobRunsResponse {
+  /**
+   * Evaluation job runs response payload
+   */
+  data: EvaluationGetJobRunsResponse.Data;
+}
+
+export namespace EvaluationGetJobRunsResponse {
+  /**
+   * Evaluation job runs response payload
+   */
+  export interface Data {
+    /**
+     * Evaluator runs of the evaluation job
+     */
+    data: Array<Data.Data> | null;
+
+    /**
+     * Pagination information
+     */
+    pagination: Data.Pagination | null;
+  }
+
+  export namespace Data {
+    export interface Data {
+      /**
+       * ID of the evaluator run
+       */
+      id: string;
+
+      /**
+       * When the evaluator run completed
+       */
+      completedAt: string | null;
+
+      /**
+       * Evaluator of the evaluator run
+       */
+      evaluator: Data.Evaluator | null;
+
+      /**
+       * Evidence of the evaluator run
+       */
+      evidence: Array<Data.Evidence> | null;
+
+      /**
+       * Metrics of the evaluator run
+       */
+      metrics: Array<Data.Metric> | null;
+
+      /**
+       * Score of the evaluator run
+       */
+      score: number | null;
+
+      /**
+       * Score classification of the evaluator run
+       */
+      scoreClassification: 'SUCCESS' | 'FAILURE' | 'IRRELEVANT' | null;
+
+      /**
+       * When the evaluator run started
+       */
+      startedAt: string | null;
+
+      /**
+       * Status of the evaluator run
+       */
+      status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
+
+      /**
+       * Summary of the evaluator run
+       */
+      summary: string | null;
+    }
+
+    export namespace Data {
+      /**
+       * Evaluator of the evaluator run
+       */
+      export interface Evaluator {
+        /**
+         * ID of the evaluator
+         */
+        id: string | null;
+
+        /**
+         * Name of the evaluator
+         */
+        name: string | null;
+      }
+
+      export interface Evidence {
+        /**
+         * ID of the evidence
+         */
+        id: string | null;
+
+        /**
+         * Comment on the evidence
+         */
+        commentText: string | null;
+
+        /**
+         * Whether this is a positive example of the metric
+         */
+        isPositive: boolean | null;
+
+        /**
+         * Snippet of the evidence
+         */
+        snippetText: string | null;
+      }
+
+      export interface Metric {
+        /**
+         * ID of the metric
+         */
+        id: string | null;
+
+        /**
+         * Boolean value of the metric
+         */
+        booleanValue: boolean | null;
+
+        /**
+         * Confidence of the metric
+         */
+        confidence: number | null;
+
+        /**
+         * Name of the metric
+         */
+        name: string | null;
+
+        /**
+         * Numeric value of the metric
+         */
+        numericValue: number | null;
+
+        /**
+         * Reasoning for the metric
+         */
+        reasoning: string | null;
+
+        /**
+         * Role of the metric
+         */
+        role: 'PRIMARY' | 'SECONDARY' | null;
+
+        /**
+         * Text value of the metric
+         */
+        textValue: string | null;
+
+        /**
+         * Value type of the metric
+         */
+        valueType: 'NUMERIC' | 'BOOLEAN' | 'TEXT' | null;
+      }
+    }
+
+    /**
+     * Pagination information
+     */
+    export interface Pagination {
+      /**
+       * Whether there are more items to fetch
+       */
+      hasMore: boolean;
+
+      /**
+       * Cursor for the next page of items
+       */
+      nextCursor: string | null;
+
+      /**
+       * Total number of items
+       */
+      total: number;
+    }
+  }
+}
 
 export interface EvaluationCreateJobParams {
   /**
