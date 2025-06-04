@@ -5,6 +5,7 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
+import { Call } from './resources/call';
 import {
   Evaluation,
   EvaluationCreateJobParams,
@@ -14,6 +15,7 @@ import {
   EvaluationGetJobRunsResponse,
 } from './resources/evaluation';
 import { Health, HealthGetResponse } from './resources/health';
+import { Integrations } from './resources/integrations';
 
 export interface ClientOptions {
   /**
@@ -130,6 +132,8 @@ export class Roark extends Core.APIClient {
 
   health: API.Health = new API.Health(this);
   evaluation: API.Evaluation = new API.Evaluation(this);
+  call: API.Call = new API.Call(this);
+  integrations: API.Integrations = new API.Integrations(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -169,6 +173,8 @@ export class Roark extends Core.APIClient {
 
 Roark.Health = Health;
 Roark.Evaluation = Evaluation;
+Roark.Call = Call;
+Roark.Integrations = Integrations;
 export declare namespace Roark {
   export type RequestOptions = Core.RequestOptions;
 
@@ -182,6 +188,10 @@ export declare namespace Roark {
     type EvaluationCreateJobParams as EvaluationCreateJobParams,
     type EvaluationGetJobRunsParams as EvaluationGetJobRunsParams,
   };
+
+  export { Call as Call };
+
+  export { Integrations as Integrations };
 }
 
 export { toFile, fileFromPath } from './uploads';

@@ -1,5 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+export { Call } from './call';
 export {
   Evaluation,
   type EvaluationCreateJobResponse,
@@ -9,3 +10,4 @@ export {
   type EvaluationGetJobRunsParams,
 } from './evaluation';
 export { Health, type HealthGetResponse } from './health';
+export { Integrations } from './integrations';
