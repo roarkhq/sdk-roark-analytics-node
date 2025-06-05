@@ -26,13 +26,9 @@ const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
-async function main() {
-  const response = await client.evaluation.createJob({ evaluators: ['string'] });
+const response = await client.evaluation.createJob({ evaluators: ['string'] });
 
-  console.log(response.data);
-}
-
-main();
+console.log(response.data);
 ```
 
 ### Request & Response types
@@ -47,12 +43,8 @@ const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
-async function main() {
-  const params: Roark.EvaluationCreateJobParams = { evaluators: ['string'] };
-  const response: Roark.EvaluationCreateJobResponse = await client.evaluation.createJob(params);
-}
-
-main();
+const params: Roark.EvaluationCreateJobParams = { evaluators: ['string'] };
+const response: Roark.EvaluationCreateJobResponse = await client.evaluation.createJob(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -65,19 +57,15 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const response = await client.evaluation.createJob({ evaluators: ['string'] }).catch(async (err) => {
-    if (err instanceof Roark.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
-}
-
-main();
+const response = await client.evaluation.createJob({ evaluators: ['string'] }).catch(async (err) => {
+  if (err instanceof Roark.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
 Error codes are as follows:
