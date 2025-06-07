@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.329.1 (2025-06-07)
+
+Full Changelog: [v0.329.0...v0.329.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.329.0...v0.329.1)
+
+### Chores
+
+* **internal:** codegen related update ([894f088](https://github.com/roarkhq/sdk-roark-analytics-node/commit/894f08828c51c580696e6e5b722ab2d79906749b))
+
 ## 0.329.0 (2025-06-04)
 
 Full Changelog: [v0.328.0...v0.329.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.328.0...v0.329.0)
