@@ -25,3 +25,13 @@ Methods:
 # Call
 
 # Integrations
+
+Types:
+
+- <code><a href="./src/resources/integrations.ts">IntegrationCreateRetellCallResponse</a></code>
+- <code><a href="./src/resources/integrations.ts">IntegrationCreateVapiCallResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/retell/call">client.integrations.<a href="./src/resources/integrations.ts">createRetellCall</a>({ ...params }) -> IntegrationCreateRetellCallResponse</code>
+- <code title="post /v1/vapi/call">client.integrations.<a href="./src/resources/integrations.ts">createVapiCall</a>({ ...params }) -> IntegrationCreateVapiCallResponse</code>

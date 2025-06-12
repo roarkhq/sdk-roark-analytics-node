@@ -10,4 +10,10 @@ export {
   type EvaluationGetJobRunsParams,
 } from './evaluation';
 export { Health, type HealthGetResponse } from './health';
-export { Integrations } from './integrations';
+export {
+  Integrations,
+  type IntegrationCreateRetellCallResponse,
+  type IntegrationCreateVapiCallResponse,
+  type IntegrationCreateRetellCallParams,
+  type IntegrationCreateVapiCallParams,
+} from './integrations';
