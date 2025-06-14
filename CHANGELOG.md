@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.330.0 (2025-06-14)
+
+Full Changelog: [v0.329.0...v0.330.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.329.0...v0.330.0)
+
+### Features
+
+* **api:** api update ([3f4b34d](https://github.com/roarkhq/sdk-roark-analytics-node/commit/3f4b34d5206ced71ef0006f93c2ab8f11cf1b593))
+
+
+### Bug Fixes
+
+* publish script — handle NPM errors correctly ([0b7c880](https://github.com/roarkhq/sdk-roark-analytics-node/commit/0b7c880d2f264656b3dd752b293bc3e684f9c32c))
+
+
+### Chores
+
+* **internal:** codegen related update ([894f088](https://github.com/roarkhq/sdk-roark-analytics-node/commit/894f08828c51c580696e6e5b722ab2d79906749b))
+* **internal:** make base APIResource abstract ([36b133a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/36b133a5b653980bf55530ce1ba6698e20ad2d60))
+
 ## 0.329.0 (2025-06-04)
 
 Full Changelog: [v0.328.0...v0.329.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.328.0...v0.329.0)
