@@ -125,6 +125,7 @@ export class Roark extends Core.APIClient {
 
     super({
       baseURL: options.baseURL!,
+      baseURLOverridden: baseURL ? baseURL !== 'https://api.roark.ai' : false,
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
@@ -140,6 +141,13 @@ export class Roark extends Core.APIClient {
   evaluation: API.Evaluation = new API.Evaluation(this);
   call: API.Call = new API.Call(this);
   integrations: API.Integrations = new API.Integrations(this);
+
+  /**
+   * Check whether the base URL is set to its default.
+   */
+  #baseURLOverridden(): boolean {
+    return this.baseURL !== 'https://api.roark.ai';
+  }
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
