@@ -15,7 +15,13 @@ import {
   EvaluationGetJobRunsResponse,
 } from './resources/evaluation';
 import { Health, HealthGetResponse } from './resources/health';
-import { Integrations } from './resources/integrations';
+import {
+  IntegrationCreateRetellCallParams,
+  IntegrationCreateRetellCallResponse,
+  IntegrationCreateVapiCallParams,
+  IntegrationCreateVapiCallResponse,
+  Integrations,
+} from './resources/integrations';
 
 export interface ClientOptions {
   /**
@@ -119,6 +125,7 @@ export class Roark extends Core.APIClient {
 
     super({
       baseURL: options.baseURL!,
+      baseURLOverridden: baseURL ? baseURL !== 'https://api.roark.ai' : false,
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
@@ -134,6 +141,13 @@ export class Roark extends Core.APIClient {
   evaluation: API.Evaluation = new API.Evaluation(this);
   call: API.Call = new API.Call(this);
   integrations: API.Integrations = new API.Integrations(this);
+
+  /**
+   * Check whether the base URL is set to its default.
+   */
+  #baseURLOverridden(): boolean {
+    return this.baseURL !== 'https://api.roark.ai';
+  }
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -191,7 +205,13 @@ export declare namespace Roark {
 
   export { Call as Call };
 
-  export { Integrations as Integrations };
+  export {
+    Integrations as Integrations,
+    type IntegrationCreateRetellCallResponse as IntegrationCreateRetellCallResponse,
+    type IntegrationCreateVapiCallResponse as IntegrationCreateVapiCallResponse,
+    type IntegrationCreateRetellCallParams as IntegrationCreateRetellCallParams,
+    type IntegrationCreateVapiCallParams as IntegrationCreateVapiCallParams,
+  };
 }
 
 export { toFile, fileFromPath } from './uploads';
