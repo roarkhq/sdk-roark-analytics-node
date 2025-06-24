@@ -92,13 +92,13 @@ export interface IntegrationCreateRetellCallParams {
   /**
    * Raw Retell data forwarded directly from the Retell call_ended webhook
    */
-  retellCallEndedPayload: { [key: string]: unknown };
+  retellCallEndedPayload: Record<string, unknown>;
 
   /**
    * Optional metadata (key-value pairs) to include with the call. Useful for
    * filtering and display in call details.
    */
-  properties?: { [key: string]: unknown };
+  properties?: Record<string, unknown>;
 
   /**
    * Skip already imported Retell calls with the same Retell call id.
@@ -110,13 +110,13 @@ export interface IntegrationCreateVapiCallParams {
   /**
    * Raw Vapi data forwarded directly from the Vapi end-of-call-report webhook
    */
-  vapiEndOfCallReportPayload: { [key: string]: unknown };
+  vapiEndOfCallReportPayload: Record<string, unknown>;
 
   /**
    * Optional metadata (key-value pairs) to include with the call. Useful for
    * filtering and display in call details.
    */
-  properties?: { [key: string]: unknown };
+  properties?: Record<string, unknown>;
 
   /**
    * Skip already imported Vapi calls with the same Vapi call id.
