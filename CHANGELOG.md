@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.331.0 (2025-06-24)
+
+Full Changelog: [v0.330.0...v0.331.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.330.0...v0.331.0)
+
+### Features
+
+* **api:** api update ([bfa3fee](https://github.com/roarkhq/sdk-roark-analytics-node/commit/bfa3feee543d7ab7be7cb916d0a410220f82f5fa))
+
+
+### Refactors
+
+* **types:** replace Record with mapped types ([57e7cac](https://github.com/roarkhq/sdk-roark-analytics-node/commit/57e7cacd50453dcee6a3a5bf1108eb51315363b6))
+
 ## 0.330.0 (2025-06-23)
 
 Full Changelog: [v0.329.0...v0.330.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.329.0...v0.330.0)
