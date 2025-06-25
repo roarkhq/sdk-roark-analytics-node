@@ -392,7 +392,7 @@ export namespace EvaluationCreateJobParams {
      * Custom properties to include with the call. These can be used for filtering and
      * will show in the call details page
      */
-    properties?: Record<string, unknown>;
+    properties?: { [key: string]: unknown };
 
     /**
      * Retell call ID if call is being imported from Retell
@@ -438,12 +438,12 @@ export namespace EvaluationCreateJobParams {
       /**
        * Parameters provided to the tool during invocation
        */
-      parameters: Record<string, ToolInvocation.UnionMember0 | unknown>;
+      parameters: { [key: string]: ToolInvocation.UnionMember0 | unknown };
 
       /**
        * Result returned by the tool after execution. Can be a string or a JSON object
        */
-      result: string | Record<string, unknown>;
+      result: string | { [key: string]: unknown };
 
       /**
        * Offset in milliseconds from the start of the call when the tool was invoked
@@ -544,7 +544,7 @@ export namespace EvaluationCreateJobParams {
        * Custom properties to include with the call. These can be used for filtering and
        * will show in the call details page
        */
-      properties?: Record<string, unknown>;
+      properties?: { [key: string]: unknown };
 
       /**
        * Retell call ID if call is being imported from Retell
@@ -590,12 +590,12 @@ export namespace EvaluationCreateJobParams {
         /**
          * Parameters provided to the tool during invocation
          */
-        parameters: Record<string, ToolInvocation.UnionMember0 | unknown>;
+        parameters: { [key: string]: ToolInvocation.UnionMember0 | unknown };
 
         /**
          * Result returned by the tool after execution. Can be a string or a JSON object
          */
-        result: string | Record<string, unknown>;
+        result: string | { [key: string]: unknown };
 
         /**
          * Offset in milliseconds from the start of the call when the tool was invoked
