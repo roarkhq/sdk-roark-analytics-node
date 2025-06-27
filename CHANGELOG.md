@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.331.1 (2025-06-27)
+
+Full Changelog: [v0.331.0...v0.331.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.331.0...v0.331.1)
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([514ae3a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/514ae3a6d09783dcc2ad2ae2bf088b2b592ba8bf))
+
+
+### Chores
+
+* **internal:** codegen related update ([35701a9](https://github.com/roarkhq/sdk-roark-analytics-node/commit/35701a93e09399410be8c90034b5bc10989c76c1))
+
 ## 0.331.0 (2025-06-24)
 
 Full Changelog: [v0.330.0...v0.331.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.330.0...v0.331.0)
