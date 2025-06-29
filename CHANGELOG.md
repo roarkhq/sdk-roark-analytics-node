@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.331.2 (2025-06-29)
+
+Full Changelog: [v0.331.1...v0.331.2](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.331.1...v0.331.2)
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([b8174cf](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b8174cfc46f0fc6d30b4a48279a432072ad0df96))
+
 ## 0.331.1 (2025-06-27)
 
 Full Changelog: [v0.331.0...v0.331.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.331.0...v0.331.1)
