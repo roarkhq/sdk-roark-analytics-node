@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.331.2 (2025-07-03)
+
+Full Changelog: [v0.331.1...v0.331.2](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.331.1...v0.331.2)
+
+### Bug Fixes
+
+* **client:** don't send `Content-Type` for bodyless methods ([ac81569](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ac81569c9ab6222bd09868f875d4295dbab79ee3))
+
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([b8174cf](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b8174cfc46f0fc6d30b4a48279a432072ad0df96))
+* mention unit type in timeout docs ([253c8aa](https://github.com/roarkhq/sdk-roark-analytics-node/commit/253c8aa4992fcd84cee31078efefd868eb8ab0d3))
+
 ## 0.331.1 (2025-06-27)
 
 Full Changelog: [v0.331.0...v0.331.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v0.331.0...v0.331.1)
