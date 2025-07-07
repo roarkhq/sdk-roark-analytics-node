@@ -10,6 +10,9 @@ import {
   Evaluation,
   EvaluationCreateJobParams,
   EvaluationCreateJobResponse,
+  EvaluationGetEvaluatorByIDResponse,
+  EvaluationGetEvaluatorsParams,
+  EvaluationGetEvaluatorsResponse,
   EvaluationGetJobResponse,
   EvaluationGetJobRunsParams,
   EvaluationGetJobRunsResponse,
@@ -199,9 +202,12 @@ export declare namespace Roark {
   export {
     Evaluation as Evaluation,
     type EvaluationCreateJobResponse as EvaluationCreateJobResponse,
+    type EvaluationGetEvaluatorByIDResponse as EvaluationGetEvaluatorByIDResponse,
+    type EvaluationGetEvaluatorsResponse as EvaluationGetEvaluatorsResponse,
     type EvaluationGetJobResponse as EvaluationGetJobResponse,
     type EvaluationGetJobRunsResponse as EvaluationGetJobRunsResponse,
     type EvaluationCreateJobParams as EvaluationCreateJobParams,
+    type EvaluationGetEvaluatorsParams as EvaluationGetEvaluatorsParams,
     type EvaluationGetJobRunsParams as EvaluationGetJobRunsParams,
   };
 
