@@ -4,9 +4,12 @@ export { Call } from './call';
 export {
   Evaluation,
   type EvaluationCreateJobResponse,
+  type EvaluationGetEvaluatorByIDResponse,
+  type EvaluationGetEvaluatorsResponse,
   type EvaluationGetJobResponse,
   type EvaluationGetJobRunsResponse,
   type EvaluationCreateJobParams,
+  type EvaluationGetEvaluatorsParams,
   type EvaluationGetJobRunsParams,
 } from './evaluation';
 export { Health, type HealthGetResponse } from './health';
