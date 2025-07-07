@@ -85,6 +85,52 @@ describe('resource evaluation', () => {
     });
   });
 
+  test('getEvaluatorById', async () => {
+    const responsePromise = client.evaluation.getEvaluatorById('evaluatorId');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('getEvaluatorById: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.evaluation.getEvaluatorById('evaluatorId', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
+
+  test('getEvaluators', async () => {
+    const responsePromise = client.evaluation.getEvaluators();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('getEvaluators: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.evaluation.getEvaluators({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Roark.NotFoundError,
+    );
+  });
+
+  test('getEvaluators: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.evaluation.getEvaluators(
+        { after: 'after', limit: '321669910225' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
+
   test('getJob', async () => {
     const responsePromise = client.evaluation.getJob('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();

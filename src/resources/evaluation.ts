@@ -16,6 +16,32 @@ export class Evaluation extends APIResource {
   }
 
   /**
+   * Returns a specific evaluator with its blocks and configuration.
+   */
+  getEvaluatorById(evaluatorId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+    return this._client.get(`/v1/evaluation/evaluators/${evaluatorId}`, options);
+  }
+
+  /**
+   * Returns a list of evaluators with their blocks and configuration for the
+   * authenticated project.
+   */
+  getEvaluators(
+    query?: EvaluationGetEvaluatorsParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown>;
+  getEvaluators(options?: Core.RequestOptions): Core.APIPromise<unknown>;
+  getEvaluators(
+    query: EvaluationGetEvaluatorsParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown> {
+    if (isRequestOptions(query)) {
+      return this.getEvaluators({}, query);
+    }
+    return this._client.get('/v1/evaluation/evaluators', { query, ...options });
+  }
+
+  /**
    * Retrieve details of a specific evaluation job
    */
   getJob(jobId: string, options?: Core.RequestOptions): Core.APIPromise<EvaluationGetJobResponse> {
@@ -60,6 +86,10 @@ export namespace EvaluationCreateJobResponse {
     status: 'PENDING' | 'PROCESSING' | 'SUCCESS' | 'FAILURE';
   }
 }
+
+export type EvaluationGetEvaluatorByIDResponse = unknown;
+
+export type EvaluationGetEvaluatorsResponse = unknown;
 
 export interface EvaluationGetJobResponse {
   /**
@@ -627,6 +657,12 @@ export namespace EvaluationCreateJobParams {
   }
 }
 
+export interface EvaluationGetEvaluatorsParams {
+  after?: string;
+
+  limit?: string;
+}
+
 export interface EvaluationGetJobRunsParams {
   /**
    * Number of items to return per page
@@ -642,9 +678,12 @@ export interface EvaluationGetJobRunsParams {
 export declare namespace Evaluation {
   export {
     type EvaluationCreateJobResponse as EvaluationCreateJobResponse,
+    type EvaluationGetEvaluatorByIDResponse as EvaluationGetEvaluatorByIDResponse,
+    type EvaluationGetEvaluatorsResponse as EvaluationGetEvaluatorsResponse,
     type EvaluationGetJobResponse as EvaluationGetJobResponse,
     type EvaluationGetJobRunsResponse as EvaluationGetJobRunsResponse,
     type EvaluationCreateJobParams as EvaluationCreateJobParams,
+    type EvaluationGetEvaluatorsParams as EvaluationGetEvaluatorsParams,
     type EvaluationGetJobRunsParams as EvaluationGetJobRunsParams,
   };
 }
