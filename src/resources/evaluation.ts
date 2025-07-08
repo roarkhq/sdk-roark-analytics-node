@@ -147,6 +147,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'CUSTOM_PROMPT';
 
     /**
@@ -191,6 +194,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'DATAFIELD_CHECK';
 
     /**
@@ -245,6 +251,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'EMOTION';
 
     /**
@@ -284,6 +293,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'LATENCY';
 
     /**
@@ -328,6 +340,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'POLITENESS';
 
     /**
@@ -362,6 +377,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'SENTIMENT';
 
     /**
@@ -396,6 +414,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'TOOL_CALLS';
 
     /**
@@ -445,6 +466,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'TOXICITY';
 
     /**
@@ -479,6 +503,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'VOCAL_CUE';
 
     /**
@@ -586,6 +613,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'CUSTOM_PROMPT';
 
       /**
@@ -630,6 +660,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'DATAFIELD_CHECK';
 
       /**
@@ -684,6 +717,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'EMOTION';
 
       /**
@@ -723,6 +759,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'LATENCY';
 
       /**
@@ -767,6 +806,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'POLITENESS';
 
       /**
@@ -801,6 +843,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'SENTIMENT';
 
       /**
@@ -835,6 +880,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'TOOL_CALLS';
 
       /**
@@ -884,6 +932,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'TOXICITY';
 
       /**
@@ -918,6 +969,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'VOCAL_CUE';
 
       /**
