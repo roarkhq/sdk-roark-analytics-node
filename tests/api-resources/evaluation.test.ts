@@ -124,10 +124,7 @@ describe('resource evaluation', () => {
   test('getEvaluators: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.evaluation.getEvaluators(
-        { after: 'after', limit: '321669910225' },
-        { path: '/_stainless_unknown_path' },
-      ),
+      client.evaluation.getEvaluators({ after: 'after', limit: '20' }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
