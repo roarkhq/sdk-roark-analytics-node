@@ -5,7 +5,7 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
-import { Call, CallGetEvaluationRunResponse, CallGetSentimentRunResponse } from './resources/call';
+import { Call, CallGetEvaluationRunsResponse, CallGetSentimentRunsResponse } from './resources/call';
 import {
   Evaluation,
   EvaluationCreateJobParams,
@@ -213,8 +213,8 @@ export declare namespace Roark {
 
   export {
     Call as Call,
-    type CallGetEvaluationRunResponse as CallGetEvaluationRunResponse,
-    type CallGetSentimentRunResponse as CallGetSentimentRunResponse,
+    type CallGetEvaluationRunsResponse as CallGetEvaluationRunsResponse,
+    type CallGetSentimentRunsResponse as CallGetSentimentRunsResponse,
   };
 
   export {
