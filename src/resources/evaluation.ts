@@ -1125,7 +1125,7 @@ export namespace EvaluationGetJobRunsResponse {
       /**
        * All block runs for this evaluator, including skipped ones
        */
-      blocks: Array<Data.Block>;
+      blockRuns: Array<Data.BlockRun>;
 
       evaluator: Data.Evaluator;
 
@@ -1171,16 +1171,21 @@ export namespace EvaluationGetJobRunsResponse {
     }
 
     export namespace Data {
-      export interface Block {
+      export interface BlockRun {
         /**
-         * ID of the block run
+         * ID of the block definition
          */
-        id: string;
+        blockDefinitionId: string;
 
         /**
          * Name of the evaluation block
          */
         blockName: string;
+
+        /**
+         * ID of the block run instance
+         */
+        blockRunId: string;
 
         /**
          * When the block run was created
