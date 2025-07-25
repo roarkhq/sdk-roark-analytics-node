@@ -5,29 +5,35 @@ import * as Core from '../core';
 
 export class Call extends APIResource {
   /**
-   * Fetch evaluation run results for a specific call.
+   * Fetch all evaluation run results for a specific call.
    */
-  getEvaluationRun(id: string, options?: Core.RequestOptions): Core.APIPromise<CallGetEvaluationRunResponse> {
-    return this._client.get(`/v1/call/${id}/evaluation-run`, options);
+  getEvaluationRuns(
+    callId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CallGetEvaluationRunsResponse> {
+    return this._client.get(`/v1/call/${callId}/evaluation-run`, options);
   }
 
   /**
    * Fetch detailed sentiment analysis results for a specific call, including
    * emotional tone, key phrases, and sentiment scores.
    */
-  getSentimentRun(id: string, options?: Core.RequestOptions): Core.APIPromise<CallGetSentimentRunResponse> {
-    return this._client.get(`/v1/call/${id}/sentiment-run`, options);
+  getSentimentRuns(
+    callId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CallGetSentimentRunsResponse> {
+    return this._client.get(`/v1/call/${callId}/sentiment-run`, options);
   }
 }
 
-export interface CallGetEvaluationRunResponse {
+export interface CallGetEvaluationRunsResponse {
   /**
    * Evaluation run response payload
    */
-  data: Array<CallGetEvaluationRunResponse.Data>;
+  data: Array<CallGetEvaluationRunsResponse.Data>;
 }
 
-export namespace CallGetEvaluationRunResponse {
+export namespace CallGetEvaluationRunsResponse {
   export interface Data {
     /**
      * All block runs for this evaluator, including skipped ones
@@ -208,14 +214,14 @@ export namespace CallGetEvaluationRunResponse {
   }
 }
 
-export interface CallGetSentimentRunResponse {
+export interface CallGetSentimentRunsResponse {
   /**
    * Sentiment run response payload
    */
-  data: CallGetSentimentRunResponse.Data;
+  data: CallGetSentimentRunsResponse.Data;
 }
 
-export namespace CallGetSentimentRunResponse {
+export namespace CallGetSentimentRunsResponse {
   /**
    * Sentiment run response payload
    */
@@ -244,7 +250,7 @@ export namespace CallGetSentimentRunResponse {
 
 export declare namespace Call {
   export {
-    type CallGetEvaluationRunResponse as CallGetEvaluationRunResponse,
-    type CallGetSentimentRunResponse as CallGetSentimentRunResponse,
+    type CallGetEvaluationRunsResponse as CallGetEvaluationRunsResponse,
+    type CallGetSentimentRunsResponse as CallGetSentimentRunsResponse,
   };
 }

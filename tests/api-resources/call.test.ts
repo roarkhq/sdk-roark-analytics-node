@@ -9,8 +9,8 @@ const client = new Roark({
 });
 
 describe('resource call', () => {
-  test('getEvaluationRun', async () => {
-    const responsePromise = client.call.getEvaluationRun('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+  test('getEvaluationRuns', async () => {
+    const responsePromise = client.call.getEvaluationRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,17 +20,17 @@ describe('resource call', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('getEvaluationRun: request options instead of params are passed correctly', async () => {
+  test('getEvaluationRuns: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.call.getEvaluationRun('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      client.call.getEvaluationRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
         path: '/_stainless_unknown_path',
       }),
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
-  test('getSentimentRun', async () => {
-    const responsePromise = client.call.getSentimentRun('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+  test('getSentimentRuns', async () => {
+    const responsePromise = client.call.getSentimentRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -40,10 +40,10 @@ describe('resource call', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('getSentimentRun: request options instead of params are passed correctly', async () => {
+  test('getSentimentRuns: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.call.getSentimentRun('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      client.call.getSentimentRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
         path: '/_stainless_unknown_path',
       }),
     ).rejects.toThrow(Roark.NotFoundError);
