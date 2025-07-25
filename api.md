@@ -28,6 +28,16 @@ Methods:
 
 # Call
 
+Types:
+
+- <code><a href="./src/resources/call.ts">CallGetEvaluationRunResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallGetSentimentRunResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/call/{id}/evaluation-run">client.call.<a href="./src/resources/call.ts">getEvaluationRun</a>(id) -> CallGetEvaluationRunResponse</code>
+- <code title="get /v1/call/{id}/sentiment-run">client.call.<a href="./src/resources/call.ts">getSentimentRun</a>(id) -> CallGetSentimentRunResponse</code>
+
 # Integrations
 
 Types:
