@@ -87,6 +87,11 @@ export namespace EvaluationCreateJobResponse {
      * Status of the evaluation job
      */
     status: 'PENDING' | 'PROCESSING' | 'SUCCESS' | 'FAILURE';
+
+    /**
+     * ID of the call being evaluated (only present for single call evaluations)
+     */
+    callId?: string;
   }
 }
 
