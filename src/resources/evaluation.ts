@@ -147,6 +147,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'CUSTOM_PROMPT';
 
     /**
@@ -191,6 +194,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'DATAFIELD_CHECK';
 
     /**
@@ -245,6 +251,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'EMOTION';
 
     /**
@@ -284,6 +293,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'LATENCY';
 
     /**
@@ -328,6 +340,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'POLITENESS';
 
     /**
@@ -362,6 +377,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'SENTIMENT';
 
     /**
@@ -396,6 +414,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'TOOL_CALLS';
 
     /**
@@ -445,6 +466,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'TOXICITY';
 
     /**
@@ -479,6 +503,9 @@ export namespace EvaluationGetEvaluatorByIDResponse {
      */
     id: string;
 
+    /**
+     * Block type identifier
+     */
     blockType: 'VOCAL_CUE';
 
     /**
@@ -586,6 +613,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'CUSTOM_PROMPT';
 
       /**
@@ -630,6 +660,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'DATAFIELD_CHECK';
 
       /**
@@ -684,6 +717,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'EMOTION';
 
       /**
@@ -723,6 +759,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'LATENCY';
 
       /**
@@ -767,6 +806,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'POLITENESS';
 
       /**
@@ -801,6 +843,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'SENTIMENT';
 
       /**
@@ -835,6 +880,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'TOOL_CALLS';
 
       /**
@@ -884,6 +932,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'TOXICITY';
 
       /**
@@ -918,6 +969,9 @@ export namespace EvaluationGetEvaluatorsResponse {
        */
       id: string;
 
+      /**
+       * Block type identifier
+       */
       blockType: 'VOCAL_CUE';
 
       /**
@@ -1069,44 +1123,15 @@ export namespace EvaluationGetJobRunsResponse {
   export namespace Data {
     export interface Data {
       /**
-       * ID of the evaluator run
+       * All block runs for this evaluator, including skipped ones
        */
-      id: string;
+      blockRuns: Array<Data.BlockRun>;
 
-      /**
-       * When the evaluator run completed
-       */
-      completedAt: string | null;
+      evaluator: Data.Evaluator;
 
-      /**
-       * Evaluator of the evaluator run
-       */
-      evaluator: Data.Evaluator | null;
+      evidence: Array<Data.Evidence>;
 
-      /**
-       * Evidence of the evaluator run
-       */
-      evidence: Array<Data.Evidence> | null;
-
-      /**
-       * Metrics of the evaluator run
-       */
-      metrics: Array<Data.Metric> | null;
-
-      /**
-       * Score of the evaluator run
-       */
-      score: number | null;
-
-      /**
-       * Score classification of the evaluator run
-       */
-      scoreClassification: 'SUCCESS' | 'FAILURE' | 'IRRELEVANT' | null;
-
-      /**
-       * When the evaluator run started
-       */
-      startedAt: string | null;
+      metrics: Array<Data.Metric>;
 
       /**
        * Status of the evaluator run
@@ -1114,69 +1139,139 @@ export namespace EvaluationGetJobRunsResponse {
       status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
 
       /**
-       * Summary of the evaluator run
+       * ID of the evaluator run
        */
-      summary: string | null;
+      id?: string;
+
+      /**
+       * When the evaluator run completed
+       */
+      completedAt?: string | null;
+
+      /**
+       * Score of the evaluation run (0-1)
+       */
+      score?: number | null;
+
+      /**
+       * Score classification of the evaluator run based on score threshold (IRRELEVANT
+       * is mapped to SKIPPED)
+       */
+      scoreClassification?: 'SUCCESS' | 'FAILURE' | 'SKIPPED' | null;
+
+      /**
+       * When the evaluator run started
+       */
+      startedAt?: string | null;
+
+      /**
+       * Summary of the evaluation run
+       */
+      summary?: string | null;
     }
 
     export namespace Data {
-      /**
-       * Evaluator of the evaluator run
-       */
+      export interface BlockRun {
+        /**
+         * ID of the block definition
+         */
+        blockDefinitionId: string;
+
+        /**
+         * Name of the evaluation block
+         */
+        blockName: string;
+
+        /**
+         * ID of the block run instance
+         */
+        blockRunId: string;
+
+        /**
+         * When the block run was created
+         */
+        createdAt: string;
+
+        /**
+         * Reason for the outcome (pass/fail explanation or skip reason)
+         */
+        reason: string | null;
+
+        /**
+         * Result of the block run
+         */
+        result: 'PASSED' | 'FAILED' | 'SKIPPED' | null;
+
+        /**
+         * Score of the block run (0-1)
+         */
+        score: number | null;
+
+        /**
+         * Status of the block run
+         */
+        status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED';
+      }
+
       export interface Evaluator {
         /**
          * ID of the evaluator
          */
-        id: string | null;
+        id: string;
 
         /**
          * Name of the evaluator
          */
-        name: string | null;
+        name: string;
+
+        /**
+         * Weight of the evaluator
+         */
+        weight?: number;
       }
 
       export interface Evidence {
         /**
-         * ID of the evidence
-         */
-        id: string | null;
-
-        /**
-         * Comment on the evidence
+         * Comment text of the evidence
          */
         commentText: string | null;
 
         /**
-         * Whether this is a positive example of the metric
+         * Created at of the evidence
          */
-        isPositive: boolean | null;
+        createdAt: string;
 
         /**
-         * Snippet of the evidence
+         * Is positive of the evidence
          */
-        snippetText: string | null;
+        isPositive: boolean;
+
+        /**
+         * Snippet text of the evidence
+         */
+        snippetText: string;
       }
 
       export interface Metric {
-        /**
-         * ID of the metric
-         */
-        id: string | null;
-
         /**
          * Boolean value of the metric
          */
         booleanValue: boolean | null;
 
         /**
-         * Confidence of the metric
+         * Confidence level of the metric (0-1)
          */
         confidence: number | null;
 
         /**
+         * Created at of the metric
+         */
+        createdAt: string;
+
+        /**
          * Name of the metric
          */
-        name: string | null;
+        name: string;
 
         /**
          * Numeric value of the metric
@@ -1184,14 +1279,14 @@ export namespace EvaluationGetJobRunsResponse {
         numericValue: number | null;
 
         /**
-         * Reasoning for the metric
+         * Reasoning of the metric
          */
         reasoning: string | null;
 
         /**
          * Role of the metric
          */
-        role: 'PRIMARY' | 'SECONDARY' | null;
+        role: string;
 
         /**
          * Text value of the metric
@@ -1201,7 +1296,7 @@ export namespace EvaluationGetJobRunsResponse {
         /**
          * Value type of the metric
          */
-        valueType: 'NUMERIC' | 'BOOLEAN' | 'TEXT' | null;
+        valueType: string;
       }
     }
 

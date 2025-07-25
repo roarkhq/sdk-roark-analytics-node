@@ -26,10 +26,7 @@ describe('resource evaluation', () => {
       call: {
         callDirection: 'INBOUND',
         interfaceType: 'PHONE',
-        participants: [
-          { role: 'AGENT', isSimulated: true, name: 'x', phoneNumber: 'xxx', spokeFirst: true },
-          { role: 'AGENT', isSimulated: true, name: 'x', phoneNumber: 'xxx', spokeFirst: true },
-        ],
+        participants: [{ role: 'AGENT', isSimulated: true, name: 'x', phoneNumber: 'xxx', spokeFirst: true }],
         recordingUrl: 'https://example.com',
         startedAt: 'startedAt',
         endedReason: 'endedReason',
@@ -56,7 +53,6 @@ describe('resource evaluation', () => {
             callDirection: 'INBOUND',
             interfaceType: 'PHONE',
             participants: [
-              { role: 'AGENT', isSimulated: true, name: 'x', phoneNumber: 'xxx', spokeFirst: true },
               { role: 'AGENT', isSimulated: true, name: 'x', phoneNumber: 'xxx', spokeFirst: true },
             ],
             recordingUrl: 'https://example.com',
