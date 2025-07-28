@@ -1154,15 +1154,15 @@ export namespace EvaluationGetJobRunsResponse {
       completedAt?: string | null;
 
       /**
+       * Result of the evaluator run based on score threshold (IRRELEVANT is mapped to
+       * SKIPPED)
+       */
+      result?: 'SUCCESS' | 'FAILURE' | 'SKIPPED' | null;
+
+      /**
        * Score of the evaluation run (0-1)
        */
       score?: number | null;
-
-      /**
-       * Score classification of the evaluator run based on score threshold (IRRELEVANT
-       * is mapped to SKIPPED)
-       */
-      scoreClassification?: 'SUCCESS' | 'FAILURE' | 'SKIPPED' | null;
 
       /**
        * When the evaluator run started
