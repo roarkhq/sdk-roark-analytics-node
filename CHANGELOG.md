@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.4.1 (2025-08-02)
+
+Full Changelog: [v2.4.0...v2.4.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.4.0...v2.4.1)
+
+### Chores
+
+* **internal:** remove redundant imports config ([384328f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/384328f35bc3d62726c9d65285ae9ca7a7c40b1b))
+
 ## 2.4.0 (2025-07-28)
 
 Full Changelog: [v2.3.0...v2.4.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.3.0...v2.4.0)
