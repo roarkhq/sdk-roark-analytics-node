@@ -194,6 +194,7 @@ Roark.Health = Health;
 Roark.Evaluation = Evaluation;
 Roark.Call = Call;
 Roark.Integrations = Integrations;
+
 export declare namespace Roark {
   export type RequestOptions = Core.RequestOptions;
 
