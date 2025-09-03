@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.4.1 (2025-09-03)
+
+Full Changelog: [v2.4.0...v2.4.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.4.0...v2.4.1)
+
+### Chores
+
+* **deps:** update dependency node-fetch to v2.6.13 ([ff9b16f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ff9b16fc33a0adeb51212e4af1d1ce652172d1af))
+* **internal:** formatting change ([fbde078](https://github.com/roarkhq/sdk-roark-analytics-node/commit/fbde078f60fd3fb95acdac38dcf3ed8077f0b557))
+* **internal:** move publish config ([ad825d3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ad825d3f89f25c3bafea9bafd05fc0d0a293e90f))
+* **internal:** remove redundant imports config ([384328f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/384328f35bc3d62726c9d65285ae9ca7a7c40b1b))
+* **internal:** update comment in script ([1ab0a78](https://github.com/roarkhq/sdk-roark-analytics-node/commit/1ab0a788b9257d8574d14ba5e070a1b58e763416))
+* update @stainless-api/prism-cli to v5.15.0 ([1a0d475](https://github.com/roarkhq/sdk-roark-analytics-node/commit/1a0d4750ae8d062a3874bd27f0fbf39ee562f957))
+* update CI script ([a795a78](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a795a78fb5bfac4cfc3815a1bc7b5fe892385990))
+
 ## 2.4.0 (2025-07-28)
 
 Full Changelog: [v2.3.0...v2.4.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.3.0...v2.4.0)
