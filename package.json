@@ -1,6 +1,6 @@
 {
   "name": "@roarkanalytics/sdk",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "The official TypeScript library for the Roark API",
   "author": "Roark <james@roark.ai>",
   "types": "dist/index.d.ts",
