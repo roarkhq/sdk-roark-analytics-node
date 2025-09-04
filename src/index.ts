@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { type Agent } from './_shims/index';
+import * as qs from './internal/qs';
 import * as Core from './core';
 import * as Errors from './error';
 import * as Uploads from './uploads';
@@ -25,6 +26,12 @@ import {
   IntegrationCreateVapiCallResponse,
   Integrations,
 } from './resources/integrations';
+import {
+  Simulation,
+  SimulationGetJobByIDResponse,
+  SimulationGetJobParams,
+  SimulationGetJobResponse,
+} from './resources/simulation';
 
 export interface ClientOptions {
   /**
@@ -146,6 +153,7 @@ export class Roark extends Core.APIClient {
   evaluation: API.Evaluation = new API.Evaluation(this);
   call: API.Call = new API.Call(this);
   integrations: API.Integrations = new API.Integrations(this);
+  simulation: API.Simulation = new API.Simulation(this);
 
   /**
    * Check whether the base URL is set to its default.
@@ -167,6 +175,10 @@ export class Roark extends Core.APIClient {
 
   protected override authHeaders(opts: Core.FinalRequestOptions): Core.Headers {
     return { Authorization: `Bearer ${this.bearerToken}` };
+  }
+
+  protected override stringifyQuery(query: Record<string, unknown>): string {
+    return qs.stringify(query, { arrayFormat: 'comma' });
   }
 
   static Roark = this;
@@ -194,6 +206,7 @@ Roark.Health = Health;
 Roark.Evaluation = Evaluation;
 Roark.Call = Call;
 Roark.Integrations = Integrations;
+Roark.Simulation = Simulation;
 
 export declare namespace Roark {
   export type RequestOptions = Core.RequestOptions;
@@ -224,6 +237,13 @@ export declare namespace Roark {
     type IntegrationCreateVapiCallResponse as IntegrationCreateVapiCallResponse,
     type IntegrationCreateRetellCallParams as IntegrationCreateRetellCallParams,
     type IntegrationCreateVapiCallParams as IntegrationCreateVapiCallParams,
+  };
+
+  export {
+    Simulation as Simulation,
+    type SimulationGetJobResponse as SimulationGetJobResponse,
+    type SimulationGetJobByIDResponse as SimulationGetJobByIDResponse,
+    type SimulationGetJobParams as SimulationGetJobParams,
   };
 }
 
