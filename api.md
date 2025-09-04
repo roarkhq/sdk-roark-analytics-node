@@ -54,10 +54,10 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/simulation.ts">SimulationGetJobResponse</a></code>
 - <code><a href="./src/resources/simulation.ts">SimulationGetJobByIDResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationLookupJobResponse</a></code>
 
 Methods:
 
-- <code title="get /v1/simulation/job">client.simulation.<a href="./src/resources/simulation.ts">getJob</a>({ ...params }) -> SimulationGetJobResponse</code>
-- <code title="get /v1/simulation/jobs/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getJobById</a>(jobId) -> SimulationGetJobByIDResponse</code>
+- <code title="get /v1/simulation/job/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getJobById</a>(jobId) -> SimulationGetJobByIDResponse</code>
+- <code title="get /v1/simulation/job/lookup">client.simulation.<a href="./src/resources/simulation.ts">lookupJob</a>({ ...params }) -> SimulationLookupJobResponse</code>

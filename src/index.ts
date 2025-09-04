@@ -29,8 +29,8 @@ import {
 import {
   Simulation,
   SimulationGetJobByIDResponse,
-  SimulationGetJobParams,
-  SimulationGetJobResponse,
+  SimulationLookupJobParams,
+  SimulationLookupJobResponse,
 } from './resources/simulation';
 
 export interface ClientOptions {
@@ -241,9 +241,9 @@ export declare namespace Roark {
 
   export {
     Simulation as Simulation,
-    type SimulationGetJobResponse as SimulationGetJobResponse,
     type SimulationGetJobByIDResponse as SimulationGetJobByIDResponse,
-    type SimulationGetJobParams as SimulationGetJobParams,
+    type SimulationLookupJobResponse as SimulationLookupJobResponse,
+    type SimulationLookupJobParams as SimulationLookupJobParams,
   };
 }
 
