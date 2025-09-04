@@ -29,18 +29,5 @@ describe('resource simulation', () => {
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
-  test('lookupJob: only required params', async () => {
-    const responsePromise = client.simulation.lookupJob({ roarkPhoneNumber: {} });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('lookupJob: required and optional params', async () => {
-    const response = await client.simulation.lookupJob({ roarkPhoneNumber: {}, callReceivedAt: {} });
-  });
+  // do not test lookup job - prism doesn't like camel case query params
 });
