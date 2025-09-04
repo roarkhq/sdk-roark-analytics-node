@@ -20,3 +20,9 @@ export {
   type IntegrationCreateRetellCallParams,
   type IntegrationCreateVapiCallParams,
 } from './integrations';
+export {
+  Simulation,
+  type SimulationGetJobResponse,
+  type SimulationGetJobByIDResponse,
+  type SimulationGetJobParams,
+} from './simulation';

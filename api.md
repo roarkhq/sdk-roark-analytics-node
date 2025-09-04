@@ -49,3 +49,15 @@ Methods:
 
 - <code title="post /v1/retell/call">client.integrations.<a href="./src/resources/integrations.ts">createRetellCall</a>({ ...params }) -> IntegrationCreateRetellCallResponse</code>
 - <code title="post /v1/vapi/call">client.integrations.<a href="./src/resources/integrations.ts">createVapiCall</a>({ ...params }) -> IntegrationCreateVapiCallResponse</code>
+
+# Simulation
+
+Types:
+
+- <code><a href="./src/resources/simulation.ts">SimulationGetJobResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationGetJobByIDResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/simulation/job">client.simulation.<a href="./src/resources/simulation.ts">getJob</a>({ ...params }) -> SimulationGetJobResponse</code>
+- <code title="get /v1/simulation/jobs/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getJobById</a>(jobId) -> SimulationGetJobByIDResponse</code>
