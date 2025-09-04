@@ -22,7 +22,7 @@ export {
 } from './integrations';
 export {
   Simulation,
-  type SimulationGetJobResponse,
   type SimulationGetJobByIDResponse,
-  type SimulationGetJobParams,
+  type SimulationLookupJobResponse,
+  type SimulationLookupJobParams,
 } from './simulation';

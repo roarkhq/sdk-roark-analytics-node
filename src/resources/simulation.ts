@@ -5,191 +5,34 @@ import * as Core from '../core';
 
 export class Simulation extends APIResource {
   /**
-   * Find a simulation job by looking up the active lease for the given phone numbers
-   */
-  getJob(
-    query: SimulationGetJobParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SimulationGetJobResponse> {
-    return this._client.get('/v1/simulation/job', { query, ...options });
-  }
-
-  /**
    * Find a simulation job directly by its ID
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.getJobById(
+   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
+   * );
+   * ```
    */
   getJobById(jobId: unknown, options?: Core.RequestOptions): Core.APIPromise<SimulationGetJobByIDResponse> {
-    return this._client.get(`/v1/simulation/jobs/${jobId}`, options);
-  }
-}
-
-export interface SimulationGetJobResponse {
-  /**
-   * Simulation job with related entities
-   */
-  data: SimulationGetJobResponse.Data;
-}
-
-export namespace SimulationGetJobResponse {
-  /**
-   * Simulation job with related entities
-   */
-  export interface Data {
-    /**
-     * Agent endpoint used in the simulation
-     */
-    agentEndpoint: Data.AgentEndpoint;
-
-    /**
-     * When the job was created
-     */
-    createdAt: string;
-
-    /**
-     * Persona used in the simulation
-     */
-    persona: Data.Persona;
-
-    /**
-     * Processing status
-     */
-    processingStatus: string;
-
-    /**
-     * Scenario used in the simulation
-     */
-    scenario: Data.Scenario;
-
-    /**
-     * Simulation job ID
-     */
-    simulationJobId: string;
-
-    /**
-     * Job status
-     */
-    status: string;
-
-    /**
-     * When the job completed
-     */
-    completedAt?: string | null;
-
-    /**
-     * When the job started
-     */
-    startedAt?: string | null;
+    return this._client.get(`/v1/simulation/job/${jobId}`, options);
   }
 
-  export namespace Data {
-    /**
-     * Agent endpoint used in the simulation
-     */
-    export interface AgentEndpoint {
-      /**
-       * Agent endpoint ID
-       */
-      id: string;
-
-      /**
-       * Agent endpoint type
-       */
-      endpointType: string;
-
-      /**
-       * Agent endpoint name
-       */
-      name: string;
-
-      /**
-       * Agent endpoint phone number
-       */
-      phoneNumber: string | null;
-    }
-
-    /**
-     * Persona used in the simulation
-     */
-    export interface Persona {
-      /**
-       * Persona ID
-       */
-      id: string;
-
-      /**
-       * Accent of the persona
-       */
-      accent: string;
-
-      /**
-       * Background noise setting
-       */
-      backgroundNoise: string;
-
-      /**
-       * Base emotion of the persona
-       */
-      baseEmotion: string;
-
-      /**
-       * How the persona confirms information
-       */
-      confirmationStyle: string;
-
-      /**
-       * Whether persona has speech disfluencies
-       */
-      disfluencies: boolean;
-
-      /**
-       * Gender of the persona
-       */
-      gender: string;
-
-      /**
-       * How clearly the persona expresses intent
-       */
-      intentClarity: string;
-
-      /**
-       * Language of the persona
-       */
-      language: string;
-
-      /**
-       * Reliability of persona memory
-       */
-      memoryReliability: string;
-
-      /**
-       * Persona name
-       */
-      name: string;
-
-      /**
-       * Speech clarity
-       */
-      speechClarity: string;
-
-      /**
-       * Speech pace
-       */
-      speechPace: string;
-    }
-
-    /**
-     * Scenario used in the simulation
-     */
-    export interface Scenario {
-      /**
-       * Scenario ID
-       */
-      id: string;
-
-      /**
-       * Scenario description
-       */
-      description?: string | null;
-    }
+  /**
+   * Find a simulation job by looking up the active lease for the given phone numbers
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.lookupJob({
+   *   roarkPhoneNumber: {},
+   * });
+   * ```
+   */
+  lookupJob(
+    query: SimulationLookupJobParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<SimulationLookupJobResponse> {
+    return this._client.get('/v1/simulation/job/lookup', { query, ...options });
   }
 }
 
@@ -364,27 +207,197 @@ export namespace SimulationGetJobByIDResponse {
   }
 }
 
-export interface SimulationGetJobParams {
+export interface SimulationLookupJobResponse {
   /**
-   * Customer phone number in E.164 format
+   * Simulation job with related entities
    */
-  phoneNumber: unknown;
+  data: SimulationLookupJobResponse.Data;
+}
 
+export namespace SimulationLookupJobResponse {
   /**
-   * Roark-assigned phone number in E.164 format
+   * Simulation job with related entities
+   */
+  export interface Data {
+    /**
+     * Agent endpoint used in the simulation
+     */
+    agentEndpoint: Data.AgentEndpoint;
+
+    /**
+     * When the job was created
+     */
+    createdAt: string;
+
+    /**
+     * Persona used in the simulation
+     */
+    persona: Data.Persona;
+
+    /**
+     * Processing status
+     */
+    processingStatus: string;
+
+    /**
+     * Scenario used in the simulation
+     */
+    scenario: Data.Scenario;
+
+    /**
+     * Simulation job ID
+     */
+    simulationJobId: string;
+
+    /**
+     * Job status
+     */
+    status: string;
+
+    /**
+     * When the job completed
+     */
+    completedAt?: string | null;
+
+    /**
+     * When the job started
+     */
+    startedAt?: string | null;
+  }
+
+  export namespace Data {
+    /**
+     * Agent endpoint used in the simulation
+     */
+    export interface AgentEndpoint {
+      /**
+       * Agent endpoint ID
+       */
+      id: string;
+
+      /**
+       * Agent endpoint type
+       */
+      endpointType: string;
+
+      /**
+       * Agent endpoint name
+       */
+      name: string;
+
+      /**
+       * Agent endpoint phone number
+       */
+      phoneNumber: string | null;
+    }
+
+    /**
+     * Persona used in the simulation
+     */
+    export interface Persona {
+      /**
+       * Persona ID
+       */
+      id: string;
+
+      /**
+       * Accent of the persona
+       */
+      accent: string;
+
+      /**
+       * Background noise setting
+       */
+      backgroundNoise: string;
+
+      /**
+       * Base emotion of the persona
+       */
+      baseEmotion: string;
+
+      /**
+       * How the persona confirms information
+       */
+      confirmationStyle: string;
+
+      /**
+       * Whether persona has speech disfluencies
+       */
+      disfluencies: boolean;
+
+      /**
+       * Gender of the persona
+       */
+      gender: string;
+
+      /**
+       * How clearly the persona expresses intent
+       */
+      intentClarity: string;
+
+      /**
+       * Language of the persona
+       */
+      language: string;
+
+      /**
+       * Reliability of persona memory
+       */
+      memoryReliability: string;
+
+      /**
+       * Persona name
+       */
+      name: string;
+
+      /**
+       * Speech clarity
+       */
+      speechClarity: string;
+
+      /**
+       * Speech pace
+       */
+      speechPace: string;
+    }
+
+    /**
+     * Scenario used in the simulation
+     */
+    export interface Scenario {
+      /**
+       * Scenario ID
+       */
+      id: string;
+
+      /**
+       * Scenario description
+       */
+      description?: string | null;
+    }
+  }
+}
+
+export interface SimulationLookupJobParams {
+  /**
+   * Phone number provisioned by Roark for the simulation job in E.164 format. In the
+   * case of an inbound simulation, this is the number that calls your agent; in the
+   * case of an outbound simulation, this is the number you call from your agent.
    */
   roarkPhoneNumber: unknown;
 
   /**
-   * ISO 8601 timestamp to check for active lease (defaults to current time)
+   * ISO 8601 timestamp of when the call was received. Alternatively, any time
+   * between the start and end of the call is valid. Defaults to the current time,
+   * which fetches any jobs that are currently ongoing.
    */
-  timestamp?: unknown;
+  callReceivedAt?: unknown;
 }
 
 export declare namespace Simulation {
   export {
-    type SimulationGetJobResponse as SimulationGetJobResponse,
     type SimulationGetJobByIDResponse as SimulationGetJobByIDResponse,
-    type SimulationGetJobParams as SimulationGetJobParams,
+    type SimulationLookupJobResponse as SimulationLookupJobResponse,
+    type SimulationLookupJobParams as SimulationLookupJobParams,
   };
 }
