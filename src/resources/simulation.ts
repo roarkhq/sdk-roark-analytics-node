@@ -19,7 +19,8 @@ export class Simulation extends APIResource {
   }
 
   /**
-   * Find a simulation job by looking up the active lease for the given phone numbers
+   * Find the matching simulation job using the number used by the Roark simulation
+   * agent.
    *
    * @example
    * ```ts
