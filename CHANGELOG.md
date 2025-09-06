@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.7.1 (2025-09-06)
+
+Full Changelog: [v2.7.0...v2.7.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.7.0...v2.7.1)
+
+### Chores
+
+* ci build action ([e7dcd61](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e7dcd61b3f582996647a9406e450f8e9d1c608f0))
+
 ## 2.7.0 (2025-09-05)
 
 Full Changelog: [v2.6.0...v2.7.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.6.0...v2.7.0)
