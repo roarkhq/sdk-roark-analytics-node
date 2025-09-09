@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.7.1 (2025-09-09)
+
+Full Changelog: [v2.7.0...v2.7.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.7.0...v2.7.1)
+
+### Bug Fixes
+
+* coerce nullable values to undefined ([2c3f604](https://github.com/roarkhq/sdk-roark-analytics-node/commit/2c3f60422fb3ed4f0450f753f94cb802e3d30b07))
+
+
+### Chores
+
+* ci build action ([e7dcd61](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e7dcd61b3f582996647a9406e450f8e9d1c608f0))
+
 ## 2.7.0 (2025-09-05)
 
 Full Changelog: [v2.6.0...v2.7.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.6.0...v2.7.0)
