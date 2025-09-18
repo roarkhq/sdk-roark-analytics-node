@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.9.1 (2025-09-18)
+
+Full Changelog: [v2.9.0...v2.9.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.9.0...v2.9.1)
+
+### Bug Fixes
+
+* disable null tests ([11df1c9](https://github.com/roarkhq/sdk-roark-analytics-node/commit/11df1c9e596f669000be38279e7c0d1550ffebad))
+
 ## 2.9.0 (2025-09-18)
 
 Full Changelog: [v2.8.0...v2.9.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.8.0...v2.9.0)
