@@ -26,6 +26,7 @@ import {
   IntegrationCreateVapiCallResponse,
   Integrations,
 } from './resources/integrations';
+import { Persona } from './resources/persona';
 import {
   Simulation,
   SimulationGetJobByIDResponse,
@@ -154,6 +155,7 @@ export class Roark extends Core.APIClient {
   call: API.Call = new API.Call(this);
   integrations: API.Integrations = new API.Integrations(this);
   simulation: API.Simulation = new API.Simulation(this);
+  persona: API.Persona = new API.Persona(this);
 
   /**
    * Check whether the base URL is set to its default.
@@ -207,6 +209,7 @@ Roark.Evaluation = Evaluation;
 Roark.Call = Call;
 Roark.Integrations = Integrations;
 Roark.Simulation = Simulation;
+Roark.Persona = Persona;
 
 export declare namespace Roark {
   export type RequestOptions = Core.RequestOptions;
@@ -245,6 +248,8 @@ export declare namespace Roark {
     type SimulationLookupJobResponse as SimulationLookupJobResponse,
     type SimulationLookupJobParams as SimulationLookupJobParams,
   };
+
+  export { Persona as Persona };
 }
 
 export { toFile, fileFromPath } from './uploads';

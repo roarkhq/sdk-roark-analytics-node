@@ -20,6 +20,7 @@ export {
   type IntegrationCreateRetellCallParams,
   type IntegrationCreateVapiCallParams,
 } from './integrations';
+export { Persona } from './persona';
 export {
   Simulation,
   type SimulationGetJobByIDResponse,
