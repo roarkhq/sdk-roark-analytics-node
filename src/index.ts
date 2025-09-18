@@ -26,7 +26,16 @@ import {
   IntegrationCreateVapiCallResponse,
   Integrations,
 } from './resources/integrations';
-import { Persona } from './resources/persona';
+import {
+  Persona,
+  PersonaCreateParams,
+  PersonaCreateResponse,
+  PersonaFindAllParams,
+  PersonaFindAllResponse,
+  PersonaGetByIDResponse,
+  PersonaUpdateParams,
+  PersonaUpdateResponse,
+} from './resources/persona';
 import {
   Simulation,
   SimulationGetJobByIDResponse,
@@ -249,7 +258,16 @@ export declare namespace Roark {
     type SimulationLookupJobParams as SimulationLookupJobParams,
   };
 
-  export { Persona as Persona };
+  export {
+    Persona as Persona,
+    type PersonaCreateResponse as PersonaCreateResponse,
+    type PersonaUpdateResponse as PersonaUpdateResponse,
+    type PersonaFindAllResponse as PersonaFindAllResponse,
+    type PersonaGetByIDResponse as PersonaGetByIDResponse,
+    type PersonaCreateParams as PersonaCreateParams,
+    type PersonaUpdateParams as PersonaUpdateParams,
+    type PersonaFindAllParams as PersonaFindAllParams,
+  };
 }
 
 export { toFile, fileFromPath } from './uploads';

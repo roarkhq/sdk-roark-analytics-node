@@ -63,3 +63,17 @@ Methods:
 - <code title="get /v1/simulation/job/lookup">client.simulation.<a href="./src/resources/simulation.ts">lookupJob</a>({ ...params }) -> SimulationLookupJobResponse</code>
 
 # Persona
+
+Types:
+
+- <code><a href="./src/resources/persona.ts">PersonaCreateResponse</a></code>
+- <code><a href="./src/resources/persona.ts">PersonaUpdateResponse</a></code>
+- <code><a href="./src/resources/persona.ts">PersonaFindAllResponse</a></code>
+- <code><a href="./src/resources/persona.ts">PersonaGetByIDResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/persona">client.persona.<a href="./src/resources/persona.ts">create</a>({ ...params }) -> PersonaCreateResponse</code>
+- <code title="put /v1/persona/{personaId}">client.persona.<a href="./src/resources/persona.ts">update</a>(personaId, { ...params }) -> PersonaUpdateResponse</code>
+- <code title="get /v1/persona">client.persona.<a href="./src/resources/persona.ts">findAll</a>({ ...params }) -> PersonaFindAllResponse</code>
+- <code title="get /v1/persona/{personaId}">client.persona.<a href="./src/resources/persona.ts">getById</a>(personaId) -> PersonaGetByIDResponse</code>
