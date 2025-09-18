@@ -49,7 +49,7 @@ describe('resource persona', () => {
       speechPace: 'NORMAL',
       backstoryPrompt: 'A busy professional calling during lunch break',
       properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
-      secondaryLanguage: null,
+      // secondaryLanguage: null - mock server doesn't handle null properly
     });
   });
 
@@ -93,7 +93,7 @@ describe('resource persona', () => {
       speechPace: 'NORMAL',
       backstoryPrompt: 'A busy professional calling during lunch break',
       properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
-      secondaryLanguage: null,
+      // secondaryLanguage: null - mock server doesn't handle null properly
     });
   });
 
