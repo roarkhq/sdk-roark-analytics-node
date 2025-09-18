@@ -61,3 +61,5 @@ Methods:
 
 - <code title="get /v1/simulation/job/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getJobById</a>(jobId) -> SimulationGetJobByIDResponse</code>
 - <code title="get /v1/simulation/job/lookup">client.simulation.<a href="./src/resources/simulation.ts">lookupJob</a>({ ...params }) -> SimulationLookupJobResponse</code>
+
+# Persona
