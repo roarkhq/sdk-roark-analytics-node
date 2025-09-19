@@ -12,17 +12,9 @@ describe('resource persona', () => {
   test('create: only required params', async () => {
     const responsePromise = client.persona.create({
       accent: 'US',
-      backgroundNoise: 'NONE',
-      baseEmotion: 'NEUTRAL',
-      confirmationStyle: 'EXPLICIT',
       gender: 'MALE',
-      hasDisfluencies: false,
-      intentClarity: 'CLEAR',
       language: 'EN',
-      memoryReliability: 'HIGH',
-      name: 'Alex Morgan',
-      speechClarity: 'CLEAR',
-      speechPace: 'NORMAL',
+      name: 'name',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -36,38 +28,25 @@ describe('resource persona', () => {
   test('create: required and optional params', async () => {
     const response = await client.persona.create({
       accent: 'US',
+      gender: 'MALE',
+      language: 'EN',
+      name: 'name',
       backgroundNoise: 'NONE',
+      backstoryPrompt: 'A busy professional calling during lunch break',
       baseEmotion: 'NEUTRAL',
       confirmationStyle: 'EXPLICIT',
-      gender: 'MALE',
-      hasDisfluencies: false,
+      hasDisfluencies: true,
       intentClarity: 'CLEAR',
-      language: 'EN',
       memoryReliability: 'HIGH',
-      name: 'Alex Morgan',
-      speechClarity: 'CLEAR',
-      speechPace: 'NORMAL',
-      backstoryPrompt: 'A busy professional calling during lunch break',
       properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
-      secondaryLanguage: null,
+      secondaryLanguage: 'EN',
+      speechClarity: 'CLEAR',
+      speechPace: 'SLOW',
     });
   });
 
-  test('update: only required params', async () => {
-    const responsePromise = client.persona.update('personaId', {
-      accent: 'US',
-      backgroundNoise: 'NONE',
-      baseEmotion: 'NEUTRAL',
-      confirmationStyle: 'EXPLICIT',
-      gender: 'MALE',
-      hasDisfluencies: false,
-      intentClarity: 'CLEAR',
-      language: 'EN',
-      memoryReliability: 'HIGH',
-      name: 'Alex Morgan',
-      speechClarity: 'CLEAR',
-      speechPace: 'NORMAL',
-    });
+  test('update', async () => {
+    const responsePromise = client.persona.update('personaId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -77,24 +56,38 @@ describe('resource persona', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('update: required and optional params', async () => {
-    const response = await client.persona.update('personaId', {
-      accent: 'US',
-      backgroundNoise: 'NONE',
-      baseEmotion: 'NEUTRAL',
-      confirmationStyle: 'EXPLICIT',
-      gender: 'MALE',
-      hasDisfluencies: false,
-      intentClarity: 'CLEAR',
-      language: 'EN',
-      memoryReliability: 'HIGH',
-      name: 'Alex Morgan',
-      speechClarity: 'CLEAR',
-      speechPace: 'NORMAL',
-      backstoryPrompt: 'A busy professional calling during lunch break',
-      properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
-      secondaryLanguage: null,
-    });
+  test('update: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.persona.update('personaId', { path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Roark.NotFoundError,
+    );
+  });
+
+  test('update: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.persona.update(
+        'personaId',
+        {
+          accent: 'US',
+          backgroundNoise: 'NONE',
+          backstoryPrompt: 'A busy professional calling during lunch break',
+          baseEmotion: 'NEUTRAL',
+          confirmationStyle: 'EXPLICIT',
+          gender: 'MALE',
+          hasDisfluencies: true,
+          intentClarity: 'CLEAR',
+          language: 'EN',
+          memoryReliability: 'HIGH',
+          name: 'name',
+          properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
+          secondaryLanguage: 'EN',
+          speechClarity: 'CLEAR',
+          speechPace: 'SLOW',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
   });
 
   test('findAll', async () => {
