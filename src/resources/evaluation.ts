@@ -1363,8 +1363,8 @@ export namespace EvaluationCreateJobParams {
     participants: Array<Call.Participant>;
 
     /**
-     * URL of source recording (must be an accessible WAV or MP3 file). Can be a signed
-     * URL.
+     * URL of source recording (must be an accessible WAV, MP3, or MP4 file). Can be a
+     * signed URL.
      */
     recordingUrl: string;
 
@@ -1412,8 +1412,8 @@ export namespace EvaluationCreateJobParams {
     retellCallId?: string;
 
     /**
-     * URL of source stereo recording in WAV format. Must be accessible. Can be a
-     * signed URL. While optional it allows for a richer audio player
+     * URL of source stereo recording. Must be accessible. Can be a signed URL. While
+     * optional it allows for a richer audio player. Supported formats: WAV, MP3, MP4.
      */
     stereoRecordingUrl?: string;
 
@@ -1515,8 +1515,8 @@ export namespace EvaluationCreateJobParams {
       participants: Array<Call.Participant>;
 
       /**
-       * URL of source recording (must be an accessible WAV or MP3 file). Can be a signed
-       * URL.
+       * URL of source recording (must be an accessible WAV, MP3, or MP4 file). Can be a
+       * signed URL.
        */
       recordingUrl: string;
 
@@ -1564,8 +1564,8 @@ export namespace EvaluationCreateJobParams {
       retellCallId?: string;
 
       /**
-       * URL of source stereo recording in WAV format. Must be accessible. Can be a
-       * signed URL. While optional it allows for a richer audio player
+       * URL of source stereo recording. Must be accessible. Can be a signed URL. While
+       * optional it allows for a richer audio player. Supported formats: WAV, MP3, MP4.
        */
       stereoRecordingUrl?: string;
 
