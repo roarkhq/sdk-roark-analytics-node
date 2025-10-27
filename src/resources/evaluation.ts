@@ -1436,6 +1436,8 @@ export namespace EvaluationCreateJobParams {
 
       name?: string | null;
 
+      participantId?: string | null;
+
       phoneNumber?: string | null;
 
       spokeFirst?: boolean;
@@ -1587,6 +1589,8 @@ export namespace EvaluationCreateJobParams {
         isSimulated?: boolean;
 
         name?: string | null;
+
+        participantId?: string | null;
 
         phoneNumber?: string | null;
 
