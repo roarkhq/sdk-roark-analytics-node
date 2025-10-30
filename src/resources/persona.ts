@@ -103,7 +103,15 @@ export namespace PersonaCreateResponse {
     /**
      * Background noise setting
      */
-    backgroundNoise: 'NONE' | 'OFFICE';
+    backgroundNoise:
+      | 'NONE'
+      | 'AIRPORT'
+      | 'CHILDREN_PLAYING'
+      | 'CITY'
+      | 'COFFEE_SHOP'
+      | 'DRIVING'
+      | 'OFFICE'
+      | 'THUNDERSTORM';
 
     /**
      * Base emotional state of the persona
@@ -202,7 +210,15 @@ export namespace PersonaUpdateResponse {
     /**
      * Background noise setting
      */
-    backgroundNoise: 'NONE' | 'OFFICE';
+    backgroundNoise:
+      | 'NONE'
+      | 'AIRPORT'
+      | 'CHILDREN_PLAYING'
+      | 'CITY'
+      | 'COFFEE_SHOP'
+      | 'DRIVING'
+      | 'OFFICE'
+      | 'THUNDERSTORM';
 
     /**
      * Base emotional state of the persona
@@ -303,7 +319,15 @@ export namespace PersonaFindAllResponse {
     /**
      * Background noise setting
      */
-    backgroundNoise: 'NONE' | 'OFFICE';
+    backgroundNoise:
+      | 'NONE'
+      | 'AIRPORT'
+      | 'CHILDREN_PLAYING'
+      | 'CITY'
+      | 'COFFEE_SHOP'
+      | 'DRIVING'
+      | 'OFFICE'
+      | 'THUNDERSTORM';
 
     /**
      * Base emotional state of the persona
@@ -419,7 +443,15 @@ export namespace PersonaGetByIDResponse {
     /**
      * Background noise setting
      */
-    backgroundNoise: 'NONE' | 'OFFICE';
+    backgroundNoise:
+      | 'NONE'
+      | 'AIRPORT'
+      | 'CHILDREN_PLAYING'
+      | 'CITY'
+      | 'COFFEE_SHOP'
+      | 'DRIVING'
+      | 'OFFICE'
+      | 'THUNDERSTORM';
 
     /**
      * Base emotional state of the persona
@@ -523,7 +555,15 @@ export interface PersonaCreateParams {
   /**
    * Background noise setting
    */
-  backgroundNoise?: 'NONE' | 'OFFICE';
+  backgroundNoise?:
+    | 'NONE'
+    | 'AIRPORT'
+    | 'CHILDREN_PLAYING'
+    | 'CITY'
+    | 'COFFEE_SHOP'
+    | 'DRIVING'
+    | 'OFFICE'
+    | 'THUNDERSTORM';
 
   /**
    * Background story and behavioral patterns for the persona
@@ -586,7 +626,15 @@ export interface PersonaUpdateParams {
   /**
    * Background noise setting
    */
-  backgroundNoise?: 'NONE' | 'OFFICE';
+  backgroundNoise?:
+    | 'NONE'
+    | 'AIRPORT'
+    | 'CHILDREN_PLAYING'
+    | 'CITY'
+    | 'COFFEE_SHOP'
+    | 'DRIVING'
+    | 'OFFICE'
+    | 'THUNDERSTORM';
 
   /**
    * Background story and behavioral patterns for the persona
