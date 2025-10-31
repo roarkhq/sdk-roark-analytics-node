@@ -5,7 +5,8 @@ import * as Core from '../core';
 
 export class Simulation extends APIResource {
   /**
-   * Find a simulation job directly by its ID
+   * Get a individual simulation run directly by its ID. This is generally part of a
+   * larger simulation run plan job.
    *
    * @example
    * ```ts
@@ -19,7 +20,7 @@ export class Simulation extends APIResource {
   }
 
   /**
-   * Find the matching simulation job using the number used by the Roark simulation
+   * Find the matching simulation using the number used by the Roark simulation
    * agent.
    *
    * @example
@@ -50,7 +51,7 @@ export namespace SimulationGetJobByIDResponse {
    */
   export interface Data {
     /**
-     * Agent endpoint used in the simulation
+     * Agent endpoint used in a simulation
      */
     agentEndpoint: Data.AgentEndpoint;
 
@@ -60,7 +61,7 @@ export namespace SimulationGetJobByIDResponse {
     createdAt: string;
 
     /**
-     * Persona used in the simulation
+     * Persona used in a simulation
      */
     persona: Data.Persona;
 
@@ -70,7 +71,7 @@ export namespace SimulationGetJobByIDResponse {
     processingStatus: string;
 
     /**
-     * Scenario used in the simulation
+     * Scenario used in a simulation
      */
     scenario: Data.Scenario;
 
@@ -97,7 +98,7 @@ export namespace SimulationGetJobByIDResponse {
 
   export namespace Data {
     /**
-     * Agent endpoint used in the simulation
+     * Agent endpoint used in a simulation
      */
     export interface AgentEndpoint {
       /**
@@ -122,7 +123,7 @@ export namespace SimulationGetJobByIDResponse {
     }
 
     /**
-     * Persona used in the simulation
+     * Persona used in a simulation
      */
     export interface Persona {
       /**
@@ -192,7 +193,7 @@ export namespace SimulationGetJobByIDResponse {
     }
 
     /**
-     * Scenario used in the simulation
+     * Scenario used in a simulation
      */
     export interface Scenario {
       /**
@@ -221,7 +222,7 @@ export namespace SimulationLookupJobResponse {
    */
   export interface Data {
     /**
-     * Agent endpoint used in the simulation
+     * Agent endpoint used in a simulation
      */
     agentEndpoint: Data.AgentEndpoint;
 
@@ -231,7 +232,7 @@ export namespace SimulationLookupJobResponse {
     createdAt: string;
 
     /**
-     * Persona used in the simulation
+     * Persona used in a simulation
      */
     persona: Data.Persona;
 
@@ -241,7 +242,7 @@ export namespace SimulationLookupJobResponse {
     processingStatus: string;
 
     /**
-     * Scenario used in the simulation
+     * Scenario used in a simulation
      */
     scenario: Data.Scenario;
 
@@ -268,7 +269,7 @@ export namespace SimulationLookupJobResponse {
 
   export namespace Data {
     /**
-     * Agent endpoint used in the simulation
+     * Agent endpoint used in a simulation
      */
     export interface AgentEndpoint {
       /**
@@ -293,7 +294,7 @@ export namespace SimulationLookupJobResponse {
     }
 
     /**
-     * Persona used in the simulation
+     * Persona used in a simulation
      */
     export interface Persona {
       /**
@@ -363,7 +364,7 @@ export namespace SimulationLookupJobResponse {
     }
 
     /**
-     * Scenario used in the simulation
+     * Scenario used in a simulation
      */
     export interface Scenario {
       /**
