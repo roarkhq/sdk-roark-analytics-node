@@ -5,7 +5,8 @@ import * as Core from '../core';
 
 export class Simulation extends APIResource {
   /**
-   * Find a simulation job directly by its ID
+   * Get a individual simulation run directly by its ID. This is generally part of a
+   * larger simulation run plan job.
    *
    * @example
    * ```ts
@@ -19,7 +20,7 @@ export class Simulation extends APIResource {
   }
 
   /**
-   * Find the matching simulation job using the number used by the Roark simulation
+   * Find the matching simulation using the number used by the Roark simulation
    * agent.
    *
    * @example
@@ -50,7 +51,7 @@ export namespace SimulationGetJobByIDResponse {
    */
   export interface Data {
     /**
-     * Agent endpoint used in the simulation
+     * Agent endpoint used in a simulation
      */
     agentEndpoint: Data.AgentEndpoint;
 
@@ -59,9 +60,6 @@ export namespace SimulationGetJobByIDResponse {
      */
     createdAt: string;
 
-    /**
-     * Persona used in the simulation
-     */
     persona: Data.Persona;
 
     /**
@@ -70,7 +68,7 @@ export namespace SimulationGetJobByIDResponse {
     processingStatus: string;
 
     /**
-     * Scenario used in the simulation
+     * Scenario used in a simulation
      */
     scenario: Data.Scenario;
 
@@ -97,7 +95,7 @@ export namespace SimulationGetJobByIDResponse {
 
   export namespace Data {
     /**
-     * Agent endpoint used in the simulation
+     * Agent endpoint used in a simulation
      */
     export interface AgentEndpoint {
       /**
@@ -121,78 +119,109 @@ export namespace SimulationGetJobByIDResponse {
       phoneNumber: string | null;
     }
 
-    /**
-     * Persona used in the simulation
-     */
     export interface Persona {
       /**
-       * Persona ID
+       * Unique identifier of the persona
        */
       id: string;
 
       /**
-       * Accent of the persona
+       * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+       * optional variants
        */
-      accent: string;
+      accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
 
       /**
        * Background noise setting
        */
-      backgroundNoise: string;
+      backgroundNoise:
+        | 'NONE'
+        | 'AIRPORT'
+        | 'CHILDREN_PLAYING'
+        | 'CITY'
+        | 'COFFEE_SHOP'
+        | 'DRIVING'
+        | 'OFFICE'
+        | 'THUNDERSTORM';
 
       /**
-       * Base emotion of the persona
+       * Base emotional state of the persona
        */
-      baseEmotion: string;
+      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
 
       /**
        * How the persona confirms information
        */
-      confirmationStyle: string;
+      confirmationStyle: 'EXPLICIT' | 'VAGUE';
 
       /**
-       * Whether persona has speech disfluencies
+       * Creation timestamp
        */
-      disfluencies: boolean;
+      createdAt: string;
 
       /**
        * Gender of the persona
        */
-      gender: string;
+      gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
 
       /**
-       * How clearly the persona expresses intent
+       * Whether the persona uses filler words like "um" and "uh"
        */
-      intentClarity: string;
+      hasDisfluencies: boolean;
 
       /**
-       * Language of the persona
+       * How clearly the persona expresses their intentions
        */
-      language: string;
+      intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
       /**
-       * Reliability of persona memory
+       * Primary language ISO 639-1 code for the persona
        */
-      memoryReliability: string;
+      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
 
       /**
-       * Persona name
+       * How reliable the persona's memory is
+       */
+      memoryReliability: 'HIGH' | 'LOW';
+
+      /**
+       * The name the agent will identify as during conversations
        */
       name: string;
 
       /**
-       * Speech clarity
+       * Additional custom properties about the persona
        */
-      speechClarity: string;
+      properties: { [key: string]: unknown };
 
       /**
-       * Speech pace
+       * Speech clarity of the persona
        */
-      speechPace: string;
+      speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+      /**
+       * Speech pace of the persona
+       */
+      speechPace: 'SLOW' | 'NORMAL' | 'FAST';
+
+      /**
+       * Last update timestamp
+       */
+      updatedAt: string;
+
+      /**
+       * Background story and behavioral patterns for the persona
+       */
+      backstoryPrompt?: string | null;
+
+      /**
+       * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+       */
+      secondaryLanguage?: 'EN' | null;
     }
 
     /**
-     * Scenario used in the simulation
+     * Scenario used in a simulation
      */
     export interface Scenario {
       /**
@@ -221,7 +250,7 @@ export namespace SimulationLookupJobResponse {
    */
   export interface Data {
     /**
-     * Agent endpoint used in the simulation
+     * Agent endpoint used in a simulation
      */
     agentEndpoint: Data.AgentEndpoint;
 
@@ -230,9 +259,6 @@ export namespace SimulationLookupJobResponse {
      */
     createdAt: string;
 
-    /**
-     * Persona used in the simulation
-     */
     persona: Data.Persona;
 
     /**
@@ -241,7 +267,7 @@ export namespace SimulationLookupJobResponse {
     processingStatus: string;
 
     /**
-     * Scenario used in the simulation
+     * Scenario used in a simulation
      */
     scenario: Data.Scenario;
 
@@ -268,7 +294,7 @@ export namespace SimulationLookupJobResponse {
 
   export namespace Data {
     /**
-     * Agent endpoint used in the simulation
+     * Agent endpoint used in a simulation
      */
     export interface AgentEndpoint {
       /**
@@ -292,78 +318,109 @@ export namespace SimulationLookupJobResponse {
       phoneNumber: string | null;
     }
 
-    /**
-     * Persona used in the simulation
-     */
     export interface Persona {
       /**
-       * Persona ID
+       * Unique identifier of the persona
        */
       id: string;
 
       /**
-       * Accent of the persona
+       * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+       * optional variants
        */
-      accent: string;
+      accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
 
       /**
        * Background noise setting
        */
-      backgroundNoise: string;
+      backgroundNoise:
+        | 'NONE'
+        | 'AIRPORT'
+        | 'CHILDREN_PLAYING'
+        | 'CITY'
+        | 'COFFEE_SHOP'
+        | 'DRIVING'
+        | 'OFFICE'
+        | 'THUNDERSTORM';
 
       /**
-       * Base emotion of the persona
+       * Base emotional state of the persona
        */
-      baseEmotion: string;
+      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
 
       /**
        * How the persona confirms information
        */
-      confirmationStyle: string;
+      confirmationStyle: 'EXPLICIT' | 'VAGUE';
 
       /**
-       * Whether persona has speech disfluencies
+       * Creation timestamp
        */
-      disfluencies: boolean;
+      createdAt: string;
 
       /**
        * Gender of the persona
        */
-      gender: string;
+      gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
 
       /**
-       * How clearly the persona expresses intent
+       * Whether the persona uses filler words like "um" and "uh"
        */
-      intentClarity: string;
+      hasDisfluencies: boolean;
 
       /**
-       * Language of the persona
+       * How clearly the persona expresses their intentions
        */
-      language: string;
+      intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
       /**
-       * Reliability of persona memory
+       * Primary language ISO 639-1 code for the persona
        */
-      memoryReliability: string;
+      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
 
       /**
-       * Persona name
+       * How reliable the persona's memory is
+       */
+      memoryReliability: 'HIGH' | 'LOW';
+
+      /**
+       * The name the agent will identify as during conversations
        */
       name: string;
 
       /**
-       * Speech clarity
+       * Additional custom properties about the persona
        */
-      speechClarity: string;
+      properties: { [key: string]: unknown };
 
       /**
-       * Speech pace
+       * Speech clarity of the persona
        */
-      speechPace: string;
+      speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+      /**
+       * Speech pace of the persona
+       */
+      speechPace: 'SLOW' | 'NORMAL' | 'FAST';
+
+      /**
+       * Last update timestamp
+       */
+      updatedAt: string;
+
+      /**
+       * Background story and behavioral patterns for the persona
+       */
+      backstoryPrompt?: string | null;
+
+      /**
+       * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+       */
+      secondaryLanguage?: 'EN' | null;
     }
 
     /**
-     * Scenario used in the simulation
+     * Scenario used in a simulation
      */
     export interface Scenario {
       /**

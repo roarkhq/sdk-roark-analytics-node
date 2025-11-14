@@ -12,17 +12,9 @@ describe('resource persona', () => {
   test('create: only required params', async () => {
     const responsePromise = client.persona.create({
       accent: 'US',
-      backgroundNoise: 'NONE',
-      baseEmotion: 'NEUTRAL',
-      confirmationStyle: 'EXPLICIT',
       gender: 'MALE',
-      hasDisfluencies: false,
-      intentClarity: 'CLEAR',
       language: 'EN',
-      memoryReliability: 'HIGH',
-      name: 'Alex Morgan',
-      speechClarity: 'CLEAR',
-      speechPace: 'NORMAL',
+      name: 'name',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -36,12 +28,7 @@ describe('resource persona', () => {
   test('create: required and optional params', async () => {
     const response = await client.persona.create({
       accent: 'US',
-      backgroundNoise: 'NONE',
-      baseEmotion: 'NEUTRAL',
-      confirmationStyle: 'EXPLICIT',
       gender: 'MALE',
-      hasDisfluencies: false,
-      intentClarity: 'CLEAR',
       language: 'EN',
       memoryReliability: 'HIGH',
       name: 'Alex Morgan',
@@ -57,17 +44,21 @@ describe('resource persona', () => {
     const responsePromise = client.persona.update('personaId', {
       accent: 'US',
       backgroundNoise: 'NONE',
+      backstoryPrompt: 'A busy professional calling during lunch break',
       baseEmotion: 'NEUTRAL',
       confirmationStyle: 'EXPLICIT',
-      gender: 'MALE',
-      hasDisfluencies: false,
+      hasDisfluencies: true,
       intentClarity: 'CLEAR',
-      language: 'EN',
       memoryReliability: 'HIGH',
-      name: 'Alex Morgan',
+      properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
+      secondaryLanguage: 'EN',
       speechClarity: 'CLEAR',
-      speechPace: 'NORMAL',
+      speechPace: 'SLOW',
     });
+  });
+
+  test('update', async () => {
+    const responsePromise = client.persona.update('personaId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

@@ -12,17 +12,9 @@ export class Persona extends APIResource {
    * ```ts
    * const persona = await client.persona.create({
    *   accent: 'US',
-   *   backgroundNoise: 'NONE',
-   *   baseEmotion: 'NEUTRAL',
-   *   confirmationStyle: 'EXPLICIT',
    *   gender: 'MALE',
-   *   hasDisfluencies: false,
-   *   intentClarity: 'CLEAR',
    *   language: 'EN',
-   *   memoryReliability: 'HIGH',
-   *   name: 'Alex Morgan',
-   *   speechClarity: 'CLEAR',
-   *   speechPace: 'NORMAL',
+   *   name: 'name',
    * });
    * ```
    */
@@ -35,27 +27,23 @@ export class Persona extends APIResource {
    *
    * @example
    * ```ts
-   * const persona = await client.persona.update('personaId', {
-   *   accent: 'US',
-   *   backgroundNoise: 'NONE',
-   *   baseEmotion: 'NEUTRAL',
-   *   confirmationStyle: 'EXPLICIT',
-   *   gender: 'MALE',
-   *   hasDisfluencies: false,
-   *   intentClarity: 'CLEAR',
-   *   language: 'EN',
-   *   memoryReliability: 'HIGH',
-   *   name: 'Alex Morgan',
-   *   speechClarity: 'CLEAR',
-   *   speechPace: 'NORMAL',
-   * });
+   * const persona = await client.persona.update('personaId');
    * ```
    */
   update(
     personaId: string,
-    body: PersonaUpdateParams,
+    body?: PersonaUpdateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<PersonaUpdateResponse>;
+  update(personaId: string, options?: Core.RequestOptions): Core.APIPromise<PersonaUpdateResponse>;
+  update(
+    personaId: string,
+    body: PersonaUpdateParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.APIPromise<PersonaUpdateResponse> {
+    if (isRequestOptions(body)) {
+      return this.update(personaId, {}, body);
+    }
     return this._client.put(`/v1/persona/${personaId}`, { body, ...options });
   }
 
@@ -107,14 +95,23 @@ export namespace PersonaCreateResponse {
     id: string;
 
     /**
-     * Accent of the persona
+     * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+     * optional variants
      */
     accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
 
     /**
      * Background noise setting
      */
-    backgroundNoise: 'NONE' | 'OFFICE';
+    backgroundNoise:
+      | 'NONE'
+      | 'AIRPORT'
+      | 'CHILDREN_PLAYING'
+      | 'CITY'
+      | 'COFFEE_SHOP'
+      | 'DRIVING'
+      | 'OFFICE'
+      | 'THUNDERSTORM';
 
     /**
      * Base emotional state of the persona
@@ -147,7 +144,7 @@ export namespace PersonaCreateResponse {
     intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
     /**
-     * Primary language for the persona
+     * Primary language ISO 639-1 code for the persona
      */
     language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
 
@@ -160,6 +157,11 @@ export namespace PersonaCreateResponse {
      * The name the agent will identify as during conversations
      */
     name: string;
+
+    /**
+     * Additional custom properties about the persona
+     */
+    properties: { [key: string]: unknown };
 
     /**
      * Speech clarity of the persona
@@ -182,12 +184,7 @@ export namespace PersonaCreateResponse {
     backstoryPrompt?: string | null;
 
     /**
-     * Additional custom properties about the persona
-     */
-    properties?: { [key: string]: unknown };
-
-    /**
-     * Secondary language for code-switching (e.g., Hinglish, Spanglish)
+     * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
      */
     secondaryLanguage?: 'EN' | null;
   }
@@ -205,14 +202,23 @@ export namespace PersonaUpdateResponse {
     id: string;
 
     /**
-     * Accent of the persona
+     * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+     * optional variants
      */
     accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
 
     /**
      * Background noise setting
      */
-    backgroundNoise: 'NONE' | 'OFFICE';
+    backgroundNoise:
+      | 'NONE'
+      | 'AIRPORT'
+      | 'CHILDREN_PLAYING'
+      | 'CITY'
+      | 'COFFEE_SHOP'
+      | 'DRIVING'
+      | 'OFFICE'
+      | 'THUNDERSTORM';
 
     /**
      * Base emotional state of the persona
@@ -245,7 +251,7 @@ export namespace PersonaUpdateResponse {
     intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
     /**
-     * Primary language for the persona
+     * Primary language ISO 639-1 code for the persona
      */
     language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
 
@@ -258,6 +264,11 @@ export namespace PersonaUpdateResponse {
      * The name the agent will identify as during conversations
      */
     name: string;
+
+    /**
+     * Additional custom properties about the persona
+     */
+    properties: { [key: string]: unknown };
 
     /**
      * Speech clarity of the persona
@@ -280,12 +291,7 @@ export namespace PersonaUpdateResponse {
     backstoryPrompt?: string | null;
 
     /**
-     * Additional custom properties about the persona
-     */
-    properties?: { [key: string]: unknown };
-
-    /**
-     * Secondary language for code-switching (e.g., Hinglish, Spanglish)
+     * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
      */
     secondaryLanguage?: 'EN' | null;
   }
@@ -305,14 +311,23 @@ export namespace PersonaFindAllResponse {
     id: string;
 
     /**
-     * Accent of the persona
+     * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+     * optional variants
      */
     accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
 
     /**
      * Background noise setting
      */
-    backgroundNoise: 'NONE' | 'OFFICE';
+    backgroundNoise:
+      | 'NONE'
+      | 'AIRPORT'
+      | 'CHILDREN_PLAYING'
+      | 'CITY'
+      | 'COFFEE_SHOP'
+      | 'DRIVING'
+      | 'OFFICE'
+      | 'THUNDERSTORM';
 
     /**
      * Base emotional state of the persona
@@ -345,7 +360,7 @@ export namespace PersonaFindAllResponse {
     intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
     /**
-     * Primary language for the persona
+     * Primary language ISO 639-1 code for the persona
      */
     language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
 
@@ -358,6 +373,11 @@ export namespace PersonaFindAllResponse {
      * The name the agent will identify as during conversations
      */
     name: string;
+
+    /**
+     * Additional custom properties about the persona
+     */
+    properties: { [key: string]: unknown };
 
     /**
      * Speech clarity of the persona
@@ -380,12 +400,7 @@ export namespace PersonaFindAllResponse {
     backstoryPrompt?: string | null;
 
     /**
-     * Additional custom properties about the persona
-     */
-    properties?: { [key: string]: unknown };
-
-    /**
-     * Secondary language for code-switching (e.g., Hinglish, Spanglish)
+     * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
      */
     secondaryLanguage?: 'EN' | null;
   }
@@ -420,14 +435,23 @@ export namespace PersonaGetByIDResponse {
     id: string;
 
     /**
-     * Accent of the persona
+     * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+     * optional variants
      */
     accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
 
     /**
      * Background noise setting
      */
-    backgroundNoise: 'NONE' | 'OFFICE';
+    backgroundNoise:
+      | 'NONE'
+      | 'AIRPORT'
+      | 'CHILDREN_PLAYING'
+      | 'CITY'
+      | 'COFFEE_SHOP'
+      | 'DRIVING'
+      | 'OFFICE'
+      | 'THUNDERSTORM';
 
     /**
      * Base emotional state of the persona
@@ -460,7 +484,7 @@ export namespace PersonaGetByIDResponse {
     intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
     /**
-     * Primary language for the persona
+     * Primary language ISO 639-1 code for the persona
      */
     language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
 
@@ -473,6 +497,11 @@ export namespace PersonaGetByIDResponse {
      * The name the agent will identify as during conversations
      */
     name: string;
+
+    /**
+     * Additional custom properties about the persona
+     */
+    properties: { [key: string]: unknown };
 
     /**
      * Speech clarity of the persona
@@ -495,12 +524,7 @@ export namespace PersonaGetByIDResponse {
     backstoryPrompt?: string | null;
 
     /**
-     * Additional custom properties about the persona
-     */
-    properties?: { [key: string]: unknown };
-
-    /**
-     * Secondary language for code-switching (e.g., Hinglish, Spanglish)
+     * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
      */
     secondaryLanguage?: 'EN' | null;
   }
@@ -508,24 +532,10 @@ export namespace PersonaGetByIDResponse {
 
 export interface PersonaCreateParams {
   /**
-   * Accent of the persona
+   * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+   * optional variants
    */
   accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
-
-  /**
-   * Background noise setting
-   */
-  backgroundNoise: 'NONE' | 'OFFICE';
-
-  /**
-   * Base emotional state of the persona
-   */
-  baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
-
-  /**
-   * How the persona confirms information
-   */
-  confirmationStyle: 'EXPLICIT' | 'VAGUE';
 
   /**
    * Gender of the persona
@@ -533,24 +543,9 @@ export interface PersonaCreateParams {
   gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
 
   /**
-   * Whether the persona uses filler words like "um" and "uh"
-   */
-  hasDisfluencies: boolean;
-
-  /**
-   * How clearly the persona expresses their intentions
-   */
-  intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
-
-  /**
-   * Primary language for the persona
+   * Primary language ISO 639-1 code for the persona
    */
   language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
-
-  /**
-   * How reliable the persona's memory is
-   */
-  memoryReliability: 'HIGH' | 'LOW';
 
   /**
    * The name the agent will identify as during conversations
@@ -558,14 +553,17 @@ export interface PersonaCreateParams {
   name: string;
 
   /**
-   * Speech clarity of the persona
+   * Background noise setting
    */
-  speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
-
-  /**
-   * Speech pace of the persona
-   */
-  speechPace: 'SLOW' | 'NORMAL' | 'FAST';
+  backgroundNoise?:
+    | 'NONE'
+    | 'AIRPORT'
+    | 'CHILDREN_PLAYING'
+    | 'CITY'
+    | 'COFFEE_SHOP'
+    | 'DRIVING'
+    | 'OFFICE'
+    | 'THUNDERSTORM';
 
   /**
    * Background story and behavioral patterns for the persona
@@ -573,76 +571,70 @@ export interface PersonaCreateParams {
   backstoryPrompt?: string | null;
 
   /**
+   * Base emotional state of the persona
+   */
+  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+
+  /**
+   * How the persona confirms information
+   */
+  confirmationStyle?: 'EXPLICIT' | 'VAGUE';
+
+  /**
+   * Whether the persona uses filler words like "um" and "uh"
+   */
+  hasDisfluencies?: boolean;
+
+  /**
+   * How clearly the persona expresses their intentions
+   */
+  intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+  /**
+   * How reliable the persona's memory is
+   */
+  memoryReliability?: 'HIGH' | 'LOW';
+
+  /**
    * Additional custom properties about the persona
    */
   properties?: { [key: string]: unknown };
 
   /**
-   * Secondary language for code-switching (e.g., Hinglish, Spanglish)
+   * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
    */
   secondaryLanguage?: 'EN' | null;
+
+  /**
+   * Speech clarity of the persona
+   */
+  speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+  /**
+   * Speech pace of the persona
+   */
+  speechPace?: 'SLOW' | 'NORMAL' | 'FAST';
 }
 
 export interface PersonaUpdateParams {
   /**
-   * Accent of the persona
+   * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+   * optional variants
    */
-  accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
+  accent?: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
 
   /**
    * Background noise setting
    */
-  backgroundNoise: 'NONE' | 'OFFICE';
-
-  /**
-   * Base emotional state of the persona
-   */
-  baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
-
-  /**
-   * How the persona confirms information
-   */
-  confirmationStyle: 'EXPLICIT' | 'VAGUE';
-
-  /**
-   * Gender of the persona
-   */
-  gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
-
-  /**
-   * Whether the persona uses filler words like "um" and "uh"
-   */
-  hasDisfluencies: boolean;
-
-  /**
-   * How clearly the persona expresses their intentions
-   */
-  intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
-
-  /**
-   * Primary language for the persona
-   */
-  language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
-
-  /**
-   * How reliable the persona's memory is
-   */
-  memoryReliability: 'HIGH' | 'LOW';
-
-  /**
-   * The name the agent will identify as during conversations
-   */
-  name: string;
-
-  /**
-   * Speech clarity of the persona
-   */
-  speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
-
-  /**
-   * Speech pace of the persona
-   */
-  speechPace: 'SLOW' | 'NORMAL' | 'FAST';
+  backgroundNoise?:
+    | 'NONE'
+    | 'AIRPORT'
+    | 'CHILDREN_PLAYING'
+    | 'CITY'
+    | 'COFFEE_SHOP'
+    | 'DRIVING'
+    | 'OFFICE'
+    | 'THUNDERSTORM';
 
   /**
    * Background story and behavioral patterns for the persona
@@ -650,14 +642,64 @@ export interface PersonaUpdateParams {
   backstoryPrompt?: string | null;
 
   /**
+   * Base emotional state of the persona
+   */
+  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+
+  /**
+   * How the persona confirms information
+   */
+  confirmationStyle?: 'EXPLICIT' | 'VAGUE';
+
+  /**
+   * Gender of the persona
+   */
+  gender?: 'MALE' | 'FEMALE' | 'NEUTRAL';
+
+  /**
+   * Whether the persona uses filler words like "um" and "uh"
+   */
+  hasDisfluencies?: boolean;
+
+  /**
+   * How clearly the persona expresses their intentions
+   */
+  intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+  /**
+   * Primary language ISO 639-1 code for the persona
+   */
+  language?: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
+
+  /**
+   * How reliable the persona's memory is
+   */
+  memoryReliability?: 'HIGH' | 'LOW';
+
+  /**
+   * The name the agent will identify as during conversations
+   */
+  name?: string;
+
+  /**
    * Additional custom properties about the persona
    */
   properties?: { [key: string]: unknown };
 
   /**
-   * Secondary language for code-switching (e.g., Hinglish, Spanglish)
+   * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
    */
   secondaryLanguage?: 'EN' | null;
+
+  /**
+   * Speech clarity of the persona
+   */
+  speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+  /**
+   * Speech pace of the persona
+   */
+  speechPace?: 'SLOW' | 'NORMAL' | 'FAST';
 }
 
 export interface PersonaFindAllParams {

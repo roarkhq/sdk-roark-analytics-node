@@ -1,5 +1,35 @@
 # Changelog
 
+## 2.10.0 (2025-11-14)
+
+Full Changelog: [v2.9.1...v2.10.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.9.1...v2.10.0)
+
+### Features
+
+* **api:** api update ([9d82065](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9d820651e97f261745c068e6d65d62c399056ebd))
+* **api:** api update ([2a53363](https://github.com/roarkhq/sdk-roark-analytics-node/commit/2a53363da80496e5846624025690cef918acd3fe))
+* **api:** api update ([86d5d23](https://github.com/roarkhq/sdk-roark-analytics-node/commit/86d5d232b8eabfde30024d70b956bc15acb09698))
+* **api:** api update ([fa6a848](https://github.com/roarkhq/sdk-roark-analytics-node/commit/fa6a8487aafd0ede336055d7e839061d954d61a0))
+* **api:** api update ([82c1e82](https://github.com/roarkhq/sdk-roark-analytics-node/commit/82c1e8246606302c90bf616e6dc20bb98f79b50d))
+* **api:** api update ([fb3baba](https://github.com/roarkhq/sdk-roark-analytics-node/commit/fb3baba8c7bf57a300a68c43767054464a6d67bd))
+* **api:** api update ([38d8436](https://github.com/roarkhq/sdk-roark-analytics-node/commit/38d8436e1cc7dd0709b9437b21e8a13d3e5f8a41))
+* **api:** api update ([ea47082](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ea4708266e68baefbd0637737cc8d52a00352b06))
+
+
+### Performance Improvements
+
+* faster formatting ([59eeb06](https://github.com/roarkhq/sdk-roark-analytics-node/commit/59eeb060dd497e302c85091ab0f9125915efad40))
+
+
+### Chores
+
+* do not install brew dependencies in ./scripts/bootstrap by default ([2486fc4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/2486fc4a3ad80f172dd44adae59dda37ea9cc6ba))
+* **internal:** codegen related update ([1175a66](https://github.com/roarkhq/sdk-roark-analytics-node/commit/1175a66437aea52a2775ac9bec4815ac0340bd0c))
+* **internal:** fix incremental formatting in some cases ([72088c3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/72088c34681f28befdfdee5de88d191c7f9648c8))
+* **internal:** ignore .eslintcache ([a2ad660](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a2ad66002f98be4f7f38038b4479961dffe230aa))
+* **internal:** remove deprecated `compilerOptions.baseUrl` from tsconfig.json ([38a346e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/38a346e9afa0551010e0aba91fd3a01053b9d935))
+* **internal:** use npm pack for build uploads ([909eb82](https://github.com/roarkhq/sdk-roark-analytics-node/commit/909eb8273e4f733a3140185f6b5a110114502c1c))
+
 ## 2.9.1 (2025-09-18)
 
 Full Changelog: [v2.9.0...v2.9.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.9.0...v2.9.1)
