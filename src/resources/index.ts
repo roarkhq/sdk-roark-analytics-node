@@ -1,6 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Call, type CallGetEvaluationRunsResponse, type CallGetSentimentRunsResponse } from './call';
+export {
+  Call,
+  type CallGetEvaluationRunsResponse,
+  type CallGetMetricsResponse,
+  type CallGetSentimentRunsResponse,
+  type CallGetMetricsParams,
+} from './call';
 export {
   Evaluation,
   type EvaluationCreateJobResponse,
@@ -20,6 +26,7 @@ export {
   type IntegrationCreateRetellCallParams,
   type IntegrationCreateVapiCallParams,
 } from './integrations';
+export { Metric, type MetricGetDefinitionsResponse } from './metric';
 export {
   Persona,
   type PersonaCreateResponse,

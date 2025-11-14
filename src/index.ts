@@ -6,7 +6,13 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
-import { Call, CallGetEvaluationRunsResponse, CallGetSentimentRunsResponse } from './resources/call';
+import {
+  Call,
+  CallGetEvaluationRunsResponse,
+  CallGetMetricsParams,
+  CallGetMetricsResponse,
+  CallGetSentimentRunsResponse,
+} from './resources/call';
 import {
   Evaluation,
   EvaluationCreateJobParams,
@@ -26,6 +32,7 @@ import {
   IntegrationCreateVapiCallResponse,
   Integrations,
 } from './resources/integrations';
+import { Metric, MetricGetDefinitionsResponse } from './resources/metric';
 import {
   Persona,
   PersonaCreateParams,
@@ -162,6 +169,7 @@ export class Roark extends Core.APIClient {
   health: API.Health = new API.Health(this);
   evaluation: API.Evaluation = new API.Evaluation(this);
   call: API.Call = new API.Call(this);
+  metric: API.Metric = new API.Metric(this);
   integrations: API.Integrations = new API.Integrations(this);
   simulation: API.Simulation = new API.Simulation(this);
   persona: API.Persona = new API.Persona(this);
@@ -216,6 +224,7 @@ export class Roark extends Core.APIClient {
 Roark.Health = Health;
 Roark.Evaluation = Evaluation;
 Roark.Call = Call;
+Roark.Metric = Metric;
 Roark.Integrations = Integrations;
 Roark.Simulation = Simulation;
 Roark.Persona = Persona;
@@ -240,8 +249,12 @@ export declare namespace Roark {
   export {
     Call as Call,
     type CallGetEvaluationRunsResponse as CallGetEvaluationRunsResponse,
+    type CallGetMetricsResponse as CallGetMetricsResponse,
     type CallGetSentimentRunsResponse as CallGetSentimentRunsResponse,
+    type CallGetMetricsParams as CallGetMetricsParams,
   };
+
+  export { Metric as Metric, type MetricGetDefinitionsResponse as MetricGetDefinitionsResponse };
 
   export {
     Integrations as Integrations,
