@@ -129,7 +129,7 @@ export namespace SimulationGetJobByIDResponse {
        * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
        * optional variants
        */
-      accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
+      accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU' | 'IT';
 
       /**
        * Background noise setting
@@ -177,7 +177,7 @@ export namespace SimulationGetJobByIDResponse {
       /**
        * Primary language ISO 639-1 code for the persona
        */
-      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
+      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT';
 
       /**
        * How reliable the persona's memory is
@@ -328,7 +328,7 @@ export namespace SimulationLookupJobResponse {
        * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
        * optional variants
        */
-      accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU';
+      accent: 'US' | 'US_X_SOUTH' | 'GB' | 'ES' | 'DE' | 'IN' | 'FR' | 'NL' | 'SA' | 'GR' | 'AU' | 'IT';
 
       /**
        * Background noise setting
@@ -376,7 +376,7 @@ export namespace SimulationLookupJobResponse {
       /**
        * Primary language ISO 639-1 code for the persona
        */
-      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL';
+      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT';
 
       /**
        * How reliable the persona's memory is
