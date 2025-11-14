@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
+import { isRequestOptions } from '../core';
 import * as Core from '../core';
 
 export class Call extends APIResource {
@@ -12,6 +13,27 @@ export class Call extends APIResource {
     options?: Core.RequestOptions,
   ): Core.APIPromise<CallGetEvaluationRunsResponse> {
     return this._client.get(`/v1/call/${callId}/evaluation-run`, options);
+  }
+
+  /**
+   * Fetch all call-level metrics for a specific call, including both
+   * system-generated and custom metrics. Only returns successfully computed metrics.
+   */
+  getMetrics(
+    callId: string,
+    query?: CallGetMetricsParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CallGetMetricsResponse>;
+  getMetrics(callId: string, options?: Core.RequestOptions): Core.APIPromise<CallGetMetricsResponse>;
+  getMetrics(
+    callId: string,
+    query: CallGetMetricsParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CallGetMetricsResponse> {
+    if (isRequestOptions(query)) {
+      return this.getMetrics(callId, {}, query);
+    }
+    return this._client.get(`/v1/call/${callId}/metrics`, { query, ...options });
   }
 
   /**
@@ -214,6 +236,204 @@ export namespace CallGetEvaluationRunsResponse {
   }
 }
 
+export interface CallGetMetricsResponse {
+  /**
+   * Call metrics response payload grouped by metric definition
+   */
+  data: Array<CallGetMetricsResponse.Data>;
+}
+
+export namespace CallGetMetricsResponse {
+  /**
+   * Call metric data grouped by metric definition
+   */
+  export interface Data {
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Unique identifier for the metric definition
+     */
+    metricDefinitionId: string;
+
+    /**
+     * Stable metric identifier
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * Array of metric values (multiple for PER_PARTICIPANT metrics, or multiple
+     * segments/turns)
+     */
+    values: Array<Data.Value>;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: Data.Unit;
+  }
+
+  export namespace Data {
+    export interface Value {
+      /**
+       * ISO 8601 timestamp when the metric was computed
+       */
+      computedAt: string;
+
+      /**
+       * Confidence score (0-1) for the computed value. Defaults to 1.0 for deterministic
+       * metrics.
+       */
+      confidence: number;
+
+      /**
+       * Context level: CALL (entire call), SEGMENT (single segment), SEGMENT_RANGE
+       * (between/across segments)
+       */
+      context: 'CALL' | 'SEGMENT' | 'SEGMENT_RANGE';
+
+      /**
+       * The metric value (type depends on outputType)
+       */
+      value: number | boolean | string;
+
+      /**
+       * Starting segment information (for SEGMENT_RANGE context metrics)
+       */
+      fromSegment?: Value.FromSegment;
+
+      /**
+       * Role of participant (only for PER_PARTICIPANT metrics)
+       */
+      participantRole?: 'agent' | 'customer';
+
+      /**
+       * Segment information (for SEGMENT context metrics)
+       */
+      segment?: Value.Segment;
+
+      /**
+       * Ending segment information (for SEGMENT_RANGE context metrics)
+       */
+      toSegment?: Value.ToSegment;
+
+      /**
+       * Explanation for the metric value (especially useful for AI-computed metrics)
+       */
+      valueReasoning?: string;
+    }
+
+    export namespace Value {
+      /**
+       * Starting segment information (for SEGMENT_RANGE context metrics)
+       */
+      export interface FromSegment {
+        /**
+         * Starting segment ID
+         */
+        id: string;
+
+        /**
+         * End time offset in milliseconds
+         */
+        endOffsetMs: number;
+
+        /**
+         * Start time offset in milliseconds
+         */
+        startOffsetMs: number;
+
+        /**
+         * Starting segment text content
+         */
+        text: string;
+      }
+
+      /**
+       * Segment information (for SEGMENT context metrics)
+       */
+      export interface Segment {
+        /**
+         * Segment ID
+         */
+        id: string;
+
+        /**
+         * End time offset in milliseconds
+         */
+        endOffsetMs: number;
+
+        /**
+         * Start time offset in milliseconds
+         */
+        startOffsetMs: number;
+
+        /**
+         * Segment text content
+         */
+        text: string;
+      }
+
+      /**
+       * Ending segment information (for SEGMENT_RANGE context metrics)
+       */
+      export interface ToSegment {
+        /**
+         * Ending segment ID
+         */
+        id: string;
+
+        /**
+         * End time offset in milliseconds
+         */
+        endOffsetMs: number;
+
+        /**
+         * Start time offset in milliseconds
+         */
+        startOffsetMs: number;
+
+        /**
+         * Ending segment text content
+         */
+        text: string;
+      }
+    }
+
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+}
+
 export interface CallGetSentimentRunsResponse {
   /**
    * Sentiment run response payload
@@ -248,9 +468,19 @@ export namespace CallGetSentimentRunsResponse {
   }
 }
 
+export interface CallGetMetricsParams {
+  /**
+   * Whether to return a flat list instead of grouped by metric definition (default:
+   * false)
+   */
+  flatten?: string;
+}
+
 export declare namespace Call {
   export {
     type CallGetEvaluationRunsResponse as CallGetEvaluationRunsResponse,
+    type CallGetMetricsResponse as CallGetMetricsResponse,
     type CallGetSentimentRunsResponse as CallGetSentimentRunsResponse,
+    type CallGetMetricsParams as CallGetMetricsParams,
   };
 }
