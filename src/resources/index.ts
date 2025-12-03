@@ -2,6 +2,7 @@
 
 export {
   Call,
+  type CallGetByIDResponse,
   type CallGetEvaluationRunsResponse,
   type CallGetMetricsResponse,
   type CallGetSentimentRunsResponse,
