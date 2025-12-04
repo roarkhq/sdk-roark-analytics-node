@@ -88,9 +88,19 @@ export namespace CallGetByIDResponse {
     startedAt: string;
 
     /**
+     * Agent information
+     */
+    agents?: Array<Data.Agent> | null;
+
+    /**
      * Timestamp when the call record was created
      */
     createdAt?: string | null;
+
+    /**
+     * Customer information
+     */
+    customers?: Array<Data.Customer> | null;
 
     /**
      * Duration of the call in milliseconds
@@ -161,6 +171,28 @@ export namespace CallGetByIDResponse {
      * Timestamp when the call record was last updated
      */
     updatedAt?: string | null;
+  }
+
+  export namespace Data {
+    export interface Agent {
+      id: string;
+
+      endpoint: Agent.Endpoint;
+    }
+
+    export namespace Agent {
+      export interface Endpoint {
+        id: string;
+
+        environment: string;
+
+        phoneNumberE164?: string | null;
+      }
+    }
+
+    export interface Customer {
+      phoneNumberE164?: string | null;
+    }
   }
 }
 
