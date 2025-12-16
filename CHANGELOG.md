@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.13.1 (2025-12-16)
+
+Full Changelog: [v2.13.0...v2.13.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.13.0...v2.13.1)
+
+### Bug Fixes
+
+* **mcp:** correct code tool API endpoint ([24e66c8](https://github.com/roarkhq/sdk-roark-analytics-node/commit/24e66c84d102b34bd63e384aca81ed52f11006f5))
+* **mcp:** return correct lines on typescript errors ([b8086fe](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b8086fe20fe31cacb2f06b4b74a194646deb4fba))
+
+
+### Chores
+
+* **internal:** codegen related update ([8586ca4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8586ca40a4c39f38a83a21e3f5aa55fb5cce673a))
+* **internal:** codegen related update ([1124a4a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/1124a4aa7e3f0d2580245fbc9f47e817a91cfdbb))
+
 ## 2.13.0 (2025-12-04)
 
 Full Changelog: [v2.12.0...v2.13.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.12.0...v2.13.0)
