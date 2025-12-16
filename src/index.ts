@@ -46,9 +46,11 @@ import {
 } from './resources/persona';
 import {
   Simulation,
-  SimulationGetJobByIDResponse,
-  SimulationLookupJobParams,
-  SimulationLookupJobResponse,
+  SimulationGetRunPlanJobResponse,
+  SimulationGetSimulationJobByIDResponse,
+  SimulationLookupSimulationJobParams,
+  SimulationLookupSimulationJobResponse,
+  SimulationStartRunPlanJobResponse,
 } from './resources/simulation';
 
 export interface ClientOptions {
@@ -268,9 +270,11 @@ export declare namespace Roark {
 
   export {
     Simulation as Simulation,
-    type SimulationGetJobByIDResponse as SimulationGetJobByIDResponse,
-    type SimulationLookupJobResponse as SimulationLookupJobResponse,
-    type SimulationLookupJobParams as SimulationLookupJobParams,
+    type SimulationGetRunPlanJobResponse as SimulationGetRunPlanJobResponse,
+    type SimulationGetSimulationJobByIDResponse as SimulationGetSimulationJobByIDResponse,
+    type SimulationLookupSimulationJobResponse as SimulationLookupSimulationJobResponse,
+    type SimulationStartRunPlanJobResponse as SimulationStartRunPlanJobResponse,
+    type SimulationLookupSimulationJobParams as SimulationLookupSimulationJobParams,
   };
 
   export {

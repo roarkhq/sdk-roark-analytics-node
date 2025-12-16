@@ -40,7 +40,9 @@ export {
 } from './persona';
 export {
   Simulation,
-  type SimulationGetJobByIDResponse,
-  type SimulationLookupJobResponse,
-  type SimulationLookupJobParams,
+  type SimulationGetRunPlanJobResponse,
+  type SimulationGetSimulationJobByIDResponse,
+  type SimulationLookupSimulationJobResponse,
+  type SimulationStartRunPlanJobResponse,
+  type SimulationLookupSimulationJobParams,
 } from './simulation';
