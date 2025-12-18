@@ -1437,7 +1437,7 @@ export namespace EvaluationCreateJobParams {
 
   export namespace Call {
     export interface Participant {
-      role: 'AGENT' | 'CUSTOMER';
+      role: 'AGENT' | 'CUSTOMER' | 'BACKGROUND_SPEAKER';
 
       isSimulated?: boolean;
 
@@ -1598,7 +1598,7 @@ export namespace EvaluationCreateJobParams {
 
     export namespace Call {
       export interface Participant {
-        role: 'AGENT' | 'CUSTOMER';
+        role: 'AGENT' | 'CUSTOMER' | 'BACKGROUND_SPEAKER';
 
         isSimulated?: boolean;
 
