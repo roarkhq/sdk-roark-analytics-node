@@ -68,13 +68,17 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/simulation.ts">SimulationGetJobByIDResponse</a></code>
-- <code><a href="./src/resources/simulation.ts">SimulationLookupJobResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationGetRunPlanJobResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationGetSimulationJobByIDResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationLookupSimulationJobResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationStartRunPlanJobResponse</a></code>
 
 Methods:
 
-- <code title="get /v1/simulation/job/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getJobById</a>(jobId) -> SimulationGetJobByIDResponse</code>
-- <code title="get /v1/simulation/job/lookup">client.simulation.<a href="./src/resources/simulation.ts">lookupJob</a>({ ...params }) -> SimulationLookupJobResponse</code>
+- <code title="get /v1/simulation/plan/job/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getRunPlanJob</a>(jobId) -> SimulationGetRunPlanJobResponse</code>
+- <code title="get /v1/simulation/job/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getSimulationJobById</a>(jobId) -> SimulationGetSimulationJobByIDResponse</code>
+- <code title="get /v1/simulation/job/lookup">client.simulation.<a href="./src/resources/simulation.ts">lookupSimulationJob</a>({ ...params }) -> SimulationLookupSimulationJobResponse</code>
+- <code title="post /v1/simulation/plan/{planId}/job">client.simulation.<a href="./src/resources/simulation.ts">startRunPlanJob</a>(planId) -> SimulationStartRunPlanJobResponse</code>
 
 # Persona
 
