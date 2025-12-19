@@ -11,7 +11,6 @@ const client = new Roark({
 describe('resource call', () => {
   test('create: only required params', async () => {
     const responsePromise = client.call.create({
-      agent: { roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
       callDirection: 'INBOUND',
       interfaceType: 'PHONE',
       recordingUrl: 'https://example.com',
@@ -28,25 +27,34 @@ describe('resource call', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.call.create({
+      callDirection: 'INBOUND',
+      interfaceType: 'PHONE',
+      recordingUrl: 'https://example.com',
+      startedAt: 'startedAt',
       agent: {
         roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         endpoint: { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
         prompt: { resolvedPrompt: 'resolvedPrompt' },
       },
-      callDirection: 'INBOUND',
-      interfaceType: 'PHONE',
-      recordingUrl: 'https://example.com',
-      startedAt: 'startedAt',
+      agents: [
+        {
+          roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          endpoint: { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+          prompt: { resolvedPrompt: 'resolvedPrompt' },
+        },
+      ],
       customer: { phoneNumberE164: 'phoneNumberE164', label: 'label' },
+      customers: [{ phoneNumberE164: 'phoneNumberE164', label: 'label' }],
       endedStatus: 'PARTICIPANTS_DID_NOT_SPEAK',
       properties: { foo: 'bar' },
       stereoRecordingUrl: 'https://example.com',
       toolInvocations: [
         {
           name: 'name',
-          parameters: { foo: 'value' },
+          parameters: { foo: { description: 'description', type: 'string', value: {} } },
           result: 'string',
           startOffsetMs: 0,
+          agent: { customId: 'customId', roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
           description: 'description',
           endOffsetMs: 0,
         },
