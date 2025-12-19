@@ -2,10 +2,12 @@
 
 export {
   Call,
+  type CallCreateResponse,
   type CallGetByIDResponse,
   type CallGetEvaluationRunsResponse,
   type CallGetMetricsResponse,
   type CallGetSentimentRunsResponse,
+  type CallCreateParams,
   type CallGetMetricsParams,
 } from './call';
 export {

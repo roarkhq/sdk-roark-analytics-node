@@ -9,6 +9,61 @@ const client = new Roark({
 });
 
 describe('resource call', () => {
+  test('create: only required params', async () => {
+    const responsePromise = client.call.create({
+      agent: { roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+      callDirection: 'INBOUND',
+      interfaceType: 'PHONE',
+      recordingUrl: 'https://example.com',
+      startedAt: 'startedAt',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('create: required and optional params', async () => {
+    const response = await client.call.create({
+      agent: {
+        roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        endpoint: { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+        prompt: { resolvedPrompt: 'resolvedPrompt' },
+      },
+      callDirection: 'INBOUND',
+      interfaceType: 'PHONE',
+      recordingUrl: 'https://example.com',
+      startedAt: 'startedAt',
+      customer: { phoneNumberE164: 'phoneNumberE164', label: 'label' },
+      endedStatus: 'PARTICIPANTS_DID_NOT_SPEAK',
+      properties: { foo: 'bar' },
+      stereoRecordingUrl: 'https://example.com',
+      toolInvocations: [
+        {
+          name: 'name',
+          parameters: { foo: 'value' },
+          result: 'string',
+          startOffsetMs: 0,
+          description: 'description',
+          endOffsetMs: 0,
+        },
+      ],
+      transcript: [
+        {
+          endOffsetMs: 0,
+          role: 'AGENT',
+          startOffsetMs: 0,
+          text: 'x',
+          agent: { customId: 'customId', roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+          languageCode: 'languageCode',
+        },
+      ],
+    });
+  });
+
   test('getById', async () => {
     const responsePromise = client.call.getById('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();

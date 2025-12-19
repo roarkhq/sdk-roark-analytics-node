@@ -8,6 +8,8 @@ import * as Uploads from './uploads';
 import * as API from './resources/index';
 import {
   Call,
+  CallCreateParams,
+  CallCreateResponse,
   CallGetByIDResponse,
   CallGetEvaluationRunsResponse,
   CallGetMetricsParams,
@@ -251,10 +253,12 @@ export declare namespace Roark {
 
   export {
     Call as Call,
+    type CallCreateResponse as CallCreateResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
     type CallGetEvaluationRunsResponse as CallGetEvaluationRunsResponse,
     type CallGetMetricsResponse as CallGetMetricsResponse,
     type CallGetSentimentRunsResponse as CallGetSentimentRunsResponse,
+    type CallCreateParams as CallCreateParams,
     type CallGetMetricsParams as CallGetMetricsParams,
   };
 

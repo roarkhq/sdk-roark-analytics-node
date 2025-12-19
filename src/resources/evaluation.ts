@@ -1339,6 +1339,11 @@ export interface EvaluationCreateJobParams {
    */
   call?: EvaluationCreateJobParams.Call;
 
+  /**
+   * ID of an existing call to evaluate
+   */
+  callId?: string;
+
   dataset?: EvaluationCreateJobParams.Dataset;
 }
 
