@@ -177,7 +177,7 @@ export namespace CallGetByIDResponse {
     export interface Agent {
       id: string;
 
-      endpoint: Agent.Endpoint;
+      endpoint?: Agent.Endpoint | null;
     }
 
     export namespace Agent {
