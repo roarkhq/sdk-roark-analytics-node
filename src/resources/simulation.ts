@@ -182,11 +182,6 @@ export namespace SimulationGetRunPlanJobResponse {
         id: string;
 
         /**
-         * Agent endpoint type
-         */
-        endpointType: string;
-
-        /**
          * Agent endpoint name
          */
         name: string;
@@ -195,6 +190,11 @@ export namespace SimulationGetRunPlanJobResponse {
          * Agent endpoint phone number
          */
         phoneNumber: string | null;
+
+        /**
+         * Agent endpoint type
+         */
+        type: string;
       }
 
       export interface Persona {
@@ -382,11 +382,6 @@ export namespace SimulationGetSimulationJobByIDResponse {
       id: string;
 
       /**
-       * Agent endpoint type
-       */
-      endpointType: string;
-
-      /**
        * Agent endpoint name
        */
       name: string;
@@ -395,6 +390,11 @@ export namespace SimulationGetSimulationJobByIDResponse {
        * Agent endpoint phone number
        */
       phoneNumber: string | null;
+
+      /**
+       * Agent endpoint type
+       */
+      type: string;
     }
 
     export interface Persona {
@@ -581,11 +581,6 @@ export namespace SimulationLookupSimulationJobResponse {
       id: string;
 
       /**
-       * Agent endpoint type
-       */
-      endpointType: string;
-
-      /**
        * Agent endpoint name
        */
       name: string;
@@ -594,6 +589,11 @@ export namespace SimulationLookupSimulationJobResponse {
        * Agent endpoint phone number
        */
       phoneNumber: string | null;
+
+      /**
+       * Agent endpoint type
+       */
+      type: string;
     }
 
     export interface Persona {
