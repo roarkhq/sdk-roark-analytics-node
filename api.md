@@ -30,6 +30,7 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/call.ts">CallCreateResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetByIDResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetEvaluationRunsResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetMetricsResponse</a></code>
@@ -37,6 +38,7 @@ Types:
 
 Methods:
 
+- <code title="post /v1/call">client.call.<a href="./src/resources/call.ts">create</a>({ ...params }) -> CallCreateResponse</code>
 - <code title="get /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">getById</a>(callId) -> CallGetByIDResponse</code>
 - <code title="get /v1/call/{callId}/evaluation-run">client.call.<a href="./src/resources/call.ts">getEvaluationRuns</a>(callId) -> CallGetEvaluationRunsResponse</code>
 - <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">getMetrics</a>(callId, { ...params }) -> CallGetMetricsResponse</code>
