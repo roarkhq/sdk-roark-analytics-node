@@ -6,6 +6,13 @@ import * as Core from '../core';
 
 export class Call extends APIResource {
   /**
+   * Create a new call with recording, transcript, agents, and customers
+   */
+  create(body: CallCreateParams, options?: Core.RequestOptions): Core.APIPromise<CallCreateResponse> {
+    return this._client.post('/v1/call', { body, ...options });
+  }
+
+  /**
    * Retrieve an existing call by its unique identifier
    */
   getById(callId: string, options?: Core.RequestOptions): Core.APIPromise<CallGetByIDResponse> {
@@ -52,6 +59,70 @@ export class Call extends APIResource {
     options?: Core.RequestOptions,
   ): Core.APIPromise<CallGetSentimentRunsResponse> {
     return this._client.get(`/v1/call/${callId}/sentiment-run`, options);
+  }
+}
+
+export interface CallCreateResponse {
+  /**
+   * Response after creating a call
+   */
+  data: CallCreateResponse.Data;
+}
+
+export namespace CallCreateResponse {
+  /**
+   * Response after creating a call
+   */
+  export interface Data {
+    /**
+     * Unique identifier for the call
+     */
+    id: string;
+
+    agents: Array<Data.Agent> | null;
+
+    /**
+     * Direction of the call (inbound or outbound)
+     */
+    callDirection: 'INBOUND' | 'OUTBOUND';
+
+    createdAt: string | null;
+
+    customers: Array<Data.Customer> | null;
+
+    /**
+     * ID of the project this call belongs to
+     */
+    projectId: string;
+
+    /**
+     * Timestamp when the call started
+     */
+    startedAt: string;
+
+    status: 'RINGING' | 'IN_PROGRESS' | 'ENDED' | null;
+  }
+
+  export namespace Data {
+    export interface Agent {
+      id: string;
+
+      endpoint?: Agent.Endpoint | null;
+    }
+
+    export namespace Agent {
+      export interface Endpoint {
+        id: string;
+
+        environment: string;
+
+        phoneNumberE164?: string | null;
+      }
+    }
+
+    export interface Customer {
+      phoneNumberE164?: string | null;
+    }
   }
 }
 
@@ -616,6 +687,746 @@ export namespace CallGetSentimentRunsResponse {
   }
 }
 
+export type CallCreateParams = CallCreateParams.Variant0 | CallCreateParams.Variant1;
+
+export declare namespace CallCreateParams {
+  export interface Variant0 {
+    /**
+     * Single agent participating in the call. Use this for simpler API when you have
+     * only one agent.
+     */
+    agent: Variant0.UnionMember0 | Variant0.UnionMember1 | Variant0.UnionMember2;
+
+    /**
+     * Direction of the call (INBOUND or OUTBOUND)
+     */
+    callDirection: 'INBOUND' | 'OUTBOUND';
+
+    /**
+     * Interface type of the call (PHONE or WEB)
+     */
+    interfaceType: 'PHONE' | 'WEB';
+
+    /**
+     * URL of source recording (must be an accessible WAV, MP3, or MP4 file). Can be a
+     * signed URL.
+     */
+    recordingUrl: string;
+
+    /**
+     * When the call started (ISO 8601 format)
+     */
+    startedAt: string;
+
+    /**
+     * Single customer participating in the call. Use this for simpler API when you
+     * have only one customer.
+     */
+    customer?: Variant0.Customer;
+
+    /**
+     * High-level call end status, indicating how the call terminated
+     */
+    endedStatus?:
+      | 'PARTICIPANTS_DID_NOT_SPEAK'
+      | 'AGENT_DID_NOT_ANSWER'
+      | 'AGENT_DID_NOT_SPEAK'
+      | 'AGENT_STOPPED_SPEAKING'
+      | 'AGENT_ENDED_CALL'
+      | 'AGENT_TRANSFERRED_CALL'
+      | 'AGENT_BUSY'
+      | 'AGENT_ERROR'
+      | 'CUSTOMER_ENDED_CALL'
+      | 'VOICE_MAIL_REACHED'
+      | 'SILENCE_TIME_OUT'
+      | 'PHONE_CALL_PROVIDER_CONNECTION_ERROR'
+      | 'CUSTOMER_DID_NOT_ANSWER'
+      | 'CUSTOMER_DID_NOT_SPEAK'
+      | 'CUSTOMER_STOPPED_SPEAKING'
+      | 'CUSTOMER_BUSY'
+      | 'DIAL_ERROR'
+      | 'MAX_DURATION_REACHED'
+      | 'UNKNOWN';
+
+    /**
+     * Custom properties to include with the call. These can be used for filtering and
+     * will show in the call details page
+     */
+    properties?: { [key: string]: unknown };
+
+    /**
+     * URL of source stereo recording. Must be accessible. Can be a signed URL.
+     * Supported formats: WAV, MP3, MP4.
+     */
+    stereoRecordingUrl?: string;
+
+    /**
+     * List of tool invocations made during the call
+     */
+    toolInvocations?: Array<Variant0.ToolInvocation>;
+
+    /**
+     * List of transcript entries made during the call
+     */
+    transcript?: Array<Variant0.UnionMember0 | Variant0.UnionMember1>;
+  }
+
+  export namespace Variant0 {
+    export interface UnionMember0 {
+      /**
+       * Existing Roark agent ID
+       */
+      roarkId: string;
+
+      /**
+       * Endpoint configuration for this agent (optional)
+       */
+      endpoint?: UnionMember0.ID | UnionMember0.UnionMember1;
+
+      /**
+       * Agent's prompt configuration
+       */
+      prompt?: UnionMember0.Prompt;
+    }
+
+    export namespace UnionMember0 {
+      export interface ID {
+        /**
+         * Existing Roark endpoint ID
+         */
+        id: string;
+      }
+
+      /**
+       * Lookup or create endpoint if one with these values does not exist
+       */
+      export interface UnionMember1 {
+        /**
+         * Type of endpoint (phone or websocket)
+         */
+        type: string;
+
+        /**
+         * Endpoint value (phone number in E.164 format or websocket URL)
+         */
+        value: string;
+
+        /**
+         * Call direction for this endpoint
+         */
+        direction?: string;
+      }
+
+      /**
+       * Agent's prompt configuration
+       */
+      export interface Prompt {
+        /**
+         * The agent's system prompt used during this call
+         */
+        resolvedPrompt: string;
+      }
+    }
+
+    export interface UnionMember1 {
+      /**
+       * Existing custom ID for a Roark agent
+       */
+      customId: string;
+
+      /**
+       * Endpoint configuration for this agent (optional)
+       */
+      endpoint?: UnionMember1.ID | UnionMember1.UnionMember1;
+
+      /**
+       * Agent's prompt configuration
+       */
+      prompt?: UnionMember1.Prompt;
+    }
+
+    export namespace UnionMember1 {
+      export interface ID {
+        /**
+         * Existing Roark endpoint ID
+         */
+        id: string;
+      }
+
+      /**
+       * Lookup or create endpoint if one with these values does not exist
+       */
+      export interface UnionMember1 {
+        /**
+         * Type of endpoint (phone or websocket)
+         */
+        type: string;
+
+        /**
+         * Endpoint value (phone number in E.164 format or websocket URL)
+         */
+        value: string;
+
+        /**
+         * Call direction for this endpoint
+         */
+        direction?: string;
+      }
+
+      /**
+       * Agent's prompt configuration
+       */
+      export interface Prompt {
+        /**
+         * The agent's system prompt used during this call
+         */
+        resolvedPrompt: string;
+      }
+    }
+
+    /**
+     * Match existing agent by name, description, and custom ID, or create a new one if
+     * no match is found
+     */
+    export interface UnionMember2 {
+      /**
+       * Agent name
+       */
+      name: string;
+
+      /**
+       * Agent custom ID
+       */
+      customId?: string;
+
+      /**
+       * Agent description
+       */
+      description?: string;
+
+      /**
+       * Endpoint configuration for this agent (optional)
+       */
+      endpoint?: UnionMember2.ID | UnionMember2.UnionMember1;
+
+      /**
+       * Agent's prompt configuration
+       */
+      prompt?: UnionMember2.Prompt;
+    }
+
+    export namespace UnionMember2 {
+      export interface ID {
+        /**
+         * Existing Roark endpoint ID
+         */
+        id: string;
+      }
+
+      /**
+       * Lookup or create endpoint if one with these values does not exist
+       */
+      export interface UnionMember1 {
+        /**
+         * Type of endpoint (phone or websocket)
+         */
+        type: string;
+
+        /**
+         * Endpoint value (phone number in E.164 format or websocket URL)
+         */
+        value: string;
+
+        /**
+         * Call direction for this endpoint
+         */
+        direction?: string;
+      }
+
+      /**
+       * Agent's prompt configuration
+       */
+      export interface Prompt {
+        /**
+         * The agent's system prompt used during this call
+         */
+        resolvedPrompt: string;
+      }
+    }
+
+    /**
+     * Single customer participating in the call. Use this for simpler API when you
+     * have only one customer.
+     */
+    export interface Customer {
+      /**
+       * Customer phone number in E.164 format (e.g., +14155551234)
+       */
+      phoneNumberE164: string | null;
+
+      /**
+       * Label to identify this customer in the transcript (e.g., "speaker-01",
+       * "speaker-02")
+       */
+      label?: string | null;
+    }
+
+    export interface ToolInvocation {
+      /**
+       * Name of the tool that was invoked
+       */
+      name: string;
+
+      /**
+       * Parameters provided to the tool during invocation
+       */
+      parameters: { [key: string]: ToolInvocation.UnionMember0 | unknown };
+
+      /**
+       * Result returned by the tool after execution. Can be a string or a JSON object
+       */
+      result: string | { [key: string]: unknown };
+
+      /**
+       * Offset in milliseconds from the start of the call when the tool was invoked
+       */
+      startOffsetMs: number;
+
+      /**
+       * Description of when the tool should be invoked
+       */
+      description?: string;
+
+      /**
+       * Offset in milliseconds from the start of the call when the tool execution
+       * completed. Used to calculate duration of the tool execution
+       */
+      endOffsetMs?: number;
+    }
+
+    export namespace ToolInvocation {
+      export interface UnionMember0 {
+        description?: string;
+
+        type?: 'string' | 'number' | 'boolean';
+
+        value?: unknown;
+      }
+    }
+
+    export interface UnionMember0 {
+      endOffsetMs: number;
+
+      role: 'AGENT';
+
+      startOffsetMs: number;
+
+      text: string;
+
+      agent?: UnionMember0.Agent;
+
+      languageCode?: string;
+    }
+
+    export namespace UnionMember0 {
+      export interface Agent {
+        customId?: string;
+
+        roarkId?: string;
+      }
+    }
+
+    export interface UnionMember1 {
+      endOffsetMs: number;
+
+      role: 'CUSTOMER';
+
+      startOffsetMs: number;
+
+      text: string;
+
+      customer?: UnionMember1.Customer;
+
+      languageCode?: string;
+    }
+
+    export namespace UnionMember1 {
+      export interface Customer {
+        label?: string;
+
+        phoneNumberE164?: string;
+      }
+    }
+  }
+
+  export interface Variant1 {
+    /**
+     * Agents participating in the call. Each agent requires identification and prompt
+     * information.
+     */
+    agents: Array<Variant1.UnionMember0 | Variant1.UnionMember1 | Variant1.UnionMember2>;
+
+    /**
+     * Direction of the call (INBOUND or OUTBOUND)
+     */
+    callDirection: 'INBOUND' | 'OUTBOUND';
+
+    /**
+     * Interface type of the call (PHONE or WEB)
+     */
+    interfaceType: 'PHONE' | 'WEB';
+
+    /**
+     * URL of source recording (must be an accessible WAV, MP3, or MP4 file). Can be a
+     * signed URL.
+     */
+    recordingUrl: string;
+
+    /**
+     * When the call started (ISO 8601 format)
+     */
+    startedAt: string;
+
+    /**
+     * Customers participating in the call.
+     */
+    customers?: Array<Variant1.Customer>;
+
+    /**
+     * High-level call end status, indicating how the call terminated
+     */
+    endedStatus?:
+      | 'PARTICIPANTS_DID_NOT_SPEAK'
+      | 'AGENT_DID_NOT_ANSWER'
+      | 'AGENT_DID_NOT_SPEAK'
+      | 'AGENT_STOPPED_SPEAKING'
+      | 'AGENT_ENDED_CALL'
+      | 'AGENT_TRANSFERRED_CALL'
+      | 'AGENT_BUSY'
+      | 'AGENT_ERROR'
+      | 'CUSTOMER_ENDED_CALL'
+      | 'VOICE_MAIL_REACHED'
+      | 'SILENCE_TIME_OUT'
+      | 'PHONE_CALL_PROVIDER_CONNECTION_ERROR'
+      | 'CUSTOMER_DID_NOT_ANSWER'
+      | 'CUSTOMER_DID_NOT_SPEAK'
+      | 'CUSTOMER_STOPPED_SPEAKING'
+      | 'CUSTOMER_BUSY'
+      | 'DIAL_ERROR'
+      | 'MAX_DURATION_REACHED'
+      | 'UNKNOWN';
+
+    /**
+     * Custom properties to include with the call. These can be used for filtering and
+     * will show in the call details page
+     */
+    properties?: { [key: string]: unknown };
+
+    /**
+     * URL of source stereo recording. Must be accessible. Can be a signed URL.
+     * Supported formats: WAV, MP3, MP4.
+     */
+    stereoRecordingUrl?: string;
+
+    /**
+     * List of tool invocations made during the call
+     */
+    toolInvocations?: Array<Variant1.ToolInvocation>;
+
+    /**
+     * List of transcript entries made during the call
+     */
+    transcript?: Array<Variant1.UnionMember0 | Variant1.UnionMember1>;
+  }
+
+  export namespace Variant1 {
+    export interface UnionMember0 {
+      /**
+       * Existing Roark agent ID
+       */
+      roarkId: string;
+
+      /**
+       * Endpoint configuration for this agent (optional)
+       */
+      endpoint?: UnionMember0.ID | UnionMember0.UnionMember1;
+
+      /**
+       * Agent's prompt configuration
+       */
+      prompt?: UnionMember0.Prompt;
+    }
+
+    export namespace UnionMember0 {
+      export interface ID {
+        /**
+         * Existing Roark endpoint ID
+         */
+        id: string;
+      }
+
+      /**
+       * Lookup or create endpoint if one with these values does not exist
+       */
+      export interface UnionMember1 {
+        /**
+         * Type of endpoint (phone or websocket)
+         */
+        type: string;
+
+        /**
+         * Endpoint value (phone number in E.164 format or websocket URL)
+         */
+        value: string;
+
+        /**
+         * Call direction for this endpoint
+         */
+        direction?: string;
+      }
+
+      /**
+       * Agent's prompt configuration
+       */
+      export interface Prompt {
+        /**
+         * The agent's system prompt used during this call
+         */
+        resolvedPrompt: string;
+      }
+    }
+
+    export interface UnionMember1 {
+      /**
+       * Existing custom ID for a Roark agent
+       */
+      customId: string;
+
+      /**
+       * Endpoint configuration for this agent (optional)
+       */
+      endpoint?: UnionMember1.ID | UnionMember1.UnionMember1;
+
+      /**
+       * Agent's prompt configuration
+       */
+      prompt?: UnionMember1.Prompt;
+    }
+
+    export namespace UnionMember1 {
+      export interface ID {
+        /**
+         * Existing Roark endpoint ID
+         */
+        id: string;
+      }
+
+      /**
+       * Lookup or create endpoint if one with these values does not exist
+       */
+      export interface UnionMember1 {
+        /**
+         * Type of endpoint (phone or websocket)
+         */
+        type: string;
+
+        /**
+         * Endpoint value (phone number in E.164 format or websocket URL)
+         */
+        value: string;
+
+        /**
+         * Call direction for this endpoint
+         */
+        direction?: string;
+      }
+
+      /**
+       * Agent's prompt configuration
+       */
+      export interface Prompt {
+        /**
+         * The agent's system prompt used during this call
+         */
+        resolvedPrompt: string;
+      }
+    }
+
+    /**
+     * Match existing agent by name, description, and custom ID, or create a new one if
+     * no match is found
+     */
+    export interface UnionMember2 {
+      /**
+       * Agent name
+       */
+      name: string;
+
+      /**
+       * Agent custom ID
+       */
+      customId?: string;
+
+      /**
+       * Agent description
+       */
+      description?: string;
+
+      /**
+       * Endpoint configuration for this agent (optional)
+       */
+      endpoint?: UnionMember2.ID | UnionMember2.UnionMember1;
+
+      /**
+       * Agent's prompt configuration
+       */
+      prompt?: UnionMember2.Prompt;
+    }
+
+    export namespace UnionMember2 {
+      export interface ID {
+        /**
+         * Existing Roark endpoint ID
+         */
+        id: string;
+      }
+
+      /**
+       * Lookup or create endpoint if one with these values does not exist
+       */
+      export interface UnionMember1 {
+        /**
+         * Type of endpoint (phone or websocket)
+         */
+        type: string;
+
+        /**
+         * Endpoint value (phone number in E.164 format or websocket URL)
+         */
+        value: string;
+
+        /**
+         * Call direction for this endpoint
+         */
+        direction?: string;
+      }
+
+      /**
+       * Agent's prompt configuration
+       */
+      export interface Prompt {
+        /**
+         * The agent's system prompt used during this call
+         */
+        resolvedPrompt: string;
+      }
+    }
+
+    /**
+     * Customer participating in the call
+     */
+    export interface Customer {
+      /**
+       * Customer phone number in E.164 format (e.g., +14155551234)
+       */
+      phoneNumberE164: string | null;
+
+      /**
+       * Label to identify this customer in the transcript (e.g., "speaker-01",
+       * "speaker-02")
+       */
+      label?: string | null;
+    }
+
+    export interface ToolInvocation {
+      /**
+       * Name of the tool that was invoked
+       */
+      name: string;
+
+      /**
+       * Parameters provided to the tool during invocation
+       */
+      parameters: { [key: string]: ToolInvocation.UnionMember0 | unknown };
+
+      /**
+       * Result returned by the tool after execution. Can be a string or a JSON object
+       */
+      result: string | { [key: string]: unknown };
+
+      /**
+       * Offset in milliseconds from the start of the call when the tool was invoked
+       */
+      startOffsetMs: number;
+
+      /**
+       * Description of when the tool should be invoked
+       */
+      description?: string;
+
+      /**
+       * Offset in milliseconds from the start of the call when the tool execution
+       * completed. Used to calculate duration of the tool execution
+       */
+      endOffsetMs?: number;
+    }
+
+    export namespace ToolInvocation {
+      export interface UnionMember0 {
+        description?: string;
+
+        type?: 'string' | 'number' | 'boolean';
+
+        value?: unknown;
+      }
+    }
+
+    export interface UnionMember0 {
+      endOffsetMs: number;
+
+      role: 'AGENT';
+
+      startOffsetMs: number;
+
+      text: string;
+
+      agent?: UnionMember0.Agent;
+
+      languageCode?: string;
+    }
+
+    export namespace UnionMember0 {
+      export interface Agent {
+        customId?: string;
+
+        roarkId?: string;
+      }
+    }
+
+    export interface UnionMember1 {
+      endOffsetMs: number;
+
+      role: 'CUSTOMER';
+
+      startOffsetMs: number;
+
+      text: string;
+
+      customer?: UnionMember1.Customer;
+
+      languageCode?: string;
+    }
+
+    export namespace UnionMember1 {
+      export interface Customer {
+        label?: string;
+
+        phoneNumberE164?: string;
+      }
+    }
+  }
+}
+
 export interface CallGetMetricsParams {
   /**
    * Whether to return a flat list instead of grouped by metric definition (default:
@@ -626,10 +1437,12 @@ export interface CallGetMetricsParams {
 
 export declare namespace Call {
   export {
+    type CallCreateResponse as CallCreateResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
     type CallGetEvaluationRunsResponse as CallGetEvaluationRunsResponse,
     type CallGetMetricsResponse as CallGetMetricsResponse,
     type CallGetSentimentRunsResponse as CallGetSentimentRunsResponse,
+    type CallCreateParams as CallCreateParams,
     type CallGetMetricsParams as CallGetMetricsParams,
   };
 }
