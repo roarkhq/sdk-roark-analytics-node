@@ -1442,7 +1442,7 @@ export namespace EvaluationCreateJobParams {
 
   export namespace Call {
     export interface Participant {
-      role: 'AGENT' | 'CUSTOMER' | 'BACKGROUND_SPEAKER';
+      role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER';
 
       isSimulated?: boolean;
 
@@ -1603,7 +1603,7 @@ export namespace EvaluationCreateJobParams {
 
     export namespace Call {
       export interface Participant {
-        role: 'AGENT' | 'CUSTOMER' | 'BACKGROUND_SPEAKER';
+        role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER';
 
         isSimulated?: boolean;
 
