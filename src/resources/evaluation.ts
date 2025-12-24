@@ -1339,6 +1339,11 @@ export interface EvaluationCreateJobParams {
    */
   call?: EvaluationCreateJobParams.Call;
 
+  /**
+   * ID of an existing call to evaluate
+   */
+  callId?: string;
+
   dataset?: EvaluationCreateJobParams.Dataset;
 }
 
@@ -1437,7 +1442,7 @@ export namespace EvaluationCreateJobParams {
 
   export namespace Call {
     export interface Participant {
-      role: 'AGENT' | 'CUSTOMER';
+      role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER';
 
       isSimulated?: boolean;
 
@@ -1598,7 +1603,7 @@ export namespace EvaluationCreateJobParams {
 
     export namespace Call {
       export interface Participant {
-        role: 'AGENT' | 'CUSTOMER';
+        role: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER';
 
         isSimulated?: boolean;
 

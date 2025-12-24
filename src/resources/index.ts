@@ -2,10 +2,12 @@
 
 export {
   Call,
+  type CallCreateResponse,
   type CallGetByIDResponse,
   type CallGetEvaluationRunsResponse,
   type CallGetMetricsResponse,
   type CallGetSentimentRunsResponse,
+  type CallCreateParams,
   type CallGetMetricsParams,
 } from './call';
 export {
@@ -40,7 +42,9 @@ export {
 } from './persona';
 export {
   Simulation,
-  type SimulationGetJobByIDResponse,
-  type SimulationLookupJobResponse,
-  type SimulationLookupJobParams,
+  type SimulationGetRunPlanJobResponse,
+  type SimulationGetSimulationJobByIDResponse,
+  type SimulationLookupSimulationJobResponse,
+  type SimulationStartRunPlanJobResponse,
+  type SimulationLookupSimulationJobParams,
 } from './simulation';
