@@ -26,25 +26,6 @@ export class Evaluation extends APIResource {
   }
 
   /**
-   * Returns a list of evaluators with their blocks and configuration for the
-   * authenticated project.
-   */
-  getEvaluators(
-    query?: EvaluationGetEvaluatorsParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationGetEvaluatorsResponse>;
-  getEvaluators(options?: Core.RequestOptions): Core.APIPromise<EvaluationGetEvaluatorsResponse>;
-  getEvaluators(
-    query: EvaluationGetEvaluatorsParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationGetEvaluatorsResponse> {
-    if (isRequestOptions(query)) {
-      return this.getEvaluators({}, query);
-    }
-    return this._client.get('/v1/evaluation/evaluators', { query, ...options });
-  }
-
-  /**
    * Retrieve details of a specific evaluation job
    */
   getJob(jobId: string, options?: Core.RequestOptions): Core.APIPromise<EvaluationGetJobResponse> {
@@ -52,21 +33,40 @@ export class Evaluation extends APIResource {
   }
 
   /**
+   * Returns a list of evaluators with their blocks and configuration for the
+   * authenticated project.
+   */
+  listEvaluators(
+    query?: EvaluationListEvaluatorsParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<EvaluationListEvaluatorsResponse>;
+  listEvaluators(options?: Core.RequestOptions): Core.APIPromise<EvaluationListEvaluatorsResponse>;
+  listEvaluators(
+    query: EvaluationListEvaluatorsParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<EvaluationListEvaluatorsResponse> {
+    if (isRequestOptions(query)) {
+      return this.listEvaluators({}, query);
+    }
+    return this._client.get('/v1/evaluation/evaluators', { query, ...options });
+  }
+
+  /**
    * Retrieve paginated details of a specific evaluation job runs
    */
-  getJobRuns(
+  listJobRuns(
     jobId: string,
-    query?: EvaluationGetJobRunsParams,
+    query?: EvaluationListJobRunsParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationGetJobRunsResponse>;
-  getJobRuns(jobId: string, options?: Core.RequestOptions): Core.APIPromise<EvaluationGetJobRunsResponse>;
-  getJobRuns(
+  ): Core.APIPromise<EvaluationListJobRunsResponse>;
+  listJobRuns(jobId: string, options?: Core.RequestOptions): Core.APIPromise<EvaluationListJobRunsResponse>;
+  listJobRuns(
     jobId: string,
-    query: EvaluationGetJobRunsParams | Core.RequestOptions = {},
+    query: EvaluationListJobRunsParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationGetJobRunsResponse> {
+  ): Core.APIPromise<EvaluationListJobRunsResponse> {
     if (isRequestOptions(query)) {
-      return this.getJobRuns(jobId, {}, query);
+      return this.listJobRuns(jobId, {}, query);
     }
     return this._client.get(`/v1/evaluation/job/${jobId}/runs`, { query, ...options });
   }
@@ -545,22 +545,92 @@ export namespace EvaluationGetEvaluatorByIDResponse {
   }
 }
 
+export interface EvaluationGetJobResponse {
+  /**
+   * Evaluation job response payload
+   */
+  data: EvaluationGetJobResponse.Data;
+}
+
+export namespace EvaluationGetJobResponse {
+  /**
+   * Evaluation job response payload
+   */
+  export interface Data {
+    /**
+     * ID of the evaluation job
+     */
+    id: string;
+
+    /**
+     * Status of the evaluation job
+     */
+    status: 'PENDING' | 'PROCESSING' | 'SUCCESS' | 'FAILURE';
+
+    /**
+     * Call being evaluated
+     */
+    call?: Data.Call;
+
+    /**
+     * Dataset being evaluated
+     */
+    dataset?: Data.Dataset;
+  }
+
+  export namespace Data {
+    /**
+     * Call being evaluated
+     */
+    export interface Call {
+      /**
+       * ID of the call being evaluated
+       */
+      id: string | null;
+    }
+
+    /**
+     * Dataset being evaluated
+     */
+    export interface Dataset {
+      /**
+       * ID of the dataset
+       */
+      id: string | null;
+
+      /**
+       * Calls in the dataset
+       */
+      calls: Array<Dataset.Call>;
+    }
+
+    export namespace Dataset {
+      export interface Call {
+        /**
+         * ID of the call
+         */
+        id: string | null;
+      }
+    }
+  }
+}
+
 /**
  * Response containing evaluators and pagination info
  */
-export interface EvaluationGetEvaluatorsResponse {
+export interface EvaluationListEvaluatorsResponse {
   /**
    * Array of evaluators with their blocks
    */
-  data: Array<EvaluationGetEvaluatorsResponse.Data>;
+  data: Array<EvaluationListEvaluatorsResponse.Data>;
 
   /**
    * Pagination information
    */
-  pagination: EvaluationGetEvaluatorsResponse.Pagination;
+  pagination: EvaluationListEvaluatorsResponse.Pagination;
 }
 
-export namespace EvaluationGetEvaluatorsResponse {
+export namespace EvaluationListEvaluatorsResponse {
   /**
    * Evaluator with its configured blocks
    */
@@ -1032,84 +1102,14 @@ export namespace EvaluationGetEvaluatorsResponse {
   }
 }
 
-export interface EvaluationGetJobResponse {
-  /**
-   * Evaluation job response payload
-   */
-  data: EvaluationGetJobResponse.Data;
-}
-
-export namespace EvaluationGetJobResponse {
-  /**
-   * Evaluation job response payload
-   */
-  export interface Data {
-    /**
-     * ID of the evaluation job
-     */
-    id: string;
-
-    /**
-     * Status of the evaluation job
-     */
-    status: 'PENDING' | 'PROCESSING' | 'SUCCESS' | 'FAILURE';
-
-    /**
-     * Call being evaluated
-     */
-    call?: Data.Call;
-
-    /**
-     * Dataset being evaluated
-     */
-    dataset?: Data.Dataset;
-  }
-
-  export namespace Data {
-    /**
-     * Call being evaluated
-     */
-    export interface Call {
-      /**
-       * ID of the call being evaluated
-       */
-      id: string | null;
-    }
-
-    /**
-     * Dataset being evaluated
-     */
-    export interface Dataset {
-      /**
-       * ID of the dataset
-       */
-      id: string | null;
-
-      /**
-       * Calls in the dataset
-       */
-      calls: Array<Dataset.Call>;
-    }
-
-    export namespace Dataset {
-      export interface Call {
-        /**
-         * ID of the call
-         */
-        id: string | null;
-      }
-    }
-  }
-}
-
-export interface EvaluationGetJobRunsResponse {
+export interface EvaluationListJobRunsResponse {
   /**
    * Evaluation job runs response payload
    */
-  data: EvaluationGetJobRunsResponse.Data;
+  data: EvaluationListJobRunsResponse.Data;
 }
 
-export namespace EvaluationGetJobRunsResponse {
+export namespace EvaluationListJobRunsResponse {
   /**
    * Evaluation job runs response payload
    */
@@ -1662,7 +1662,7 @@ export namespace EvaluationCreateJobParams {
   }
 }
 
-export interface EvaluationGetEvaluatorsParams {
+export interface EvaluationListEvaluatorsParams {
   /**
    * Cursor for pagination - evaluator ID to start after
    */
@@ -1674,7 +1674,7 @@ export interface EvaluationGetEvaluatorsParams {
   limit?: string;
 }
 
-export interface EvaluationGetJobRunsParams {
+export interface EvaluationListJobRunsParams {
   /**
    * Number of items to return per page
    */
@@ -1690,11 +1690,11 @@ export declare namespace Evaluation {
   export {
     type EvaluationCreateJobResponse as EvaluationCreateJobResponse,
     type EvaluationGetEvaluatorByIDResponse as EvaluationGetEvaluatorByIDResponse,
-    type EvaluationGetEvaluatorsResponse as EvaluationGetEvaluatorsResponse,
     type EvaluationGetJobResponse as EvaluationGetJobResponse,
-    type EvaluationGetJobRunsResponse as EvaluationGetJobRunsResponse,
+    type EvaluationListEvaluatorsResponse as EvaluationListEvaluatorsResponse,
+    type EvaluationListJobRunsResponse as EvaluationListJobRunsResponse,
     type EvaluationCreateJobParams as EvaluationCreateJobParams,
-    type EvaluationGetEvaluatorsParams as EvaluationGetEvaluatorsParams,
-    type EvaluationGetJobRunsParams as EvaluationGetJobRunsParams,
+    type EvaluationListEvaluatorsParams as EvaluationListEvaluatorsParams,
+    type EvaluationListJobRunsParams as EvaluationListJobRunsParams,
   };
 }

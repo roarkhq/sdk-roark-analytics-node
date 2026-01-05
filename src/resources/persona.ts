@@ -52,20 +52,17 @@ export class Persona extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.persona.findAll();
+   * const personas = await client.persona.list();
    * ```
    */
-  findAll(
-    query?: PersonaFindAllParams,
+  list(query?: PersonaListParams, options?: Core.RequestOptions): Core.APIPromise<PersonaListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<PersonaListResponse>;
+  list(
+    query: PersonaListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<PersonaFindAllResponse>;
-  findAll(options?: Core.RequestOptions): Core.APIPromise<PersonaFindAllResponse>;
-  findAll(
-    query: PersonaFindAllParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PersonaFindAllResponse> {
+  ): Core.APIPromise<PersonaListResponse> {
     if (isRequestOptions(query)) {
-      return this.findAll({}, query);
+      return this.list({}, query);
     }
     return this._client.get('/v1/persona', { query, ...options });
   }
@@ -325,13 +322,13 @@ export namespace PersonaUpdateResponse {
   }
 }
 
-export interface PersonaFindAllResponse {
-  data: Array<PersonaFindAllResponse.Data>;
+export interface PersonaListResponse {
+  data: Array<PersonaListResponse.Data>;
 
-  pagination: PersonaFindAllResponse.Pagination;
+  pagination: PersonaListResponse.Pagination;
 }
 
-export namespace PersonaFindAllResponse {
+export namespace PersonaListResponse {
   export interface Data {
     /**
      * Unique identifier of the persona
@@ -786,7 +783,7 @@ export interface PersonaUpdateParams {
   speechPace?: 'SLOW' | 'NORMAL' | 'FAST';
 }
 
-export interface PersonaFindAllParams {
+export interface PersonaListParams {
   after?: string;
 
   limit?: number;
@@ -798,10 +795,10 @@ export declare namespace Persona {
   export {
     type PersonaCreateResponse as PersonaCreateResponse,
     type PersonaUpdateResponse as PersonaUpdateResponse,
-    type PersonaFindAllResponse as PersonaFindAllResponse,
+    type PersonaListResponse as PersonaListResponse,
     type PersonaGetByIDResponse as PersonaGetByIDResponse,
     type PersonaCreateParams as PersonaCreateParams,
     type PersonaUpdateParams as PersonaUpdateParams,
-    type PersonaFindAllParams as PersonaFindAllParams,
+    type PersonaListParams as PersonaListParams,
   };
 }
