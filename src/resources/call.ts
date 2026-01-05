@@ -13,6 +13,21 @@ export class Call extends APIResource {
   }
 
   /**
+   * Returns a paginated list of calls for the authenticated project.
+   */
+  list(query?: CallListParams, options?: Core.RequestOptions): Core.APIPromise<CallListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<CallListResponse>;
+  list(
+    query: CallListParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CallListResponse> {
+    if (isRequestOptions(query)) {
+      return this.list({}, query);
+    }
+    return this._client.get('/v1/call', { query, ...options });
+  }
+
+  /**
    * Retrieve an existing call by its unique identifier
    */
   getById(callId: string, options?: Core.RequestOptions): Core.APIPromise<CallGetByIDResponse> {
@@ -22,10 +37,10 @@ export class Call extends APIResource {
   /**
    * Fetch all evaluation run results for a specific call.
    */
-  getEvaluationRuns(
+  listEvaluationRuns(
     callId: string,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CallGetEvaluationRunsResponse> {
+  ): Core.APIPromise<CallListEvaluationRunsResponse> {
     return this._client.get(`/v1/call/${callId}/evaluation-run`, options);
   }
 
@@ -33,19 +48,19 @@ export class Call extends APIResource {
    * Fetch all call-level metrics for a specific call, including both
    * system-generated and custom metrics. Only returns successfully computed metrics.
    */
-  getMetrics(
+  listMetrics(
     callId: string,
-    query?: CallGetMetricsParams,
+    query?: CallListMetricsParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CallGetMetricsResponse>;
-  getMetrics(callId: string, options?: Core.RequestOptions): Core.APIPromise<CallGetMetricsResponse>;
-  getMetrics(
+  ): Core.APIPromise<CallListMetricsResponse>;
+  listMetrics(callId: string, options?: Core.RequestOptions): Core.APIPromise<CallListMetricsResponse>;
+  listMetrics(
     callId: string,
-    query: CallGetMetricsParams | Core.RequestOptions = {},
+    query: CallListMetricsParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CallGetMetricsResponse> {
+  ): Core.APIPromise<CallListMetricsResponse> {
     if (isRequestOptions(query)) {
-      return this.getMetrics(callId, {}, query);
+      return this.listMetrics(callId, {}, query);
     }
     return this._client.get(`/v1/call/${callId}/metrics`, { query, ...options });
   }
@@ -54,10 +69,10 @@ export class Call extends APIResource {
    * Fetch detailed sentiment analysis results for a specific call, including
    * emotional tone, key phrases, and sentiment scores.
    */
-  getSentimentRuns(
+  listSentimentRuns(
     callId: string,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<CallGetSentimentRunsResponse> {
+  ): Core.APIPromise<CallListSentimentRunsResponse> {
     return this._client.get(`/v1/call/${callId}/sentiment-run`, options);
   }
 }
@@ -125,6 +140,165 @@ export namespace CallCreateResponse {
 
       phoneNumberE164?: string | null;
     }
+  }
+}
+
+export interface CallListResponse {
+  data: Array<CallListResponse.Data>;
+
+  pagination: CallListResponse.Pagination;
+}
+
+export namespace CallListResponse {
+  /**
+   * Response containing call information
+   */
+  export interface Data {
+    /**
+     * Unique identifier for the call
+     */
+    id: string;
+
+    /**
+     * Direction of the call (inbound or outbound)
+     */
+    callDirection: 'INBOUND' | 'OUTBOUND';
+
+    /**
+     * ID of the project this call belongs to
+     */
+    projectId: string;
+
+    /**
+     * Timestamp when the call started
+     */
+    startedAt: string;
+
+    /**
+     * Agent information
+     */
+    agents?: Array<Data.Agent> | null;
+
+    /**
+     * Timestamp when the call record was created
+     */
+    createdAt?: string | null;
+
+    /**
+     * Customer information
+     */
+    customers?: Array<Data.Customer> | null;
+
+    /**
+     * Duration of the call in milliseconds
+     */
+    durationMs?: number | null;
+
+    /**
+     * Timestamp when the call ended
+     */
+    endedAt?: string | null;
+
+    /**
+     * Status indicating how the call ended
+     */
+    endedStatus?:
+      | 'PARTICIPANTS_DID_NOT_SPEAK'
+      | 'AGENT_DID_NOT_ANSWER'
+      | 'AGENT_DID_NOT_SPEAK'
+      | 'AGENT_STOPPED_SPEAKING'
+      | 'AGENT_ENDED_CALL'
+      | 'AGENT_TRANSFERRED_CALL'
+      | 'AGENT_BUSY'
+      | 'AGENT_ERROR'
+      | 'CUSTOMER_ENDED_CALL'
+      | 'VOICE_MAIL_REACHED'
+      | 'SILENCE_TIME_OUT'
+      | 'PHONE_CALL_PROVIDER_CONNECTION_ERROR'
+      | 'CUSTOMER_DID_NOT_ANSWER'
+      | 'CUSTOMER_DID_NOT_SPEAK'
+      | 'CUSTOMER_STOPPED_SPEAKING'
+      | 'CUSTOMER_BUSY'
+      | 'DIAL_ERROR'
+      | 'MAX_DURATION_REACHED'
+      | 'UNKNOWN'
+      | null;
+
+    /**
+     * Pre-signed URL to the call recording (expires in 1 hour)
+     */
+    recordingUrl?: string | null;
+
+    /**
+     * ID of the simulation job if this call was generated by a simulation
+     */
+    simulationJobId?: string | null;
+
+    /**
+     * Current status of the call
+     */
+    status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED' | null;
+
+    /**
+     * Auto-generated summary of the call conversation
+     */
+    summary?: string | null;
+
+    /**
+     * ID of the call that superseded this one (if applicable)
+     */
+    supersededByCallId?: string | null;
+
+    /**
+     * Auto-generated title for the call based on content
+     */
+    title?: string | null;
+
+    /**
+     * Timestamp when the call record was last updated
+     */
+    updatedAt?: string | null;
+  }
+
+  export namespace Data {
+    export interface Agent {
+      id: string;
+
+      endpoint?: Agent.Endpoint | null;
+    }
+
+    export namespace Agent {
+      export interface Endpoint {
+        id: string;
+
+        environment: string;
+
+        phoneNumberE164?: string | null;
+      }
+    }
+
+    export interface Customer {
+      label?: string | null;
+
+      phoneNumberE164?: string | null;
+    }
+  }
+
+  export interface Pagination {
+    /**
+     * Whether there are more items to fetch
+     */
+    hasMore: boolean;
+
+    /**
+     * Cursor for the next page of items
+     */
+    nextCursor: string | null;
+
+    /**
+     * Total number of items
+     */
+    total: number;
   }
 }
 
@@ -271,14 +445,14 @@ export namespace CallGetByIDResponse {
   }
 }
 
-export interface CallGetEvaluationRunsResponse {
+export interface CallListEvaluationRunsResponse {
   /**
    * Evaluation run response payload
    */
-  data: Array<CallGetEvaluationRunsResponse.Data>;
+  data: Array<CallListEvaluationRunsResponse.Data>;
 }
 
-export namespace CallGetEvaluationRunsResponse {
+export namespace CallListEvaluationRunsResponse {
   export interface Data {
     /**
      * All block runs for this evaluator, including skipped ones
@@ -459,14 +633,14 @@ export namespace CallGetEvaluationRunsResponse {
   }
 }
 
-export interface CallGetMetricsResponse {
+export interface CallListMetricsResponse {
   /**
    * Call metrics response payload grouped by metric definition
    */
-  data: Array<CallGetMetricsResponse.Data>;
+  data: Array<CallListMetricsResponse.Data>;
 }
 
-export namespace CallGetMetricsResponse {
+export namespace CallListMetricsResponse {
   /**
    * Call metric data grouped by metric definition
    */
@@ -657,14 +831,14 @@ export namespace CallGetMetricsResponse {
   }
 }
 
-export interface CallGetSentimentRunsResponse {
+export interface CallListSentimentRunsResponse {
   /**
    * Sentiment run response payload
    */
-  data: CallGetSentimentRunsResponse.Data;
+  data: CallListSentimentRunsResponse.Data;
 }
 
-export namespace CallGetSentimentRunsResponse {
+export namespace CallListSentimentRunsResponse {
   /**
    * Sentiment run response payload
    */
@@ -1320,7 +1494,39 @@ export namespace CallCreateParams {
   }
 }
 
-export interface CallGetMetricsParams {
+export interface CallListParams {
+  /**
+   * Cursor for pagination - call ID to start after
+   */
+  after?: string;
+
+  /**
+   * Maximum number of calls to return (default: 20, max: 100)
+   */
+  limit?: number;
+
+  /**
+   * Search text to filter calls by title, summary, or transcript
+   */
+  searchText?: string;
+
+  /**
+   * Field to sort by (default: createdAt)
+   */
+  sortBy?: 'createdAt' | 'startedAt' | 'endedAt' | 'duration' | 'title' | 'status';
+
+  /**
+   * Sort direction (default: desc)
+   */
+  sortDirection?: 'asc' | 'desc';
+
+  /**
+   * Filter by call status
+   */
+  status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED';
+}
+
+export interface CallListMetricsParams {
   /**
    * Whether to return a flat list instead of grouped by metric definition (default:
    * false)
@@ -1331,11 +1537,13 @@ export interface CallGetMetricsParams {
 export declare namespace Call {
   export {
     type CallCreateResponse as CallCreateResponse,
+    type CallListResponse as CallListResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
-    type CallGetEvaluationRunsResponse as CallGetEvaluationRunsResponse,
-    type CallGetMetricsResponse as CallGetMetricsResponse,
-    type CallGetSentimentRunsResponse as CallGetSentimentRunsResponse,
+    type CallListEvaluationRunsResponse as CallListEvaluationRunsResponse,
+    type CallListMetricsResponse as CallListMetricsResponse,
+    type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
     type CallCreateParams as CallCreateParams,
-    type CallGetMetricsParams as CallGetMetricsParams,
+    type CallListParams as CallListParams,
+    type CallListMetricsParams as CallListMetricsParams,
   };
 }

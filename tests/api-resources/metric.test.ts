@@ -9,8 +9,8 @@ const client = new Roark({
 });
 
 describe('resource metric', () => {
-  test('getDefinitions', async () => {
-    const responsePromise = client.metric.getDefinitions();
+  test('listDefinitions', async () => {
+    const responsePromise = client.metric.listDefinitions();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,9 +20,9 @@ describe('resource metric', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('getDefinitions: request options instead of params are passed correctly', async () => {
+  test('listDefinitions: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.metric.getDefinitions({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+    await expect(client.metric.listDefinitions({ path: '/_stainless_unknown_path' })).rejects.toThrow(
       Roark.NotFoundError,
     );
   });

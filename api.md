@@ -14,45 +14,47 @@ Types:
 
 - <code><a href="./src/resources/evaluation.ts">EvaluationCreateJobResponse</a></code>
 - <code><a href="./src/resources/evaluation.ts">EvaluationGetEvaluatorByIDResponse</a></code>
-- <code><a href="./src/resources/evaluation.ts">EvaluationGetEvaluatorsResponse</a></code>
 - <code><a href="./src/resources/evaluation.ts">EvaluationGetJobResponse</a></code>
-- <code><a href="./src/resources/evaluation.ts">EvaluationGetJobRunsResponse</a></code>
+- <code><a href="./src/resources/evaluation.ts">EvaluationListEvaluatorsResponse</a></code>
+- <code><a href="./src/resources/evaluation.ts">EvaluationListJobRunsResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/evaluation/job">client.evaluation.<a href="./src/resources/evaluation.ts">createJob</a>({ ...params }) -> EvaluationCreateJobResponse</code>
 - <code title="get /v1/evaluation/evaluators/{evaluatorId}">client.evaluation.<a href="./src/resources/evaluation.ts">getEvaluatorById</a>(evaluatorId) -> EvaluationGetEvaluatorByIDResponse</code>
-- <code title="get /v1/evaluation/evaluators">client.evaluation.<a href="./src/resources/evaluation.ts">getEvaluators</a>({ ...params }) -> EvaluationGetEvaluatorsResponse</code>
 - <code title="get /v1/evaluation/job/{jobId}">client.evaluation.<a href="./src/resources/evaluation.ts">getJob</a>(jobId) -> EvaluationGetJobResponse</code>
-- <code title="get /v1/evaluation/job/{jobId}/runs">client.evaluation.<a href="./src/resources/evaluation.ts">getJobRuns</a>(jobId, { ...params }) -> EvaluationGetJobRunsResponse</code>
+- <code title="get /v1/evaluation/evaluators">client.evaluation.<a href="./src/resources/evaluation.ts">listEvaluators</a>({ ...params }) -> EvaluationListEvaluatorsResponse</code>
+- <code title="get /v1/evaluation/job/{jobId}/runs">client.evaluation.<a href="./src/resources/evaluation.ts">listJobRuns</a>(jobId, { ...params }) -> EvaluationListJobRunsResponse</code>
 
 # Call
 
 Types:
 
 - <code><a href="./src/resources/call.ts">CallCreateResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallListResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetByIDResponse</a></code>
-- <code><a href="./src/resources/call.ts">CallGetEvaluationRunsResponse</a></code>
-- <code><a href="./src/resources/call.ts">CallGetMetricsResponse</a></code>
-- <code><a href="./src/resources/call.ts">CallGetSentimentRunsResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallListEvaluationRunsResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallListMetricsResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallListSentimentRunsResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/call">client.call.<a href="./src/resources/call.ts">create</a>({ ...params }) -> CallCreateResponse</code>
+- <code title="get /v1/call">client.call.<a href="./src/resources/call.ts">list</a>({ ...params }) -> CallListResponse</code>
 - <code title="get /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">getById</a>(callId) -> CallGetByIDResponse</code>
-- <code title="get /v1/call/{callId}/evaluation-run">client.call.<a href="./src/resources/call.ts">getEvaluationRuns</a>(callId) -> CallGetEvaluationRunsResponse</code>
-- <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">getMetrics</a>(callId, { ...params }) -> CallGetMetricsResponse</code>
-- <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">getSentimentRuns</a>(callId) -> CallGetSentimentRunsResponse</code>
+- <code title="get /v1/call/{callId}/evaluation-run">client.call.<a href="./src/resources/call.ts">listEvaluationRuns</a>(callId) -> CallListEvaluationRunsResponse</code>
+- <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">listMetrics</a>(callId, { ...params }) -> CallListMetricsResponse</code>
+- <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">listSentimentRuns</a>(callId) -> CallListSentimentRunsResponse</code>
 
 # Metric
 
 Types:
 
-- <code><a href="./src/resources/metric.ts">MetricGetDefinitionsResponse</a></code>
+- <code><a href="./src/resources/metric.ts">MetricListDefinitionsResponse</a></code>
 
 Methods:
 
-- <code title="get /v1/metric/definitions">client.metric.<a href="./src/resources/metric.ts">getDefinitions</a>() -> MetricGetDefinitionsResponse</code>
+- <code title="get /v1/metric/definitions">client.metric.<a href="./src/resources/metric.ts">listDefinitions</a>() -> MetricListDefinitionsResponse</code>
 
 # Integrations
 
@@ -88,12 +90,12 @@ Types:
 
 - <code><a href="./src/resources/persona.ts">PersonaCreateResponse</a></code>
 - <code><a href="./src/resources/persona.ts">PersonaUpdateResponse</a></code>
-- <code><a href="./src/resources/persona.ts">PersonaFindAllResponse</a></code>
+- <code><a href="./src/resources/persona.ts">PersonaListResponse</a></code>
 - <code><a href="./src/resources/persona.ts">PersonaGetByIDResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/persona">client.persona.<a href="./src/resources/persona.ts">create</a>({ ...params }) -> PersonaCreateResponse</code>
 - <code title="put /v1/persona/{personaId}">client.persona.<a href="./src/resources/persona.ts">update</a>(personaId, { ...params }) -> PersonaUpdateResponse</code>
-- <code title="get /v1/persona">client.persona.<a href="./src/resources/persona.ts">findAll</a>({ ...params }) -> PersonaFindAllResponse</code>
+- <code title="get /v1/persona">client.persona.<a href="./src/resources/persona.ts">list</a>({ ...params }) -> PersonaListResponse</code>
 - <code title="get /v1/persona/{personaId}">client.persona.<a href="./src/resources/persona.ts">getById</a>(personaId) -> PersonaGetByIDResponse</code>

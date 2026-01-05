@@ -11,21 +11,23 @@ import {
   CallCreateParams,
   CallCreateResponse,
   CallGetByIDResponse,
-  CallGetEvaluationRunsResponse,
-  CallGetMetricsParams,
-  CallGetMetricsResponse,
-  CallGetSentimentRunsResponse,
+  CallListEvaluationRunsResponse,
+  CallListMetricsParams,
+  CallListMetricsResponse,
+  CallListParams,
+  CallListResponse,
+  CallListSentimentRunsResponse,
 } from './resources/call';
 import {
   Evaluation,
   EvaluationCreateJobParams,
   EvaluationCreateJobResponse,
   EvaluationGetEvaluatorByIDResponse,
-  EvaluationGetEvaluatorsParams,
-  EvaluationGetEvaluatorsResponse,
   EvaluationGetJobResponse,
-  EvaluationGetJobRunsParams,
-  EvaluationGetJobRunsResponse,
+  EvaluationListEvaluatorsParams,
+  EvaluationListEvaluatorsResponse,
+  EvaluationListJobRunsParams,
+  EvaluationListJobRunsResponse,
 } from './resources/evaluation';
 import { Health, HealthGetResponse } from './resources/health';
 import {
@@ -35,14 +37,14 @@ import {
   IntegrationCreateVapiCallResponse,
   Integrations,
 } from './resources/integrations';
-import { Metric, MetricGetDefinitionsResponse } from './resources/metric';
+import { Metric, MetricListDefinitionsResponse } from './resources/metric';
 import {
   Persona,
   PersonaCreateParams,
   PersonaCreateResponse,
-  PersonaFindAllParams,
-  PersonaFindAllResponse,
   PersonaGetByIDResponse,
+  PersonaListParams,
+  PersonaListResponse,
   PersonaUpdateParams,
   PersonaUpdateResponse,
 } from './resources/persona';
@@ -243,26 +245,28 @@ export declare namespace Roark {
     Evaluation as Evaluation,
     type EvaluationCreateJobResponse as EvaluationCreateJobResponse,
     type EvaluationGetEvaluatorByIDResponse as EvaluationGetEvaluatorByIDResponse,
-    type EvaluationGetEvaluatorsResponse as EvaluationGetEvaluatorsResponse,
     type EvaluationGetJobResponse as EvaluationGetJobResponse,
-    type EvaluationGetJobRunsResponse as EvaluationGetJobRunsResponse,
+    type EvaluationListEvaluatorsResponse as EvaluationListEvaluatorsResponse,
+    type EvaluationListJobRunsResponse as EvaluationListJobRunsResponse,
     type EvaluationCreateJobParams as EvaluationCreateJobParams,
-    type EvaluationGetEvaluatorsParams as EvaluationGetEvaluatorsParams,
-    type EvaluationGetJobRunsParams as EvaluationGetJobRunsParams,
+    type EvaluationListEvaluatorsParams as EvaluationListEvaluatorsParams,
+    type EvaluationListJobRunsParams as EvaluationListJobRunsParams,
   };
 
   export {
     Call as Call,
     type CallCreateResponse as CallCreateResponse,
+    type CallListResponse as CallListResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
-    type CallGetEvaluationRunsResponse as CallGetEvaluationRunsResponse,
-    type CallGetMetricsResponse as CallGetMetricsResponse,
-    type CallGetSentimentRunsResponse as CallGetSentimentRunsResponse,
+    type CallListEvaluationRunsResponse as CallListEvaluationRunsResponse,
+    type CallListMetricsResponse as CallListMetricsResponse,
+    type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
     type CallCreateParams as CallCreateParams,
-    type CallGetMetricsParams as CallGetMetricsParams,
+    type CallListParams as CallListParams,
+    type CallListMetricsParams as CallListMetricsParams,
   };
 
-  export { Metric as Metric, type MetricGetDefinitionsResponse as MetricGetDefinitionsResponse };
+  export { Metric as Metric, type MetricListDefinitionsResponse as MetricListDefinitionsResponse };
 
   export {
     Integrations as Integrations,
@@ -285,11 +289,11 @@ export declare namespace Roark {
     Persona as Persona,
     type PersonaCreateResponse as PersonaCreateResponse,
     type PersonaUpdateResponse as PersonaUpdateResponse,
-    type PersonaFindAllResponse as PersonaFindAllResponse,
+    type PersonaListResponse as PersonaListResponse,
     type PersonaGetByIDResponse as PersonaGetByIDResponse,
     type PersonaCreateParams as PersonaCreateParams,
     type PersonaUpdateParams as PersonaUpdateParams,
-    type PersonaFindAllParams as PersonaFindAllParams,
+    type PersonaListParams as PersonaListParams,
   };
 }
 

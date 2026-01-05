@@ -3,23 +3,25 @@
 export {
   Call,
   type CallCreateResponse,
+  type CallListResponse,
   type CallGetByIDResponse,
-  type CallGetEvaluationRunsResponse,
-  type CallGetMetricsResponse,
-  type CallGetSentimentRunsResponse,
+  type CallListEvaluationRunsResponse,
+  type CallListMetricsResponse,
+  type CallListSentimentRunsResponse,
   type CallCreateParams,
-  type CallGetMetricsParams,
+  type CallListParams,
+  type CallListMetricsParams,
 } from './call';
 export {
   Evaluation,
   type EvaluationCreateJobResponse,
   type EvaluationGetEvaluatorByIDResponse,
-  type EvaluationGetEvaluatorsResponse,
   type EvaluationGetJobResponse,
-  type EvaluationGetJobRunsResponse,
+  type EvaluationListEvaluatorsResponse,
+  type EvaluationListJobRunsResponse,
   type EvaluationCreateJobParams,
-  type EvaluationGetEvaluatorsParams,
-  type EvaluationGetJobRunsParams,
+  type EvaluationListEvaluatorsParams,
+  type EvaluationListJobRunsParams,
 } from './evaluation';
 export { Health, type HealthGetResponse } from './health';
 export {
@@ -29,16 +31,16 @@ export {
   type IntegrationCreateRetellCallParams,
   type IntegrationCreateVapiCallParams,
 } from './integrations';
-export { Metric, type MetricGetDefinitionsResponse } from './metric';
+export { Metric, type MetricListDefinitionsResponse } from './metric';
 export {
   Persona,
   type PersonaCreateResponse,
   type PersonaUpdateResponse,
-  type PersonaFindAllResponse,
+  type PersonaListResponse,
   type PersonaGetByIDResponse,
   type PersonaCreateParams,
   type PersonaUpdateParams,
-  type PersonaFindAllParams,
+  type PersonaListParams,
 } from './persona';
 export {
   Simulation,
