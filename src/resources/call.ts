@@ -1234,8 +1234,14 @@ export namespace CallCreateParams {
      * the agents array this tool invocation belongs to
      */
     export interface Agent {
+      /**
+       * The custom ID set on the agent
+       */
       customId?: string;
 
+      /**
+       * The Roark ID of the agent
+       */
       roarkId?: string;
     }
   }
@@ -1249,15 +1255,29 @@ export namespace CallCreateParams {
 
     text: string;
 
+    /**
+     * Metadata about the agent that spoke this turn - used to match which agent from
+     * the `agents` array this transcript entry belongs to
+     */
     agent?: UnionMember0.Agent;
 
     languageCode?: string;
   }
 
   export namespace UnionMember0 {
+    /**
+     * Metadata about the agent that spoke this turn - used to match which agent from
+     * the `agents` array this transcript entry belongs to
+     */
     export interface Agent {
+      /**
+       * The custom ID set on the agent
+       */
       customId?: string;
 
+      /**
+       * The Roark ID of the agent
+       */
       roarkId?: string;
     }
   }
