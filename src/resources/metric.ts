@@ -9,19 +9,19 @@ export class Metric extends APIResource {
    * system-generated and custom metrics. Only returns metrics from enabled analysis
    * packages.
    */
-  getDefinitions(options?: Core.RequestOptions): Core.APIPromise<MetricGetDefinitionsResponse> {
+  listDefinitions(options?: Core.RequestOptions): Core.APIPromise<MetricListDefinitionsResponse> {
     return this._client.get('/v1/metric/definitions', options);
   }
 }
 
-export interface MetricGetDefinitionsResponse {
+export interface MetricListDefinitionsResponse {
   /**
    * Metrics response payload
    */
-  data: Array<MetricGetDefinitionsResponse.Data>;
+  data: Array<MetricListDefinitionsResponse.Data>;
 }
 
-export namespace MetricGetDefinitionsResponse {
+export namespace MetricListDefinitionsResponse {
   /**
    * Metric definition data
    */
@@ -86,5 +86,5 @@ export namespace MetricGetDefinitionsResponse {
 }
 
 export declare namespace Metric {
-  export { type MetricGetDefinitionsResponse as MetricGetDefinitionsResponse };
+  export { type MetricListDefinitionsResponse as MetricListDefinitionsResponse };
 }
