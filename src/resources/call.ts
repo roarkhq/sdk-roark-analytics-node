@@ -891,14 +891,19 @@ export interface CallCreateParams {
    * Single agent participating in the call. Use this for simpler API when you have
    * only one agent.
    */
-  agent?: CallCreateParams.UnionMember0 | CallCreateParams.UnionMember1 | CallCreateParams.UnionMember2;
+  agent?:
+    | CallCreateParams.AgentIdentificationByRoarkID
+    | CallCreateParams.AgentIdentificationByName
+    | CallCreateParams.AgentIdentificationByCustomID;
 
   /**
    * Agents participating in the call. Each agent requires identification and prompt
    * information.
    */
   agents?: Array<
-    CallCreateParams.UnionMember0 | CallCreateParams.UnionMember1 | CallCreateParams.UnionMember2
+    | CallCreateParams.AgentIdentificationByRoarkID
+    | CallCreateParams.AgentIdentificationByName
+    | CallCreateParams.AgentIdentificationByCustomID
   >;
 
   /**
@@ -956,11 +961,11 @@ export interface CallCreateParams {
   /**
    * List of transcript entries made during the call
    */
-  transcript?: Array<CallCreateParams.UnionMember0 | CallCreateParams.UnionMember1>;
+  transcript?: Array<CallCreateParams.TranscriptEntryAgent | CallCreateParams.TranscriptEntryCustomer>;
 }
 
 export namespace CallCreateParams {
-  export interface UnionMember0 {
+  export interface AgentIdentificationByRoarkID {
     /**
      * Existing Roark agent ID
      */
@@ -969,16 +974,18 @@ export namespace CallCreateParams {
     /**
      * Endpoint configuration for this agent (optional)
      */
-    endpoint?: UnionMember0.ID | UnionMember0.UnionMember1;
+    endpoint?:
+      | AgentIdentificationByRoarkID.AgentEndpointByID
+      | AgentIdentificationByRoarkID.AgentEndpointByValue;
 
     /**
      * Agent's prompt configuration (optional)
      */
-    prompt?: UnionMember0.Prompt;
+    prompt?: AgentIdentificationByRoarkID.Prompt;
   }
 
-  export namespace UnionMember0 {
-    export interface ID {
+  export namespace AgentIdentificationByRoarkID {
+    export interface AgentEndpointByID {
       /**
        * Existing Roark endpoint ID
        */
@@ -988,7 +995,7 @@ export namespace CallCreateParams {
     /**
      * Lookup or create endpoint if one with these values does not exist
      */
-    export interface UnionMember1 {
+    export interface AgentEndpointByValue {
       /**
        * Type of endpoint (phone or websocket)
        */
@@ -1019,7 +1026,7 @@ export namespace CallCreateParams {
   /**
    * Create a new agent or find existing by customId if provided
    */
-  export interface UnionMember1 {
+  export interface AgentIdentificationByName {
     /**
      * Agent name
      */
@@ -1038,16 +1045,16 @@ export namespace CallCreateParams {
     /**
      * Endpoint configuration for this agent (optional)
      */
-    endpoint?: UnionMember1.ID | UnionMember1.UnionMember1;
+    endpoint?: AgentIdentificationByName.AgentEndpointByID | AgentIdentificationByName.AgentEndpointByValue;
 
     /**
      * Agent's prompt configuration (optional)
      */
-    prompt?: UnionMember1.Prompt;
+    prompt?: AgentIdentificationByName.Prompt;
   }
 
-  export namespace UnionMember1 {
-    export interface ID {
+  export namespace AgentIdentificationByName {
+    export interface AgentEndpointByID {
       /**
        * Existing Roark endpoint ID
        */
@@ -1057,7 +1064,7 @@ export namespace CallCreateParams {
     /**
      * Lookup or create endpoint if one with these values does not exist
      */
-    export interface UnionMember1 {
+    export interface AgentEndpointByValue {
       /**
        * Type of endpoint (phone or websocket)
        */
@@ -1085,7 +1092,7 @@ export namespace CallCreateParams {
     }
   }
 
-  export interface UnionMember2 {
+  export interface AgentIdentificationByCustomID {
     /**
      * Existing custom ID for a Roark agent
      */
@@ -1094,16 +1101,18 @@ export namespace CallCreateParams {
     /**
      * Endpoint configuration for this agent (optional)
      */
-    endpoint?: UnionMember2.ID | UnionMember2.UnionMember1;
+    endpoint?:
+      | AgentIdentificationByCustomID.AgentEndpointByID
+      | AgentIdentificationByCustomID.AgentEndpointByValue;
 
     /**
      * Agent's prompt configuration (optional)
      */
-    prompt?: UnionMember2.Prompt;
+    prompt?: AgentIdentificationByCustomID.Prompt;
   }
 
-  export namespace UnionMember2 {
-    export interface ID {
+  export namespace AgentIdentificationByCustomID {
+    export interface AgentEndpointByID {
       /**
        * Existing Roark endpoint ID
        */
@@ -1113,7 +1122,7 @@ export namespace CallCreateParams {
     /**
      * Lookup or create endpoint if one with these values does not exist
      */
-    export interface UnionMember1 {
+    export interface AgentEndpointByValue {
       /**
        * Type of endpoint (phone or websocket)
        */
@@ -1141,7 +1150,7 @@ export namespace CallCreateParams {
     }
   }
 
-  export interface UnionMember0 {
+  export interface AgentIdentificationByRoarkID {
     /**
      * Existing Roark agent ID
      */
@@ -1150,16 +1159,18 @@ export namespace CallCreateParams {
     /**
      * Endpoint configuration for this agent (optional)
      */
-    endpoint?: UnionMember0.ID | UnionMember0.UnionMember1;
+    endpoint?:
+      | AgentIdentificationByRoarkID.AgentEndpointByID
+      | AgentIdentificationByRoarkID.AgentEndpointByValue;
 
     /**
      * Agent's prompt configuration (optional)
      */
-    prompt?: UnionMember0.Prompt;
+    prompt?: AgentIdentificationByRoarkID.Prompt;
   }
 
-  export namespace UnionMember0 {
-    export interface ID {
+  export namespace AgentIdentificationByRoarkID {
+    export interface AgentEndpointByID {
       /**
        * Existing Roark endpoint ID
        */
@@ -1169,7 +1180,7 @@ export namespace CallCreateParams {
     /**
      * Lookup or create endpoint if one with these values does not exist
      */
-    export interface UnionMember1 {
+    export interface AgentEndpointByValue {
       /**
        * Type of endpoint (phone or websocket)
        */
@@ -1200,7 +1211,7 @@ export namespace CallCreateParams {
   /**
    * Create a new agent or find existing by customId if provided
    */
-  export interface UnionMember1 {
+  export interface AgentIdentificationByName {
     /**
      * Agent name
      */
@@ -1219,16 +1230,16 @@ export namespace CallCreateParams {
     /**
      * Endpoint configuration for this agent (optional)
      */
-    endpoint?: UnionMember1.ID | UnionMember1.UnionMember1;
+    endpoint?: AgentIdentificationByName.AgentEndpointByID | AgentIdentificationByName.AgentEndpointByValue;
 
     /**
      * Agent's prompt configuration (optional)
      */
-    prompt?: UnionMember1.Prompt;
+    prompt?: AgentIdentificationByName.Prompt;
   }
 
-  export namespace UnionMember1 {
-    export interface ID {
+  export namespace AgentIdentificationByName {
+    export interface AgentEndpointByID {
       /**
        * Existing Roark endpoint ID
        */
@@ -1238,7 +1249,7 @@ export namespace CallCreateParams {
     /**
      * Lookup or create endpoint if one with these values does not exist
      */
-    export interface UnionMember1 {
+    export interface AgentEndpointByValue {
       /**
        * Type of endpoint (phone or websocket)
        */
@@ -1266,7 +1277,7 @@ export namespace CallCreateParams {
     }
   }
 
-  export interface UnionMember2 {
+  export interface AgentIdentificationByCustomID {
     /**
      * Existing custom ID for a Roark agent
      */
@@ -1275,16 +1286,18 @@ export namespace CallCreateParams {
     /**
      * Endpoint configuration for this agent (optional)
      */
-    endpoint?: UnionMember2.ID | UnionMember2.UnionMember1;
+    endpoint?:
+      | AgentIdentificationByCustomID.AgentEndpointByID
+      | AgentIdentificationByCustomID.AgentEndpointByValue;
 
     /**
      * Agent's prompt configuration (optional)
      */
-    prompt?: UnionMember2.Prompt;
+    prompt?: AgentIdentificationByCustomID.Prompt;
   }
 
-  export namespace UnionMember2 {
-    export interface ID {
+  export namespace AgentIdentificationByCustomID {
+    export interface AgentEndpointByID {
       /**
        * Existing Roark endpoint ID
        */
@@ -1294,7 +1307,7 @@ export namespace CallCreateParams {
     /**
      * Lookup or create endpoint if one with these values does not exist
      */
-    export interface UnionMember1 {
+    export interface AgentEndpointByValue {
       /**
        * Type of endpoint (phone or websocket)
        */
@@ -1420,7 +1433,7 @@ export namespace CallCreateParams {
     }
   }
 
-  export interface UnionMember0 {
+  export interface TranscriptEntryAgent {
     endOffsetMs: number;
 
     role: 'AGENT';
@@ -1433,12 +1446,12 @@ export namespace CallCreateParams {
      * Metadata about the agent that spoke this turn - used to match which agent from
      * the `agents` array this transcript entry belongs to
      */
-    agent?: UnionMember0.Agent;
+    agent?: TranscriptEntryAgent.Agent;
 
     languageCode?: string;
   }
 
-  export namespace UnionMember0 {
+  export namespace TranscriptEntryAgent {
     /**
      * Metadata about the agent that spoke this turn - used to match which agent from
      * the `agents` array this transcript entry belongs to
@@ -1456,7 +1469,7 @@ export namespace CallCreateParams {
     }
   }
 
-  export interface UnionMember1 {
+  export interface TranscriptEntryCustomer {
     endOffsetMs: number;
 
     role: 'CUSTOMER';
@@ -1469,12 +1482,12 @@ export namespace CallCreateParams {
      * Metadata about the customer that spoke this turn - used to match which customer
      * from the `customers` array this transcript entry belongs to
      */
-    customer?: UnionMember1.Customer;
+    customer?: TranscriptEntryCustomer.Customer;
 
     languageCode?: string;
   }
 
-  export namespace UnionMember1 {
+  export namespace TranscriptEntryCustomer {
     /**
      * Metadata about the customer that spoke this turn - used to match which customer
      * from the `customers` array this transcript entry belongs to
