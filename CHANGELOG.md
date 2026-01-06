@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.14.0 (2026-01-06)
+
+Full Changelog: [v2.13.1...v2.14.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.13.1...v2.14.0)
+
+### Features
+
+* **api:** api update ([1419ffb](https://github.com/roarkhq/sdk-roark-analytics-node/commit/1419ffb74fc6c2e1695b3b3519e1d54c45f37bbb))
+* **api:** api update ([e7868be](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e7868be894f344e6e247204d8b1122e12ddcc740))
+* **api:** api update ([c7a8af1](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c7a8af1d83f5d67950bea0f01848ed1a9a810520))
+* **api:** api update ([f21bbcd](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f21bbcd3a42ae2ca646b643c914d74f1df2bc82b))
+* **api:** api update ([d5f0722](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d5f0722c07b6332e46dddb255f616c4008414bd7))
+* **api:** api update ([ee01679](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ee01679e8cbc5e98866557a5b662b7acffd02c5f))
+* **api:** api update ([260a38f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/260a38f2527c661052a111daee238cbfc6bf922e))
+* **api:** api update ([b1b3cf0](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b1b3cf0f3d6f786a8eb9166fc7cb66e869e73751))
+* **api:** api update ([9593380](https://github.com/roarkhq/sdk-roark-analytics-node/commit/959338097d535a42cc6204f839724f6f5aaee638))
+* **api:** api update ([5d5d2b0](https://github.com/roarkhq/sdk-roark-analytics-node/commit/5d5d2b03f7c4bb88ad86d8b001bb06a61df76fc3))
+* **api:** api update ([0e22a95](https://github.com/roarkhq/sdk-roark-analytics-node/commit/0e22a95c191c1488c41185d4c21a8fb66576938d))
+
 ## 2.13.1 (2025-12-16)
 
 Full Changelog: [v2.13.0...v2.13.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.13.0...v2.13.1)
