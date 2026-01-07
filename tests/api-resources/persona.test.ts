@@ -38,7 +38,11 @@ describe('resource persona', () => {
       hasDisfluencies: true,
       intentClarity: 'CLEAR',
       memoryReliability: 'HIGH',
-      properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
+      properties: {
+        age: 'bar',
+        zipCode: 'bar',
+        occupation: 'bar',
+      },
       secondaryLanguage: 'EN',
       speechClarity: 'CLEAR',
       speechPace: 'SLOW',
@@ -80,7 +84,11 @@ describe('resource persona', () => {
           language: 'EN',
           memoryReliability: 'HIGH',
           name: 'name',
-          properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
+          properties: {
+            age: 'bar',
+            zipCode: 'bar',
+            occupation: 'bar',
+          },
           secondaryLanguage: 'EN',
           speechClarity: 'CLEAR',
           speechPace: 'SLOW',
@@ -112,7 +120,11 @@ describe('resource persona', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.persona.list(
-        { after: 'after', limit: 1, searchText: 'searchText' },
+        {
+          after: 'after',
+          limit: 1,
+          searchText: 'searchText',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Roark.NotFoundError);

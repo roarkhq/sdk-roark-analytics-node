@@ -51,7 +51,13 @@ describe('resource call', () => {
       toolInvocations: [
         {
           name: 'name',
-          parameters: { foo: { description: 'description', type: 'string', value: {} } },
+          parameters: {
+            foo: {
+              description: 'description',
+              type: 'string',
+              value: {},
+            },
+          },
           result: 'string',
           startOffsetMs: 0,
           agent: { customId: 'customId', roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
