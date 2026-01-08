@@ -99,8 +99,7 @@ describe('resource call', () => {
     await expect(
       client.call.list(
         {
-          after:
-            'eyJpZCI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsImNyZWF0ZWRBdCI6IjIwMjQtMDEtMTVUMTA6MDA6MDAuMDAwWiJ9',
+          after: '550e8400-e29b-41d4-a716-446655440000',
           limit: 20,
           searchText: 'billing inquiry',
           sortBy: 'createdAt',
