@@ -225,6 +225,11 @@ export namespace CallListResponse {
       | null;
 
     /**
+     * Custom properties associated with the call
+     */
+    properties?: { [key: string]: unknown } | null;
+
+    /**
      * Pre-signed URL to the call recording (expires in 1 hour)
      */
     recordingUrl?: string | null;
@@ -383,6 +388,11 @@ export namespace CallGetByIDResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * Custom properties associated with the call
+     */
+    properties?: { [key: string]: unknown } | null;
 
     /**
      * Pre-signed URL to the call recording (expires in 1 hour)
