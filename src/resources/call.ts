@@ -1519,8 +1519,8 @@ export namespace CallCreateParams {
 
 export interface CallListParams {
   /**
-   * Opaque cursor for pagination - use the nextCursor value from a previous response
-   * exactly as returned
+   * Cursor for pagination - use the nextCursor value (call ID) from a previous
+   * response
    */
   after?: string;
 
