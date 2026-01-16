@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
+import { isRequestOptions } from '../core';
 import * as Core from '../core';
 
 export class Simulation extends APIResource {
@@ -39,6 +40,29 @@ export class Simulation extends APIResource {
     options?: Core.RequestOptions,
   ): Core.APIPromise<SimulationGetSimulationJobByIDResponse> {
     return this._client.get(`/v1/simulation/job/${jobId}`, options);
+  }
+
+  /**
+   * Returns a paginated list of simulation scenarios for the authenticated project.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.listScenarios();
+   * ```
+   */
+  listScenarios(
+    query?: SimulationListScenariosParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<SimulationListScenariosResponse>;
+  listScenarios(options?: Core.RequestOptions): Core.APIPromise<SimulationListScenariosResponse>;
+  listScenarios(
+    query: SimulationListScenariosParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<SimulationListScenariosResponse> {
+    if (isRequestOptions(query)) {
+      return this.listScenarios({}, query);
+    }
+    return this._client.get('/v1/simulation/scenario', { query, ...options });
   }
 
   /**
@@ -543,6 +567,83 @@ export namespace SimulationGetSimulationJobByIDResponse {
   }
 }
 
+export interface SimulationListScenariosResponse {
+  data: Array<SimulationListScenariosResponse.Data>;
+
+  pagination: SimulationListScenariosResponse.Pagination;
+}
+
+export namespace SimulationListScenariosResponse {
+  export interface Data {
+    /**
+     * Unique identifier of the scenario
+     */
+    id: string;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    /**
+     * Description of the scenario
+     */
+    description: string | null;
+
+    /**
+     * Name of the scenario (from the start node content)
+     */
+    name: string | null;
+
+    /**
+     * Ordered list of steps in the scenario (excludes the START node)
+     */
+    steps: Array<Data.Step>;
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+  }
+
+  export namespace Data {
+    export interface Step {
+      /**
+       * Content/text of the step
+       */
+      content: string | null;
+
+      /**
+       * Type of step in the scenario
+       */
+      type:
+        | 'START'
+        | 'AGENT_TURN'
+        | 'CUSTOMER_TURN'
+        | 'CUSTOMER_FIRST_MESSAGE'
+        | 'CUSTOMER_SILENCE'
+        | 'VOICEMAIL';
+    }
+  }
+
+  export interface Pagination {
+    /**
+     * Whether there are more items to fetch
+     */
+    hasMore: boolean;
+
+    /**
+     * Cursor for the next page of items
+     */
+    nextCursor: string | null;
+
+    /**
+     * Total number of items
+     */
+    total: number;
+  }
+}
+
 export interface SimulationLookupSimulationJobResponse {
   /**
    * Simulation job with related entities
@@ -790,6 +891,12 @@ export namespace SimulationStartRunPlanJobResponse {
   }
 }
 
+export interface SimulationListScenariosParams {
+  after?: string;
+
+  limit?: number;
+}
+
 export interface SimulationLookupSimulationJobParams {
   /**
    * Phone number provisioned by Roark for the simulation job in E.164 format. In the
@@ -810,8 +917,10 @@ export declare namespace Simulation {
   export {
     type SimulationGetRunPlanJobResponse as SimulationGetRunPlanJobResponse,
     type SimulationGetSimulationJobByIDResponse as SimulationGetSimulationJobByIDResponse,
+    type SimulationListScenariosResponse as SimulationListScenariosResponse,
     type SimulationLookupSimulationJobResponse as SimulationLookupSimulationJobResponse,
     type SimulationStartRunPlanJobResponse as SimulationStartRunPlanJobResponse,
+    type SimulationListScenariosParams as SimulationListScenariosParams,
     type SimulationLookupSimulationJobParams as SimulationLookupSimulationJobParams,
   };
 }

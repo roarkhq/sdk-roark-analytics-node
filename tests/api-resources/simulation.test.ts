@@ -49,6 +49,31 @@ describe('resource simulation', () => {
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
+  test('listScenarios', async () => {
+    const responsePromise = client.simulation.listScenarios();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('listScenarios: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.simulation.listScenarios({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Roark.NotFoundError,
+    );
+  });
+
+  test('listScenarios: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.simulation.listScenarios({ after: 'after', limit: 1 }, { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
+
   test('lookupSimulationJob: only required params', async () => {
     const responsePromise = client.simulation.lookupSimulationJob({ roarkPhoneNumber: {} });
     const rawResponse = await responsePromise.asResponse();

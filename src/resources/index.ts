@@ -46,7 +46,9 @@ export {
   Simulation,
   type SimulationGetRunPlanJobResponse,
   type SimulationGetSimulationJobByIDResponse,
+  type SimulationListScenariosResponse,
   type SimulationLookupSimulationJobResponse,
   type SimulationStartRunPlanJobResponse,
+  type SimulationListScenariosParams,
   type SimulationLookupSimulationJobParams,
 } from './simulation';
