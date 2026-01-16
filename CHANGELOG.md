@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.15.0 (2026-01-16)
+
+Full Changelog: [v2.14.0...v2.15.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.14.0...v2.15.0)
+
+### Features
+
+* **api:** api update ([9f1b94b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9f1b94b19bf06e80b3807846f2b42ec6e4cf6ab4))
+* **api:** api update ([47ef80a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/47ef80ad5f081fad354acbdc35a7a231ec57ad2a))
+* **api:** api update ([9f1ad31](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9f1ad3183d1eee2f5c8392df2292d777796fb942))
+* **api:** api update ([1274a74](https://github.com/roarkhq/sdk-roark-analytics-node/commit/1274a749a29d828b6132120874ea2aebf04aa2a1))
+
+
+### Chores
+
+* break long lines in snippets into multiline ([9e0e6fd](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9e0e6fda87227cb9a29f3bbc8adc6180d70827ef))
+* **internal:** upgrade babel, qs, js-yaml ([63b69ff](https://github.com/roarkhq/sdk-roark-analytics-node/commit/63b69ffc7e465fe71c017c31fedc3ee3a7f159d9))
+
 ## 2.14.0 (2026-01-06)
 
 Full Changelog: [v2.13.1...v2.14.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.13.1...v2.14.0)
