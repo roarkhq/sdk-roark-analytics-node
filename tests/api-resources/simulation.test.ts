@@ -49,6 +49,41 @@ describe('resource simulation', () => {
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
+  test('listRunPlanJobs', async () => {
+    const responsePromise = client.simulation.listRunPlanJobs();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('listRunPlanJobs: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.simulation.listRunPlanJobs({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Roark.NotFoundError,
+    );
+  });
+
+  test('listRunPlanJobs: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.simulation.listRunPlanJobs(
+        {
+          after: '550e8400-e29b-41d4-a716-446655440000',
+          labelId: '550e8400-e29b-41d4-a716-446655440000',
+          labelName: 'production-ready',
+          limit: 20,
+          simulationRunPlanId: '550e8400-e29b-41d4-a716-446655440000',
+          status: 'COMPLETED',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
+
   test('listScenarios', async () => {
     const responsePromise = client.simulation.listScenarios();
     const rawResponse = await responsePromise.asResponse();

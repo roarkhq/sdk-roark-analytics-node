@@ -43,6 +43,30 @@ export class Simulation extends APIResource {
   }
 
   /**
+   * Returns a paginated list of simulation run plan jobs. Filter by status, plan ID,
+   * or label to find specific simulation batches.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.listRunPlanJobs();
+   * ```
+   */
+  listRunPlanJobs(
+    query?: SimulationListRunPlanJobsParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<SimulationListRunPlanJobsResponse>;
+  listRunPlanJobs(options?: Core.RequestOptions): Core.APIPromise<SimulationListRunPlanJobsResponse>;
+  listRunPlanJobs(
+    query: SimulationListRunPlanJobsParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<SimulationListRunPlanJobsResponse> {
+    if (isRequestOptions(query)) {
+      return this.listRunPlanJobs({}, query);
+    }
+    return this._client.get('/v1/simulation/plan/jobs', { query, ...options });
+  }
+
+  /**
    * Returns a paginated list of simulation scenarios for the authenticated project.
    *
    * @example
@@ -567,6 +591,71 @@ export namespace SimulationGetSimulationJobByIDResponse {
   }
 }
 
+/**
+ * Paginated list of simulation run plan jobs
+ */
+export interface SimulationListRunPlanJobsResponse {
+  data: Array<SimulationListRunPlanJobsResponse.Data>;
+
+  pagination: SimulationListRunPlanJobsResponse.Pagination;
+}
+
+export namespace SimulationListRunPlanJobsResponse {
+  export interface Data {
+    /**
+     * When the job was created
+     */
+    createdAt: string;
+
+    /**
+     * ID of the simulation run plan
+     */
+    simulationRunPlanId: string;
+
+    /**
+     * ID of the simulation run plan job
+     */
+    simulationRunPlanJobId: string;
+
+    /**
+     * Job status
+     */
+    status: string;
+
+    /**
+     * How the job was triggered (SCHEDULED or USER_TRIGGERED_FROM_UI)
+     */
+    triggeredBy: string;
+
+    /**
+     * When the job ended
+     */
+    endedAt?: string | null;
+
+    /**
+     * When the job started
+     */
+    startedAt?: string | null;
+  }
+
+  export interface Pagination {
+    /**
+     * Whether there are more results available
+     */
+    hasMore: boolean;
+
+    /**
+     * Total number of matching plan jobs
+     */
+    total: number;
+
+    /**
+     * Cursor to use for fetching the next page
+     */
+    nextCursor?: string | null;
+  }
+}
+
 export interface SimulationListScenariosResponse {
   data: Array<SimulationListScenariosResponse.Data>;
 
@@ -891,6 +980,40 @@ export namespace SimulationStartRunPlanJobResponse {
   }
 }
 
+export interface SimulationListRunPlanJobsParams {
+  /**
+   * Cursor for pagination - use the nextCursor value from a previous response
+   */
+  after?: string;
+
+  /**
+   * Filter by label ID attached to the plan job. Use this if you know the label ID.
+   */
+  labelId?: string;
+
+  /**
+   * Filter by label name attached to the plan job. More user-friendly alternative to
+   * labelId. Case-insensitive.
+   */
+  labelName?: string;
+
+  /**
+   * Maximum number of plan jobs to return (default: 20, max: 50)
+   */
+  limit?: number;
+
+  /**
+   * Filter by simulation run plan ID
+   */
+  simulationRunPlanId?: string;
+
+  /**
+   * Filter by plan job status (PENDING, CREATING_SNAPSHOTS, CREATING_SIMULATIONS,
+   * RUNNING_SIMULATIONS, COMPLETED, FAILED, TIMED_OUT, CANCELLED, CANCELLING)
+   */
+  status?: string;
+}
+
 export interface SimulationListScenariosParams {
   after?: string;
 
@@ -917,9 +1040,11 @@ export declare namespace Simulation {
   export {
     type SimulationGetRunPlanJobResponse as SimulationGetRunPlanJobResponse,
     type SimulationGetSimulationJobByIDResponse as SimulationGetSimulationJobByIDResponse,
+    type SimulationListRunPlanJobsResponse as SimulationListRunPlanJobsResponse,
     type SimulationListScenariosResponse as SimulationListScenariosResponse,
     type SimulationLookupSimulationJobResponse as SimulationLookupSimulationJobResponse,
     type SimulationStartRunPlanJobResponse as SimulationStartRunPlanJobResponse,
+    type SimulationListRunPlanJobsParams as SimulationListRunPlanJobsParams,
     type SimulationListScenariosParams as SimulationListScenariosParams,
     type SimulationLookupSimulationJobParams as SimulationLookupSimulationJobParams,
   };
