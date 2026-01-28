@@ -209,9 +209,21 @@ export namespace SimulationGetRunPlanJobResponse {
       status: string;
 
       /**
+       * ID of the call created for this simulation job. Null if the call has not been
+       * created yet.
+       */
+      callId?: string | null;
+
+      /**
        * When the simulation job completed
        */
       completedAt?: string | null;
+
+      /**
+       * Phone number provisioned by Roark for this simulation job in E.164 format. Null
+       * if the simulation job is queued and has not been assigned a phone number yet.
+       */
+      roarkPhoneNumber?: string | null;
 
       /**
        * When the simulation job started
@@ -423,9 +435,21 @@ export namespace SimulationGetSimulationJobByIDResponse {
     status: string;
 
     /**
+     * ID of the call created for this simulation job. Null if the call has not been
+     * created yet.
+     */
+    callId?: string | null;
+
+    /**
      * When the job completed
      */
     completedAt?: string | null;
+
+    /**
+     * Phone number provisioned by Roark for this simulation job in E.164 format. Null
+     * if the simulation job is queued and has not been assigned a phone number yet.
+     */
+    roarkPhoneNumber?: string | null;
 
     /**
      * When the job started
@@ -778,9 +802,21 @@ export namespace SimulationLookupSimulationJobResponse {
     status: string;
 
     /**
+     * ID of the call created for this simulation job. Null if the call has not been
+     * created yet.
+     */
+    callId?: string | null;
+
+    /**
      * When the job completed
      */
     completedAt?: string | null;
+
+    /**
+     * Phone number provisioned by Roark for this simulation job in E.164 format. Null
+     * if the simulation job is queued and has not been assigned a phone number yet.
+     */
+    roarkPhoneNumber?: string | null;
 
     /**
      * When the job started
