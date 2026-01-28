@@ -225,6 +225,11 @@ export namespace CallListResponse {
       | null;
 
     /**
+     * Custom properties associated with the call
+     */
+    properties?: { [key: string]: unknown } | null;
+
+    /**
      * Pre-signed URL to the call recording (expires in 1 hour)
      */
     recordingUrl?: string | null;
@@ -383,6 +388,11 @@ export namespace CallGetByIDResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * Custom properties associated with the call
+     */
+    properties?: { [key: string]: unknown } | null;
 
     /**
      * Pre-signed URL to the call recording (expires in 1 hour)
@@ -1509,7 +1519,7 @@ export namespace CallCreateParams {
 
 export interface CallListParams {
   /**
-   * Cursor for pagination - call ID to start after
+   * Cursor for pagination - use the nextCursor value from a previous response
    */
   after?: string;
 
