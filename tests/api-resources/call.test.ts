@@ -103,6 +103,7 @@ describe('resource call', () => {
             'eyJzb3J0VmFsdWUiOiIyMDI1LTAxLTE1VDEwOjAwOjAwLjAwMDAwMFoiLCJpZCI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCJ9',
           limit: 20,
           searchText: 'billing inquiry',
+          simulationRunPlanJobId: '550e8400-e29b-41d4-a716-446655440000',
           sortBy: 'createdAt',
           sortDirection: 'desc',
           status: 'ENDED',
