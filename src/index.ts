@@ -52,6 +52,8 @@ import {
   Simulation,
   SimulationGetRunPlanJobResponse,
   SimulationGetSimulationJobByIDResponse,
+  SimulationListScenariosParams,
+  SimulationListScenariosResponse,
   SimulationLookupSimulationJobParams,
   SimulationLookupSimulationJobResponse,
   SimulationStartRunPlanJobResponse,
@@ -280,8 +282,10 @@ export declare namespace Roark {
     Simulation as Simulation,
     type SimulationGetRunPlanJobResponse as SimulationGetRunPlanJobResponse,
     type SimulationGetSimulationJobByIDResponse as SimulationGetSimulationJobByIDResponse,
+    type SimulationListScenariosResponse as SimulationListScenariosResponse,
     type SimulationLookupSimulationJobResponse as SimulationLookupSimulationJobResponse,
     type SimulationStartRunPlanJobResponse as SimulationStartRunPlanJobResponse,
+    type SimulationListScenariosParams as SimulationListScenariosParams,
     type SimulationLookupSimulationJobParams as SimulationLookupSimulationJobParams,
   };
 
