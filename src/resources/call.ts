@@ -1534,6 +1534,12 @@ export interface CallListParams {
   searchText?: string;
 
   /**
+   * Filter by simulation run plan job ID to get all calls from a specific simulation
+   * batch
+   */
+  simulationRunPlanJobId?: string;
+
+  /**
    * Field to sort by (default: createdAt)
    */
   sortBy?: 'createdAt' | 'startedAt' | 'endedAt' | 'duration' | 'title' | 'status';
