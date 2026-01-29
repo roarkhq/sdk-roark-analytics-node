@@ -281,7 +281,8 @@ export namespace SimulationGetRunPlanJobResponse {
           | 'AU'
           | 'IT'
           | 'ID'
-          | 'TH';
+          | 'TH'
+          | 'JP';
 
         /**
          * Background noise setting
@@ -329,7 +330,7 @@ export namespace SimulationGetRunPlanJobResponse {
         /**
          * Primary language ISO 639-1 code for the persona
          */
-        language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH';
+        language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
 
         /**
          * How reliable the persona's memory is
@@ -507,7 +508,8 @@ export namespace SimulationGetSimulationJobByIDResponse {
         | 'AU'
         | 'IT'
         | 'ID'
-        | 'TH';
+        | 'TH'
+        | 'JP';
 
       /**
        * Background noise setting
@@ -555,7 +557,7 @@ export namespace SimulationGetSimulationJobByIDResponse {
       /**
        * Primary language ISO 639-1 code for the persona
        */
-      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH';
+      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
 
       /**
        * How reliable the persona's memory is
@@ -874,7 +876,8 @@ export namespace SimulationLookupSimulationJobResponse {
         | 'AU'
         | 'IT'
         | 'ID'
-        | 'TH';
+        | 'TH'
+        | 'JP';
 
       /**
        * Background noise setting
@@ -922,7 +925,7 @@ export namespace SimulationLookupSimulationJobResponse {
       /**
        * Primary language ISO 639-1 code for the persona
        */
-      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH';
+      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
 
       /**
        * How reliable the persona's memory is

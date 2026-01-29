@@ -109,7 +109,8 @@ export namespace PersonaCreateResponse {
       | 'AU'
       | 'IT'
       | 'ID'
-      | 'TH';
+      | 'TH'
+      | 'JP';
 
     /**
      * Background noise setting
@@ -157,7 +158,7 @@ export namespace PersonaCreateResponse {
     /**
      * Primary language ISO 639-1 code for the persona
      */
-    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH';
+    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
 
     /**
      * How reliable the persona's memory is
@@ -230,7 +231,8 @@ export namespace PersonaUpdateResponse {
       | 'AU'
       | 'IT'
       | 'ID'
-      | 'TH';
+      | 'TH'
+      | 'JP';
 
     /**
      * Background noise setting
@@ -278,7 +280,7 @@ export namespace PersonaUpdateResponse {
     /**
      * Primary language ISO 639-1 code for the persona
      */
-    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH';
+    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
 
     /**
      * How reliable the persona's memory is
@@ -353,7 +355,8 @@ export namespace PersonaListResponse {
       | 'AU'
       | 'IT'
       | 'ID'
-      | 'TH';
+      | 'TH'
+      | 'JP';
 
     /**
      * Background noise setting
@@ -401,7 +404,7 @@ export namespace PersonaListResponse {
     /**
      * Primary language ISO 639-1 code for the persona
      */
-    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH';
+    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
 
     /**
      * How reliable the persona's memory is
@@ -491,7 +494,8 @@ export namespace PersonaGetByIDResponse {
       | 'AU'
       | 'IT'
       | 'ID'
-      | 'TH';
+      | 'TH'
+      | 'JP';
 
     /**
      * Background noise setting
@@ -539,7 +543,7 @@ export namespace PersonaGetByIDResponse {
     /**
      * Primary language ISO 639-1 code for the persona
      */
-    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH';
+    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
 
     /**
      * How reliable the persona's memory is
@@ -602,7 +606,8 @@ export interface PersonaCreateParams {
     | 'AU'
     | 'IT'
     | 'ID'
-    | 'TH';
+    | 'TH'
+    | 'JP';
 
   /**
    * Gender of the persona
@@ -612,7 +617,7 @@ export interface PersonaCreateParams {
   /**
    * Primary language ISO 639-1 code for the persona
    */
-  language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH';
+  language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
 
   /**
    * The name the agent will identify as during conversations
@@ -702,7 +707,8 @@ export interface PersonaUpdateParams {
     | 'AU'
     | 'IT'
     | 'ID'
-    | 'TH';
+    | 'TH'
+    | 'JP';
 
   /**
    * Background noise setting
@@ -750,7 +756,7 @@ export interface PersonaUpdateParams {
   /**
    * Primary language ISO 639-1 code for the persona
    */
-  language?: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH';
+  language?: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
 
   /**
    * How reliable the persona's memory is
