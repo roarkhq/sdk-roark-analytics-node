@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.18.0 (2026-02-09)
+
+Full Changelog: [v2.17.0...v2.18.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.17.0...v2.18.0)
+
+### Features
+
+* **api:** api update ([ae208ae](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ae208aedb4adc5cb449d6fd4475309ee41880c92))
+
+
+### Chores
+
+* **client:** do not parse responses with empty content-length ([5ae8e87](https://github.com/roarkhq/sdk-roark-analytics-node/commit/5ae8e875c80fea8aa6430ba4cc06ac5f518a727c))
+* configure new SDK language ([c2248e8](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c2248e862dda02d9f56ab5d7bd1be363f3e3b649))
+
 ## 2.17.0 (2026-01-28)
 
 Full Changelog: [v2.16.0...v2.17.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.16.0...v2.17.0)
