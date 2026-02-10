@@ -1,82 +1,43 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
-import { isRequestOptions } from '../core';
-import * as Core from '../core';
+import { APIPromise } from '../api-promise';
+import { RequestOptions } from '../internal/request-options';
 
 export class Persona extends APIResource {
   /**
    * Creates a new persona for the authenticated project.
-   *
-   * @example
-   * ```ts
-   * const persona = await client.persona.create({
-   *   accent: 'US',
-   *   gender: 'MALE',
-   *   language: 'EN',
-   *   name: 'name',
-   * });
-   * ```
    */
-  create(body: PersonaCreateParams, options?: Core.RequestOptions): Core.APIPromise<PersonaCreateResponse> {
+  create(body: PersonaCreateParams, options?: RequestOptions): APIPromise<PersonaCreateResponse> {
     return this._client.post('/v1/persona', { body, ...options });
   }
 
   /**
    * Updates an existing persona by its ID.
-   *
-   * @example
-   * ```ts
-   * const persona = await client.persona.update('personaId');
-   * ```
    */
   update(
-    personaId: string,
-    body?: PersonaUpdateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PersonaUpdateResponse>;
-  update(personaId: string, options?: Core.RequestOptions): Core.APIPromise<PersonaUpdateResponse>;
-  update(
-    personaId: string,
-    body: PersonaUpdateParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PersonaUpdateResponse> {
-    if (isRequestOptions(body)) {
-      return this.update(personaId, {}, body);
-    }
-    return this._client.put(`/v1/persona/${personaId}`, { body, ...options });
+    personaID: string,
+    body: PersonaUpdateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PersonaUpdateResponse> {
+    return this._client.put(`/v1/persona/${personaID}`, { body, ...options });
   }
 
   /**
    * Returns a paginated list of personas for the authenticated project.
-   *
-   * @example
-   * ```ts
-   * const personas = await client.persona.list();
-   * ```
    */
-  list(query?: PersonaListParams, options?: Core.RequestOptions): Core.APIPromise<PersonaListResponse>;
-  list(options?: Core.RequestOptions): Core.APIPromise<PersonaListResponse>;
   list(
-    query: PersonaListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<PersonaListResponse> {
-    if (isRequestOptions(query)) {
-      return this.list({}, query);
-    }
+    query: PersonaListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PersonaListResponse> {
     return this._client.get('/v1/persona', { query, ...options });
   }
 
   /**
    * Returns a specific persona by its ID.
-   *
-   * @example
-   * ```ts
-   * const response = await client.persona.getById('personaId');
-   * ```
    */
-  getById(personaId: string, options?: Core.RequestOptions): Core.APIPromise<PersonaGetByIDResponse> {
-    return this._client.get(`/v1/persona/${personaId}`, options);
+  getByID(personaID: string, options?: RequestOptions): APIPromise<PersonaGetByIDResponse> {
+    return this._client.get(`/v1/persona/${personaID}`, options);
   }
 }
 
@@ -173,7 +134,7 @@ export namespace PersonaCreateResponse {
     /**
      * Additional custom properties about the persona
      */
-    properties: { [key: string]: unknown };
+    properties: Record<string, unknown>;
 
     /**
      * Speech clarity of the persona
@@ -295,7 +256,7 @@ export namespace PersonaUpdateResponse {
     /**
      * Additional custom properties about the persona
      */
-    properties: { [key: string]: unknown };
+    properties: Record<string, unknown>;
 
     /**
      * Speech clarity of the persona
@@ -419,7 +380,7 @@ export namespace PersonaListResponse {
     /**
      * Additional custom properties about the persona
      */
-    properties: { [key: string]: unknown };
+    properties: Record<string, unknown>;
 
     /**
      * Speech clarity of the persona
@@ -558,7 +519,7 @@ export namespace PersonaGetByIDResponse {
     /**
      * Additional custom properties about the persona
      */
-    properties: { [key: string]: unknown };
+    properties: Record<string, unknown>;
 
     /**
      * Speech clarity of the persona
@@ -670,7 +631,7 @@ export interface PersonaCreateParams {
   /**
    * Additional custom properties about the persona
    */
-  properties?: { [key: string]: unknown };
+  properties?: Record<string, unknown>;
 
   /**
    * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -771,7 +732,7 @@ export interface PersonaUpdateParams {
   /**
    * Additional custom properties about the persona
    */
-  properties?: { [key: string]: unknown };
+  properties?: Record<string, unknown>;
 
   /**
    * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)

@@ -1,13 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
-import * as Core from '../core';
+import { APIPromise } from '../api-promise';
+import { RequestOptions } from '../internal/request-options';
 
 export class Health extends APIResource {
   /**
    * Returns the health status of the API and its dependencies
    */
-  get(options?: Core.RequestOptions): Core.APIPromise<HealthGetResponse> {
+  get(options?: RequestOptions): APIPromise<HealthGetResponse> {
     return this._client.get('/health', options);
   }
 }

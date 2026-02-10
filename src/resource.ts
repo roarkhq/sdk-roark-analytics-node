@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import type { Roark } from './index';
+import type { Roark } from './client';
 
-export abstract class APIResource {
+export class APIResource {
   protected _client: Roark;
 
   constructor(client: Roark) {

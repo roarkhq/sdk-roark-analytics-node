@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import Roark from '@roarkanalytics/sdk';
-import { Response } from 'node-fetch';
 
 const client = new Roark({
   bearerToken: 'My Bearer Token',
@@ -47,7 +46,7 @@ describe('resource evaluation', () => {
         toolInvocations: [
           {
             name: 'name',
-            parameters: { foo: 'value' },
+            parameters: { foo: { description: 'description', type: 'string', value: {} } },
             result: 'string',
             startOffsetMs: 0,
             description: 'description',
@@ -83,7 +82,7 @@ describe('resource evaluation', () => {
             toolInvocations: [
               {
                 name: 'name',
-                parameters: { foo: 'value' },
+                parameters: { foo: { description: 'description', type: 'string', value: {} } },
                 result: 'string',
                 startOffsetMs: 0,
                 description: 'description',
@@ -98,8 +97,8 @@ describe('resource evaluation', () => {
     });
   });
 
-  test('getEvaluatorById', async () => {
-    const responsePromise = client.evaluation.getEvaluatorById('evaluatorId');
+  test('getEvaluatorByID', async () => {
+    const responsePromise = client.evaluation.getEvaluatorByID('evaluatorId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -107,13 +106,6 @@ describe('resource evaluation', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('getEvaluatorById: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.evaluation.getEvaluatorById('evaluatorId', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Roark.NotFoundError);
   });
 
   test('getJob', async () => {
@@ -127,13 +119,6 @@ describe('resource evaluation', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('getJob: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.evaluation.getJob('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Roark.NotFoundError);
-  });
-
   test('listEvaluators', async () => {
     const responsePromise = client.evaluation.listEvaluators();
     const rawResponse = await responsePromise.asResponse();
@@ -143,13 +128,6 @@ describe('resource evaluation', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('listEvaluators: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.evaluation.listEvaluators({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Roark.NotFoundError,
-    );
   });
 
   test('listEvaluators: request options and params are passed correctly', async () => {
@@ -168,13 +146,6 @@ describe('resource evaluation', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('listJobRuns: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.evaluation.listJobRuns('jobId', { path: '/_stainless_unknown_path' }),
-    ).rejects.toThrow(Roark.NotFoundError);
   });
 
   test('listJobRuns: request options and params are passed correctly', async () => {

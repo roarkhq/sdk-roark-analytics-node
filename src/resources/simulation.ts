@@ -1,128 +1,66 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
-import { isRequestOptions } from '../core';
-import * as Core from '../core';
+import { APIPromise } from '../api-promise';
+import { RequestOptions } from '../internal/request-options';
 
 export class Simulation extends APIResource {
   /**
    * Retrieve details of a simulation plan job including all associated simulation
    * jobs (calls)
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulation.getRunPlanJob(
-   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
-   * );
-   * ```
    */
-  getRunPlanJob(
-    jobId: unknown,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SimulationGetRunPlanJobResponse> {
-    return this._client.get(`/v1/simulation/plan/job/${jobId}`, options);
+  getRunPlanJob(jobID: unknown, options?: RequestOptions): APIPromise<SimulationGetRunPlanJobResponse> {
+    return this._client.get(`/v1/simulation/plan/job/${jobID}`, options);
   }
 
   /**
    * Get a individual simulation run directly by its ID. This is generally part of a
    * larger simulation run plan job.
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.simulation.getSimulationJobById(
-   *     '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
-   *   );
-   * ```
    */
-  getSimulationJobById(
-    jobId: unknown,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SimulationGetSimulationJobByIDResponse> {
-    return this._client.get(`/v1/simulation/job/${jobId}`, options);
+  getSimulationJobByID(
+    jobID: unknown,
+    options?: RequestOptions,
+  ): APIPromise<SimulationGetSimulationJobByIDResponse> {
+    return this._client.get(`/v1/simulation/job/${jobID}`, options);
   }
 
   /**
    * Returns a paginated list of simulation run plan jobs. Filter by status, plan ID,
    * or label to find specific simulation batches.
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulation.listRunPlanJobs();
-   * ```
    */
   listRunPlanJobs(
-    query?: SimulationListRunPlanJobsParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SimulationListRunPlanJobsResponse>;
-  listRunPlanJobs(options?: Core.RequestOptions): Core.APIPromise<SimulationListRunPlanJobsResponse>;
-  listRunPlanJobs(
-    query: SimulationListRunPlanJobsParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SimulationListRunPlanJobsResponse> {
-    if (isRequestOptions(query)) {
-      return this.listRunPlanJobs({}, query);
-    }
+    query: SimulationListRunPlanJobsParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<SimulationListRunPlanJobsResponse> {
     return this._client.get('/v1/simulation/plan/jobs', { query, ...options });
   }
 
   /**
    * Returns a paginated list of simulation scenarios for the authenticated project.
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulation.listScenarios();
-   * ```
    */
   listScenarios(
-    query?: SimulationListScenariosParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SimulationListScenariosResponse>;
-  listScenarios(options?: Core.RequestOptions): Core.APIPromise<SimulationListScenariosResponse>;
-  listScenarios(
-    query: SimulationListScenariosParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SimulationListScenariosResponse> {
-    if (isRequestOptions(query)) {
-      return this.listScenarios({}, query);
-    }
+    query: SimulationListScenariosParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<SimulationListScenariosResponse> {
     return this._client.get('/v1/simulation/scenario', { query, ...options });
   }
 
   /**
    * Find the matching simulation using the number used by the Roark simulation
    * agent.
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.simulation.lookupSimulationJob({
-   *     roarkPhoneNumber: {},
-   *   });
-   * ```
    */
   lookupSimulationJob(
     query: SimulationLookupSimulationJobParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SimulationLookupSimulationJobResponse> {
+    options?: RequestOptions,
+  ): APIPromise<SimulationLookupSimulationJobResponse> {
     return this._client.get('/v1/simulation/job/lookup', { query, ...options });
   }
 
   /**
    * Create and execute a job for an existing simulation run plan
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulation.startRunPlanJob(
-   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
-   * );
-   * ```
    */
-  startRunPlanJob(
-    planId: unknown,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SimulationStartRunPlanJobResponse> {
-    return this._client.post(`/v1/simulation/plan/${planId}/job`, options);
+  startRunPlanJob(planID: unknown, options?: RequestOptions): APIPromise<SimulationStartRunPlanJobResponse> {
+    return this._client.post(`/v1/simulation/plan/${planID}/job`, options);
   }
 }
 
@@ -345,7 +283,7 @@ export namespace SimulationGetRunPlanJobResponse {
         /**
          * Additional custom properties about the persona
          */
-        properties: { [key: string]: unknown };
+        properties: Record<string, unknown>;
 
         /**
          * Speech clarity of the persona
@@ -572,7 +510,7 @@ export namespace SimulationGetSimulationJobByIDResponse {
       /**
        * Additional custom properties about the persona
        */
-      properties: { [key: string]: unknown };
+      properties: Record<string, unknown>;
 
       /**
        * Speech clarity of the persona
@@ -940,7 +878,7 @@ export namespace SimulationLookupSimulationJobResponse {
       /**
        * Additional custom properties about the persona
        */
-      properties: { [key: string]: unknown };
+      properties: Record<string, unknown>;
 
       /**
        * Speech clarity of the persona

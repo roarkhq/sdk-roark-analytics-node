@@ -1,7 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
-import * as Core from '../core';
+import { APIPromise } from '../api-promise';
+import { RequestOptions } from '../internal/request-options';
 
 export class Metric extends APIResource {
   /**
@@ -9,7 +10,7 @@ export class Metric extends APIResource {
    * system-generated and custom metrics. Only returns metrics from enabled analysis
    * packages.
    */
-  listDefinitions(options?: Core.RequestOptions): Core.APIPromise<MetricListDefinitionsResponse> {
+  listDefinitions(options?: RequestOptions): APIPromise<MetricListDefinitionsResponse> {
     return this._client.get('/v1/metric/definitions', options);
   }
 }
