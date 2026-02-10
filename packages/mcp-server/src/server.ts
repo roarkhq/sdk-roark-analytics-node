@@ -53,7 +53,7 @@ export const newMcpServer = async () =>
   new McpServer(
     {
       name: 'roarkanalytics_sdk_api',
-      version: '2.19.0',
+      version: '2.19.1',
     },
     {
       instructions: await getInstructions(),
