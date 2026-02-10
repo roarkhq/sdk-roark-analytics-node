@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.21.1 (2026-02-10)
+
+Full Changelog: [v2.21.0...v2.21.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.21.0...v2.21.1)
+
+### Chores
+
+* remove custom code ([ffba344](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ffba3447da35dfe5e64906bda1b6290164981c4b))
+
 ## 2.21.0 (2026-02-10)
 
 Full Changelog: [v2.20.0...v2.21.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.20.0...v2.21.0)
