@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.19.1 (2026-02-10)
+
+Full Changelog: [v2.19.0...v2.19.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.19.0...v2.19.1)
+
+### Chores
+
+* configure new SDK language ([b3dff44](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b3dff449254211f442baec52476336263a28376d))
+
 ## 2.19.0 (2026-02-10)
 
 Full Changelog: [v2.18.0...v2.19.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.18.0...v2.19.0)
