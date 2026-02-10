@@ -3,7 +3,7 @@
 import { APIPromise } from '@roarkanalytics/sdk/api-promise';
 
 import util from 'node:util';
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 import { APIUserAbortError } from '@roarkanalytics/sdk';
 const defaultFetch = fetch;
 
@@ -22,7 +22,7 @@ describe('instantiate client', () => {
   });
 
   describe('defaultHeaders', () => {
-    const client = new Petstore({
+    const client = new Roark({
       baseURL: 'http://localhost:5000/',
       defaultHeaders: { 'X-My-Default-Header': '2' },
       bearerToken: 'My Bearer Token',
@@ -53,10 +53,10 @@ describe('instantiate client', () => {
   });
   describe('logging', () => {
     afterEach(() => {
-      process.env['PETSTORE_LOG'] = undefined;
+      process.env['ROARK_LOG'] = undefined;
     });
 
-    const forceAPIResponseForClient = async (client: Petstore) => {
+    const forceAPIResponseForClient = async (client: Roark) => {
       await new APIPromise(
         client,
         Promise.resolve({
@@ -79,7 +79,7 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      const client = new Petstore({ logger: logger, logLevel: 'debug', bearerToken: 'My Bearer Token' });
+      const client = new Roark({ logger: logger, logLevel: 'debug', bearerToken: 'My Bearer Token' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      const client = new Petstore({ logger: logger, logLevel: 'info', bearerToken: 'My Bearer Token' });
+      const client = new Roark({ logger: logger, logLevel: 'info', bearerToken: 'My Bearer Token' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).not.toHaveBeenCalled();
@@ -109,8 +109,8 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      process.env['PETSTORE_LOG'] = 'debug';
-      const client = new Petstore({ logger: logger, bearerToken: 'My Bearer Token' });
+      process.env['ROARK_LOG'] = 'debug';
+      const client = new Roark({ logger: logger, bearerToken: 'My Bearer Token' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).toHaveBeenCalled();
@@ -125,8 +125,8 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      process.env['PETSTORE_LOG'] = 'debug';
-      const client = new Petstore({ logger: logger, logLevel: 'off', bearerToken: 'My Bearer Token' });
+      process.env['ROARK_LOG'] = 'debug';
+      const client = new Roark({ logger: logger, logLevel: 'off', bearerToken: 'My Bearer Token' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).not.toHaveBeenCalled();
@@ -135,7 +135,7 @@ describe('instantiate client', () => {
 
   describe('defaultQuery', () => {
     test('with null query params given', () => {
-      const client = new Petstore({
+      const client = new Roark({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo' },
         bearerToken: 'My Bearer Token',
@@ -144,7 +144,7 @@ describe('instantiate client', () => {
     });
 
     test('multiple default query params', () => {
-      const client = new Petstore({
+      const client = new Roark({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo', hello: 'world' },
         bearerToken: 'My Bearer Token',
@@ -153,7 +153,7 @@ describe('instantiate client', () => {
     });
 
     test('overriding with `undefined`', () => {
-      const client = new Petstore({
+      const client = new Roark({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { hello: 'world' },
         bearerToken: 'My Bearer Token',
@@ -163,7 +163,7 @@ describe('instantiate client', () => {
   });
 
   test('custom fetch', async () => {
-    const client = new Petstore({
+    const client = new Roark({
       baseURL: 'http://localhost:5000/',
       bearerToken: 'My Bearer Token',
       fetch: (url) => {
@@ -181,7 +181,7 @@ describe('instantiate client', () => {
 
   test('explicit global fetch', async () => {
     // make sure the global fetch type is assignable to our Fetch type
-    const client = new Petstore({
+    const client = new Roark({
       baseURL: 'http://localhost:5000/',
       bearerToken: 'My Bearer Token',
       fetch: defaultFetch,
@@ -189,7 +189,7 @@ describe('instantiate client', () => {
   });
 
   test('custom signal', async () => {
-    const client = new Petstore({
+    const client = new Roark({
       baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
       bearerToken: 'My Bearer Token',
       fetch: (...args) => {
@@ -221,7 +221,7 @@ describe('instantiate client', () => {
       return new Response(JSON.stringify({}), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Petstore({
+    const client = new Roark({
       baseURL: 'http://localhost:5000/',
       bearerToken: 'My Bearer Token',
       fetch: testFetch,
@@ -233,7 +233,7 @@ describe('instantiate client', () => {
 
   describe('baseUrl', () => {
     test('trailing slash', () => {
-      const client = new Petstore({
+      const client = new Roark({
         baseURL: 'http://localhost:5000/custom/path/',
         bearerToken: 'My Bearer Token',
       });
@@ -241,7 +241,7 @@ describe('instantiate client', () => {
     });
 
     test('no trailing slash', () => {
-      const client = new Petstore({
+      const client = new Roark({
         baseURL: 'http://localhost:5000/custom/path',
         bearerToken: 'My Bearer Token',
       });
@@ -249,59 +249,59 @@ describe('instantiate client', () => {
     });
 
     afterEach(() => {
-      process.env['PETSTORE_BASE_URL'] = undefined;
+      process.env['ROARK_BASE_URL'] = undefined;
     });
 
     test('explicit option', () => {
-      const client = new Petstore({ baseURL: 'https://example.com', bearerToken: 'My Bearer Token' });
+      const client = new Roark({ baseURL: 'https://example.com', bearerToken: 'My Bearer Token' });
       expect(client.baseURL).toEqual('https://example.com');
     });
 
     test('env variable', () => {
-      process.env['PETSTORE_BASE_URL'] = 'https://example.com/from_env';
-      const client = new Petstore({ bearerToken: 'My Bearer Token' });
+      process.env['ROARK_BASE_URL'] = 'https://example.com/from_env';
+      const client = new Roark({ bearerToken: 'My Bearer Token' });
       expect(client.baseURL).toEqual('https://example.com/from_env');
     });
 
     test('empty env variable', () => {
-      process.env['PETSTORE_BASE_URL'] = ''; // empty
-      const client = new Petstore({ bearerToken: 'My Bearer Token' });
-      expect(client.baseURL).toEqual('https://petstore3.swagger.io/api/v3');
+      process.env['ROARK_BASE_URL'] = ''; // empty
+      const client = new Roark({ bearerToken: 'My Bearer Token' });
+      expect(client.baseURL).toEqual('https://api.roark.ai');
     });
 
     test('blank env variable', () => {
-      process.env['PETSTORE_BASE_URL'] = '  '; // blank
-      const client = new Petstore({ bearerToken: 'My Bearer Token' });
-      expect(client.baseURL).toEqual('https://petstore3.swagger.io/api/v3');
+      process.env['ROARK_BASE_URL'] = '  '; // blank
+      const client = new Roark({ bearerToken: 'My Bearer Token' });
+      expect(client.baseURL).toEqual('https://api.roark.ai');
     });
   });
 
   test('maxRetries option is correctly set', () => {
-    const client = new Petstore({ maxRetries: 4, bearerToken: 'My Bearer Token' });
+    const client = new Roark({ maxRetries: 4, bearerToken: 'My Bearer Token' });
     expect(client.maxRetries).toEqual(4);
 
     // default
-    const client2 = new Petstore({ bearerToken: 'My Bearer Token' });
+    const client2 = new Roark({ bearerToken: 'My Bearer Token' });
     expect(client2.maxRetries).toEqual(2);
   });
 
   test('with environment variable arguments', () => {
     // set options via env var
     process.env['ROARK_API_BEARER_TOKEN'] = 'My Bearer Token';
-    const client = new Petstore();
+    const client = new Roark();
     expect(client.bearerToken).toBe('My Bearer Token');
   });
 
   test('with overridden environment variable arguments', () => {
     // set options via env var
     process.env['ROARK_API_BEARER_TOKEN'] = 'another My Bearer Token';
-    const client = new Petstore({ bearerToken: 'My Bearer Token' });
+    const client = new Roark({ bearerToken: 'My Bearer Token' });
     expect(client.bearerToken).toBe('My Bearer Token');
   });
 });
 
 describe('request building', () => {
-  const client = new Petstore({ bearerToken: 'My Bearer Token' });
+  const client = new Roark({ bearerToken: 'My Bearer Token' });
 
   describe('custom headers', () => {
     test('handles undefined', () => {
@@ -320,7 +320,7 @@ describe('request building', () => {
 });
 
 describe('default encoder', () => {
-  const client = new Petstore({ bearerToken: 'My Bearer Token' });
+  const client = new Roark({ bearerToken: 'My Bearer Token' });
 
   class Serializable {
     toJSON() {
@@ -405,7 +405,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Petstore({ bearerToken: 'My Bearer Token', timeout: 10, fetch: testFetch });
+    const client = new Roark({ bearerToken: 'My Bearer Token', timeout: 10, fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -435,7 +435,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Petstore({ bearerToken: 'My Bearer Token', fetch: testFetch, maxRetries: 4 });
+    const client = new Roark({ bearerToken: 'My Bearer Token', fetch: testFetch, maxRetries: 4 });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
 
@@ -459,7 +459,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new Petstore({ bearerToken: 'My Bearer Token', fetch: testFetch, maxRetries: 4 });
+    const client = new Roark({ bearerToken: 'My Bearer Token', fetch: testFetch, maxRetries: 4 });
 
     expect(
       await client.request({
@@ -488,7 +488,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new Petstore({
+    const client = new Roark({
       bearerToken: 'My Bearer Token',
       fetch: testFetch,
       maxRetries: 4,
@@ -521,7 +521,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new Petstore({ bearerToken: 'My Bearer Token', fetch: testFetch, maxRetries: 4 });
+    const client = new Roark({ bearerToken: 'My Bearer Token', fetch: testFetch, maxRetries: 4 });
 
     expect(
       await client.request({
@@ -551,7 +551,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Petstore({ bearerToken: 'My Bearer Token', fetch: testFetch });
+    const client = new Roark({ bearerToken: 'My Bearer Token', fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -581,7 +581,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Petstore({ bearerToken: 'My Bearer Token', fetch: testFetch });
+    const client = new Roark({ bearerToken: 'My Bearer Token', fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);

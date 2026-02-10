@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import type { FinalRequestOptions } from './request-options';
-import { type Petstore } from '../client';
+import { type Roark } from '../client';
 import { logger } from './utils/log';
 
 export type APIResponseProps = {
@@ -10,7 +10,7 @@ export type APIResponseProps = {
   controller: AbortController;
 };
 
-export async function defaultParseResponse<T>(client: Petstore, props: APIResponseProps): Promise<T> {
+export async function defaultParseResponse<T>(client: Roark, props: APIResponseProps): Promise<T> {
   const { response } = props;
 
   // fetch refuses to read the body when the status code is 204.

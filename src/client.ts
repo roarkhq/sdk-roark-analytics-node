@@ -10,6 +10,7 @@ import type { APIResponseProps } from './internal/parse';
 import { getPlatformHeaders } from './internal/detect-platform';
 import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
+import * as qs from './internal/qs';
 import { VERSION } from './version';
 import * as Errors from './error';
 import * as Uploads from './uploads';
@@ -18,7 +19,60 @@ import { APIPromise } from './api-promise';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
-import { CallCreateParams, CallCreateResponse, Calls } from './resources/calls';
+import {
+  Call,
+  CallCreateParams,
+  CallCreateResponse,
+  CallGetByIDResponse,
+  CallListEvaluationRunsResponse,
+  CallListMetricsParams,
+  CallListMetricsResponse,
+  CallListParams,
+  CallListResponse,
+  CallListSentimentRunsResponse,
+} from './resources/call';
+import {
+  Evaluation,
+  EvaluationCreateJobParams,
+  EvaluationCreateJobResponse,
+  EvaluationGetEvaluatorByIDResponse,
+  EvaluationGetJobResponse,
+  EvaluationListEvaluatorsParams,
+  EvaluationListEvaluatorsResponse,
+  EvaluationListJobRunsParams,
+  EvaluationListJobRunsResponse,
+} from './resources/evaluation';
+import { Health, HealthGetResponse } from './resources/health';
+import {
+  IntegrationCreateRetellCallParams,
+  IntegrationCreateRetellCallResponse,
+  IntegrationCreateVapiCallParams,
+  IntegrationCreateVapiCallResponse,
+  Integrations,
+} from './resources/integrations';
+import { Metric, MetricListDefinitionsResponse } from './resources/metric';
+import {
+  Persona,
+  PersonaCreateParams,
+  PersonaCreateResponse,
+  PersonaGetByIDResponse,
+  PersonaListParams,
+  PersonaListResponse,
+  PersonaUpdateParams,
+  PersonaUpdateResponse,
+} from './resources/persona';
+import {
+  Simulation,
+  SimulationGetRunPlanJobResponse,
+  SimulationGetSimulationJobByIDResponse,
+  SimulationListRunPlanJobsParams,
+  SimulationListRunPlanJobsResponse,
+  SimulationListScenariosParams,
+  SimulationListScenariosResponse,
+  SimulationLookupSimulationJobParams,
+  SimulationLookupSimulationJobResponse,
+  SimulationStartRunPlanJobResponse,
+} from './resources/simulation';
 import { readEnv } from './internal/utils/env';
 import { logger } from './internal/utils/log';
 import { isEmptyObj } from './internal/utils/values';
@@ -59,7 +113,7 @@ export interface ClientOptions {
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['PETSTORE_BASE_URL'].
+   * Defaults to process.env['ROARK_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -111,7 +165,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['PETSTORE_LOG'].
+   * Defaults to process.env['ROARK_LOG'].
    */
   logLevel?: LogLevel | undefined | null;
 
@@ -126,9 +180,9 @@ export interface ClientOptions {
 type FinalizedRequestInit = RequestInit & { headers: Headers };
 
 /**
- * API Client for interfacing with the Petstore API.
+ * API Client for interfacing with the Roark API.
  */
-export class Petstore {
+export class Roark {
   bearerToken: string;
 
   baseURL: string;
@@ -144,10 +198,10 @@ export class Petstore {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Petstore API.
+   * API Client for interfacing with the Roark API.
    *
    * @param {string | undefined} [opts.bearerToken=process.env['ROARK_API_BEARER_TOKEN'] ?? undefined]
-   * @param {string} [opts.baseURL=process.env['PETSTORE_BASE_URL'] ?? https://petstore3.swagger.io/api/v3] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['ROARK_BASE_URL'] ?? https://api.roark.ai] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -156,29 +210,29 @@ export class Petstore {
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = readEnv('PETSTORE_BASE_URL'),
+    baseURL = readEnv('ROARK_BASE_URL'),
     bearerToken = readEnv('ROARK_API_BEARER_TOKEN'),
     ...opts
   }: ClientOptions = {}) {
     if (bearerToken === undefined) {
-      throw new Errors.PetstoreError(
-        "The ROARK_API_BEARER_TOKEN environment variable is missing or empty; either provide it, or instantiate the Petstore client with an bearerToken option, like new Petstore({ bearerToken: 'My Bearer Token' }).",
+      throw new Errors.RoarkError(
+        "The ROARK_API_BEARER_TOKEN environment variable is missing or empty; either provide it, or instantiate the Roark client with an bearerToken option, like new Roark({ bearerToken: 'My Bearer Token' }).",
       );
     }
 
     const options: ClientOptions = {
       bearerToken,
       ...opts,
-      baseURL: baseURL || `https://petstore3.swagger.io/api/v3`,
+      baseURL: baseURL || `https://api.roark.ai`,
     };
 
     this.baseURL = options.baseURL!;
-    this.timeout = options.timeout ?? Petstore.DEFAULT_TIMEOUT /* 1 minute */;
+    this.timeout = options.timeout ?? Roark.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     if (options.logLevel != null) {
       this.logLevel = options.logLevel;
     } else {
-      const envLevel = readEnv('PETSTORE_LOG');
+      const envLevel = readEnv('ROARK_LOG');
       if (isLogLevel(envLevel)) {
         this.logLevel = envLevel;
       }
@@ -205,24 +259,8 @@ export class Petstore {
     return new Headers({ Authorization: `Bearer ${this.bearerToken}` });
   }
 
-  /**
-   * Basic re-implementation of `qs.stringify` for primitive types.
-   */
   protected stringifyQuery(query: Record<string, unknown>): string {
-    return Object.entries(query)
-      .filter(([_, value]) => typeof value !== 'undefined')
-      .map(([key, value]) => {
-        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-          return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
-        }
-        if (value === null) {
-          return `${encodeURIComponent(key)}=`;
-        }
-        throw new Errors.PetstoreError(
-          `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
-        );
-      })
-      .join('&');
+    return qs.stringify(query, { arrayFormat: 'comma' });
   }
 
   private getUserAgent(): string {
@@ -613,10 +651,10 @@ export class Petstore {
     }
   }
 
-  static Petstore = this;
+  static Roark = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static PetstoreError = Errors.PetstoreError;
+  static RoarkError = Errors.RoarkError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -632,15 +670,82 @@ export class Petstore {
 
   static toFile = Uploads.toFile;
 
-  calls: API.Calls = new API.Calls(this);
+  health: API.Health = new API.Health(this);
+  evaluation: API.Evaluation = new API.Evaluation(this);
+  call: API.Call = new API.Call(this);
+  metric: API.Metric = new API.Metric(this);
+  integrations: API.Integrations = new API.Integrations(this);
+  simulation: API.Simulation = new API.Simulation(this);
+  persona: API.Persona = new API.Persona(this);
 }
-Petstore.Calls = Calls;
-export declare namespace Petstore {
+Roark.Health = Health;
+Roark.Evaluation = Evaluation;
+Roark.Call = Call;
+Roark.Metric = Metric;
+Roark.Integrations = Integrations;
+Roark.Simulation = Simulation;
+Roark.Persona = Persona;
+export declare namespace Roark {
   export type RequestOptions = Opts.RequestOptions;
 
+  export { Health as Health, type HealthGetResponse as HealthGetResponse };
+
   export {
-    Calls as Calls,
+    Evaluation as Evaluation,
+    type EvaluationCreateJobResponse as EvaluationCreateJobResponse,
+    type EvaluationGetEvaluatorByIDResponse as EvaluationGetEvaluatorByIDResponse,
+    type EvaluationGetJobResponse as EvaluationGetJobResponse,
+    type EvaluationListEvaluatorsResponse as EvaluationListEvaluatorsResponse,
+    type EvaluationListJobRunsResponse as EvaluationListJobRunsResponse,
+    type EvaluationCreateJobParams as EvaluationCreateJobParams,
+    type EvaluationListEvaluatorsParams as EvaluationListEvaluatorsParams,
+    type EvaluationListJobRunsParams as EvaluationListJobRunsParams,
+  };
+
+  export {
+    Call as Call,
     type CallCreateResponse as CallCreateResponse,
+    type CallListResponse as CallListResponse,
+    type CallGetByIDResponse as CallGetByIDResponse,
+    type CallListEvaluationRunsResponse as CallListEvaluationRunsResponse,
+    type CallListMetricsResponse as CallListMetricsResponse,
+    type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
     type CallCreateParams as CallCreateParams,
+    type CallListParams as CallListParams,
+    type CallListMetricsParams as CallListMetricsParams,
+  };
+
+  export { Metric as Metric, type MetricListDefinitionsResponse as MetricListDefinitionsResponse };
+
+  export {
+    Integrations as Integrations,
+    type IntegrationCreateRetellCallResponse as IntegrationCreateRetellCallResponse,
+    type IntegrationCreateVapiCallResponse as IntegrationCreateVapiCallResponse,
+    type IntegrationCreateRetellCallParams as IntegrationCreateRetellCallParams,
+    type IntegrationCreateVapiCallParams as IntegrationCreateVapiCallParams,
+  };
+
+  export {
+    Simulation as Simulation,
+    type SimulationGetRunPlanJobResponse as SimulationGetRunPlanJobResponse,
+    type SimulationGetSimulationJobByIDResponse as SimulationGetSimulationJobByIDResponse,
+    type SimulationListRunPlanJobsResponse as SimulationListRunPlanJobsResponse,
+    type SimulationListScenariosResponse as SimulationListScenariosResponse,
+    type SimulationLookupSimulationJobResponse as SimulationLookupSimulationJobResponse,
+    type SimulationStartRunPlanJobResponse as SimulationStartRunPlanJobResponse,
+    type SimulationListRunPlanJobsParams as SimulationListRunPlanJobsParams,
+    type SimulationListScenariosParams as SimulationListScenariosParams,
+    type SimulationLookupSimulationJobParams as SimulationLookupSimulationJobParams,
+  };
+
+  export {
+    Persona as Persona,
+    type PersonaCreateResponse as PersonaCreateResponse,
+    type PersonaUpdateResponse as PersonaUpdateResponse,
+    type PersonaListResponse as PersonaListResponse,
+    type PersonaGetByIDResponse as PersonaGetByIDResponse,
+    type PersonaCreateParams as PersonaCreateParams,
+    type PersonaUpdateParams as PersonaUpdateParams,
+    type PersonaListParams as PersonaListParams,
   };
 }

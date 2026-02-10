@@ -1,10 +1,10 @@
-# Petstore TypeScript API Library
+# Roark TypeScript API Library
 
 [![NPM version](https://img.shields.io/npm/v/@roarkanalytics/sdk.svg)](https://npmjs.org/package/@roarkanalytics/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@roarkanalytics/sdk)
 
-This library provides convenient access to the Petstore REST API from server-side TypeScript or JavaScript.
+This library provides convenient access to the Roark REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [app.stainlessapi.com](https://app.stainlessapi.com/docs). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.roark.ai](https://docs.roark.ai). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainlessapi.com/).
 
@@ -20,16 +20,16 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 
-const client = new Petstore({
+const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
 async function main() {
-  const call = await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' });
+  const response = await client.evaluation.createJob({ evaluators: ['string'] });
 
-  console.log(call.data);
+  console.log(response.data);
 }
 
 main();
@@ -41,15 +41,15 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 
-const client = new Petstore({
+const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
 async function main() {
-  const params: Petstore.CallCreateParams = { direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' };
-  const call: Petstore.CallCreateResponse = await client.calls.create(params);
+  const params: Roark.EvaluationCreateJobParams = { evaluators: ['string'] };
+  const response: Roark.EvaluationCreateJobResponse = await client.evaluation.createJob(params);
 }
 
 main();
@@ -66,17 +66,15 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const call = await client.calls
-    .create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' })
-    .catch(async (err) => {
-      if (err instanceof Petstore.APIError) {
-        console.log(err.status); // 400
-        console.log(err.name); // BadRequestError
-        console.log(err.headers); // {server: 'nginx', ...}
-      } else {
-        throw err;
-      }
-    });
+  const response = await client.evaluation.createJob({ evaluators: ['string'] }).catch(async (err) => {
+    if (err instanceof Roark.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 }
 
 main();
@@ -106,12 +104,12 @@ You can use the `maxRetries` option to configure or disable this:
 <!-- prettier-ignore -->
 ```js
 // Configure the default for all requests:
-const client = new Petstore({
+const client = new Roark({
   maxRetries: 0, // default is 2
 });
 
 // Or, configure per-request:
-await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' }, {
+await client.evaluation.createJob({ evaluators: ['string'] }, {
   maxRetries: 5,
 });
 ```
@@ -123,12 +121,12 @@ Requests time out after 1 minute by default. You can configure this with a `time
 <!-- prettier-ignore -->
 ```ts
 // Configure the default for all requests:
-const client = new Petstore({
+const client = new Roark({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
 // Override per-request:
-await client.calls.create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' }, {
+await client.evaluation.createJob({ evaluators: ['string'] }, {
   timeout: 5 * 1000,
 });
 ```
@@ -147,19 +145,17 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 
 <!-- prettier-ignore -->
 ```ts
-const client = new Petstore();
+const client = new Roark();
 
-const response = await client.calls
-  .create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' })
-  .asResponse();
+const response = await client.evaluation.createJob({ evaluators: ['string'] }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: call, response: raw } = await client.calls
-  .create({ direction: 'INBOUND', startedAt: '2025-02-04T01:48:11.473Z' })
+const { data: response, response: raw } = await client.evaluation
+  .createJob({ evaluators: ['string'] })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(call.data);
+console.log(response.data);
 ```
 
 ### Making custom/undocumented requests
@@ -223,7 +219,7 @@ Or pass it to the client:
 ```ts
 import fetch from 'my-fetch';
 
-const client = new Petstore({ fetch });
+const client = new Roark({ fetch });
 ```
 
 ### Logging and middleware
@@ -233,9 +229,9 @@ which can be used to inspect or alter the `Request` or `Response` before/after e
 
 ```ts
 import { fetch } from 'undici'; // as one example
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 
-const client = new Petstore({
+const client = new Roark({
   fetch: async (url: RequestInfo, init?: RequestInit): Promise<Response> => {
     console.log('About to make a request', url, init);
     const response = await fetch(url, init);
@@ -245,7 +241,7 @@ const client = new Petstore({
 });
 ```
 
-Note that if given a `PETSTORE_LOG=debug` environment variable, this library will log all requests and responses automatically.
+Note that if given a `ROARK_LOG=debug` environment variable, this library will log all requests and responses automatically.
 This is intended for debugging purposes only and may change in the future without notice.
 
 ### Fetch options
@@ -253,9 +249,9 @@ This is intended for debugging purposes only and may change in the future withou
 If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
 
 ```ts
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 
-const client = new Petstore({
+const client = new Roark({
   fetchOptions: {
     // `RequestInit` options
   },
@@ -270,11 +266,11 @@ options to requests:
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
 
 ```ts
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 import * as undici from 'undici';
 
 const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
-const client = new Petstore({
+const client = new Roark({
   fetchOptions: {
     dispatcher: proxyAgent,
   },
@@ -284,9 +280,9 @@ const client = new Petstore({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
 
 ```ts
-import Petstore from '@roarkanalytics/sdk';
+import Roark from '@roarkanalytics/sdk';
 
-const client = new Petstore({
+const client = new Roark({
   fetchOptions: {
     proxy: 'http://localhost:8888',
   },
@@ -296,10 +292,10 @@ const client = new Petstore({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
 
 ```ts
-import Petstore from 'npm:@roarkanalytics/sdk';
+import Roark from 'npm:@roarkanalytics/sdk';
 
 const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
-const client = new Petstore({
+const client = new Roark({
   fetchOptions: {
     client: httpClient,
   },
