@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
-import { isRequestOptions } from '../core';
-import * as Core from '../core';
+import { APIPromise } from '../api-promise';
+import { RequestOptions } from '../internal/request-options';
 
 export class Evaluation extends APIResource {
   /**
@@ -10,26 +10,26 @@ export class Evaluation extends APIResource {
    */
   createJob(
     body: EvaluationCreateJobParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationCreateJobResponse> {
+    options?: RequestOptions,
+  ): APIPromise<EvaluationCreateJobResponse> {
     return this._client.post('/v1/evaluation/job', { body, ...options });
   }
 
   /**
    * Returns a specific evaluator with its blocks and configuration.
    */
-  getEvaluatorById(
-    evaluatorId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationGetEvaluatorByIDResponse> {
-    return this._client.get(`/v1/evaluation/evaluators/${evaluatorId}`, options);
+  getEvaluatorByID(
+    evaluatorID: string,
+    options?: RequestOptions,
+  ): APIPromise<EvaluationGetEvaluatorByIDResponse> {
+    return this._client.get(`/v1/evaluation/evaluators/${evaluatorID}`, options);
   }
 
   /**
    * Retrieve details of a specific evaluation job
    */
-  getJob(jobId: string, options?: Core.RequestOptions): Core.APIPromise<EvaluationGetJobResponse> {
-    return this._client.get(`/v1/evaluation/job/${jobId}`, options);
+  getJob(jobID: string, options?: RequestOptions): APIPromise<EvaluationGetJobResponse> {
+    return this._client.get(`/v1/evaluation/job/${jobID}`, options);
   }
 
   /**
@@ -37,17 +37,9 @@ export class Evaluation extends APIResource {
    * authenticated project.
    */
   listEvaluators(
-    query?: EvaluationListEvaluatorsParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationListEvaluatorsResponse>;
-  listEvaluators(options?: Core.RequestOptions): Core.APIPromise<EvaluationListEvaluatorsResponse>;
-  listEvaluators(
-    query: EvaluationListEvaluatorsParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationListEvaluatorsResponse> {
-    if (isRequestOptions(query)) {
-      return this.listEvaluators({}, query);
-    }
+    query: EvaluationListEvaluatorsParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<EvaluationListEvaluatorsResponse> {
     return this._client.get('/v1/evaluation/evaluators', { query, ...options });
   }
 
@@ -55,20 +47,11 @@ export class Evaluation extends APIResource {
    * Retrieve paginated details of a specific evaluation job runs
    */
   listJobRuns(
-    jobId: string,
-    query?: EvaluationListJobRunsParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationListJobRunsResponse>;
-  listJobRuns(jobId: string, options?: Core.RequestOptions): Core.APIPromise<EvaluationListJobRunsResponse>;
-  listJobRuns(
-    jobId: string,
-    query: EvaluationListJobRunsParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<EvaluationListJobRunsResponse> {
-    if (isRequestOptions(query)) {
-      return this.listJobRuns(jobId, {}, query);
-    }
-    return this._client.get(`/v1/evaluation/job/${jobId}/runs`, { query, ...options });
+    jobID: string,
+    query: EvaluationListJobRunsParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<EvaluationListJobRunsResponse> {
+    return this._client.get(`/v1/evaluation/job/${jobID}/runs`, { query, ...options });
   }
 }
 
@@ -1416,7 +1399,7 @@ export namespace EvaluationCreateJobParams {
      * Custom properties to include with the call. These can be used for filtering and
      * will show in the call details page
      */
-    properties?: { [key: string]: unknown };
+    properties?: Record<string, unknown>;
 
     /**
      * Retell call ID if call is being imported from Retell
@@ -1464,12 +1447,12 @@ export namespace EvaluationCreateJobParams {
       /**
        * Parameters provided to the tool during invocation
        */
-      parameters: { [key: string]: ToolInvocation.UnionMember0 | unknown };
+      parameters: Record<string, ToolInvocation.UnionMember0 | unknown>;
 
       /**
        * Result returned by the tool after execution. Can be a string or a JSON object
        */
-      result: string | { [key: string]: unknown };
+      result: string | Record<string, unknown>;
 
       /**
        * Offset in milliseconds from the start of the call when the tool was invoked
@@ -1577,7 +1560,7 @@ export namespace EvaluationCreateJobParams {
        * Custom properties to include with the call. These can be used for filtering and
        * will show in the call details page
        */
-      properties?: { [key: string]: unknown };
+      properties?: Record<string, unknown>;
 
       /**
        * Retell call ID if call is being imported from Retell
@@ -1625,12 +1608,12 @@ export namespace EvaluationCreateJobParams {
         /**
          * Parameters provided to the tool during invocation
          */
-        parameters: { [key: string]: ToolInvocation.UnionMember0 | unknown };
+        parameters: Record<string, ToolInvocation.UnionMember0 | unknown>;
 
         /**
          * Result returned by the tool after execution. Can be a string or a JSON object
          */
-        result: string | { [key: string]: unknown };
+        result: string | Record<string, unknown>;
 
         /**
          * Offset in milliseconds from the start of the call when the tool was invoked

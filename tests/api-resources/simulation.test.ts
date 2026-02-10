@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import Roark from '@roarkanalytics/sdk';
-import { Response } from 'node-fetch';
 
 const client = new Roark({
   bearerToken: 'My Bearer Token',
@@ -20,17 +19,8 @@ describe('resource simulation', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('getRunPlanJob: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.simulation.getRunPlanJob('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f', {
-        path: '/_stainless_unknown_path',
-      }),
-    ).rejects.toThrow(Roark.NotFoundError);
-  });
-
-  test('getSimulationJobById', async () => {
-    const responsePromise = client.simulation.getSimulationJobById('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');
+  test('getSimulationJobByID', async () => {
+    const responsePromise = client.simulation.getSimulationJobByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -38,15 +28,6 @@ describe('resource simulation', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('getSimulationJobById: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.simulation.getSimulationJobById('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f', {
-        path: '/_stainless_unknown_path',
-      }),
-    ).rejects.toThrow(Roark.NotFoundError);
   });
 
   test('listRunPlanJobs', async () => {
@@ -58,13 +39,6 @@ describe('resource simulation', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('listRunPlanJobs: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.simulation.listRunPlanJobs({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Roark.NotFoundError,
-    );
   });
 
   test('listRunPlanJobs: request options and params are passed correctly', async () => {
@@ -93,13 +67,6 @@ describe('resource simulation', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('listScenarios: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.simulation.listScenarios({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Roark.NotFoundError,
-    );
   });
 
   test('listScenarios: request options and params are passed correctly', async () => {
@@ -136,14 +103,5 @@ describe('resource simulation', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('startRunPlanJob: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.simulation.startRunPlanJob('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f', {
-        path: '/_stainless_unknown_path',
-      }),
-    ).rejects.toThrow(Roark.NotFoundError);
   });
 });

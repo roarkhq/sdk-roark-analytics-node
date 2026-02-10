@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import Roark from '@roarkanalytics/sdk';
-import { Response } from 'node-fetch';
 
 const client = new Roark({
   bearerToken: 'My Bearer Token',
@@ -38,11 +37,7 @@ describe('resource persona', () => {
       hasDisfluencies: true,
       intentClarity: 'CLEAR',
       memoryReliability: 'HIGH',
-      properties: {
-        age: 'bar',
-        zipCode: 'bar',
-        occupation: 'bar',
-      },
+      properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
       secondaryLanguage: 'EN',
       speechClarity: 'CLEAR',
       speechPace: 'SLOW',
@@ -58,13 +53,6 @@ describe('resource persona', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('update: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.persona.update('personaId', { path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Roark.NotFoundError,
-    );
   });
 
   test('update: request options and params are passed correctly', async () => {
@@ -84,11 +72,7 @@ describe('resource persona', () => {
           language: 'EN',
           memoryReliability: 'HIGH',
           name: 'name',
-          properties: {
-            age: 'bar',
-            zipCode: 'bar',
-            occupation: 'bar',
-          },
+          properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
           secondaryLanguage: 'EN',
           speechClarity: 'CLEAR',
           speechPace: 'SLOW',
@@ -109,29 +93,18 @@ describe('resource persona', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.persona.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Roark.NotFoundError,
-    );
-  });
-
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.persona.list(
-        {
-          after: 'after',
-          limit: 1,
-          searchText: 'searchText',
-        },
+        { after: 'after', limit: 1, searchText: 'searchText' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
-  test('getById', async () => {
-    const responsePromise = client.persona.getById('personaId');
+  test('getByID', async () => {
+    const responsePromise = client.persona.getByID('personaId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -139,12 +112,5 @@ describe('resource persona', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('getById: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.persona.getById('personaId', { path: '/_stainless_unknown_path' })).rejects.toThrow(
-      Roark.NotFoundError,
-    );
   });
 });

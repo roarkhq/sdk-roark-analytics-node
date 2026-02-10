@@ -1,47 +1,39 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
-import { isRequestOptions } from '../core';
-import * as Core from '../core';
+import { APIPromise } from '../api-promise';
+import { RequestOptions } from '../internal/request-options';
 
 export class Call extends APIResource {
   /**
    * Create a new call with recording, transcript, agents, and customers
    */
-  create(body: CallCreateParams, options?: Core.RequestOptions): Core.APIPromise<CallCreateResponse> {
+  create(body: CallCreateParams, options?: RequestOptions): APIPromise<CallCreateResponse> {
     return this._client.post('/v1/call', { body, ...options });
   }
 
   /**
    * Returns a paginated list of calls for the authenticated project.
    */
-  list(query?: CallListParams, options?: Core.RequestOptions): Core.APIPromise<CallListResponse>;
-  list(options?: Core.RequestOptions): Core.APIPromise<CallListResponse>;
   list(
-    query: CallListParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CallListResponse> {
-    if (isRequestOptions(query)) {
-      return this.list({}, query);
-    }
+    query: CallListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CallListResponse> {
     return this._client.get('/v1/call', { query, ...options });
   }
 
   /**
    * Retrieve an existing call by its unique identifier
    */
-  getById(callId: string, options?: Core.RequestOptions): Core.APIPromise<CallGetByIDResponse> {
-    return this._client.get(`/v1/call/${callId}`, options);
+  getByID(callID: string, options?: RequestOptions): APIPromise<CallGetByIDResponse> {
+    return this._client.get(`/v1/call/${callID}`, options);
   }
 
   /**
    * Fetch all evaluation run results for a specific call.
    */
-  listEvaluationRuns(
-    callId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CallListEvaluationRunsResponse> {
-    return this._client.get(`/v1/call/${callId}/evaluation-run`, options);
+  listEvaluationRuns(callID: string, options?: RequestOptions): APIPromise<CallListEvaluationRunsResponse> {
+    return this._client.get(`/v1/call/${callID}/evaluation-run`, options);
   }
 
   /**
@@ -49,31 +41,19 @@ export class Call extends APIResource {
    * system-generated and custom metrics. Only returns successfully computed metrics.
    */
   listMetrics(
-    callId: string,
-    query?: CallListMetricsParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CallListMetricsResponse>;
-  listMetrics(callId: string, options?: Core.RequestOptions): Core.APIPromise<CallListMetricsResponse>;
-  listMetrics(
-    callId: string,
-    query: CallListMetricsParams | Core.RequestOptions = {},
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CallListMetricsResponse> {
-    if (isRequestOptions(query)) {
-      return this.listMetrics(callId, {}, query);
-    }
-    return this._client.get(`/v1/call/${callId}/metrics`, { query, ...options });
+    callID: string,
+    query: CallListMetricsParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CallListMetricsResponse> {
+    return this._client.get(`/v1/call/${callID}/metrics`, { query, ...options });
   }
 
   /**
    * Fetch detailed sentiment analysis results for a specific call, including
    * emotional tone, key phrases, and sentiment scores.
    */
-  listSentimentRuns(
-    callId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<CallListSentimentRunsResponse> {
-    return this._client.get(`/v1/call/${callId}/sentiment-run`, options);
+  listSentimentRuns(callID: string, options?: RequestOptions): APIPromise<CallListSentimentRunsResponse> {
+    return this._client.get(`/v1/call/${callID}/sentiment-run`, options);
   }
 }
 
@@ -227,7 +207,7 @@ export namespace CallListResponse {
     /**
      * Custom properties associated with the call
      */
-    properties?: { [key: string]: unknown } | null;
+    properties?: Record<string, unknown> | null;
 
     /**
      * Pre-signed URL to the call recording (expires in 1 hour)
@@ -392,7 +372,7 @@ export namespace CallGetByIDResponse {
     /**
      * Custom properties associated with the call
      */
-    properties?: { [key: string]: unknown } | null;
+    properties?: Record<string, unknown> | null;
 
     /**
      * Pre-signed URL to the call recording (expires in 1 hour)
@@ -955,7 +935,7 @@ export interface CallCreateParams {
    * Custom properties to include with the call. These can be used for filtering and
    * will show in the call details page
    */
-  properties?: { [key: string]: unknown };
+  properties?: Record<string, unknown>;
 
   /**
    * URL of source stereo recording. Must be accessible. Can be a signed URL.
@@ -1387,12 +1367,12 @@ export namespace CallCreateParams {
     /**
      * Parameters provided to the tool during invocation
      */
-    parameters: { [key: string]: ToolInvocation.UnionMember0 | unknown };
+    parameters: Record<string, ToolInvocation.UnionMember0 | unknown>;
 
     /**
      * Result returned by the tool after execution. Can be a string or a JSON object
      */
-    result: string | { [key: string]: unknown };
+    result: string | Record<string, unknown>;
 
     /**
      * Offset in milliseconds from the start of the call when the tool was invoked
