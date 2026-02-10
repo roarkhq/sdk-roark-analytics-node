@@ -1,4 +1,4 @@
-# Roark Node API Library
+# Roark TypeScript API Library
 
 [![NPM version](https://img.shields.io/npm/v/@roarkanalytics/sdk.svg)](https://npmjs.org/package/@roarkanalytics/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@roarkanalytics/sdk)
 
@@ -6,16 +6,7 @@ This library provides convenient access to the Roark REST API from server-side T
 
 The REST API documentation can be found on [docs.roark.ai](https://docs.roark.ai). The full API of this library can be found in [api.md](api.md).
 
-It is generated with [Stainless](https://www.stainless.com/).
-
-## MCP Server
-
-Use the Roark MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.
-
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40roarkanalytics%2Fsdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkByb2Fya2FuYWx5dGljcy9zZGstbWNwIl0sImVudiI6eyJST0FSS19BUElfQkVBUkVSX1RPS0VOIjoiTXkgQmVhcmVyIFRva2VuIn19)
-[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40roarkanalytics%2Fsdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40roarkanalytics%2Fsdk-mcp%22%5D%2C%22env%22%3A%7B%22ROARK_API_BEARER_TOKEN%22%3A%22My%20Bearer%20Token%22%7D%7D)
-
-> Note: You may need to set environment variables in your MCP client.
+It is generated with [Stainless](https://www.stainlessapi.com/).
 
 ## Installation
 
@@ -35,9 +26,13 @@ const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
-const response = await client.evaluation.createJob({ evaluators: ['string'] });
+async function main() {
+  const response = await client.evaluation.createJob({ evaluators: ['string'] });
 
-console.log(response.data);
+  console.log(response.data);
+}
+
+main();
 ```
 
 ### Request & Response types
@@ -52,8 +47,12 @@ const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
-const params: Roark.EvaluationCreateJobParams = { evaluators: ['string'] };
-const response: Roark.EvaluationCreateJobResponse = await client.evaluation.createJob(params);
+async function main() {
+  const params: Roark.EvaluationCreateJobParams = { evaluators: ['string'] };
+  const response: Roark.EvaluationCreateJobResponse = await client.evaluation.createJob(params);
+}
+
+main();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -66,9 +65,8 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const response = await client.evaluation
-  .createJob({ evaluators: ['string'] })
-  .catch(async (err) => {
+async function main() {
+  const response = await client.evaluation.createJob({ evaluators: ['string'] }).catch(async (err) => {
     if (err instanceof Roark.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -77,9 +75,12 @@ const response = await client.evaluation
       throw err;
     }
   });
+}
+
+main();
 ```
 
-Error codes are as follows:
+Error codes are as followed:
 
 | Status Code | Error Type                 |
 | ----------- | -------------------------- |
@@ -203,21 +204,23 @@ validate or strip extra properties from the response from the API.
 
 ### Customizing the fetch client
 
-By default, this library uses `node-fetch` in Node, and expects a global `fetch` function in other environments.
+By default, this library expects a global `fetch` function is defined.
 
-If you would prefer to use a global, web-standards-compliant `fetch` function even in a Node environment,
-(for example, if you are running Node with `--experimental-fetch` or using NextJS which polyfills with `undici`),
-add the following import before your first import `from "Roark"`:
+If you want to use a different `fetch` function, you can either polyfill the global:
 
 ```ts
-// Tell TypeScript and the package to use the global web fetch instead of node-fetch.
-// Note, despite the name, this does not add any polyfills, but expects them to be provided if needed.
-import '@roarkanalytics/sdk/shims/web';
-import Roark from '@roarkanalytics/sdk';
+import fetch from 'my-fetch';
+
+globalThis.fetch = fetch;
 ```
 
-To do the inverse, add `import "@roarkanalytics/sdk/shims/node"` (which does import polyfills).
-This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/roarkhq/sdk-roark-analytics-node/tree/main/src/_shims#readme)).
+Or pass it to the client:
+
+```ts
+import fetch from 'my-fetch';
+
+const client = new Roark({ fetch });
+```
 
 ### Logging and middleware
 
@@ -238,33 +241,68 @@ const client = new Roark({
 });
 ```
 
-Note that if given a `DEBUG=true` environment variable, this library will log all requests and responses automatically.
+Note that if given a `ROARK_LOG=debug` environment variable, this library will log all requests and responses automatically.
 This is intended for debugging purposes only and may change in the future without notice.
 
-### Configuring an HTTP(S) Agent (e.g., for proxies)
+### Fetch options
 
-By default, this library uses a stable agent for all http/https requests to reuse TCP connections, eliminating many TCP & TLS handshakes and shaving around 100ms off most requests.
+If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
 
-If you would like to disable or customize this behavior, for example to use the API behind a proxy, you can pass an `httpAgent` which is used for all requests (be they http or https), for example:
-
-<!-- prettier-ignore -->
 ```ts
-import http from 'http';
-import { HttpsProxyAgent } from 'https-proxy-agent';
+import Roark from '@roarkanalytics/sdk';
 
-// Configure the default for all requests:
 const client = new Roark({
-  httpAgent: new HttpsProxyAgent(process.env.PROXY_URL),
-});
-
-// Override per-request:
-await client.evaluation.createJob(
-  { evaluators: ['string'] },
-  {
-    httpAgent: new http.Agent({ keepAlive: false }),
+  fetchOptions: {
+    // `RequestInit` options
   },
-);
+});
 ```
+
+#### Configuring proxies
+
+To modify proxy behavior, you can provide custom `fetchOptions` that add runtime-specific proxy
+options to requests:
+
+<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
+
+```ts
+import Roark from '@roarkanalytics/sdk';
+import * as undici from 'undici';
+
+const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
+const client = new Roark({
+  fetchOptions: {
+    dispatcher: proxyAgent,
+  },
+});
+```
+
+<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
+
+```ts
+import Roark from '@roarkanalytics/sdk';
+
+const client = new Roark({
+  fetchOptions: {
+    proxy: 'http://localhost:8888',
+  },
+});
+```
+
+<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
+
+```ts
+import Roark from 'npm:@roarkanalytics/sdk';
+
+const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
+const client = new Roark({
+  fetchOptions: {
+    client: httpClient,
+  },
+});
+```
+
+## Frequently Asked Questions
 
 ## Semantic versioning
 
@@ -280,7 +318,7 @@ We are keen for your feedback; please open an [issue](https://www.github.com/roa
 
 ## Requirements
 
-TypeScript >= 4.5 is supported.
+TypeScript >= 4.9 is supported.
 
 The following runtimes are supported:
 

@@ -21,10 +21,10 @@ Types:
 Methods:
 
 - <code title="post /v1/evaluation/job">client.evaluation.<a href="./src/resources/evaluation.ts">createJob</a>({ ...params }) -> EvaluationCreateJobResponse</code>
-- <code title="get /v1/evaluation/evaluators/{evaluatorId}">client.evaluation.<a href="./src/resources/evaluation.ts">getEvaluatorById</a>(evaluatorId) -> EvaluationGetEvaluatorByIDResponse</code>
-- <code title="get /v1/evaluation/job/{jobId}">client.evaluation.<a href="./src/resources/evaluation.ts">getJob</a>(jobId) -> EvaluationGetJobResponse</code>
+- <code title="get /v1/evaluation/evaluators/{evaluatorId}">client.evaluation.<a href="./src/resources/evaluation.ts">getEvaluatorByID</a>(evaluatorID) -> EvaluationGetEvaluatorByIDResponse</code>
+- <code title="get /v1/evaluation/job/{jobId}">client.evaluation.<a href="./src/resources/evaluation.ts">getJob</a>(jobID) -> EvaluationGetJobResponse</code>
 - <code title="get /v1/evaluation/evaluators">client.evaluation.<a href="./src/resources/evaluation.ts">listEvaluators</a>({ ...params }) -> EvaluationListEvaluatorsResponse</code>
-- <code title="get /v1/evaluation/job/{jobId}/runs">client.evaluation.<a href="./src/resources/evaluation.ts">listJobRuns</a>(jobId, { ...params }) -> EvaluationListJobRunsResponse</code>
+- <code title="get /v1/evaluation/job/{jobId}/runs">client.evaluation.<a href="./src/resources/evaluation.ts">listJobRuns</a>(jobID, { ...params }) -> EvaluationListJobRunsResponse</code>
 
 # Call
 
@@ -41,10 +41,10 @@ Methods:
 
 - <code title="post /v1/call">client.call.<a href="./src/resources/call.ts">create</a>({ ...params }) -> CallCreateResponse</code>
 - <code title="get /v1/call">client.call.<a href="./src/resources/call.ts">list</a>({ ...params }) -> CallListResponse</code>
-- <code title="get /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">getById</a>(callId) -> CallGetByIDResponse</code>
-- <code title="get /v1/call/{callId}/evaluation-run">client.call.<a href="./src/resources/call.ts">listEvaluationRuns</a>(callId) -> CallListEvaluationRunsResponse</code>
-- <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">listMetrics</a>(callId, { ...params }) -> CallListMetricsResponse</code>
-- <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">listSentimentRuns</a>(callId) -> CallListSentimentRunsResponse</code>
+- <code title="get /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">getByID</a>(callID) -> CallGetByIDResponse</code>
+- <code title="get /v1/call/{callId}/evaluation-run">client.call.<a href="./src/resources/call.ts">listEvaluationRuns</a>(callID) -> CallListEvaluationRunsResponse</code>
+- <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">listMetrics</a>(callID, { ...params }) -> CallListMetricsResponse</code>
+- <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">listSentimentRuns</a>(callID) -> CallListSentimentRunsResponse</code>
 
 # Metric
 
@@ -81,12 +81,12 @@ Types:
 
 Methods:
 
-- <code title="get /v1/simulation/plan/job/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getRunPlanJob</a>(jobId) -> SimulationGetRunPlanJobResponse</code>
-- <code title="get /v1/simulation/job/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getSimulationJobById</a>(jobId) -> SimulationGetSimulationJobByIDResponse</code>
+- <code title="get /v1/simulation/plan/job/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getRunPlanJob</a>(jobID) -> SimulationGetRunPlanJobResponse</code>
+- <code title="get /v1/simulation/job/{jobId}">client.simulation.<a href="./src/resources/simulation.ts">getSimulationJobByID</a>(jobID) -> SimulationGetSimulationJobByIDResponse</code>
 - <code title="get /v1/simulation/plan/jobs">client.simulation.<a href="./src/resources/simulation.ts">listRunPlanJobs</a>({ ...params }) -> SimulationListRunPlanJobsResponse</code>
 - <code title="get /v1/simulation/scenario">client.simulation.<a href="./src/resources/simulation.ts">listScenarios</a>({ ...params }) -> SimulationListScenariosResponse</code>
 - <code title="get /v1/simulation/job/lookup">client.simulation.<a href="./src/resources/simulation.ts">lookupSimulationJob</a>({ ...params }) -> SimulationLookupSimulationJobResponse</code>
-- <code title="post /v1/simulation/plan/{planId}/job">client.simulation.<a href="./src/resources/simulation.ts">startRunPlanJob</a>(planId) -> SimulationStartRunPlanJobResponse</code>
+- <code title="post /v1/simulation/plan/{planId}/job">client.simulation.<a href="./src/resources/simulation.ts">startRunPlanJob</a>(planID) -> SimulationStartRunPlanJobResponse</code>
 
 # Persona
 
@@ -100,6 +100,6 @@ Types:
 Methods:
 
 - <code title="post /v1/persona">client.persona.<a href="./src/resources/persona.ts">create</a>({ ...params }) -> PersonaCreateResponse</code>
-- <code title="put /v1/persona/{personaId}">client.persona.<a href="./src/resources/persona.ts">update</a>(personaId, { ...params }) -> PersonaUpdateResponse</code>
+- <code title="put /v1/persona/{personaId}">client.persona.<a href="./src/resources/persona.ts">update</a>(personaID, { ...params }) -> PersonaUpdateResponse</code>
 - <code title="get /v1/persona">client.persona.<a href="./src/resources/persona.ts">list</a>({ ...params }) -> PersonaListResponse</code>
-- <code title="get /v1/persona/{personaId}">client.persona.<a href="./src/resources/persona.ts">getById</a>(personaId) -> PersonaGetByIDResponse</code>
+- <code title="get /v1/persona/{personaId}">client.persona.<a href="./src/resources/persona.ts">getByID</a>(personaID) -> PersonaGetByIDResponse</code>
