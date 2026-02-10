@@ -30,19 +30,7 @@ describe('resource persona', () => {
       accent: 'US',
       gender: 'MALE',
       language: 'EN',
-      memoryReliability: 'HIGH',
-      name: 'Alex Morgan',
-      speechClarity: 'CLEAR',
-      speechPace: 'NORMAL',
-      backstoryPrompt: 'A busy professional calling during lunch break',
-      properties: { age: 'bar', zipCode: 'bar', occupation: 'bar' },
-      // secondaryLanguage: null - mock server doesn't handle null properly
-    });
-  });
-
-  test('update: only required params', async () => {
-    const responsePromise = client.persona.update('personaId', {
-      accent: 'US',
+      name: 'name',
       backgroundNoise: 'NONE',
       backstoryPrompt: 'A busy professional calling during lunch break',
       baseEmotion: 'NEUTRAL',
@@ -72,28 +60,42 @@ describe('resource persona', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('update: required and optional params', async () => {
-    const response = await client.persona.update('personaId', {
-      accent: 'US',
-      backgroundNoise: 'NONE',
-      baseEmotion: 'NEUTRAL',
-      confirmationStyle: 'EXPLICIT',
-      gender: 'MALE',
-      hasDisfluencies: false,
-      intentClarity: 'CLEAR',
-      language: 'EN',
-      memoryReliability: 'HIGH',
-      name: 'Alex Morgan',
-      speechClarity: 'CLEAR',
-      speechPace: 'NORMAL',
-      backstoryPrompt: 'A busy professional calling during lunch break',
-      properties: {
-        age: 'bar',
-        zipCode: 'bar',
-        occupation: 'bar',
-      },
-      // secondaryLanguage: null - mock server doesn't handle null properly
-    });
+  test('update: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(client.persona.update('personaId', { path: '/_stainless_unknown_path' })).rejects.toThrow(
+      Roark.NotFoundError,
+    );
+  });
+
+  test('update: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.persona.update(
+        'personaId',
+        {
+          accent: 'US',
+          backgroundNoise: 'NONE',
+          backstoryPrompt: 'A busy professional calling during lunch break',
+          baseEmotion: 'NEUTRAL',
+          confirmationStyle: 'EXPLICIT',
+          gender: 'MALE',
+          hasDisfluencies: true,
+          intentClarity: 'CLEAR',
+          language: 'EN',
+          memoryReliability: 'HIGH',
+          name: 'name',
+          properties: {
+            age: 'bar',
+            zipCode: 'bar',
+            occupation: 'bar',
+          },
+          secondaryLanguage: 'EN',
+          speechClarity: 'CLEAR',
+          speechPace: 'SLOW',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
   });
 
   test('list', async () => {
