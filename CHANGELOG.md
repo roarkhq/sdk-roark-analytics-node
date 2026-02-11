@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.21.2 (2026-02-11)
+
+Full Changelog: [v2.21.1...v2.21.2](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.21.1...v2.21.2)
+
+### Chores
+
+* **internal:** codegen related update ([6fb1d9f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/6fb1d9fa50d1a5ca32c64b6a6f48e295eccbbaa9))
+
 ## 2.21.1 (2026-02-10)
 
 Full Changelog: [v2.21.0...v2.21.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.21.0...v2.21.1)
