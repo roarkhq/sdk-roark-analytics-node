@@ -1,7 +1,7 @@
 {
   "dxt_version": "0.2",
   "name": "@roarkanalytics/sdk-mcp",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "The official MCP Server for the Roark API",
   "author": {
     "name": "Roark",
