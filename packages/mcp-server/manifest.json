@@ -1,0 +1,43 @@
+{
+  "dxt_version": "0.2",
+  "name": "@roarkanalytics/sdk-mcp",
+  "version": "2.21.2",
+  "description": "The official MCP Server for the Roark API",
+  "author": {
+    "name": "Roark",
+    "email": "james@roark.ai"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roarkhq/sdk-roark-analytics-node.git"
+  },
+  "homepage": "https://github.com/roarkhq/sdk-roark-analytics-node/tree/main/packages/mcp-server#readme",
+  "documentation": "https://docs.roark.ai",
+  "server": {
+    "type": "node",
+    "entry_point": "index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/index.js"],
+      "env": {
+        "ROARK_API_BEARER_TOKEN": "${user_config.ROARK_API_BEARER_TOKEN}"
+      }
+    }
+  },
+  "user_config": {
+    "ROARK_API_BEARER_TOKEN": {
+      "title": "bearer_token",
+      "description": "JWT token for authentication",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "tools": [],
+  "tools_generated": true,
+  "compatibility": {
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "keywords": ["api"]
+}
