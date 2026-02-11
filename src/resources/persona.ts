@@ -1,12 +1,23 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../resource';
-import { APIPromise } from '../api-promise';
+import { APIResource } from '../core/resource';
+import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
+import { path } from '../internal/utils/path';
 
 export class Persona extends APIResource {
   /**
    * Creates a new persona for the authenticated project.
+   *
+   * @example
+   * ```ts
+   * const persona = await client.persona.create({
+   *   accent: 'US',
+   *   gender: 'MALE',
+   *   language: 'EN',
+   *   name: 'name',
+   * });
+   * ```
    */
   create(body: PersonaCreateParams, options?: RequestOptions): APIPromise<PersonaCreateResponse> {
     return this._client.post('/v1/persona', { body, ...options });
@@ -14,17 +25,27 @@ export class Persona extends APIResource {
 
   /**
    * Updates an existing persona by its ID.
+   *
+   * @example
+   * ```ts
+   * const persona = await client.persona.update('personaId');
+   * ```
    */
   update(
     personaID: string,
     body: PersonaUpdateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<PersonaUpdateResponse> {
-    return this._client.put(`/v1/persona/${personaID}`, { body, ...options });
+    return this._client.put(path`/v1/persona/${personaID}`, { body, ...options });
   }
 
   /**
    * Returns a paginated list of personas for the authenticated project.
+   *
+   * @example
+   * ```ts
+   * const personas = await client.persona.list();
+   * ```
    */
   list(
     query: PersonaListParams | null | undefined = {},
@@ -35,9 +56,14 @@ export class Persona extends APIResource {
 
   /**
    * Returns a specific persona by its ID.
+   *
+   * @example
+   * ```ts
+   * const response = await client.persona.getByID('personaId');
+   * ```
    */
   getByID(personaID: string, options?: RequestOptions): APIPromise<PersonaGetByIDResponse> {
-    return this._client.get(`/v1/persona/${personaID}`, options);
+    return this._client.get(path`/v1/persona/${personaID}`, options);
   }
 }
 
@@ -134,7 +160,7 @@ export namespace PersonaCreateResponse {
     /**
      * Additional custom properties about the persona
      */
-    properties: Record<string, unknown>;
+    properties: { [key: string]: unknown };
 
     /**
      * Speech clarity of the persona
@@ -256,7 +282,7 @@ export namespace PersonaUpdateResponse {
     /**
      * Additional custom properties about the persona
      */
-    properties: Record<string, unknown>;
+    properties: { [key: string]: unknown };
 
     /**
      * Speech clarity of the persona
@@ -380,7 +406,7 @@ export namespace PersonaListResponse {
     /**
      * Additional custom properties about the persona
      */
-    properties: Record<string, unknown>;
+    properties: { [key: string]: unknown };
 
     /**
      * Speech clarity of the persona
@@ -519,7 +545,7 @@ export namespace PersonaGetByIDResponse {
     /**
      * Additional custom properties about the persona
      */
-    properties: Record<string, unknown>;
+    properties: { [key: string]: unknown };
 
     /**
      * Speech clarity of the persona
@@ -631,7 +657,7 @@ export interface PersonaCreateParams {
   /**
    * Additional custom properties about the persona
    */
-  properties?: Record<string, unknown>;
+  properties?: { [key: string]: unknown };
 
   /**
    * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -732,7 +758,7 @@ export interface PersonaUpdateParams {
   /**
    * Additional custom properties about the persona
    */
-  properties?: Record<string, unknown>;
+  properties?: { [key: string]: unknown };
 
   /**
    * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
