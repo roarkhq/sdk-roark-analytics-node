@@ -1,12 +1,19 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../resource';
-import { APIPromise } from '../api-promise';
+import { APIResource } from '../core/resource';
+import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
 export class Integrations extends APIResource {
   /**
    * Process and upload a Retell call to Roark evaluation
+   *
+   * @example
+   * ```ts
+   * const response = await client.integrations.createRetellCall(
+   *   { retellCallEndedPayload: { event: 'bar', call: 'bar' } },
+   * );
+   * ```
    */
   createRetellCall(
     body: IntegrationCreateRetellCallParams,
@@ -17,6 +24,24 @@ export class Integrations extends APIResource {
 
   /**
    * Process and upload a VAPI call to Roark evaluation
+   *
+   * @example
+   * ```ts
+   * const response = await client.integrations.createVapiCall({
+   *   vapiEndOfCallReportPayload: {
+   *     call: 'bar',
+   *     type: 'bar',
+   *     status: 'bar',
+   *     assistant: 'bar',
+   *     customer: 'bar',
+   *     phoneNumber: 'bar',
+   *     artifact: 'bar',
+   *     startedAt: 'bar',
+   *     endedAt: 'bar',
+   *     endedReason: 'bar',
+   *   },
+   * });
+   * ```
    */
   createVapiCall(
     body: IntegrationCreateVapiCallParams,
@@ -68,13 +93,13 @@ export interface IntegrationCreateRetellCallParams {
   /**
    * Raw Retell data forwarded directly from the Retell call_ended webhook
    */
-  retellCallEndedPayload: Record<string, unknown>;
+  retellCallEndedPayload: { [key: string]: unknown };
 
   /**
    * Optional metadata (key-value pairs) to include with the call. Useful for
    * filtering and display in call details.
    */
-  properties?: Record<string, unknown>;
+  properties?: { [key: string]: unknown };
 
   /**
    * Skip already imported Retell calls with the same Retell call id.
@@ -86,13 +111,13 @@ export interface IntegrationCreateVapiCallParams {
   /**
    * Raw Vapi data forwarded directly from the Vapi end-of-call-report webhook
    */
-  vapiEndOfCallReportPayload: Record<string, unknown>;
+  vapiEndOfCallReportPayload: { [key: string]: unknown };
 
   /**
    * Optional metadata (key-value pairs) to include with the call. Useful for
    * filtering and display in call details.
    */
-  properties?: Record<string, unknown>;
+  properties?: { [key: string]: unknown };
 
   /**
    * Skip already imported Vapi calls with the same Vapi call id.

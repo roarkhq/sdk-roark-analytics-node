@@ -46,7 +46,7 @@ describe('resource evaluation', () => {
         toolInvocations: [
           {
             name: 'name',
-            parameters: { foo: { description: 'description', type: 'string', value: {} } },
+            parameters: { foo: 'value' },
             result: 'string',
             startOffsetMs: 0,
             description: 'description',
@@ -82,7 +82,7 @@ describe('resource evaluation', () => {
             toolInvocations: [
               {
                 name: 'name',
-                parameters: { foo: { description: 'description', type: 'string', value: {} } },
+                parameters: { foo: 'value' },
                 result: 'string',
                 startOffsetMs: 0,
                 description: 'description',

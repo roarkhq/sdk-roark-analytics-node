@@ -1,5 +1,5 @@
 import { multipartFormRequestOptions, createForm } from '@roarkanalytics/sdk/internal/uploads';
-import { toFile } from '@roarkanalytics/sdk/uploads';
+import { toFile } from '@roarkanalytics/sdk/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

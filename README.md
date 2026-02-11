@@ -1,12 +1,12 @@
 # Roark TypeScript API Library
 
-[![NPM version](https://img.shields.io/npm/v/@roarkanalytics/sdk.svg)](https://npmjs.org/package/@roarkanalytics/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@roarkanalytics/sdk)
+[![NPM version](<https://img.shields.io/npm/v/@roarkanalytics/sdk.svg?label=npm%20(stable)>)](https://npmjs.org/package/@roarkanalytics/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@roarkanalytics/sdk)
 
 This library provides convenient access to the Roark REST API from server-side TypeScript or JavaScript.
 
 The REST API documentation can be found on [docs.roark.ai](https://docs.roark.ai). The full API of this library can be found in [api.md](api.md).
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
@@ -26,13 +26,9 @@ const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
-async function main() {
-  const response = await client.evaluation.createJob({ evaluators: ['string'] });
+const response = await client.evaluation.createJob({ evaluators: ['string'] });
 
-  console.log(response.data);
-}
-
-main();
+console.log(response.data);
 ```
 
 ### Request & Response types
@@ -47,12 +43,8 @@ const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
-async function main() {
-  const params: Roark.EvaluationCreateJobParams = { evaluators: ['string'] };
-  const response: Roark.EvaluationCreateJobResponse = await client.evaluation.createJob(params);
-}
-
-main();
+const params: Roark.EvaluationCreateJobParams = { evaluators: ['string'] };
+const response: Roark.EvaluationCreateJobResponse = await client.evaluation.createJob(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -65,8 +57,9 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const response = await client.evaluation.createJob({ evaluators: ['string'] }).catch(async (err) => {
+const response = await client.evaluation
+  .createJob({ evaluators: ['string'] })
+  .catch(async (err) => {
     if (err instanceof Roark.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -75,12 +68,9 @@ async function main() {
       throw err;
     }
   });
-}
-
-main();
 ```
 
-Error codes are as followed:
+Error codes are as follows:
 
 | Status Code | Error Type                 |
 | ----------- | -------------------------- |
@@ -140,8 +130,10 @@ Note that requests which time out will be [retried twice by default](#retries).
 ### Accessing raw Response data (e.g., headers)
 
 The "raw" `Response` returned by `fetch()` can be accessed through the `.asResponse()` method on the `APIPromise` type that all methods return.
+This method returns as soon as the headers for a successful response are received and does not consume the response body, so you are free to write custom parsing or streaming logic.
 
 You can also use the `.withResponse()` method to get the raw `Response` along with the parsed data.
+Unlike `.asResponse()` this method consumes the body, returning once it is parsed.
 
 <!-- prettier-ignore -->
 ```ts
@@ -156,6 +148,59 @@ const { data: response, response: raw } = await client.evaluation
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(response.data);
+```
+
+### Logging
+
+> [!IMPORTANT]
+> All log messages are intended for debugging only. The format and content of log messages
+> may change between releases.
+
+#### Log levels
+
+The log level can be configured in two ways:
+
+1. Via the `ROARK_LOG` environment variable
+2. Using the `logLevel` client option (overrides the environment variable if set)
+
+```ts
+import Roark from '@roarkanalytics/sdk';
+
+const client = new Roark({
+  logLevel: 'debug', // Show all log messages
+});
+```
+
+Available log levels, from most to least verbose:
+
+- `'debug'` - Show debug messages, info, warnings, and errors
+- `'info'` - Show info messages, warnings, and errors
+- `'warn'` - Show warnings and errors (default)
+- `'error'` - Show only errors
+- `'off'` - Disable all logging
+
+At the `'debug'` level, all HTTP requests and responses are logged, including headers and bodies.
+Some authentication-related headers are redacted, but sensitive data in request and response bodies
+may still be visible.
+
+#### Custom logger
+
+By default, this library logs to `globalThis.console`. You can also provide a custom logger.
+Most logging libraries are supported, including [pino](https://www.npmjs.com/package/pino), [winston](https://www.npmjs.com/package/winston), [bunyan](https://www.npmjs.com/package/bunyan), [consola](https://www.npmjs.com/package/consola), [signale](https://www.npmjs.com/package/signale), and [@std/log](https://jsr.io/@std/log). If your logger doesn't work, please open an issue.
+
+When providing a custom logger, the `logLevel` option still controls which messages are emitted, messages
+below the configured level will not be sent to your logger.
+
+```ts
+import Roark from '@roarkanalytics/sdk';
+import pino from 'pino';
+
+const logger = pino();
+
+const client = new Roark({
+  logger: logger.child({ name: 'Roark' }),
+  logLevel: 'debug', // Send all messages to pino, allowing it to filter
+});
 ```
 
 ### Making custom/undocumented requests
@@ -182,9 +227,8 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.foo.create({
-  foo: 'my_param',
-  bar: 12,
+client.evaluation.createJob({
+  // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
 });
@@ -217,32 +261,11 @@ globalThis.fetch = fetch;
 Or pass it to the client:
 
 ```ts
+import Roark from '@roarkanalytics/sdk';
 import fetch from 'my-fetch';
 
 const client = new Roark({ fetch });
 ```
-
-### Logging and middleware
-
-You may also provide a custom `fetch` function when instantiating the client,
-which can be used to inspect or alter the `Request` or `Response` before/after each request:
-
-```ts
-import { fetch } from 'undici'; // as one example
-import Roark from '@roarkanalytics/sdk';
-
-const client = new Roark({
-  fetch: async (url: RequestInfo, init?: RequestInit): Promise<Response> => {
-    console.log('About to make a request', url, init);
-    const response = await fetch(url, init);
-    console.log('Got response', response);
-    return response;
-  },
-});
-```
-
-Note that if given a `ROARK_LOG=debug` environment variable, this library will log all requests and responses automatically.
-This is intended for debugging purposes only and may change in the future without notice.
 
 ### Fetch options
 
@@ -323,7 +346,7 @@ TypeScript >= 4.9 is supported.
 The following runtimes are supported:
 
 - Web browsers (Up-to-date Chrome, Firefox, Safari, Edge, and more)
-- Node.js 18 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
+- Node.js 20 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
 - Deno v1.28.0 or higher.
 - Bun 1.0 or later.
 - Cloudflare Workers.

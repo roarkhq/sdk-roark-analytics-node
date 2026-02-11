@@ -50,7 +50,13 @@ describe('resource call', () => {
       toolInvocations: [
         {
           name: 'name',
-          parameters: { foo: { description: 'description', type: 'string', value: {} } },
+          parameters: {
+            foo: {
+              description: 'description',
+              type: 'string',
+              value: {},
+            },
+          },
           result: 'string',
           startOffsetMs: 0,
           agent: { customId: 'customId', roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
@@ -93,8 +99,8 @@ describe('resource call', () => {
           searchText: 'billing inquiry',
           simulationRunPlanJobId: '550e8400-e29b-41d4-a716-446655440000',
           sortBy: 'createdAt',
-          sortDirection: 'asc',
-          status: 'RINGING',
+          sortDirection: 'desc',
+          status: 'ENDED',
         },
         { path: '/_stainless_unknown_path' },
       ),
