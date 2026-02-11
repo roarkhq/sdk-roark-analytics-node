@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { RoarkError } from '../../error';
+import { RoarkError } from '../../core/error';
 
 // https://url.spec.whatwg.org/#url-scheme-string
 const startsWithSchemeRegexp = /^[a-z][a-z0-9+.-]*:/i;
@@ -8,6 +8,9 @@ const startsWithSchemeRegexp = /^[a-z][a-z0-9+.-]*:/i;
 export const isAbsoluteURL = (url: string): boolean => {
   return startsWithSchemeRegexp.test(url);
 };
+
+export let isArray = (val: unknown): val is unknown[] => ((isArray = Array.isArray), isArray(val));
+export let isReadonlyArray = isArray as (val: unknown) => val is readonly unknown[];
 
 /** Returns an object if the given value isn't an object, otherwise returns as-is */
 export function maybeObj(x: unknown): object {
@@ -26,7 +29,7 @@ export function isEmptyObj(obj: Object | null | undefined): boolean {
 }
 
 // https://eslint.org/docs/latest/rules/no-prototype-builtins
-export function hasOwn(obj: Object, key: string): boolean {
+export function hasOwn<T extends object = object>(obj: T, key: PropertyKey): key is keyof T {
   return Object.prototype.hasOwnProperty.call(obj, key);
 }
 
@@ -73,22 +76,30 @@ export const coerceBoolean = (value: unknown): boolean => {
 };
 
 export const maybeCoerceInteger = (value: unknown): number | undefined => {
-  if (value === undefined) {
+  if (value == null) {
     return undefined;
   }
   return coerceInteger(value);
 };
 
 export const maybeCoerceFloat = (value: unknown): number | undefined => {
-  if (value === undefined) {
+  if (value == null) {
     return undefined;
   }
   return coerceFloat(value);
 };
 
 export const maybeCoerceBoolean = (value: unknown): boolean | undefined => {
-  if (value === undefined) {
+  if (value == null) {
     return undefined;
   }
   return coerceBoolean(value);
+};
+
+export const safeJSON = (text: string) => {
+  try {
+    return JSON.parse(text);
+  } catch (err) {
+    return undefined;
+  }
 };

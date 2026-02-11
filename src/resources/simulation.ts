@@ -1,32 +1,53 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../resource';
-import { APIPromise } from '../api-promise';
+import { APIResource } from '../core/resource';
+import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
+import { path } from '../internal/utils/path';
 
 export class Simulation extends APIResource {
   /**
    * Retrieve details of a simulation plan job including all associated simulation
    * jobs (calls)
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.getRunPlanJob(
+   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
+   * );
+   * ```
    */
   getRunPlanJob(jobID: unknown, options?: RequestOptions): APIPromise<SimulationGetRunPlanJobResponse> {
-    return this._client.get(`/v1/simulation/plan/job/${jobID}`, options);
+    return this._client.get(path`/v1/simulation/plan/job/${jobID}`, options);
   }
 
   /**
    * Get a individual simulation run directly by its ID. This is generally part of a
    * larger simulation run plan job.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulation.getSimulationJobByID(
+   *     '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
+   *   );
+   * ```
    */
   getSimulationJobByID(
     jobID: unknown,
     options?: RequestOptions,
   ): APIPromise<SimulationGetSimulationJobByIDResponse> {
-    return this._client.get(`/v1/simulation/job/${jobID}`, options);
+    return this._client.get(path`/v1/simulation/job/${jobID}`, options);
   }
 
   /**
    * Returns a paginated list of simulation run plan jobs. Filter by status, plan ID,
    * or label to find specific simulation batches.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.listRunPlanJobs();
+   * ```
    */
   listRunPlanJobs(
     query: SimulationListRunPlanJobsParams | null | undefined = {},
@@ -37,6 +58,11 @@ export class Simulation extends APIResource {
 
   /**
    * Returns a paginated list of simulation scenarios for the authenticated project.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.listScenarios();
+   * ```
    */
   listScenarios(
     query: SimulationListScenariosParams | null | undefined = {},
@@ -48,6 +74,14 @@ export class Simulation extends APIResource {
   /**
    * Find the matching simulation using the number used by the Roark simulation
    * agent.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulation.lookupSimulationJob({
+   *     roarkPhoneNumber: {},
+   *   });
+   * ```
    */
   lookupSimulationJob(
     query: SimulationLookupSimulationJobParams,
@@ -58,9 +92,16 @@ export class Simulation extends APIResource {
 
   /**
    * Create and execute a job for an existing simulation run plan
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.startRunPlanJob(
+   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
+   * );
+   * ```
    */
   startRunPlanJob(planID: unknown, options?: RequestOptions): APIPromise<SimulationStartRunPlanJobResponse> {
-    return this._client.post(`/v1/simulation/plan/${planID}/job`, options);
+    return this._client.post(path`/v1/simulation/plan/${planID}/job`, options);
   }
 }
 
@@ -283,7 +324,7 @@ export namespace SimulationGetRunPlanJobResponse {
         /**
          * Additional custom properties about the persona
          */
-        properties: Record<string, unknown>;
+        properties: { [key: string]: unknown };
 
         /**
          * Speech clarity of the persona
@@ -510,7 +551,7 @@ export namespace SimulationGetSimulationJobByIDResponse {
       /**
        * Additional custom properties about the persona
        */
-      properties: Record<string, unknown>;
+      properties: { [key: string]: unknown };
 
       /**
        * Speech clarity of the persona
@@ -878,7 +919,7 @@ export namespace SimulationLookupSimulationJobResponse {
       /**
        * Additional custom properties about the persona
        */
-      properties: Record<string, unknown>;
+      properties: { [key: string]: unknown };
 
       /**
        * Speech clarity of the persona
