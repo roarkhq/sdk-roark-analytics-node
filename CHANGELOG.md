@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.22.1 (2026-02-14)
+
+Full Changelog: [v2.22.0...v2.22.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.22.0...v2.22.1)
+
+### Chores
+
+* **internal:** avoid type checking errors with ts-reset ([d434221](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d434221fb29f16f9606330174817b318b9e5e062))
+* **internal:** improve layout of generated MCP server files ([8d2798e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8d2798e2456196fd0310f5938530650c9495c52e))
+* **internal:** improve reliability of MCP servers when using local code mode execution ([f4e8e32](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f4e8e3242066f7fb8fcb6ac3dcba0115ffeabb69))
+* **mcp:** forward STAINLESS_API_KEY to docs search endpoint ([3dba960](https://github.com/roarkhq/sdk-roark-analytics-node/commit/3dba960ee99c37f52d94527183a8543e365952b1))
+
 ## 2.22.0 (2026-02-11)
 
 Full Changelog: [v2.21.2...v2.22.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.21.2...v2.22.0)
