@@ -140,7 +140,17 @@ export namespace SimulationGetRunPlanJobResponse {
     /**
      * Job status
      */
-    status: string;
+    status:
+      | 'PENDING'
+      | 'QUEUED'
+      | 'CREATING_SNAPSHOTS'
+      | 'CREATING_SIMULATIONS'
+      | 'RUNNING_SIMULATIONS'
+      | 'COMPLETED'
+      | 'FAILED'
+      | 'TIMED_OUT'
+      | 'CANCELLED'
+      | 'CANCELLING';
 
     /**
      * When the job ended
@@ -170,7 +180,13 @@ export namespace SimulationGetRunPlanJobResponse {
       /**
        * Processing status
        */
-      processingStatus: string;
+      processingStatus:
+        | 'CONNECTING'
+        | 'WAITING_FOR_OUTBOUND_CALL'
+        | 'SIMULATING'
+        | 'ANALYZING'
+        | 'EVALUATING'
+        | 'COMPLETED';
 
       /**
        * Scenario used in a simulation
@@ -185,7 +201,15 @@ export namespace SimulationGetRunPlanJobResponse {
       /**
        * Job status
        */
-      status: string;
+      status:
+        | 'PENDING'
+        | 'QUEUED'
+        | 'PROCESSING'
+        | 'COMPLETED'
+        | 'FAILED'
+        | 'TIMED_OUT'
+        | 'CANCELLED'
+        | 'CANCELLING';
 
       /**
        * ID of the call created for this simulation job. Null if the call has not been
@@ -233,7 +257,7 @@ export namespace SimulationGetRunPlanJobResponse {
         /**
          * Agent endpoint type
          */
-        type: string;
+        type: 'PHONE' | 'WEBSOCKET';
       }
 
       export interface Persona {
@@ -345,6 +369,11 @@ export namespace SimulationGetRunPlanJobResponse {
          * Background story and behavioral patterns for the persona
          */
         backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -460,7 +489,7 @@ export namespace SimulationGetSimulationJobByIDResponse {
       /**
        * Agent endpoint type
        */
-      type: string;
+      type: 'PHONE' | 'WEBSOCKET';
     }
 
     export interface Persona {
@@ -574,6 +603,11 @@ export namespace SimulationGetSimulationJobByIDResponse {
       backstoryPrompt?: string | null;
 
       /**
+       * Human-readable description of the persona
+       */
+      description?: string | null;
+
+      /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
@@ -625,12 +659,23 @@ export namespace SimulationListRunPlanJobsResponse {
     /**
      * Job status
      */
-    status: string;
+    status:
+      | 'PENDING'
+      | 'QUEUED'
+      | 'CREATING_SNAPSHOTS'
+      | 'CREATING_SIMULATIONS'
+      | 'RUNNING_SIMULATIONS'
+      | 'COMPLETED'
+      | 'FAILED'
+      | 'TIMED_OUT'
+      | 'CANCELLED'
+      | 'CANCELLING';
 
     /**
-     * How the job was triggered (SCHEDULED or USER_TRIGGERED_FROM_UI)
+     * How the job was triggered (SCHEDULED, USER_TRIGGERED_FROM_UI,
+     * TRIGGERED_FROM_API, or RE_RUN)
      */
-    triggeredBy: string;
+    triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API';
 
     /**
      * When the job ended
@@ -706,6 +751,11 @@ export namespace SimulationListScenariosResponse {
        * Content/text of the step
        */
       content: string | null;
+
+      /**
+       * Unique identifier of the step node (use this for update/delete operations)
+       */
+      nodeId: string;
 
       /**
        * Type of step in the scenario
@@ -828,7 +878,7 @@ export namespace SimulationLookupSimulationJobResponse {
       /**
        * Agent endpoint type
        */
-      type: string;
+      type: 'PHONE' | 'WEBSOCKET';
     }
 
     export interface Persona {
@@ -942,6 +992,11 @@ export namespace SimulationLookupSimulationJobResponse {
       backstoryPrompt?: string | null;
 
       /**
+       * Human-readable description of the persona
+       */
+      description?: string | null;
+
+      /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
@@ -994,7 +1049,17 @@ export namespace SimulationStartRunPlanJobResponse {
     /**
      * Initial status of the job
      */
-    status: string;
+    status:
+      | 'PENDING'
+      | 'QUEUED'
+      | 'CREATING_SNAPSHOTS'
+      | 'CREATING_SIMULATIONS'
+      | 'RUNNING_SIMULATIONS'
+      | 'COMPLETED'
+      | 'FAILED'
+      | 'TIMED_OUT'
+      | 'CANCELLED'
+      | 'CANCELLING';
   }
 }
 
@@ -1029,7 +1094,17 @@ export interface SimulationListRunPlanJobsParams {
    * Filter by plan job status (PENDING, CREATING_SNAPSHOTS, CREATING_SIMULATIONS,
    * RUNNING_SIMULATIONS, COMPLETED, FAILED, TIMED_OUT, CANCELLED, CANCELLING)
    */
-  status?: string;
+  status?:
+    | 'PENDING'
+    | 'QUEUED'
+    | 'CREATING_SNAPSHOTS'
+    | 'CREATING_SIMULATIONS'
+    | 'RUNNING_SIMULATIONS'
+    | 'COMPLETED'
+    | 'FAILED'
+    | 'TIMED_OUT'
+    | 'CANCELLED'
+    | 'CANCELLING';
 }
 
 export interface SimulationListScenariosParams {
