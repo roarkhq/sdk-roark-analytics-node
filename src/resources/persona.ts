@@ -183,6 +183,11 @@ export namespace PersonaCreateResponse {
     backstoryPrompt?: string | null;
 
     /**
+     * Human-readable description of the persona
+     */
+    description?: string | null;
+
+    /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
      */
     secondaryLanguage?: 'EN' | null;
@@ -303,6 +308,11 @@ export namespace PersonaUpdateResponse {
      * Background story and behavioral patterns for the persona
      */
     backstoryPrompt?: string | null;
+
+    /**
+     * Human-readable description of the persona
+     */
+    description?: string | null;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -427,6 +437,11 @@ export namespace PersonaListResponse {
      * Background story and behavioral patterns for the persona
      */
     backstoryPrompt?: string | null;
+
+    /**
+     * Human-readable description of the persona
+     */
+    description?: string | null;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -568,6 +583,11 @@ export namespace PersonaGetByIDResponse {
     backstoryPrompt?: string | null;
 
     /**
+     * Human-readable description of the persona
+     */
+    description?: string | null;
+
+    /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
      */
     secondaryLanguage?: 'EN' | null;
@@ -638,6 +658,11 @@ export interface PersonaCreateParams {
    * How the persona confirms information
    */
   confirmationStyle?: 'EXPLICIT' | 'VAGUE';
+
+  /**
+   * Human-readable description of the persona
+   */
+  description?: string | null;
 
   /**
    * Whether the persona uses filler words like "um" and "uh"
@@ -724,6 +749,11 @@ export interface PersonaUpdateParams {
    * How the persona confirms information
    */
   confirmationStyle?: 'EXPLICIT' | 'VAGUE';
+
+  /**
+   * Human-readable description of the persona
+   */
+  description?: string | null;
 
   /**
    * Gender of the persona
