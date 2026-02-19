@@ -18,10 +18,32 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
+  Agent,
+  AgentCreateParams,
+  AgentCreateResponse,
+  AgentGetByIDResponse,
+  AgentListParams,
+  AgentListResponse,
+  AgentUpdateParams,
+  AgentUpdateResponse,
+} from './resources/agent';
+import {
+  AgentEndpoint,
+  AgentEndpointCreateParams,
+  AgentEndpointCreateResponse,
+  AgentEndpointGetByIDResponse,
+  AgentEndpointListParams,
+  AgentEndpointListResponse,
+  AgentEndpointUpdateParams,
+  AgentEndpointUpdateResponse,
+} from './resources/agent-endpoint';
+import {
   Call,
   CallCreateParams,
   CallCreateResponse,
   CallGetByIDResponse,
+  CallGetTranscriptParams,
+  CallGetTranscriptResponse,
   CallListEvaluationRunsResponse,
   CallListMetricsParams,
   CallListMetricsResponse,
@@ -31,6 +53,8 @@ import {
 } from './resources/call';
 import {
   Evaluation,
+  EvaluationCreateEvaluatorParams,
+  EvaluationCreateEvaluatorResponse,
   EvaluationCreateJobParams,
   EvaluationCreateJobResponse,
   EvaluationGetEvaluatorByIDResponse,
@@ -39,8 +63,20 @@ import {
   EvaluationListEvaluatorsResponse,
   EvaluationListJobRunsParams,
   EvaluationListJobRunsResponse,
+  EvaluationUpdateEvaluatorParams,
+  EvaluationUpdateEvaluatorResponse,
 } from './resources/evaluation';
 import { Health, HealthGetResponse } from './resources/health';
+import {
+  HTTPRequestDefinition,
+  HTTPRequestDefinitionCreateParams,
+  HTTPRequestDefinitionCreateResponse,
+  HTTPRequestDefinitionGetByIDResponse,
+  HTTPRequestDefinitionListParams,
+  HTTPRequestDefinitionListResponse,
+  HTTPRequestDefinitionUpdateParams,
+  HTTPRequestDefinitionUpdateResponse,
+} from './resources/http-request-definition';
 import {
   IntegrationCreateRetellCallParams,
   IntegrationCreateRetellCallResponse,
@@ -50,27 +86,59 @@ import {
 } from './resources/integrations';
 import { Metric, MetricListDefinitionsResponse } from './resources/metric';
 import {
-  Persona,
-  PersonaCreateParams,
-  PersonaCreateResponse,
-  PersonaGetByIDResponse,
-  PersonaListParams,
-  PersonaListResponse,
-  PersonaUpdateParams,
-  PersonaUpdateResponse,
-} from './resources/persona';
+  SimulationJob,
+  SimulationJobGetByIDResponse,
+  SimulationJobLookupParams,
+  SimulationJobLookupResponse,
+} from './resources/simulation-job';
 import {
-  Simulation,
-  SimulationGetRunPlanJobResponse,
-  SimulationGetSimulationJobByIDResponse,
-  SimulationListRunPlanJobsParams,
-  SimulationListRunPlanJobsResponse,
-  SimulationListScenariosParams,
-  SimulationListScenariosResponse,
-  SimulationLookupSimulationJobParams,
-  SimulationLookupSimulationJobResponse,
-  SimulationStartRunPlanJobResponse,
-} from './resources/simulation';
+  SimulationPersona,
+  SimulationPersonaCreateParams,
+  SimulationPersonaCreateResponse,
+  SimulationPersonaGetByIDResponse,
+  SimulationPersonaListParams,
+  SimulationPersonaListResponse,
+  SimulationPersonaUpdateParams,
+  SimulationPersonaUpdateResponse,
+} from './resources/simulation-persona';
+import {
+  SimulationRunPlan,
+  SimulationRunPlanCreateParams,
+  SimulationRunPlanCreateResponse,
+  SimulationRunPlanDeleteResponse,
+  SimulationRunPlanGetByIDResponse,
+  SimulationRunPlanListParams,
+  SimulationRunPlanListResponse,
+  SimulationRunPlanUpdateParams,
+  SimulationRunPlanUpdateResponse,
+} from './resources/simulation-run-plan';
+import {
+  SimulationRunPlanJob,
+  SimulationRunPlanJobGetByIDResponse,
+  SimulationRunPlanJobListParams,
+  SimulationRunPlanJobListResponse,
+  SimulationRunPlanJobStartResponse,
+} from './resources/simulation-run-plan-job';
+import {
+  SimulationScenario,
+  SimulationScenarioCreateParams,
+  SimulationScenarioCreateResponse,
+  SimulationScenarioDeleteResponse,
+  SimulationScenarioGetByIDResponse,
+  SimulationScenarioListParams,
+  SimulationScenarioListResponse,
+  SimulationScenarioUpdateParams,
+  SimulationScenarioUpdateResponse,
+} from './resources/simulation-scenario';
+import {
+  Webhook,
+  WebhookCreateParams,
+  WebhookCreateResponse,
+  WebhookDeleteResponse,
+  WebhookGetByIDResponse,
+  WebhookListParams,
+  WebhookListResponse,
+} from './resources/webhook';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -772,8 +840,15 @@ export class Roark {
   call: API.Call = new API.Call(this);
   metric: API.Metric = new API.Metric(this);
   integrations: API.Integrations = new API.Integrations(this);
-  simulation: API.Simulation = new API.Simulation(this);
-  persona: API.Persona = new API.Persona(this);
+  simulationJob: API.SimulationJob = new API.SimulationJob(this);
+  simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
+  simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
+  simulationScenario: API.SimulationScenario = new API.SimulationScenario(this);
+  simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
+  agent: API.Agent = new API.Agent(this);
+  agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
+  httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
+  webhook: API.Webhook = new API.Webhook(this);
 }
 
 Roark.Health = Health;
@@ -781,8 +856,15 @@ Roark.Evaluation = Evaluation;
 Roark.Call = Call;
 Roark.Metric = Metric;
 Roark.Integrations = Integrations;
-Roark.Simulation = Simulation;
-Roark.Persona = Persona;
+Roark.SimulationJob = SimulationJob;
+Roark.SimulationRunPlan = SimulationRunPlan;
+Roark.SimulationRunPlanJob = SimulationRunPlanJob;
+Roark.SimulationScenario = SimulationScenario;
+Roark.SimulationPersona = SimulationPersona;
+Roark.Agent = Agent;
+Roark.AgentEndpoint = AgentEndpoint;
+Roark.HTTPRequestDefinition = HTTPRequestDefinition;
+Roark.Webhook = Webhook;
 
 export declare namespace Roark {
   export type RequestOptions = Opts.RequestOptions;
@@ -791,14 +873,18 @@ export declare namespace Roark {
 
   export {
     Evaluation as Evaluation,
+    type EvaluationCreateEvaluatorResponse as EvaluationCreateEvaluatorResponse,
     type EvaluationCreateJobResponse as EvaluationCreateJobResponse,
     type EvaluationGetEvaluatorByIDResponse as EvaluationGetEvaluatorByIDResponse,
     type EvaluationGetJobResponse as EvaluationGetJobResponse,
     type EvaluationListEvaluatorsResponse as EvaluationListEvaluatorsResponse,
     type EvaluationListJobRunsResponse as EvaluationListJobRunsResponse,
+    type EvaluationUpdateEvaluatorResponse as EvaluationUpdateEvaluatorResponse,
+    type EvaluationCreateEvaluatorParams as EvaluationCreateEvaluatorParams,
     type EvaluationCreateJobParams as EvaluationCreateJobParams,
     type EvaluationListEvaluatorsParams as EvaluationListEvaluatorsParams,
     type EvaluationListJobRunsParams as EvaluationListJobRunsParams,
+    type EvaluationUpdateEvaluatorParams as EvaluationUpdateEvaluatorParams,
   };
 
   export {
@@ -806,11 +892,13 @@ export declare namespace Roark {
     type CallCreateResponse as CallCreateResponse,
     type CallListResponse as CallListResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
+    type CallGetTranscriptResponse as CallGetTranscriptResponse,
     type CallListEvaluationRunsResponse as CallListEvaluationRunsResponse,
     type CallListMetricsResponse as CallListMetricsResponse,
     type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
     type CallCreateParams as CallCreateParams,
     type CallListParams as CallListParams,
+    type CallGetTranscriptParams as CallGetTranscriptParams,
     type CallListMetricsParams as CallListMetricsParams,
   };
 
@@ -825,26 +913,95 @@ export declare namespace Roark {
   };
 
   export {
-    Simulation as Simulation,
-    type SimulationGetRunPlanJobResponse as SimulationGetRunPlanJobResponse,
-    type SimulationGetSimulationJobByIDResponse as SimulationGetSimulationJobByIDResponse,
-    type SimulationListRunPlanJobsResponse as SimulationListRunPlanJobsResponse,
-    type SimulationListScenariosResponse as SimulationListScenariosResponse,
-    type SimulationLookupSimulationJobResponse as SimulationLookupSimulationJobResponse,
-    type SimulationStartRunPlanJobResponse as SimulationStartRunPlanJobResponse,
-    type SimulationListRunPlanJobsParams as SimulationListRunPlanJobsParams,
-    type SimulationListScenariosParams as SimulationListScenariosParams,
-    type SimulationLookupSimulationJobParams as SimulationLookupSimulationJobParams,
+    SimulationJob as SimulationJob,
+    type SimulationJobGetByIDResponse as SimulationJobGetByIDResponse,
+    type SimulationJobLookupResponse as SimulationJobLookupResponse,
+    type SimulationJobLookupParams as SimulationJobLookupParams,
   };
 
   export {
-    Persona as Persona,
-    type PersonaCreateResponse as PersonaCreateResponse,
-    type PersonaUpdateResponse as PersonaUpdateResponse,
-    type PersonaListResponse as PersonaListResponse,
-    type PersonaGetByIDResponse as PersonaGetByIDResponse,
-    type PersonaCreateParams as PersonaCreateParams,
-    type PersonaUpdateParams as PersonaUpdateParams,
-    type PersonaListParams as PersonaListParams,
+    SimulationRunPlan as SimulationRunPlan,
+    type SimulationRunPlanCreateResponse as SimulationRunPlanCreateResponse,
+    type SimulationRunPlanUpdateResponse as SimulationRunPlanUpdateResponse,
+    type SimulationRunPlanListResponse as SimulationRunPlanListResponse,
+    type SimulationRunPlanDeleteResponse as SimulationRunPlanDeleteResponse,
+    type SimulationRunPlanGetByIDResponse as SimulationRunPlanGetByIDResponse,
+    type SimulationRunPlanCreateParams as SimulationRunPlanCreateParams,
+    type SimulationRunPlanUpdateParams as SimulationRunPlanUpdateParams,
+    type SimulationRunPlanListParams as SimulationRunPlanListParams,
+  };
+
+  export {
+    SimulationRunPlanJob as SimulationRunPlanJob,
+    type SimulationRunPlanJobListResponse as SimulationRunPlanJobListResponse,
+    type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
+    type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
+    type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,
+  };
+
+  export {
+    SimulationScenario as SimulationScenario,
+    type SimulationScenarioCreateResponse as SimulationScenarioCreateResponse,
+    type SimulationScenarioUpdateResponse as SimulationScenarioUpdateResponse,
+    type SimulationScenarioListResponse as SimulationScenarioListResponse,
+    type SimulationScenarioDeleteResponse as SimulationScenarioDeleteResponse,
+    type SimulationScenarioGetByIDResponse as SimulationScenarioGetByIDResponse,
+    type SimulationScenarioCreateParams as SimulationScenarioCreateParams,
+    type SimulationScenarioUpdateParams as SimulationScenarioUpdateParams,
+    type SimulationScenarioListParams as SimulationScenarioListParams,
+  };
+
+  export {
+    SimulationPersona as SimulationPersona,
+    type SimulationPersonaCreateResponse as SimulationPersonaCreateResponse,
+    type SimulationPersonaUpdateResponse as SimulationPersonaUpdateResponse,
+    type SimulationPersonaListResponse as SimulationPersonaListResponse,
+    type SimulationPersonaGetByIDResponse as SimulationPersonaGetByIDResponse,
+    type SimulationPersonaCreateParams as SimulationPersonaCreateParams,
+    type SimulationPersonaUpdateParams as SimulationPersonaUpdateParams,
+    type SimulationPersonaListParams as SimulationPersonaListParams,
+  };
+
+  export {
+    Agent as Agent,
+    type AgentCreateResponse as AgentCreateResponse,
+    type AgentUpdateResponse as AgentUpdateResponse,
+    type AgentListResponse as AgentListResponse,
+    type AgentGetByIDResponse as AgentGetByIDResponse,
+    type AgentCreateParams as AgentCreateParams,
+    type AgentUpdateParams as AgentUpdateParams,
+    type AgentListParams as AgentListParams,
+  };
+
+  export {
+    AgentEndpoint as AgentEndpoint,
+    type AgentEndpointCreateResponse as AgentEndpointCreateResponse,
+    type AgentEndpointUpdateResponse as AgentEndpointUpdateResponse,
+    type AgentEndpointListResponse as AgentEndpointListResponse,
+    type AgentEndpointGetByIDResponse as AgentEndpointGetByIDResponse,
+    type AgentEndpointCreateParams as AgentEndpointCreateParams,
+    type AgentEndpointUpdateParams as AgentEndpointUpdateParams,
+    type AgentEndpointListParams as AgentEndpointListParams,
+  };
+
+  export {
+    HTTPRequestDefinition as HTTPRequestDefinition,
+    type HTTPRequestDefinitionCreateResponse as HTTPRequestDefinitionCreateResponse,
+    type HTTPRequestDefinitionUpdateResponse as HTTPRequestDefinitionUpdateResponse,
+    type HTTPRequestDefinitionListResponse as HTTPRequestDefinitionListResponse,
+    type HTTPRequestDefinitionGetByIDResponse as HTTPRequestDefinitionGetByIDResponse,
+    type HTTPRequestDefinitionCreateParams as HTTPRequestDefinitionCreateParams,
+    type HTTPRequestDefinitionUpdateParams as HTTPRequestDefinitionUpdateParams,
+    type HTTPRequestDefinitionListParams as HTTPRequestDefinitionListParams,
+  };
+
+  export {
+    Webhook as Webhook,
+    type WebhookCreateResponse as WebhookCreateResponse,
+    type WebhookListResponse as WebhookListResponse,
+    type WebhookDeleteResponse as WebhookDeleteResponse,
+    type WebhookGetByIDResponse as WebhookGetByIDResponse,
+    type WebhookCreateParams as WebhookCreateParams,
+    type WebhookListParams as WebhookListParams,
   };
 }

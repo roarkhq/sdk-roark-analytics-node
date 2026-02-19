@@ -5,21 +5,25 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
-export class Persona extends APIResource {
+export class SimulationPersona extends APIResource {
   /**
    * Creates a new persona for the authenticated project.
    *
    * @example
    * ```ts
-   * const persona = await client.persona.create({
-   *   accent: 'US',
-   *   gender: 'MALE',
-   *   language: 'EN',
-   *   name: 'name',
-   * });
+   * const simulationPersona =
+   *   await client.simulationPersona.create({
+   *     accent: 'US',
+   *     gender: 'MALE',
+   *     language: 'EN',
+   *     name: 'name',
+   *   });
    * ```
    */
-  create(body: PersonaCreateParams, options?: RequestOptions): APIPromise<PersonaCreateResponse> {
+  create(
+    body: SimulationPersonaCreateParams,
+    options?: RequestOptions,
+  ): APIPromise<SimulationPersonaCreateResponse> {
     return this._client.post('/v1/persona', { body, ...options });
   }
 
@@ -28,14 +32,15 @@ export class Persona extends APIResource {
    *
    * @example
    * ```ts
-   * const persona = await client.persona.update('personaId');
+   * const simulationPersona =
+   *   await client.simulationPersona.update('personaId');
    * ```
    */
   update(
     personaID: string,
-    body: PersonaUpdateParams | null | undefined = {},
+    body: SimulationPersonaUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PersonaUpdateResponse> {
+  ): APIPromise<SimulationPersonaUpdateResponse> {
     return this._client.put(path`/v1/persona/${personaID}`, { body, ...options });
   }
 
@@ -44,13 +49,14 @@ export class Persona extends APIResource {
    *
    * @example
    * ```ts
-   * const personas = await client.persona.list();
+   * const simulationPersonas =
+   *   await client.simulationPersona.list();
    * ```
    */
   list(
-    query: PersonaListParams | null | undefined = {},
+    query: SimulationPersonaListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PersonaListResponse> {
+  ): APIPromise<SimulationPersonaListResponse> {
     return this._client.get('/v1/persona', { query, ...options });
   }
 
@@ -59,19 +65,21 @@ export class Persona extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.persona.getByID('personaId');
+   * const response = await client.simulationPersona.getByID(
+   *   'personaId',
+   * );
    * ```
    */
-  getByID(personaID: string, options?: RequestOptions): APIPromise<PersonaGetByIDResponse> {
+  getByID(personaID: string, options?: RequestOptions): APIPromise<SimulationPersonaGetByIDResponse> {
     return this._client.get(path`/v1/persona/${personaID}`, options);
   }
 }
 
-export interface PersonaCreateResponse {
-  data: PersonaCreateResponse.Data;
+export interface SimulationPersonaCreateResponse {
+  data: SimulationPersonaCreateResponse.Data;
 }
 
-export namespace PersonaCreateResponse {
+export namespace SimulationPersonaCreateResponse {
   export interface Data {
     /**
      * Unique identifier of the persona
@@ -194,11 +202,11 @@ export namespace PersonaCreateResponse {
   }
 }
 
-export interface PersonaUpdateResponse {
-  data: PersonaUpdateResponse.Data;
+export interface SimulationPersonaUpdateResponse {
+  data: SimulationPersonaUpdateResponse.Data;
 }
 
-export namespace PersonaUpdateResponse {
+export namespace SimulationPersonaUpdateResponse {
   export interface Data {
     /**
      * Unique identifier of the persona
@@ -321,13 +329,13 @@ export namespace PersonaUpdateResponse {
   }
 }
 
-export interface PersonaListResponse {
-  data: Array<PersonaListResponse.Data>;
+export interface SimulationPersonaListResponse {
+  data: Array<SimulationPersonaListResponse.Data>;
 
-  pagination: PersonaListResponse.Pagination;
+  pagination: SimulationPersonaListResponse.Pagination;
 }
 
-export namespace PersonaListResponse {
+export namespace SimulationPersonaListResponse {
   export interface Data {
     /**
      * Unique identifier of the persona
@@ -467,11 +475,11 @@ export namespace PersonaListResponse {
   }
 }
 
-export interface PersonaGetByIDResponse {
-  data: PersonaGetByIDResponse.Data;
+export interface SimulationPersonaGetByIDResponse {
+  data: SimulationPersonaGetByIDResponse.Data;
 }
 
-export namespace PersonaGetByIDResponse {
+export namespace SimulationPersonaGetByIDResponse {
   export interface Data {
     /**
      * Unique identifier of the persona
@@ -594,7 +602,7 @@ export namespace PersonaGetByIDResponse {
   }
 }
 
-export interface PersonaCreateParams {
+export interface SimulationPersonaCreateParams {
   /**
    * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
    * optional variants
@@ -700,7 +708,7 @@ export interface PersonaCreateParams {
   speechPace?: 'SLOW' | 'NORMAL' | 'FAST';
 }
 
-export interface PersonaUpdateParams {
+export interface SimulationPersonaUpdateParams {
   /**
    * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
    * optional variants
@@ -806,7 +814,7 @@ export interface PersonaUpdateParams {
   speechPace?: 'SLOW' | 'NORMAL' | 'FAST';
 }
 
-export interface PersonaListParams {
+export interface SimulationPersonaListParams {
   after?: string;
 
   limit?: number;
@@ -814,14 +822,14 @@ export interface PersonaListParams {
   searchText?: string;
 }
 
-export declare namespace Persona {
+export declare namespace SimulationPersona {
   export {
-    type PersonaCreateResponse as PersonaCreateResponse,
-    type PersonaUpdateResponse as PersonaUpdateResponse,
-    type PersonaListResponse as PersonaListResponse,
-    type PersonaGetByIDResponse as PersonaGetByIDResponse,
-    type PersonaCreateParams as PersonaCreateParams,
-    type PersonaUpdateParams as PersonaUpdateParams,
-    type PersonaListParams as PersonaListParams,
+    type SimulationPersonaCreateResponse as SimulationPersonaCreateResponse,
+    type SimulationPersonaUpdateResponse as SimulationPersonaUpdateResponse,
+    type SimulationPersonaListResponse as SimulationPersonaListResponse,
+    type SimulationPersonaGetByIDResponse as SimulationPersonaGetByIDResponse,
+    type SimulationPersonaCreateParams as SimulationPersonaCreateParams,
+    type SimulationPersonaUpdateParams as SimulationPersonaUpdateParams,
+    type SimulationPersonaListParams as SimulationPersonaListParams,
   };
 }
