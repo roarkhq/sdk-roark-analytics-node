@@ -8,6 +8,48 @@ const client = new Roark({
 });
 
 describe('resource evaluation', () => {
+  test('createEvaluator: only required params', async () => {
+    const responsePromise = client.evaluation.createEvaluator({
+      blocks: [
+        {
+          blockType: 'CUSTOM_PROMPT',
+          metricName: 'metricName',
+          name: 'name',
+          prompt: 'prompt',
+        },
+      ],
+      name: 'x',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('createEvaluator: required and optional params', async () => {
+    const response = await client.evaluation.createEvaluator({
+      blocks: [
+        {
+          blockType: 'CUSTOM_PROMPT',
+          metricName: 'metricName',
+          name: 'name',
+          prompt: 'prompt',
+          description: 'description',
+          inputDimensions: ['string'],
+          orderIndex: 0,
+          skipCondition: 'skipCondition',
+          threshold: 0,
+          weight: 0,
+        },
+      ],
+      name: 'x',
+      description: 'description',
+    });
+  });
+
   test('createJob: only required params', async () => {
     const responsePromise = client.evaluation.createJob({ evaluators: ['string'] });
     const rawResponse = await responsePromise.asResponse();
@@ -154,6 +196,46 @@ describe('resource evaluation', () => {
       client.evaluation.listJobRuns(
         'jobId',
         { limit: '10', nextCursor: 'nextCursor' },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
+
+  test('updateEvaluator', async () => {
+    const responsePromise = client.evaluation.updateEvaluator('evaluatorId');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('updateEvaluator: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.evaluation.updateEvaluator(
+        'evaluatorId',
+        {
+          blocks: [
+            {
+              blockType: 'CUSTOM_PROMPT',
+              metricName: 'metricName',
+              name: 'name',
+              prompt: 'prompt',
+              id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              description: 'description',
+              inputDimensions: ['string'],
+              orderIndex: 0,
+              skipCondition: 'skipCondition',
+              threshold: 0,
+              weight: 0,
+            },
+          ],
+          description: 'description',
+          name: 'x',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Roark.NotFoundError);

@@ -31,6 +31,18 @@ export class Call extends APIResource {
   }
 
   /**
+   * Fetch the full transcript for a specific call. Optionally specify a
+   * transcription source; otherwise the best available source is used automatically.
+   */
+  getTranscript(
+    callID: string,
+    query: CallGetTranscriptParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CallGetTranscriptResponse> {
+    return this._client.get(path`/v1/call/${callID}/transcript`, { query, ...options });
+  }
+
+  /**
    * Fetch all evaluation run results for a specific call.
    */
   listEvaluationRuns(callID: string, options?: RequestOptions): APIPromise<CallListEvaluationRunsResponse> {
@@ -432,6 +444,132 @@ export namespace CallGetByIDResponse {
       label?: string | null;
 
       phoneNumberE164?: string | null;
+    }
+  }
+}
+
+export interface CallGetTranscriptResponse {
+  /**
+   * Call transcript response
+   */
+  data: CallGetTranscriptResponse.Data;
+}
+
+export namespace CallGetTranscriptResponse {
+  /**
+   * Call transcript response
+   */
+  export interface Data {
+    /**
+     * Ordered list of transcript entries from the call
+     */
+    entries: Array<Data.Entry>;
+
+    /**
+     * All participants in this transcript, referenced by participantId on each entry
+     */
+    participants: Array<Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2 | Data.UnionMember3>;
+
+    /**
+     * The transcription source used for this transcript. Null if no transcript is
+     * available.
+     */
+    transcriptionSource: 'ROARK_POST_CALL' | 'SIMULATION_AGENT_REALTIME' | 'CUSTOMER_AGENT_REALTIME' | null;
+  }
+
+  export namespace Data {
+    /**
+     * A single transcript entry
+     */
+    export interface Entry {
+      /**
+       * End time offset in milliseconds from the start of the call
+       */
+      endOffsetMs: number;
+
+      /**
+       * ID of the conversation participant who spoke this entry. References
+       * participants[].id.
+       */
+      participantId: string | null;
+
+      /**
+       * Convenience role derived from participant type
+       */
+      role: 'AGENT' | 'CUSTOMER' | null;
+
+      /**
+       * Start time offset in milliseconds from the start of the call
+       */
+      startOffsetMs: number;
+
+      /**
+       * Transcript text for this entry
+       */
+      text: string;
+    }
+
+    /**
+     * An agent participant
+     */
+    export interface UnionMember0 {
+      /**
+       * Conversation participant ID
+       */
+      id: string;
+
+      /**
+       * ID of the agent entity
+       */
+      agentId: string | null;
+
+      type: 'AGENT';
+    }
+
+    /**
+     * A customer participant
+     */
+    export interface UnionMember1 {
+      /**
+       * Conversation participant ID
+       */
+      id: string;
+
+      /**
+       * ID of the conversation customer record
+       */
+      customerId: string | null;
+
+      type: 'CUSTOMER';
+    }
+
+    /**
+     * A simulated customer participant
+     */
+    export interface UnionMember2 {
+      /**
+       * Conversation participant ID
+       */
+      id: string;
+
+      /**
+       * ID of the conversation customer record
+       */
+      customerId: string | null;
+
+      type: 'SIMULATED_CUSTOMER';
+    }
+
+    /**
+     * A background speaker participant
+     */
+    export interface UnionMember3 {
+      /**
+       * Conversation participant ID
+       */
+      id: string;
+
+      type: 'BACKGROUND_SPEAKER';
     }
   }
 }
@@ -1536,6 +1674,15 @@ export interface CallListParams {
   status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED';
 }
 
+export interface CallGetTranscriptParams {
+  /**
+   * Transcription source to fetch. When omitted, uses the preferred source based on
+   * availability: CUSTOMER_AGENT_REALTIME > SIMULATION_AGENT_REALTIME >
+   * ROARK_POST_CALL
+   */
+  source?: 'ROARK_POST_CALL' | 'SIMULATION_AGENT_REALTIME' | 'CUSTOMER_AGENT_REALTIME';
+}
+
 export interface CallListMetricsParams {
   /**
    * Whether to return a flat list instead of grouped by metric definition (default:
@@ -1549,11 +1696,13 @@ export declare namespace Call {
     type CallCreateResponse as CallCreateResponse,
     type CallListResponse as CallListResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
+    type CallGetTranscriptResponse as CallGetTranscriptResponse,
     type CallListEvaluationRunsResponse as CallListEvaluationRunsResponse,
     type CallListMetricsResponse as CallListMetricsResponse,
     type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
     type CallCreateParams as CallCreateParams,
     type CallListParams as CallListParams,
+    type CallGetTranscriptParams as CallGetTranscriptParams,
     type CallListMetricsParams as CallListMetricsParams,
   };
 }

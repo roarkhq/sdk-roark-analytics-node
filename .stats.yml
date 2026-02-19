@@ -1,4 +1,4 @@
-configured_endpoints: 25
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/roark-innovations-inc%2Froark-analytics-df8bb996aee120de91d8556e85b8058df1af0fa3958b9fcc0514c41c2a30a2eb.yml
-openapi_spec_hash: 1c01312e81b63643d6e007bd2306e729
-config_hash: a4c20e7e7e773301ed0036da65145430
+configured_endpoints: 53
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/roark-innovations-inc%2Froark-analytics-3b2ffdef469bb825770e077672c36ed3cd339962f8386a322e94b9835d608a95.yml
+openapi_spec_hash: 1ff709a9944f910131600c164b4293b3
+config_hash: 32ff244fd995bca76457f2e7d0ed502b

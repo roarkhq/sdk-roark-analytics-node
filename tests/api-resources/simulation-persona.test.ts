@@ -7,9 +7,9 @@ const client = new Roark({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource persona', () => {
+describe('resource simulationPersona', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.persona.create({
+    const responsePromise = client.simulationPersona.create({
       accent: 'US',
       gender: 'MALE',
       language: 'EN',
@@ -25,7 +25,7 @@ describe('resource persona', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.persona.create({
+    const response = await client.simulationPersona.create({
       accent: 'US',
       gender: 'MALE',
       language: 'EN',
@@ -50,7 +50,7 @@ describe('resource persona', () => {
   });
 
   test('update', async () => {
-    const responsePromise = client.persona.update('personaId');
+    const responsePromise = client.simulationPersona.update('personaId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -63,7 +63,7 @@ describe('resource persona', () => {
   test('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.persona.update(
+      client.simulationPersona.update(
         'personaId',
         {
           accent: 'US',
@@ -93,7 +93,7 @@ describe('resource persona', () => {
   });
 
   test('list', async () => {
-    const responsePromise = client.persona.list();
+    const responsePromise = client.simulationPersona.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -106,7 +106,7 @@ describe('resource persona', () => {
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.persona.list(
+      client.simulationPersona.list(
         {
           after: 'after',
           limit: 1,
@@ -118,7 +118,7 @@ describe('resource persona', () => {
   });
 
   test('getByID', async () => {
-    const responsePromise = client.persona.getByID('personaId');
+    const responsePromise = client.simulationPersona.getByID('personaId');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
