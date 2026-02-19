@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.23.0 (2026-02-19)
+
+Full Changelog: [v2.22.0...v2.23.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.22.0...v2.23.0)
+
+### Features
+
+* **api:** api update ([f6733e0](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f6733e0b53a0cfd09713741a25bcb8933626b6ed))
+* **api:** api update ([ad58723](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ad58723ed0f02b641ed32303a7416f56471f08f7))
+
+
+### Chores
+
+* **internal/client:** fix form-urlencoded requests ([e2ba5eb](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e2ba5eb9e95159e7c8e3a9e6a13cada49087dd67))
+* **internal:** allow setting x-stainless-api-key header on mcp server requests ([116e104](https://github.com/roarkhq/sdk-roark-analytics-node/commit/116e104c04432eb6b0352ce7e7e7f7b4d31229d8))
+* **internal:** avoid type checking errors with ts-reset ([d434221](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d434221fb29f16f9606330174817b318b9e5e062))
+* **internal:** improve layout of generated MCP server files ([8d2798e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8d2798e2456196fd0310f5938530650c9495c52e))
+* **internal:** improve reliability of MCP servers when using local code mode execution ([f4e8e32](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f4e8e3242066f7fb8fcb6ac3dcba0115ffeabb69))
+* **mcp:** forward STAINLESS_API_KEY to docs search endpoint ([3dba960](https://github.com/roarkhq/sdk-roark-analytics-node/commit/3dba960ee99c37f52d94527183a8543e365952b1))
+
 ## 2.22.0 (2026-02-11)
 
 Full Changelog: [v2.21.2...v2.22.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.21.2...v2.22.0)
