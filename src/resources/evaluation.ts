@@ -7,6 +7,16 @@ import { path } from '../internal/utils/path';
 
 export class Evaluation extends APIResource {
   /**
+   * Creates a new evaluator with the specified blocks and configuration.
+   */
+  createEvaluator(
+    body: EvaluationCreateEvaluatorParams,
+    options?: RequestOptions,
+  ): APIPromise<EvaluationCreateEvaluatorResponse> {
+    return this._client.post('/v1/evaluation/evaluators', { body, ...options });
+  }
+
+  /**
    * Create a evaluation job for a single call or dataset of calls
    */
   createJob(
@@ -53,6 +63,478 @@ export class Evaluation extends APIResource {
     options?: RequestOptions,
   ): APIPromise<EvaluationListJobRunsResponse> {
     return this._client.get(path`/v1/evaluation/job/${jobID}/runs`, { query, ...options });
+  }
+
+  /**
+   * Updates an existing evaluator. When blocks are provided: blocks with an id
+   * update existing blocks, blocks without an id create new blocks, and existing
+   * blocks not included in the array are deleted.
+   */
+  updateEvaluator(
+    evaluatorID: string,
+    body: EvaluationUpdateEvaluatorParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<EvaluationUpdateEvaluatorResponse> {
+    return this._client.put(path`/v1/evaluation/evaluators/${evaluatorID}`, { body, ...options });
+  }
+}
+
+export interface EvaluationCreateEvaluatorResponse {
+  /**
+   * Evaluator with its configured blocks
+   */
+  data: EvaluationCreateEvaluatorResponse.Data;
+}
+
+export namespace EvaluationCreateEvaluatorResponse {
+  /**
+   * Evaluator with its configured blocks
+   */
+  export interface Data {
+    /**
+     * Unique identifier for the evaluator
+     */
+    id: string;
+
+    /**
+     * Array of evaluation blocks configured for this evaluator
+     */
+    blocks: Array<
+      | Data.UnionMember0
+      | Data.UnionMember1
+      | Data.UnionMember2
+      | Data.UnionMember3
+      | Data.UnionMember4
+      | Data.UnionMember5
+      | Data.UnionMember6
+      | Data.UnionMember7
+      | Data.UnionMember8
+    >;
+
+    /**
+     * ISO timestamp when the evaluator was created
+     */
+    createdAt: string;
+
+    /**
+     * Optional description of the evaluator
+     */
+    description: string | null;
+
+    /**
+     * Name of the evaluator
+     */
+    name: string;
+
+    /**
+     * Unique slug identifier for the evaluator
+     */
+    slug: string;
+
+    /**
+     * ISO timestamp when the evaluator was last updated
+     */
+    updatedAt: string;
+  }
+
+  export namespace Data {
+    export interface UnionMember0 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'CUSTOM_PROMPT';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Name of the metric this prompt evaluates
+       */
+      metricName: string;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * The prompt to evaluate the call against
+       */
+      prompt: string;
+
+      /**
+       * Minimum score threshold to pass evaluation (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember1 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'DATAFIELD_CHECK';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Criteria for evaluating the property
+       */
+      evaluationCriteria: string;
+
+      /**
+       * Whether this property must be present
+       */
+      isRequired: boolean;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Name of the property to check
+       */
+      propertyName: string;
+
+      /**
+       * Minimum score threshold to pass evaluation (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Expected type of the property value
+       */
+      valueType: string;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember2 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'EMOTION';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * The emotion to detect (e.g., "joy", "anger", "sadness")
+       */
+      selectedEmotion: string;
+
+      /**
+       * Minimum confidence threshold for emotion detection (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember3 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'LATENCY';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Maximum number of silence periods allowed
+       */
+      maxAllowedSilences: number;
+
+      /**
+       * Minimum duration of silence in milliseconds to be considered
+       */
+      minSilenceDuration: number;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Maximum allowed latency score
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember4 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'POLITENESS';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Minimum politeness score threshold (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember5 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'SENTIMENT';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Minimum sentiment score threshold (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember6 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'TOOL_CALLS';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Condition that must be met for tool invocation
+       */
+      invocationCondition: string | null;
+
+      /**
+       * Minimum number of times the tool should be invoked
+       */
+      minInvocationCount: number | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Whether the tool should be invoked
+       */
+      shouldBeInvoked: boolean;
+
+      /**
+       * ID of the tool definition
+       */
+      toolDefinitionId: string;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember7 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'TOXICITY';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Maximum allowed toxicity score (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember8 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'VOCAL_CUE';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * The vocal cue to detect (e.g., "pace", "tone", "volume")
+       */
+      selectedCue: string;
+
+      /**
+       * Minimum confidence threshold for vocal cue detection (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
   }
 }
 
@@ -1311,6 +1793,910 @@ export namespace EvaluationListJobRunsResponse {
   }
 }
 
+export interface EvaluationUpdateEvaluatorResponse {
+  /**
+   * Evaluator with its configured blocks
+   */
+  data: EvaluationUpdateEvaluatorResponse.Data;
+}
+
+export namespace EvaluationUpdateEvaluatorResponse {
+  /**
+   * Evaluator with its configured blocks
+   */
+  export interface Data {
+    /**
+     * Unique identifier for the evaluator
+     */
+    id: string;
+
+    /**
+     * Array of evaluation blocks configured for this evaluator
+     */
+    blocks: Array<
+      | Data.UnionMember0
+      | Data.UnionMember1
+      | Data.UnionMember2
+      | Data.UnionMember3
+      | Data.UnionMember4
+      | Data.UnionMember5
+      | Data.UnionMember6
+      | Data.UnionMember7
+      | Data.UnionMember8
+    >;
+
+    /**
+     * ISO timestamp when the evaluator was created
+     */
+    createdAt: string;
+
+    /**
+     * Optional description of the evaluator
+     */
+    description: string | null;
+
+    /**
+     * Name of the evaluator
+     */
+    name: string;
+
+    /**
+     * Unique slug identifier for the evaluator
+     */
+    slug: string;
+
+    /**
+     * ISO timestamp when the evaluator was last updated
+     */
+    updatedAt: string;
+  }
+
+  export namespace Data {
+    export interface UnionMember0 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'CUSTOM_PROMPT';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Name of the metric this prompt evaluates
+       */
+      metricName: string;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * The prompt to evaluate the call against
+       */
+      prompt: string;
+
+      /**
+       * Minimum score threshold to pass evaluation (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember1 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'DATAFIELD_CHECK';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Criteria for evaluating the property
+       */
+      evaluationCriteria: string;
+
+      /**
+       * Whether this property must be present
+       */
+      isRequired: boolean;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Name of the property to check
+       */
+      propertyName: string;
+
+      /**
+       * Minimum score threshold to pass evaluation (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Expected type of the property value
+       */
+      valueType: string;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember2 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'EMOTION';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * The emotion to detect (e.g., "joy", "anger", "sadness")
+       */
+      selectedEmotion: string;
+
+      /**
+       * Minimum confidence threshold for emotion detection (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember3 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'LATENCY';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Maximum number of silence periods allowed
+       */
+      maxAllowedSilences: number;
+
+      /**
+       * Minimum duration of silence in milliseconds to be considered
+       */
+      minSilenceDuration: number;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Maximum allowed latency score
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember4 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'POLITENESS';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Minimum politeness score threshold (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember5 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'SENTIMENT';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Minimum sentiment score threshold (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember6 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'TOOL_CALLS';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Condition that must be met for tool invocation
+       */
+      invocationCondition: string | null;
+
+      /**
+       * Minimum number of times the tool should be invoked
+       */
+      minInvocationCount: number | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Whether the tool should be invoked
+       */
+      shouldBeInvoked: boolean;
+
+      /**
+       * ID of the tool definition
+       */
+      toolDefinitionId: string;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember7 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'TOXICITY';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * Maximum allowed toxicity score (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+
+    export interface UnionMember8 {
+      /**
+       * Unique identifier for the block
+       */
+      id: string;
+
+      /**
+       * Block type identifier
+       */
+      blockType: 'VOCAL_CUE';
+
+      /**
+       * Optional description of what this block evaluates
+       */
+      description: string | null;
+
+      /**
+       * Display name of the evaluation block
+       */
+      name: string;
+
+      /**
+       * Order in which this block is executed
+       */
+      orderIndex: number;
+
+      /**
+       * The vocal cue to detect (e.g., "pace", "tone", "volume")
+       */
+      selectedCue: string;
+
+      /**
+       * Minimum confidence threshold for vocal cue detection (0-1)
+       */
+      threshold: number;
+
+      /**
+       * Weight of this block in the overall evaluation score (0-100)
+       */
+      weight: number;
+    }
+  }
+}
+
+export interface EvaluationCreateEvaluatorParams {
+  /**
+   * Array of evaluation blocks (at least one required)
+   */
+  blocks: Array<
+    | EvaluationCreateEvaluatorParams.CreateCustomPromptBlockInput
+    | EvaluationCreateEvaluatorParams.CreateDatafieldCheckBlockInput
+    | EvaluationCreateEvaluatorParams.CreateEmotionBlockInput
+    | EvaluationCreateEvaluatorParams.CreateLatencyBlockInput
+    | EvaluationCreateEvaluatorParams.CreatePolitenessBlockInput
+    | EvaluationCreateEvaluatorParams.CreateSentimentBlockInput
+    | EvaluationCreateEvaluatorParams.CreateToolCallsBlockInput
+    | EvaluationCreateEvaluatorParams.CreateToxicityBlockInput
+    | EvaluationCreateEvaluatorParams.CreateVocalCueBlockInput
+  >;
+
+  /**
+   * Name of the evaluator
+   */
+  name: string;
+
+  /**
+   * Optional description of the evaluator
+   */
+  description?: string | null;
+}
+
+export namespace EvaluationCreateEvaluatorParams {
+  export interface CreateCustomPromptBlockInput {
+    blockType: 'CUSTOM_PROMPT';
+
+    /**
+     * Name of the metric this prompt evaluates
+     */
+    metricName: string;
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * The prompt to evaluate the call against
+     */
+    prompt: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum score threshold to pass evaluation (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateDatafieldCheckBlockInput {
+    blockType: 'DATAFIELD_CHECK';
+
+    /**
+     * Criteria for evaluating the property
+     */
+    evaluationCriteria: string;
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * Name of the property to check
+     */
+    propertyName: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Whether this property must be present
+     */
+    isRequired?: boolean;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum score threshold to pass evaluation (0-1, default: 0.8)
+     */
+    threshold?: number;
+
+    /**
+     * Expected type of the property value
+     */
+    valueType?: string;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateEmotionBlockInput {
+    blockType: 'EMOTION';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * The emotion to detect (e.g., "joy", "anger", "sadness")
+     */
+    selectedEmotion?: string;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum confidence threshold for emotion detection (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateLatencyBlockInput {
+    blockType: 'LATENCY';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Maximum number of silence periods allowed
+     */
+    maxAllowedSilences?: number;
+
+    /**
+     * Minimum duration of silence in milliseconds to be considered
+     */
+    minSilenceDuration?: number;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Maximum allowed latency score
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreatePolitenessBlockInput {
+    blockType: 'POLITENESS';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum politeness score threshold (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateSentimentBlockInput {
+    blockType: 'SENTIMENT';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum sentiment score threshold (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateToolCallsBlockInput {
+    blockType: 'TOOL_CALLS';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * ID of the tool definition
+     */
+    toolDefinitionId: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Condition that must be met for tool invocation
+     */
+    invocationCondition?: string | null;
+
+    /**
+     * Minimum number of times the tool should be invoked
+     */
+    minInvocationCount?: number | null;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Whether the tool should be invoked
+     */
+    shouldBeInvoked?: boolean;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateToxicityBlockInput {
+    blockType: 'TOXICITY';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Maximum allowed toxicity score (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateVocalCueBlockInput {
+    blockType: 'VOCAL_CUE';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * The vocal cue to detect (e.g., "pace", "tone", "volume")
+     */
+    selectedCue?: string;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum confidence threshold for vocal cue detection (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+}
+
 export interface EvaluationCreateJobParams {
   /**
    * List of evaluators slugs to evaluate the calls or "all" to evaluate all
@@ -1670,15 +3056,519 @@ export interface EvaluationListJobRunsParams {
   nextCursor?: string;
 }
 
+export interface EvaluationUpdateEvaluatorParams {
+  /**
+   * Updated array of evaluation blocks. Include id to update, omit id to create.
+   * Existing blocks not in the array will be deleted.
+   */
+  blocks?: Array<
+    | EvaluationUpdateEvaluatorParams.CreateCustomPromptBlockInput
+    | EvaluationUpdateEvaluatorParams.CreateDatafieldCheckBlockInput
+    | EvaluationUpdateEvaluatorParams.CreateEmotionBlockInput
+    | EvaluationUpdateEvaluatorParams.CreateLatencyBlockInput
+    | EvaluationUpdateEvaluatorParams.CreatePolitenessBlockInput
+    | EvaluationUpdateEvaluatorParams.CreateSentimentBlockInput
+    | EvaluationUpdateEvaluatorParams.CreateToolCallsBlockInput
+    | EvaluationUpdateEvaluatorParams.CreateToxicityBlockInput
+    | EvaluationUpdateEvaluatorParams.CreateVocalCueBlockInput
+  >;
+
+  /**
+   * New description for the evaluator
+   */
+  description?: string | null;
+
+  /**
+   * New name for the evaluator
+   */
+  name?: string;
+}
+
+export namespace EvaluationUpdateEvaluatorParams {
+  export interface CreateCustomPromptBlockInput {
+    blockType: 'CUSTOM_PROMPT';
+
+    /**
+     * Name of the metric this prompt evaluates
+     */
+    metricName: string;
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * The prompt to evaluate the call against
+     */
+    prompt: string;
+
+    /**
+     * ID of an existing block to update. Omit to create a new block. Existing blocks
+     * not included will be deleted.
+     */
+    id?: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum score threshold to pass evaluation (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateDatafieldCheckBlockInput {
+    blockType: 'DATAFIELD_CHECK';
+
+    /**
+     * Criteria for evaluating the property
+     */
+    evaluationCriteria: string;
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * Name of the property to check
+     */
+    propertyName: string;
+
+    /**
+     * ID of an existing block to update. Omit to create a new block. Existing blocks
+     * not included will be deleted.
+     */
+    id?: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Whether this property must be present
+     */
+    isRequired?: boolean;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum score threshold to pass evaluation (0-1, default: 0.8)
+     */
+    threshold?: number;
+
+    /**
+     * Expected type of the property value
+     */
+    valueType?: string;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateEmotionBlockInput {
+    blockType: 'EMOTION';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * ID of an existing block to update. Omit to create a new block. Existing blocks
+     * not included will be deleted.
+     */
+    id?: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * The emotion to detect (e.g., "joy", "anger", "sadness")
+     */
+    selectedEmotion?: string;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum confidence threshold for emotion detection (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateLatencyBlockInput {
+    blockType: 'LATENCY';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * ID of an existing block to update. Omit to create a new block. Existing blocks
+     * not included will be deleted.
+     */
+    id?: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Maximum number of silence periods allowed
+     */
+    maxAllowedSilences?: number;
+
+    /**
+     * Minimum duration of silence in milliseconds to be considered
+     */
+    minSilenceDuration?: number;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Maximum allowed latency score
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreatePolitenessBlockInput {
+    blockType: 'POLITENESS';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * ID of an existing block to update. Omit to create a new block. Existing blocks
+     * not included will be deleted.
+     */
+    id?: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum politeness score threshold (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateSentimentBlockInput {
+    blockType: 'SENTIMENT';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * ID of an existing block to update. Omit to create a new block. Existing blocks
+     * not included will be deleted.
+     */
+    id?: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum sentiment score threshold (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateToolCallsBlockInput {
+    blockType: 'TOOL_CALLS';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * ID of the tool definition
+     */
+    toolDefinitionId: string;
+
+    /**
+     * ID of an existing block to update. Omit to create a new block. Existing blocks
+     * not included will be deleted.
+     */
+    id?: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Condition that must be met for tool invocation
+     */
+    invocationCondition?: string | null;
+
+    /**
+     * Minimum number of times the tool should be invoked
+     */
+    minInvocationCount?: number | null;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Whether the tool should be invoked
+     */
+    shouldBeInvoked?: boolean;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateToxicityBlockInput {
+    blockType: 'TOXICITY';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * ID of an existing block to update. Omit to create a new block. Existing blocks
+     * not included will be deleted.
+     */
+    id?: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Maximum allowed toxicity score (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+
+  export interface CreateVocalCueBlockInput {
+    blockType: 'VOCAL_CUE';
+
+    /**
+     * Display name of the evaluation block
+     */
+    name: string;
+
+    /**
+     * ID of an existing block to update. Omit to create a new block. Existing blocks
+     * not included will be deleted.
+     */
+    id?: string;
+
+    /**
+     * Optional description of what this block evaluates
+     */
+    description?: string | null;
+
+    /**
+     * Input dimensions for the block (auto-assigned if not provided)
+     */
+    inputDimensions?: Array<string>;
+
+    /**
+     * Order in which this block is executed (defaults to array position)
+     */
+    orderIndex?: number;
+
+    /**
+     * The vocal cue to detect (e.g., "pace", "tone", "volume")
+     */
+    selectedCue?: string;
+
+    /**
+     * Condition to skip this block evaluation
+     */
+    skipCondition?: string | null;
+
+    /**
+     * Minimum confidence threshold for vocal cue detection (0-1, default: 0.7)
+     */
+    threshold?: number;
+
+    /**
+     * Weight of this block in the overall evaluation score (0-100, default: 50)
+     */
+    weight?: number;
+  }
+}
+
 export declare namespace Evaluation {
   export {
+    type EvaluationCreateEvaluatorResponse as EvaluationCreateEvaluatorResponse,
     type EvaluationCreateJobResponse as EvaluationCreateJobResponse,
     type EvaluationGetEvaluatorByIDResponse as EvaluationGetEvaluatorByIDResponse,
     type EvaluationGetJobResponse as EvaluationGetJobResponse,
     type EvaluationListEvaluatorsResponse as EvaluationListEvaluatorsResponse,
     type EvaluationListJobRunsResponse as EvaluationListJobRunsResponse,
+    type EvaluationUpdateEvaluatorResponse as EvaluationUpdateEvaluatorResponse,
+    type EvaluationCreateEvaluatorParams as EvaluationCreateEvaluatorParams,
     type EvaluationCreateJobParams as EvaluationCreateJobParams,
     type EvaluationListEvaluatorsParams as EvaluationListEvaluatorsParams,
     type EvaluationListJobRunsParams as EvaluationListJobRunsParams,
+    type EvaluationUpdateEvaluatorParams as EvaluationUpdateEvaluatorParams,
   };
 }
