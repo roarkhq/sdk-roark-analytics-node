@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.23.1 (2026-02-19)
+
+Full Changelog: [v2.23.0...v2.23.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.23.0...v2.23.1)
+
+### Chores
+
+* **internal:** cache fetch instruction calls in MCP server ([86e76c3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/86e76c33a3cf44110f192d0d25c31e94c92d901f))
+
 ## 2.23.0 (2026-02-19)
 
 Full Changelog: [v2.22.0...v2.23.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.22.0...v2.23.0)
