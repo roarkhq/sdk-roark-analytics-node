@@ -110,7 +110,14 @@ export namespace SimulationScenarioCreateResponse {
         | 'CUSTOMER_TURN'
         | 'CUSTOMER_FIRST_MESSAGE'
         | 'CUSTOMER_SILENCE'
+        | 'CUSTOMER_DTMF'
         | 'VOICEMAIL';
+
+      /**
+       * DTMF digits to send during this step (e.g. 1w2w3#). Valid characters: 0-9, \*,
+       * #, w/W for pauses.
+       */
+      dtmfDigits?: string | null;
     }
   }
 }
@@ -173,7 +180,14 @@ export namespace SimulationScenarioUpdateResponse {
         | 'CUSTOMER_TURN'
         | 'CUSTOMER_FIRST_MESSAGE'
         | 'CUSTOMER_SILENCE'
+        | 'CUSTOMER_DTMF'
         | 'VOICEMAIL';
+
+      /**
+       * DTMF digits to send during this step (e.g. 1w2w3#). Valid characters: 0-9, \*,
+       * #, w/W for pauses.
+       */
+      dtmfDigits?: string | null;
     }
   }
 }
@@ -238,7 +252,14 @@ export namespace SimulationScenarioListResponse {
         | 'CUSTOMER_TURN'
         | 'CUSTOMER_FIRST_MESSAGE'
         | 'CUSTOMER_SILENCE'
+        | 'CUSTOMER_DTMF'
         | 'VOICEMAIL';
+
+      /**
+       * DTMF digits to send during this step (e.g. 1w2w3#). Valid characters: 0-9, \*,
+       * #, w/W for pauses.
+       */
+      dtmfDigits?: string | null;
     }
   }
 
@@ -331,7 +352,14 @@ export namespace SimulationScenarioGetByIDResponse {
         | 'CUSTOMER_TURN'
         | 'CUSTOMER_FIRST_MESSAGE'
         | 'CUSTOMER_SILENCE'
+        | 'CUSTOMER_DTMF'
         | 'VOICEMAIL';
+
+      /**
+       * DTMF digits to send during this step (e.g. 1w2w3#). Valid characters: 0-9, \*,
+       * #, w/W for pauses.
+       */
+      dtmfDigits?: string | null;
     }
   }
 }
@@ -361,7 +389,13 @@ export namespace SimulationScenarioCreateParams {
     /**
      * The type of this step
      */
-    type: 'AGENT_TURN' | 'CUSTOMER_TURN' | 'CUSTOMER_FIRST_MESSAGE' | 'CUSTOMER_SILENCE' | 'VOICEMAIL';
+    type:
+      | 'AGENT_TURN'
+      | 'CUSTOMER_TURN'
+      | 'CUSTOMER_FIRST_MESSAGE'
+      | 'CUSTOMER_SILENCE'
+      | 'CUSTOMER_DTMF'
+      | 'VOICEMAIL';
   }
 }
 
@@ -399,7 +433,13 @@ export namespace SimulationScenarioUpdateParams {
     /**
      * The type of the new step
      */
-    type: 'AGENT_TURN' | 'CUSTOMER_TURN' | 'CUSTOMER_FIRST_MESSAGE' | 'CUSTOMER_SILENCE' | 'VOICEMAIL';
+    type:
+      | 'AGENT_TURN'
+      | 'CUSTOMER_TURN'
+      | 'CUSTOMER_FIRST_MESSAGE'
+      | 'CUSTOMER_SILENCE'
+      | 'CUSTOMER_DTMF'
+      | 'VOICEMAIL';
   }
 
   /**
@@ -424,7 +464,13 @@ export namespace SimulationScenarioUpdateParams {
     /**
      * The new type of the step (optional)
      */
-    type?: 'AGENT_TURN' | 'CUSTOMER_TURN' | 'CUSTOMER_FIRST_MESSAGE' | 'CUSTOMER_SILENCE' | 'VOICEMAIL';
+    type?:
+      | 'AGENT_TURN'
+      | 'CUSTOMER_TURN'
+      | 'CUSTOMER_FIRST_MESSAGE'
+      | 'CUSTOMER_SILENCE'
+      | 'CUSTOMER_DTMF'
+      | 'VOICEMAIL';
   }
 
   /**
