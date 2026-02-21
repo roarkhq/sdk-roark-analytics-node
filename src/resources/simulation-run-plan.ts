@@ -154,6 +154,11 @@ export namespace SimulationRunPlanCreateResponse {
       direction: 'INBOUND' | 'OUTBOUND';
 
       /**
+       * Phrases that trigger end of call. Empty array means disabled.
+       */
+      endCallPhrases: Array<string>;
+
+      /**
        * Evaluators included in this run plan
        */
       evaluators: Array<RunPlan.Evaluator>;
@@ -302,6 +307,11 @@ export namespace SimulationRunPlanUpdateResponse {
     direction: 'INBOUND' | 'OUTBOUND';
 
     /**
+     * Phrases that trigger end of call. Empty array means disabled.
+     */
+    endCallPhrases: Array<string>;
+
+    /**
      * Evaluators included in this run plan
      */
     evaluators: Array<Data.Evaluator>;
@@ -414,6 +424,11 @@ export namespace SimulationRunPlanListResponse {
      * Direction of the simulation (INBOUND or OUTBOUND)
      */
     direction: 'INBOUND' | 'OUTBOUND';
+
+    /**
+     * Phrases that trigger end of call. Empty array means disabled.
+     */
+    endCallPhrases: Array<string>;
 
     /**
      * Evaluators included in this run plan
@@ -558,6 +573,11 @@ export namespace SimulationRunPlanGetByIDResponse {
     direction: 'INBOUND' | 'OUTBOUND';
 
     /**
+     * Phrases that trigger end of call. Empty array means disabled.
+     */
+    endCallPhrases: Array<string>;
+
+    /**
      * Evaluators included in this run plan
      */
     evaluators: Array<Data.Evaluator>;
@@ -684,6 +704,11 @@ export interface SimulationRunPlanCreateParams {
   description?: string;
 
   /**
+   * Phrases that trigger end of call. Empty array disables the feature.
+   */
+  endCallPhrases?: Array<string>;
+
+  /**
    * Execution mode (PARALLEL or SEQUENTIAL)
    */
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
@@ -738,6 +763,11 @@ export interface SimulationRunPlanUpdateParams {
    * Direction of the simulation (INBOUND or OUTBOUND)
    */
   direction?: 'INBOUND' | 'OUTBOUND';
+
+  /**
+   * Phrases that trigger end of call. Empty array disables the feature.
+   */
+  endCallPhrases?: Array<string>;
 
   /**
    * Evaluators to include in this run plan

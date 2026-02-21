@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.24.0 (2026-02-21)
+
+Full Changelog: [v2.23.1...v2.24.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.23.1...v2.24.0)
+
+### Features
+
+* **api:** api update ([f1c7105](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f1c71057c304acd7baa5a51d3dfc81c8def1de76))
+* **api:** api update ([d70b1c4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d70b1c4a880c6625d3635cd5863ead51ba29b4ad))
+
+
+### Bug Fixes
+
+* **mcp:** initialize SDK lazily to avoid failing the connection on init errors ([0aa8be3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/0aa8be37e573ffc04b2f54caeb8e63717962971a))
+
+
+### Chores
+
+* **mcp:** correctly update version in sync with sdk ([56ae3a4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/56ae3a4a8b7ad0f68cfc5e8b5692b2bf8e4ed351))
+* update mock server docs ([16e02af](https://github.com/roarkhq/sdk-roark-analytics-node/commit/16e02afd9ccd60551e6da5a916056ae99754f8df))
+
 ## 2.23.1 (2026-02-19)
 
 Full Changelog: [v2.23.0...v2.23.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.23.0...v2.23.1)
