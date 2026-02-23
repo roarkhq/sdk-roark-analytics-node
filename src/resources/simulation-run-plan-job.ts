@@ -39,7 +39,8 @@ export class SimulationRunPlanJob extends APIResource {
   }
 
   /**
-   * Create and execute a job for an existing simulation run plan
+   * Create and execute a job for an existing simulation run plan. Optionally provide
+   * runtime variables to override plan-defined variables.
    *
    * @example
    * ```ts
@@ -48,8 +49,12 @@ export class SimulationRunPlanJob extends APIResource {
    * );
    * ```
    */
-  start(planID: unknown, options?: RequestOptions): APIPromise<SimulationRunPlanJobStartResponse> {
-    return this._client.post(path`/v1/simulation/plan/${planID}/job`, options);
+  start(
+    planID: unknown,
+    body: SimulationRunPlanJobStartParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<SimulationRunPlanJobStartResponse> {
+    return this._client.post(path`/v1/simulation/plan/${planID}/job`, { body, ...options });
   }
 }
 
@@ -511,11 +516,21 @@ export interface SimulationRunPlanJobListParams {
     | 'CANCELLING';
 }
 
+export interface SimulationRunPlanJobStartParams {
+  /**
+   * Runtime variables that override plan-defined variables. Can be a flat key-value
+   * object (applies to all scenarios) or keyed by scenario ID for per-scenario
+   * overrides.
+   */
+  variables?: { [key: string]: string } | { [key: string]: { [key: string]: string } };
+}
+
 export declare namespace SimulationRunPlanJob {
   export {
     type SimulationRunPlanJobListResponse as SimulationRunPlanJobListResponse,
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
     type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
     type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,
+    type SimulationRunPlanJobStartParams as SimulationRunPlanJobStartParams,
   };
 }

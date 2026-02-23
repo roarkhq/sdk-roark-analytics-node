@@ -57,4 +57,15 @@ describe('resource simulationRunPlanJob', () => {
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
   });
+
+  test('start: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.simulationRunPlanJob.start(
+        '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
+        { variables: { orderNumber: '12345', environment: 'staging' } },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
 });

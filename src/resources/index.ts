@@ -101,6 +101,7 @@ export {
   type SimulationRunPlanJobGetByIDResponse,
   type SimulationRunPlanJobStartResponse,
   type SimulationRunPlanJobListParams,
+  type SimulationRunPlanJobStartParams,
 } from './simulation-run-plan-job';
 export {
   SimulationScenario,
