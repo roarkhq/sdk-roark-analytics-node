@@ -380,6 +380,12 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         properties: { [key: string]: unknown };
 
         /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
          * Speech clarity of the persona
          */
         speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';

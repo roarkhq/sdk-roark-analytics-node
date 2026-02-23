@@ -171,6 +171,12 @@ export namespace SimulationPersonaCreateResponse {
     properties: { [key: string]: unknown };
 
     /**
+     * Controls how quickly the persona responds to pauses in conversation (QUICK,
+     * NORMAL, RELAXED)
+     */
+    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+    /**
      * Speech clarity of the persona
      */
     speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
@@ -296,6 +302,12 @@ export namespace SimulationPersonaUpdateResponse {
      * Additional custom properties about the persona
      */
     properties: { [key: string]: unknown };
+
+    /**
+     * Controls how quickly the persona responds to pauses in conversation (QUICK,
+     * NORMAL, RELAXED)
+     */
+    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
 
     /**
      * Speech clarity of the persona
@@ -425,6 +437,12 @@ export namespace SimulationPersonaListResponse {
      * Additional custom properties about the persona
      */
     properties: { [key: string]: unknown };
+
+    /**
+     * Controls how quickly the persona responds to pauses in conversation (QUICK,
+     * NORMAL, RELAXED)
+     */
+    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
 
     /**
      * Speech clarity of the persona
@@ -571,6 +589,12 @@ export namespace SimulationPersonaGetByIDResponse {
     properties: { [key: string]: unknown };
 
     /**
+     * Controls how quickly the persona responds to pauses in conversation (QUICK,
+     * NORMAL, RELAXED)
+     */
+    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+    /**
      * Speech clarity of the persona
      */
     speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
@@ -693,6 +717,12 @@ export interface SimulationPersonaCreateParams {
   properties?: { [key: string]: unknown };
 
   /**
+   * Controls how quickly the persona responds to pauses in conversation (QUICK,
+   * NORMAL, RELAXED)
+   */
+  responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+  /**
    * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
    */
   secondaryLanguage?: 'EN' | null;
@@ -797,6 +827,12 @@ export interface SimulationPersonaUpdateParams {
    * Additional custom properties about the persona
    */
   properties?: { [key: string]: unknown };
+
+  /**
+   * Controls how quickly the persona responds to pauses in conversation (QUICK,
+   * NORMAL, RELAXED)
+   */
+  responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
 
   /**
    * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
