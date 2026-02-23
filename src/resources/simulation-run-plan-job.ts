@@ -518,11 +518,31 @@ export interface SimulationRunPlanJobListParams {
 
 export interface SimulationRunPlanJobStartParams {
   /**
-   * Runtime variables that override plan-defined variables. Can be a flat key-value
-   * object (applies to all scenarios) or keyed by scenario ID for per-scenario
-   * overrides.
+   * Runtime variables that override plan-defined scenario variables. Accepts one of
+   * two formats:
+   *
+   * Option 1 — Global (flat key-value object, applies to ALL scenarios): {
+   * "orderNumber": "12345", "environment": "staging" }
+   *
+   * Option 2 — Per-scenario (array of objects with scenarioId + variables): [ {
+   * "scenarioId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
+   * "scenarioId": "7a3d2e1f-...", "variables": { "orderNumber": "67890" } } ]
    */
-  variables?: { [key: string]: string } | { [key: string]: { [key: string]: string } };
+  variables?: { [key: string]: string } | Array<SimulationRunPlanJobStartParams.UnionMember1>;
+}
+
+export namespace SimulationRunPlanJobStartParams {
+  export interface UnionMember1 {
+    /**
+     * ID of the scenario to apply variables to
+     */
+    scenarioId: string;
+
+    /**
+     * Key-value pairs for this scenario
+     */
+    variables: { [key: string]: string };
+  }
 }
 
 export declare namespace SimulationRunPlanJob {
