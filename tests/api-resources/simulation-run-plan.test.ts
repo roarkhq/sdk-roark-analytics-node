@@ -35,7 +35,12 @@ describe('resource simulationRunPlan', () => {
       maxSimulationDurationSeconds: 300,
       name: 'My Run Plan',
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-      scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+      scenarios: [
+        {
+          id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          variables: { customerName: 'John Doe', appointmentDate: '2024-02-15' },
+        },
+      ],
       autoRun: false,
       description: 'A run plan for testing inbound calls',
       endCallPhrases: ['goodbye'],
@@ -74,7 +79,12 @@ describe('resource simulationRunPlan', () => {
           maxSimulationDurationSeconds: 1,
           name: 'x',
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-          scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+          scenarios: [
+            {
+              id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              variables: { foo: 'string' },
+            },
+          ],
           silenceTimeoutSeconds: 1,
         },
         { path: '/_stainless_unknown_path' },

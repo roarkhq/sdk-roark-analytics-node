@@ -117,6 +117,7 @@ import {
   SimulationRunPlanJobGetByIDResponse,
   SimulationRunPlanJobListParams,
   SimulationRunPlanJobListResponse,
+  SimulationRunPlanJobStartParams,
   SimulationRunPlanJobStartResponse,
 } from './resources/simulation-run-plan-job';
 import {
@@ -937,6 +938,7 @@ export declare namespace Roark {
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
     type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
     type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,
+    type SimulationRunPlanJobStartParams as SimulationRunPlanJobStartParams,
   };
 
   export {
