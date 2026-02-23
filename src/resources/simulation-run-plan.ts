@@ -689,7 +689,8 @@ export interface SimulationRunPlanCreateParams {
   personas: Array<SimulationRunPlanCreateParams.Persona>;
 
   /**
-   * Scenarios to include in this run plan
+   * Scenarios to include in this run plan. The same scenario ID can appear multiple
+   * times with different variables.
    */
   scenarios: Array<SimulationRunPlanCreateParams.Scenario>;
 
@@ -744,7 +745,16 @@ export namespace SimulationRunPlanCreateParams {
   }
 
   export interface Scenario {
+    /**
+     * Scenario ID
+     */
     id: string;
+
+    /**
+     * Template variables for this scenario instance. The same scenario can appear
+     * multiple times with different variables.
+     */
+    variables?: { [key: string]: string };
   }
 }
 
@@ -806,7 +816,8 @@ export interface SimulationRunPlanUpdateParams {
   personas?: Array<SimulationRunPlanUpdateParams.Persona>;
 
   /**
-   * Scenarios to include in this run plan
+   * Scenarios to include in this run plan. The same scenario ID can appear multiple
+   * times with different variables.
    */
   scenarios?: Array<SimulationRunPlanUpdateParams.Scenario>;
 
@@ -830,7 +841,16 @@ export namespace SimulationRunPlanUpdateParams {
   }
 
   export interface Scenario {
+    /**
+     * Scenario ID
+     */
     id: string;
+
+    /**
+     * Template variables for this scenario instance. The same scenario can appear
+     * multiple times with different variables.
+     */
+    variables?: { [key: string]: string };
   }
 }
 

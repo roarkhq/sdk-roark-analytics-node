@@ -116,7 +116,7 @@ Methods:
 
 - <code title="get /v1/simulation/plan/jobs">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">list</a>({ ...params }) -> SimulationRunPlanJobListResponse</code>
 - <code title="get /v1/simulation/plan/job/{jobId}">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">getByID</a>(jobID) -> SimulationRunPlanJobGetByIDResponse</code>
-- <code title="post /v1/simulation/plan/{planId}/job">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">start</a>(planID) -> SimulationRunPlanJobStartResponse</code>
+- <code title="post /v1/simulation/plan/{planId}/job">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">start</a>(planID, { ...params }) -> SimulationRunPlanJobStartResponse</code>
 
 # SimulationScenario
 
