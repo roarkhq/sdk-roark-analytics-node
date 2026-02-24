@@ -12,8 +12,8 @@ describe('resource simulationRunPlan', () => {
     const responsePromise = client.simulationRunPlan.create({
       agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       direction: 'INBOUND',
-      evaluators: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       maxSimulationDurationSeconds: 300,
+      metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       name: 'My Run Plan',
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
@@ -31,8 +31,8 @@ describe('resource simulationRunPlan', () => {
     const response = await client.simulationRunPlan.create({
       agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       direction: 'INBOUND',
-      evaluators: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       maxSimulationDurationSeconds: 300,
+      metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       name: 'My Run Plan',
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       scenarios: [
@@ -72,11 +72,11 @@ describe('resource simulationRunPlan', () => {
           description: 'description',
           direction: 'INBOUND',
           endCallPhrases: ['string'],
-          evaluators: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
           executionMode: 'PARALLEL',
           iterationCount: 1,
           maxConcurrentJobs: 1,
           maxSimulationDurationSeconds: 1,
+          metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
           name: 'x',
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
           scenarios: [
