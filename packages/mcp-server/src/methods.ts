@@ -17,48 +17,6 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/health',
   },
   {
-    clientCallName: 'client.evaluation.createEvaluator',
-    fullyQualifiedName: 'evaluation.createEvaluator',
-    httpMethod: 'post',
-    httpPath: '/v1/evaluation/evaluators',
-  },
-  {
-    clientCallName: 'client.evaluation.createJob',
-    fullyQualifiedName: 'evaluation.createJob',
-    httpMethod: 'post',
-    httpPath: '/v1/evaluation/job',
-  },
-  {
-    clientCallName: 'client.evaluation.getEvaluatorByID',
-    fullyQualifiedName: 'evaluation.getEvaluatorByID',
-    httpMethod: 'get',
-    httpPath: '/v1/evaluation/evaluators/{evaluatorId}',
-  },
-  {
-    clientCallName: 'client.evaluation.getJob',
-    fullyQualifiedName: 'evaluation.getJob',
-    httpMethod: 'get',
-    httpPath: '/v1/evaluation/job/{jobId}',
-  },
-  {
-    clientCallName: 'client.evaluation.listEvaluators',
-    fullyQualifiedName: 'evaluation.listEvaluators',
-    httpMethod: 'get',
-    httpPath: '/v1/evaluation/evaluators',
-  },
-  {
-    clientCallName: 'client.evaluation.listJobRuns',
-    fullyQualifiedName: 'evaluation.listJobRuns',
-    httpMethod: 'get',
-    httpPath: '/v1/evaluation/job/{jobId}/runs',
-  },
-  {
-    clientCallName: 'client.evaluation.updateEvaluator',
-    fullyQualifiedName: 'evaluation.updateEvaluator',
-    httpMethod: 'put',
-    httpPath: '/v1/evaluation/evaluators/{evaluatorId}',
-  },
-  {
     clientCallName: 'client.call.create',
     fullyQualifiedName: 'call.create',
     httpMethod: 'post',
@@ -105,18 +63,6 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'metric.listDefinitions',
     httpMethod: 'get',
     httpPath: '/v1/metric/definitions',
-  },
-  {
-    clientCallName: 'client.integrations.createRetellCall',
-    fullyQualifiedName: 'integrations.createRetellCall',
-    httpMethod: 'post',
-    httpPath: '/v1/retell/call',
-  },
-  {
-    clientCallName: 'client.integrations.createVapiCall',
-    fullyQualifiedName: 'integrations.createVapiCall',
-    httpMethod: 'post',
-    httpPath: '/v1/vapi/call',
   },
   {
     clientCallName: 'client.simulationJob.getByID',

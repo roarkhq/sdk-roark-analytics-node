@@ -38,7 +38,7 @@ export namespace MetricListDefinitionsResponse {
     description: string;
 
     /**
-     * Stable metric identifier
+     * Stable metric identifier (e.g. "call_reason", "customer_satisfaction")
      */
     metricId: string;
 

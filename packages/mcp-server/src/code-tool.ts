@@ -21,9 +21,9 @@ For example:
 
 \`\`\`
 async function run(client) {
-  const response = await client.evaluation.createJob({ evaluators: ['string'] });
+  const health = await client.health.get();
 
-  console.log(response.data);
+  console.log(health.data);
 }
 \`\`\`
 
