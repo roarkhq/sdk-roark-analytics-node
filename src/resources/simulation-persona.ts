@@ -146,6 +146,26 @@ export namespace SimulationPersonaCreateResponse {
     hasDisfluencies: boolean;
 
     /**
+     * Maximum number of idle messages the persona will send before giving up
+     */
+    idleMessageMaxSpokenCount: number;
+
+    /**
+     * Whether the idle message counter resets when the agent speaks
+     */
+    idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+    /**
+     * Messages the persona will say when the agent goes silent during a call
+     */
+    idleMessages: Array<string>;
+
+    /**
+     * Seconds of silence before the persona sends an idle message
+     */
+    idleTimeoutSeconds: number;
+
+    /**
      * How clearly the persona expresses their intentions
      */
     intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
@@ -277,6 +297,26 @@ export namespace SimulationPersonaUpdateResponse {
      * Whether the persona uses filler words like "um" and "uh"
      */
     hasDisfluencies: boolean;
+
+    /**
+     * Maximum number of idle messages the persona will send before giving up
+     */
+    idleMessageMaxSpokenCount: number;
+
+    /**
+     * Whether the idle message counter resets when the agent speaks
+     */
+    idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+    /**
+     * Messages the persona will say when the agent goes silent during a call
+     */
+    idleMessages: Array<string>;
+
+    /**
+     * Seconds of silence before the persona sends an idle message
+     */
+    idleTimeoutSeconds: number;
 
     /**
      * How clearly the persona expresses their intentions
@@ -412,6 +452,26 @@ export namespace SimulationPersonaListResponse {
      * Whether the persona uses filler words like "um" and "uh"
      */
     hasDisfluencies: boolean;
+
+    /**
+     * Maximum number of idle messages the persona will send before giving up
+     */
+    idleMessageMaxSpokenCount: number;
+
+    /**
+     * Whether the idle message counter resets when the agent speaks
+     */
+    idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+    /**
+     * Messages the persona will say when the agent goes silent during a call
+     */
+    idleMessages: Array<string>;
+
+    /**
+     * Seconds of silence before the persona sends an idle message
+     */
+    idleTimeoutSeconds: number;
 
     /**
      * How clearly the persona expresses their intentions
@@ -564,6 +624,26 @@ export namespace SimulationPersonaGetByIDResponse {
     hasDisfluencies: boolean;
 
     /**
+     * Maximum number of idle messages the persona will send before giving up
+     */
+    idleMessageMaxSpokenCount: number;
+
+    /**
+     * Whether the idle message counter resets when the agent speaks
+     */
+    idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+    /**
+     * Messages the persona will say when the agent goes silent during a call
+     */
+    idleMessages: Array<string>;
+
+    /**
+     * Seconds of silence before the persona sends an idle message
+     */
+    idleTimeoutSeconds: number;
+
+    /**
      * How clearly the persona expresses their intentions
      */
     intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
@@ -702,6 +782,26 @@ export interface SimulationPersonaCreateParams {
   hasDisfluencies?: boolean;
 
   /**
+   * Maximum number of idle messages the persona will send before giving up
+   */
+  idleMessageMaxSpokenCount?: number;
+
+  /**
+   * Whether the idle message counter resets when the agent speaks
+   */
+  idleMessageResetCountOnUserSpeechEnabled?: boolean;
+
+  /**
+   * Messages the persona will say when the agent goes silent during a call
+   */
+  idleMessages?: Array<string>;
+
+  /**
+   * Seconds of silence before the persona sends an idle message
+   */
+  idleTimeoutSeconds?: number;
+
+  /**
    * How clearly the persona expresses their intentions
    */
   intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
@@ -802,6 +902,26 @@ export interface SimulationPersonaUpdateParams {
    * Whether the persona uses filler words like "um" and "uh"
    */
   hasDisfluencies?: boolean;
+
+  /**
+   * Maximum number of idle messages the persona will send before giving up
+   */
+  idleMessageMaxSpokenCount?: number;
+
+  /**
+   * Whether the idle message counter resets when the agent speaks
+   */
+  idleMessageResetCountOnUserSpeechEnabled?: boolean;
+
+  /**
+   * Messages the persona will say when the agent goes silent during a call
+   */
+  idleMessages?: Array<string>;
+
+  /**
+   * Seconds of silence before the persona sends an idle message
+   */
+  idleTimeoutSeconds?: number;
 
   /**
    * How clearly the persona expresses their intentions
