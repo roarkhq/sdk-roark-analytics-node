@@ -60,7 +60,7 @@ $ yarn link @roarkanalytics/sdk
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global @roarkanalytics/sdk
+$ pnpm link --global @roarkanalytics/sdk
 ```
 
 ## Running tests
