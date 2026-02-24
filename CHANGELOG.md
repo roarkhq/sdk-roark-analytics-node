@@ -1,5 +1,34 @@
 # Changelog
 
+## 2.24.0 (2026-02-24)
+
+Full Changelog: [v2.23.1...v2.24.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.23.1...v2.24.0)
+
+### Features
+
+* **api:** api update ([99c1619](https://github.com/roarkhq/sdk-roark-analytics-node/commit/99c16199cd20190bad63feebce15a591d5fcda98))
+* **api:** api update ([9596712](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9596712112ca726fd5776d91e421d0748e4491a7))
+* **api:** api update ([c7f4d69](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c7f4d69407401ca1e3fefb8cececf0d23ca5c1be))
+* **api:** api update ([ca3bf1c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ca3bf1c80fc953467423eb8ccb428bd484cde0ef))
+* **api:** api update ([e0d6c4f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e0d6c4f5ecd09b58f8ef062594a4f25692889039))
+* **api:** api update ([cbeddbe](https://github.com/roarkhq/sdk-roark-analytics-node/commit/cbeddbe0c1fe5b13d473b61630268ac19c1cfbf4))
+* **api:** api update ([f1c7105](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f1c71057c304acd7baa5a51d3dfc81c8def1de76))
+* **api:** api update ([d70b1c4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d70b1c4a880c6625d3635cd5863ead51ba29b4ad))
+
+
+### Bug Fixes
+
+* **docs/contributing:** correct pnpm link command ([9a5010f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9a5010fb005c833279c2f69e0792c7a83b2b665a))
+* **mcp:** initialize SDK lazily to avoid failing the connection on init errors ([0aa8be3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/0aa8be37e573ffc04b2f54caeb8e63717962971a))
+
+
+### Chores
+
+* **internal:** upgrade @modelcontextprotocol/sdk and hono ([c27af37](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c27af37cbf0357c5f9e1792bf76c9e7866dc2516))
+* **internal:** upgrade pnpm version ([ee6fc4a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ee6fc4a8533d97e8789bd63f29f73d64a95d8efb))
+* **mcp:** correctly update version in sync with sdk ([56ae3a4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/56ae3a4a8b7ad0f68cfc5e8b5692b2bf8e4ed351))
+* update mock server docs ([16e02af](https://github.com/roarkhq/sdk-roark-analytics-node/commit/16e02afd9ccd60551e6da5a916056ae99754f8df))
+
 ## 2.23.1 (2026-02-19)
 
 Full Changelog: [v2.23.0...v2.23.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.23.0...v2.23.1)
