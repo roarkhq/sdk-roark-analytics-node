@@ -18,10 +18,10 @@ export class SimulationRunPlan extends APIResource {
    *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
    *     ],
    *     direction: 'INBOUND',
-   *     evaluators: [
+   *     maxSimulationDurationSeconds: 300,
+   *     metrics: [
    *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
    *     ],
-   *     maxSimulationDurationSeconds: 300,
    *     name: 'My Run Plan',
    *     personas: [
    *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
@@ -159,7 +159,7 @@ export namespace SimulationRunPlanCreateResponse {
       endCallPhrases: Array<string>;
 
       /**
-       * Evaluators included in this run plan
+       * Deprecated: Use metrics instead. Evaluators included in this run plan.
        */
       evaluators: Array<RunPlan.Evaluator>;
 
@@ -182,6 +182,11 @@ export namespace SimulationRunPlanCreateResponse {
        * Maximum duration in seconds for each simulation
        */
       maxSimulationDurationSeconds: number;
+
+      /**
+       * Metric definitions included in this run plan
+       */
+      metrics: Array<RunPlan.Metric>;
 
       /**
        * Name of the run plan
@@ -225,6 +230,10 @@ export namespace SimulationRunPlanCreateResponse {
       }
 
       export interface Evaluator {
+        id: string;
+      }
+
+      export interface Metric {
         id: string;
       }
 
@@ -312,7 +321,7 @@ export namespace SimulationRunPlanUpdateResponse {
     endCallPhrases: Array<string>;
 
     /**
-     * Evaluators included in this run plan
+     * Deprecated: Use metrics instead. Evaluators included in this run plan.
      */
     evaluators: Array<Data.Evaluator>;
 
@@ -335,6 +344,11 @@ export namespace SimulationRunPlanUpdateResponse {
      * Maximum duration in seconds for each simulation
      */
     maxSimulationDurationSeconds: number;
+
+    /**
+     * Metric definitions included in this run plan
+     */
+    metrics: Array<Data.Metric>;
 
     /**
      * Name of the run plan
@@ -378,6 +392,10 @@ export namespace SimulationRunPlanUpdateResponse {
     }
 
     export interface Evaluator {
+      id: string;
+    }
+
+    export interface Metric {
       id: string;
     }
 
@@ -431,7 +449,7 @@ export namespace SimulationRunPlanListResponse {
     endCallPhrases: Array<string>;
 
     /**
-     * Evaluators included in this run plan
+     * Deprecated: Use metrics instead. Evaluators included in this run plan.
      */
     evaluators: Array<Data.Evaluator>;
 
@@ -454,6 +472,11 @@ export namespace SimulationRunPlanListResponse {
      * Maximum duration in seconds for each simulation
      */
     maxSimulationDurationSeconds: number;
+
+    /**
+     * Metric definitions included in this run plan
+     */
+    metrics: Array<Data.Metric>;
 
     /**
      * Name of the run plan
@@ -497,6 +520,10 @@ export namespace SimulationRunPlanListResponse {
     }
 
     export interface Evaluator {
+      id: string;
+    }
+
+    export interface Metric {
       id: string;
     }
 
@@ -578,7 +605,7 @@ export namespace SimulationRunPlanGetByIDResponse {
     endCallPhrases: Array<string>;
 
     /**
-     * Evaluators included in this run plan
+     * Deprecated: Use metrics instead. Evaluators included in this run plan.
      */
     evaluators: Array<Data.Evaluator>;
 
@@ -601,6 +628,11 @@ export namespace SimulationRunPlanGetByIDResponse {
      * Maximum duration in seconds for each simulation
      */
     maxSimulationDurationSeconds: number;
+
+    /**
+     * Metric definitions included in this run plan
+     */
+    metrics: Array<Data.Metric>;
 
     /**
      * Name of the run plan
@@ -647,6 +679,10 @@ export namespace SimulationRunPlanGetByIDResponse {
       id: string;
     }
 
+    export interface Metric {
+      id: string;
+    }
+
     export interface Persona {
       id: string;
     }
@@ -669,14 +705,14 @@ export interface SimulationRunPlanCreateParams {
   direction: 'INBOUND' | 'OUTBOUND';
 
   /**
-   * Evaluators to include in this run plan
-   */
-  evaluators: Array<SimulationRunPlanCreateParams.Evaluator>;
-
-  /**
    * Maximum duration in seconds for each simulation
    */
   maxSimulationDurationSeconds: number;
+
+  /**
+   * Metric definitions to include in this run plan
+   */
+  metrics: Array<SimulationRunPlanCreateParams.Metric>;
 
   /**
    * Name of the run plan
@@ -736,7 +772,7 @@ export namespace SimulationRunPlanCreateParams {
     id: string;
   }
 
-  export interface Evaluator {
+  export interface Metric {
     id: string;
   }
 
@@ -780,11 +816,6 @@ export interface SimulationRunPlanUpdateParams {
   endCallPhrases?: Array<string>;
 
   /**
-   * Evaluators to include in this run plan
-   */
-  evaluators?: Array<SimulationRunPlanUpdateParams.Evaluator>;
-
-  /**
    * Execution mode (PARALLEL or SEQUENTIAL)
    */
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
@@ -804,6 +835,11 @@ export interface SimulationRunPlanUpdateParams {
    * Maximum duration in seconds for each simulation
    */
   maxSimulationDurationSeconds?: number;
+
+  /**
+   * Metric definitions to include in this run plan
+   */
+  metrics?: Array<SimulationRunPlanUpdateParams.Metric>;
 
   /**
    * Name of the run plan
@@ -832,7 +868,7 @@ export namespace SimulationRunPlanUpdateParams {
     id: string;
   }
 
-  export interface Evaluator {
+  export interface Metric {
     id: string;
   }
 
