@@ -138,7 +138,7 @@ export namespace SimulationPersonaCreateResponse {
     /**
      * Gender of the persona
      */
-    gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
+    gender: 'MALE' | 'FEMALE';
 
     /**
      * Whether the persona uses filler words like "um" and "uh"
@@ -271,7 +271,7 @@ export namespace SimulationPersonaUpdateResponse {
     /**
      * Gender of the persona
      */
-    gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
+    gender: 'MALE' | 'FEMALE';
 
     /**
      * Whether the persona uses filler words like "um" and "uh"
@@ -406,7 +406,7 @@ export namespace SimulationPersonaListResponse {
     /**
      * Gender of the persona
      */
-    gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
+    gender: 'MALE' | 'FEMALE';
 
     /**
      * Whether the persona uses filler words like "um" and "uh"
@@ -556,7 +556,7 @@ export namespace SimulationPersonaGetByIDResponse {
     /**
      * Gender of the persona
      */
-    gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
+    gender: 'MALE' | 'FEMALE';
 
     /**
      * Whether the persona uses filler words like "um" and "uh"
@@ -651,7 +651,7 @@ export interface SimulationPersonaCreateParams {
   /**
    * Gender of the persona
    */
-  gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
+  gender: 'MALE' | 'FEMALE';
 
   /**
    * Primary language ISO 639-1 code for the persona
@@ -796,7 +796,7 @@ export interface SimulationPersonaUpdateParams {
   /**
    * Gender of the persona
    */
-  gender?: 'MALE' | 'FEMALE' | 'NEUTRAL';
+  gender?: 'MALE' | 'FEMALE';
 
   /**
    * Whether the persona uses filler words like "um" and "uh"

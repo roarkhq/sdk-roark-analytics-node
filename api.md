@@ -36,11 +36,45 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/metric.ts">MetricCreateDefinitionResponse</a></code>
 - <code><a href="./src/resources/metric.ts">MetricListDefinitionsResponse</a></code>
 
 Methods:
 
+- <code title="post /v1/metric/definitions">client.metric.<a href="./src/resources/metric.ts">createDefinition</a>({ ...params }) -> MetricCreateDefinitionResponse</code>
 - <code title="get /v1/metric/definitions">client.metric.<a href="./src/resources/metric.ts">listDefinitions</a>() -> MetricListDefinitionsResponse</code>
+
+# MetricPolicy
+
+Types:
+
+- <code><a href="./src/resources/metric-policy.ts">MetricPolicyCreateResponse</a></code>
+- <code><a href="./src/resources/metric-policy.ts">MetricPolicyUpdateResponse</a></code>
+- <code><a href="./src/resources/metric-policy.ts">MetricPolicyListResponse</a></code>
+- <code><a href="./src/resources/metric-policy.ts">MetricPolicyDeleteResponse</a></code>
+- <code><a href="./src/resources/metric-policy.ts">MetricPolicyGetByIDResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/metric/policies">client.metricPolicy.<a href="./src/resources/metric-policy.ts">create</a>({ ...params }) -> MetricPolicyCreateResponse</code>
+- <code title="put /v1/metric/policies/{policyId}">client.metricPolicy.<a href="./src/resources/metric-policy.ts">update</a>(policyID, { ...params }) -> MetricPolicyUpdateResponse</code>
+- <code title="get /v1/metric/policies">client.metricPolicy.<a href="./src/resources/metric-policy.ts">list</a>({ ...params }) -> MetricPolicyListResponse</code>
+- <code title="delete /v1/metric/policies/{policyId}">client.metricPolicy.<a href="./src/resources/metric-policy.ts">delete</a>(policyID) -> MetricPolicyDeleteResponse</code>
+- <code title="get /v1/metric/policies/{policyId}">client.metricPolicy.<a href="./src/resources/metric-policy.ts">getByID</a>(policyID) -> MetricPolicyGetByIDResponse</code>
+
+# MetricCollectionJob
+
+Types:
+
+- <code><a href="./src/resources/metric-collection-job.ts">MetricCollectionJobCreateResponse</a></code>
+- <code><a href="./src/resources/metric-collection-job.ts">MetricCollectionJobListResponse</a></code>
+- <code><a href="./src/resources/metric-collection-job.ts">MetricCollectionJobGetByIDResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/metric/collection-jobs">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">create</a>({ ...params }) -> MetricCollectionJobCreateResponse</code>
+- <code title="get /v1/metric/collection-jobs">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">list</a>({ ...params }) -> MetricCollectionJobListResponse</code>
+- <code title="get /v1/metric/collection-jobs/{jobId}">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">getByID</a>(jobID) -> MetricCollectionJobGetByIDResponse</code>
 
 # Integrations
 

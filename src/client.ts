@@ -64,7 +64,31 @@ import {
   HTTPRequestDefinitionUpdateResponse,
 } from './resources/http-request-definition';
 import { Integrations } from './resources/integrations';
-import { Metric, MetricListDefinitionsResponse } from './resources/metric';
+import {
+  Metric,
+  MetricCreateDefinitionParams,
+  MetricCreateDefinitionResponse,
+  MetricListDefinitionsResponse,
+} from './resources/metric';
+import {
+  MetricCollectionJob,
+  MetricCollectionJobCreateParams,
+  MetricCollectionJobCreateResponse,
+  MetricCollectionJobGetByIDResponse,
+  MetricCollectionJobListParams,
+  MetricCollectionJobListResponse,
+} from './resources/metric-collection-job';
+import {
+  MetricPolicy,
+  MetricPolicyCreateParams,
+  MetricPolicyCreateResponse,
+  MetricPolicyDeleteResponse,
+  MetricPolicyGetByIDResponse,
+  MetricPolicyListParams,
+  MetricPolicyListResponse,
+  MetricPolicyUpdateParams,
+  MetricPolicyUpdateResponse,
+} from './resources/metric-policy';
 import {
   SimulationJob,
   SimulationJobGetByIDResponse,
@@ -820,6 +844,8 @@ export class Roark {
   evaluation: API.Evaluation = new API.Evaluation(this);
   call: API.Call = new API.Call(this);
   metric: API.Metric = new API.Metric(this);
+  metricPolicy: API.MetricPolicy = new API.MetricPolicy(this);
+  metricCollectionJob: API.MetricCollectionJob = new API.MetricCollectionJob(this);
   integrations: API.Integrations = new API.Integrations(this);
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
@@ -836,6 +862,8 @@ Roark.Health = Health;
 Roark.Evaluation = Evaluation;
 Roark.Call = Call;
 Roark.Metric = Metric;
+Roark.MetricPolicy = MetricPolicy;
+Roark.MetricCollectionJob = MetricCollectionJob;
 Roark.Integrations = Integrations;
 Roark.SimulationJob = SimulationJob;
 Roark.SimulationRunPlan = SimulationRunPlan;
@@ -869,7 +897,33 @@ export declare namespace Roark {
     type CallListMetricsParams as CallListMetricsParams,
   };
 
-  export { Metric as Metric, type MetricListDefinitionsResponse as MetricListDefinitionsResponse };
+  export {
+    Metric as Metric,
+    type MetricCreateDefinitionResponse as MetricCreateDefinitionResponse,
+    type MetricListDefinitionsResponse as MetricListDefinitionsResponse,
+    type MetricCreateDefinitionParams as MetricCreateDefinitionParams,
+  };
+
+  export {
+    MetricPolicy as MetricPolicy,
+    type MetricPolicyCreateResponse as MetricPolicyCreateResponse,
+    type MetricPolicyUpdateResponse as MetricPolicyUpdateResponse,
+    type MetricPolicyListResponse as MetricPolicyListResponse,
+    type MetricPolicyDeleteResponse as MetricPolicyDeleteResponse,
+    type MetricPolicyGetByIDResponse as MetricPolicyGetByIDResponse,
+    type MetricPolicyCreateParams as MetricPolicyCreateParams,
+    type MetricPolicyUpdateParams as MetricPolicyUpdateParams,
+    type MetricPolicyListParams as MetricPolicyListParams,
+  };
+
+  export {
+    MetricCollectionJob as MetricCollectionJob,
+    type MetricCollectionJobCreateResponse as MetricCollectionJobCreateResponse,
+    type MetricCollectionJobListResponse as MetricCollectionJobListResponse,
+    type MetricCollectionJobGetByIDResponse as MetricCollectionJobGetByIDResponse,
+    type MetricCollectionJobCreateParams as MetricCollectionJobCreateParams,
+    type MetricCollectionJobListParams as MetricCollectionJobListParams,
+  };
 
   export { Integrations as Integrations };
 

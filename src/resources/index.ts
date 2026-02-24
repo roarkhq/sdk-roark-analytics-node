@@ -47,7 +47,31 @@ export {
 } from './http-request-definition';
 export { Health, type HealthGetResponse } from './health';
 export { Integrations } from './integrations';
-export { Metric, type MetricListDefinitionsResponse } from './metric';
+export {
+  Metric,
+  type MetricCreateDefinitionResponse,
+  type MetricListDefinitionsResponse,
+  type MetricCreateDefinitionParams,
+} from './metric';
+export {
+  MetricCollectionJob,
+  type MetricCollectionJobCreateResponse,
+  type MetricCollectionJobListResponse,
+  type MetricCollectionJobGetByIDResponse,
+  type MetricCollectionJobCreateParams,
+  type MetricCollectionJobListParams,
+} from './metric-collection-job';
+export {
+  MetricPolicy,
+  type MetricPolicyCreateResponse,
+  type MetricPolicyUpdateResponse,
+  type MetricPolicyListResponse,
+  type MetricPolicyDeleteResponse,
+  type MetricPolicyGetByIDResponse,
+  type MetricPolicyCreateParams,
+  type MetricPolicyUpdateParams,
+  type MetricPolicyListParams,
+} from './metric-policy';
 export {
   SimulationJob,
   type SimulationJobGetByIDResponse,

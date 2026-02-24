@@ -191,7 +191,7 @@ export namespace SimulationJobGetByIDResponse {
       /**
        * Gender of the persona
        */
-      gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
+      gender: 'MALE' | 'FEMALE';
 
       /**
        * Whether the persona uses filler words like "um" and "uh"
@@ -428,7 +428,7 @@ export namespace SimulationJobLookupResponse {
       /**
        * Gender of the persona
        */
-      gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
+      gender: 'MALE' | 'FEMALE';
 
       /**
        * Whether the persona uses filler words like "um" and "uh"
