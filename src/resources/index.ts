@@ -34,21 +34,7 @@ export {
   type CallGetTranscriptParams,
   type CallListMetricsParams,
 } from './call';
-export {
-  Evaluation,
-  type EvaluationCreateEvaluatorResponse,
-  type EvaluationCreateJobResponse,
-  type EvaluationGetEvaluatorByIDResponse,
-  type EvaluationGetJobResponse,
-  type EvaluationListEvaluatorsResponse,
-  type EvaluationListJobRunsResponse,
-  type EvaluationUpdateEvaluatorResponse,
-  type EvaluationCreateEvaluatorParams,
-  type EvaluationCreateJobParams,
-  type EvaluationListEvaluatorsParams,
-  type EvaluationListJobRunsParams,
-  type EvaluationUpdateEvaluatorParams,
-} from './evaluation';
+export { Evaluation } from './evaluation';
 export {
   HTTPRequestDefinition,
   type HTTPRequestDefinitionCreateResponse,
@@ -60,13 +46,7 @@ export {
   type HTTPRequestDefinitionListParams,
 } from './http-request-definition';
 export { Health, type HealthGetResponse } from './health';
-export {
-  Integrations,
-  type IntegrationCreateRetellCallResponse,
-  type IntegrationCreateVapiCallResponse,
-  type IntegrationCreateRetellCallParams,
-  type IntegrationCreateVapiCallParams,
-} from './integrations';
+export { Integrations } from './integrations';
 export { Metric, type MetricListDefinitionsResponse } from './metric';
 export {
   SimulationJob,

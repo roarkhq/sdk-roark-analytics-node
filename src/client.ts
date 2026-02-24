@@ -51,21 +51,7 @@ import {
   CallListResponse,
   CallListSentimentRunsResponse,
 } from './resources/call';
-import {
-  Evaluation,
-  EvaluationCreateEvaluatorParams,
-  EvaluationCreateEvaluatorResponse,
-  EvaluationCreateJobParams,
-  EvaluationCreateJobResponse,
-  EvaluationGetEvaluatorByIDResponse,
-  EvaluationGetJobResponse,
-  EvaluationListEvaluatorsParams,
-  EvaluationListEvaluatorsResponse,
-  EvaluationListJobRunsParams,
-  EvaluationListJobRunsResponse,
-  EvaluationUpdateEvaluatorParams,
-  EvaluationUpdateEvaluatorResponse,
-} from './resources/evaluation';
+import { Evaluation } from './resources/evaluation';
 import { Health, HealthGetResponse } from './resources/health';
 import {
   HTTPRequestDefinition,
@@ -77,13 +63,7 @@ import {
   HTTPRequestDefinitionUpdateParams,
   HTTPRequestDefinitionUpdateResponse,
 } from './resources/http-request-definition';
-import {
-  IntegrationCreateRetellCallParams,
-  IntegrationCreateRetellCallResponse,
-  IntegrationCreateVapiCallParams,
-  IntegrationCreateVapiCallResponse,
-  Integrations,
-} from './resources/integrations';
+import { Integrations } from './resources/integrations';
 import { Metric, MetricListDefinitionsResponse } from './resources/metric';
 import {
   SimulationJob,
@@ -872,21 +852,7 @@ export declare namespace Roark {
 
   export { Health as Health, type HealthGetResponse as HealthGetResponse };
 
-  export {
-    Evaluation as Evaluation,
-    type EvaluationCreateEvaluatorResponse as EvaluationCreateEvaluatorResponse,
-    type EvaluationCreateJobResponse as EvaluationCreateJobResponse,
-    type EvaluationGetEvaluatorByIDResponse as EvaluationGetEvaluatorByIDResponse,
-    type EvaluationGetJobResponse as EvaluationGetJobResponse,
-    type EvaluationListEvaluatorsResponse as EvaluationListEvaluatorsResponse,
-    type EvaluationListJobRunsResponse as EvaluationListJobRunsResponse,
-    type EvaluationUpdateEvaluatorResponse as EvaluationUpdateEvaluatorResponse,
-    type EvaluationCreateEvaluatorParams as EvaluationCreateEvaluatorParams,
-    type EvaluationCreateJobParams as EvaluationCreateJobParams,
-    type EvaluationListEvaluatorsParams as EvaluationListEvaluatorsParams,
-    type EvaluationListJobRunsParams as EvaluationListJobRunsParams,
-    type EvaluationUpdateEvaluatorParams as EvaluationUpdateEvaluatorParams,
-  };
+  export { Evaluation as Evaluation };
 
   export {
     Call as Call,
@@ -905,13 +871,7 @@ export declare namespace Roark {
 
   export { Metric as Metric, type MetricListDefinitionsResponse as MetricListDefinitionsResponse };
 
-  export {
-    Integrations as Integrations,
-    type IntegrationCreateRetellCallResponse as IntegrationCreateRetellCallResponse,
-    type IntegrationCreateVapiCallResponse as IntegrationCreateVapiCallResponse,
-    type IntegrationCreateRetellCallParams as IntegrationCreateRetellCallParams,
-    type IntegrationCreateVapiCallParams as IntegrationCreateVapiCallParams,
-  };
+  export { Integrations as Integrations };
 
   export {
     SimulationJob as SimulationJob,
