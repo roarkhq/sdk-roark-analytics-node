@@ -215,6 +215,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         | 'SIMULATING'
         | 'ANALYZING'
         | 'EVALUATING'
+        | 'COLLECTING_METRICS'
         | 'COMPLETED';
 
       /**
