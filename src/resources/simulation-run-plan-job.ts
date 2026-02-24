@@ -348,7 +348,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         /**
          * Gender of the persona
          */
-        gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
+        gender: 'MALE' | 'FEMALE';
 
         /**
          * Whether the persona uses filler words like "um" and "uh"
