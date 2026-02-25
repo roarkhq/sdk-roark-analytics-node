@@ -97,7 +97,8 @@ export namespace SimulationRunPlanJobListResponse {
       | 'FAILED'
       | 'TIMED_OUT'
       | 'CANCELLED'
-      | 'CANCELLING';
+      | 'CANCELLING'
+      | 'ENDING_SIMULATIONS';
 
     /**
      * How the job was triggered (SCHEDULED, USER_TRIGGERED_FROM_UI,
@@ -179,7 +180,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       | 'FAILED'
       | 'TIMED_OUT'
       | 'CANCELLED'
-      | 'CANCELLING';
+      | 'CANCELLING'
+      | 'ENDING_SIMULATIONS';
 
     /**
      * When the job ended
@@ -213,6 +215,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         | 'CONNECTING'
         | 'WAITING_FOR_OUTBOUND_CALL'
         | 'SIMULATING'
+        | 'ENDING'
         | 'ANALYZING'
         | 'EVALUATING'
         | 'COLLECTING_METRICS'
@@ -495,7 +498,8 @@ export namespace SimulationRunPlanJobStartResponse {
       | 'FAILED'
       | 'TIMED_OUT'
       | 'CANCELLED'
-      | 'CANCELLING';
+      | 'CANCELLING'
+      | 'ENDING_SIMULATIONS';
   }
 }
 
@@ -528,7 +532,8 @@ export interface SimulationRunPlanJobListParams {
 
   /**
    * Filter by plan job status (PENDING, CREATING_SNAPSHOTS, CREATING_SIMULATIONS,
-   * RUNNING_SIMULATIONS, COMPLETED, FAILED, TIMED_OUT, CANCELLED, CANCELLING)
+   * RUNNING_SIMULATIONS, ENDING_SIMULATIONS, COMPLETED, FAILED, TIMED_OUT,
+   * CANCELLED, CANCELLING)
    */
   status?:
     | 'PENDING'
@@ -540,7 +545,8 @@ export interface SimulationRunPlanJobListParams {
     | 'FAILED'
     | 'TIMED_OUT'
     | 'CANCELLED'
-    | 'CANCELLING';
+    | 'CANCELLING'
+    | 'ENDING_SIMULATIONS';
 }
 
 export interface SimulationRunPlanJobStartParams {
