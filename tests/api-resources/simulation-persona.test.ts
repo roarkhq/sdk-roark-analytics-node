@@ -39,7 +39,7 @@ describe('resource simulationPersona', () => {
       idleMessageMaxSpokenCount: 1,
       idleMessageResetCountOnUserSpeechEnabled: true,
       idleMessages: ['string'],
-      idleTimeoutSeconds: 3,
+      idleTimeoutSeconds: 5,
       intentClarity: 'CLEAR',
       memoryReliability: 'HIGH',
       properties: {
@@ -82,7 +82,7 @@ describe('resource simulationPersona', () => {
           idleMessageMaxSpokenCount: 1,
           idleMessageResetCountOnUserSpeechEnabled: true,
           idleMessages: ['string'],
-          idleTimeoutSeconds: 3,
+          idleTimeoutSeconds: 5,
           intentClarity: 'CLEAR',
           language: 'EN',
           memoryReliability: 'HIGH',
