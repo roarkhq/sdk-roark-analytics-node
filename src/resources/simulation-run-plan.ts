@@ -159,6 +159,12 @@ export namespace SimulationRunPlanCreateResponse {
       endCallPhrases: Array<string>;
 
       /**
+       * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+       * against these conditions. Empty array means disabled.
+       */
+      endCallReasons: Array<string>;
+
+      /**
        * Deprecated: Use metrics instead. Evaluators included in this run plan.
        */
       evaluators: Array<RunPlan.Evaluator>;
@@ -322,6 +328,12 @@ export namespace SimulationRunPlanUpdateResponse {
     endCallPhrases: Array<string>;
 
     /**
+     * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+     * against these conditions. Empty array means disabled.
+     */
+    endCallReasons: Array<string>;
+
+    /**
      * Deprecated: Use metrics instead. Evaluators included in this run plan.
      */
     evaluators: Array<Data.Evaluator>;
@@ -448,6 +460,12 @@ export namespace SimulationRunPlanListResponse {
      * Phrases that trigger end of call. Empty array means disabled.
      */
     endCallPhrases: Array<string>;
+
+    /**
+     * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+     * against these conditions. Empty array means disabled.
+     */
+    endCallReasons: Array<string>;
 
     /**
      * Deprecated: Use metrics instead. Evaluators included in this run plan.
@@ -606,6 +624,12 @@ export namespace SimulationRunPlanGetByIDResponse {
     endCallPhrases: Array<string>;
 
     /**
+     * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+     * against these conditions. Empty array means disabled.
+     */
+    endCallReasons: Array<string>;
+
+    /**
      * Deprecated: Use metrics instead. Evaluators included in this run plan.
      */
     evaluators: Array<Data.Evaluator>;
@@ -747,6 +771,12 @@ export interface SimulationRunPlanCreateParams {
   endCallPhrases?: Array<string>;
 
   /**
+   * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+   * against these conditions. Empty array disables the feature.
+   */
+  endCallReasons?: Array<string>;
+
+  /**
    * Execution mode (PARALLEL or SEQUENTIAL)
    */
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
@@ -815,6 +845,12 @@ export interface SimulationRunPlanUpdateParams {
    * Phrases that trigger end of call. Empty array disables the feature.
    */
   endCallPhrases?: Array<string>;
+
+  /**
+   * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+   * against these conditions. Empty array disables the feature.
+   */
+  endCallReasons?: Array<string>;
 
   /**
    * Execution mode (PARALLEL or SEQUENTIAL)
