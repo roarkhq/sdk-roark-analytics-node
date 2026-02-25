@@ -278,7 +278,8 @@ export namespace SimulationRunPlanCreateResponse {
         | 'FAILED'
         | 'TIMED_OUT'
         | 'CANCELLED'
-        | 'CANCELLING';
+        | 'CANCELLING'
+        | 'ENDING_SIMULATIONS';
     }
   }
 }
