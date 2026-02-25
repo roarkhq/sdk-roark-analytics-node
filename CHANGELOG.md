@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.26.0 (2026-02-25)
+
+Full Changelog: [v2.25.0...v2.26.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.25.0...v2.26.0)
+
+### Features
+
+* **api:** api update ([e840d37](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e840d37b7de56ae45e818228e636d135a56a4266))
+* **api:** api update ([0acc89b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/0acc89b0a4f5703453dfa8241ae767ec0844d5cd))
+* **api:** api update ([a393cda](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a393cda2ed8a6dde7749dc957260d9952ed6cde7))
+* **api:** api update ([6d3bc0f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/6d3bc0f12f5c03937f043a14517b1d58c88fc4a2))
+* **api:** api update ([a671aaf](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a671aafda78411e45698048c6e65fe5dd4429f3c))
+
+
+### Chores
+
+* **internal:** make MCP code execution location configurable via a flag ([af9ddb4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/af9ddb433d79e93e25af7404caeefd460f821866))
+
 ## 2.25.0 (2026-02-24)
 
 Full Changelog: [v2.24.0...v2.25.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.24.0...v2.25.0)
