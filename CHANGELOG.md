@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.27.0 (2026-03-01)
+
+Full Changelog: [v2.26.0...v2.27.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.26.0...v2.27.0)
+
+### Features
+
+* **api:** api update ([e9e343c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e9e343cdc65b1ed048320b198d3faaf9e93afef5))
+* **api:** api update ([2775974](https://github.com/roarkhq/sdk-roark-analytics-node/commit/277597454dd1470bc41854eeea5573c15ef4507a))
+* **mcp:** add an option to disable code tool ([be9517a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/be9517a961d1fb9b7c38de5e6a1e5d0d791ab1fa))
+
+
+### Bug Fixes
+
+* **mcp:** update prompt ([16abe1e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/16abe1e20f7e7fe775919870f4a348d10a06e17a))
+
+
+### Chores
+
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([d94be9a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d94be9adf66223ecfc75903043e24b223ee0bd02))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([f84302a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f84302a1fe8959df66ff115eb421d10d096efd5c))
+* **internal:** move stringifyQuery implementation to internal function ([04a08df](https://github.com/roarkhq/sdk-roark-analytics-node/commit/04a08df20fb30c863cd8ef344c48a9a0693566a1))
+
 ## 2.26.0 (2026-02-25)
 
 Full Changelog: [v2.25.0...v2.26.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.25.0...v2.26.0)
