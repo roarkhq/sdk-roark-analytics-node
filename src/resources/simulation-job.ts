@@ -158,7 +158,12 @@ export namespace SimulationJobGetByIDResponse {
         | 'IT'
         | 'ID'
         | 'TH'
-        | 'JP';
+        | 'JP'
+        | 'NZ'
+        | 'PH'
+        | 'SG'
+        | 'MY'
+        | 'HK';
 
       /**
        * Background noise setting
@@ -176,7 +181,7 @@ export namespace SimulationJobGetByIDResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
 
       /**
        * How the persona confirms information
@@ -226,7 +231,22 @@ export namespace SimulationJobGetByIDResponse {
       /**
        * Primary language ISO 639-1 code for the persona
        */
-      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
+      language:
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH';
 
       /**
        * How reliable the persona's memory is
@@ -415,7 +435,12 @@ export namespace SimulationJobLookupResponse {
         | 'IT'
         | 'ID'
         | 'TH'
-        | 'JP';
+        | 'JP'
+        | 'NZ'
+        | 'PH'
+        | 'SG'
+        | 'MY'
+        | 'HK';
 
       /**
        * Background noise setting
@@ -433,7 +458,7 @@ export namespace SimulationJobLookupResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
 
       /**
        * How the persona confirms information
@@ -483,7 +508,22 @@ export namespace SimulationJobLookupResponse {
       /**
        * Primary language ISO 639-1 code for the persona
        */
-      language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
+      language:
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH';
 
       /**
        * How reliable the persona's memory is
