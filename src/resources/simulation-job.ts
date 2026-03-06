@@ -164,7 +164,8 @@ export namespace SimulationJobGetByIDResponse {
         | 'SG'
         | 'MY'
         | 'HK'
-        | 'TR';
+        | 'TR'
+        | 'PT';
 
       /**
        * Background noise setting
@@ -248,7 +249,8 @@ export namespace SimulationJobGetByIDResponse {
         | 'TL'
         | 'MS'
         | 'ZH'
-        | 'TR';
+        | 'TR'
+        | 'PT';
 
       /**
        * How reliable the persona's memory is
@@ -443,7 +445,8 @@ export namespace SimulationJobLookupResponse {
         | 'SG'
         | 'MY'
         | 'HK'
-        | 'TR';
+        | 'TR'
+        | 'PT';
 
       /**
        * Background noise setting
@@ -527,7 +530,8 @@ export namespace SimulationJobLookupResponse {
         | 'TL'
         | 'MS'
         | 'ZH'
-        | 'TR';
+        | 'TR'
+        | 'PT';
 
       /**
        * How reliable the persona's memory is
