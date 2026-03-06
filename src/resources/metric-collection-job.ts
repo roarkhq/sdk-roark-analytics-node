@@ -78,6 +78,11 @@ export namespace MetricCollectionJobCreateResponse {
     failedItems: number;
 
     /**
+     * IDs of the metric policies that triggered this job
+     */
+    policyIds: Array<string>;
+
+    /**
      * When the job started processing
      */
     startedAt: string | null;
@@ -147,6 +152,11 @@ export namespace MetricCollectionJobListResponse {
      * Number of failed items
      */
     failedItems: number;
+
+    /**
+     * IDs of the metric policies that triggered this job
+     */
+    policyIds: Array<string>;
 
     /**
      * When the job started processing
@@ -233,6 +243,11 @@ export namespace MetricCollectionJobGetByIDResponse {
      * Number of failed items
      */
     failedItems: number;
+
+    /**
+     * IDs of the metric policies that triggered this job
+     */
+    policyIds: Array<string>;
 
     /**
      * When the job started processing
