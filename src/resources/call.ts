@@ -218,6 +218,11 @@ export namespace CallListResponse {
       | null;
 
     /**
+     * IDs of metric policies that have been applied to this call
+     */
+    policyIds?: Array<string> | null;
+
+    /**
      * Custom properties associated with the call
      */
     properties?: { [key: string]: unknown } | null;
@@ -381,6 +386,11 @@ export namespace CallGetByIDResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * IDs of metric policies that have been applied to this call
+     */
+    policyIds?: Array<string> | null;
 
     /**
      * Custom properties associated with the call
@@ -849,6 +859,11 @@ export namespace CallListMetricsResponse {
        * Role of participant (only for PER_PARTICIPANT metrics)
        */
       participantRole?: 'agent' | 'customer';
+
+      /**
+       * IDs of metric policies that triggered this metric computation
+       */
+      policyIds?: Array<string>;
 
       /**
        * Segment information (for SEGMENT context metrics)
