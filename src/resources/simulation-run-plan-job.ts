@@ -324,7 +324,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'SG'
           | 'MY'
           | 'HK'
-          | 'TR';
+          | 'TR'
+          | 'PT';
 
         /**
          * Background noise setting
@@ -415,7 +416,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'TL'
           | 'MS'
           | 'ZH'
-          | 'TR';
+          | 'TR'
+          | 'PT';
 
         /**
          * How reliable the persona's memory is

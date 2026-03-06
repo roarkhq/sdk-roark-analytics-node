@@ -111,7 +111,8 @@ export namespace SimulationPersonaCreateResponse {
       | 'SG'
       | 'MY'
       | 'HK'
-      | 'TR';
+      | 'TR'
+      | 'PT';
 
     /**
      * Background noise setting
@@ -195,7 +196,8 @@ export namespace SimulationPersonaCreateResponse {
       | 'TL'
       | 'MS'
       | 'ZH'
-      | 'TR';
+      | 'TR'
+      | 'PT';
 
     /**
      * How reliable the persona's memory is
@@ -286,7 +288,8 @@ export namespace SimulationPersonaUpdateResponse {
       | 'SG'
       | 'MY'
       | 'HK'
-      | 'TR';
+      | 'TR'
+      | 'PT';
 
     /**
      * Background noise setting
@@ -370,7 +373,8 @@ export namespace SimulationPersonaUpdateResponse {
       | 'TL'
       | 'MS'
       | 'ZH'
-      | 'TR';
+      | 'TR'
+      | 'PT';
 
     /**
      * How reliable the persona's memory is
@@ -463,7 +467,8 @@ export namespace SimulationPersonaListResponse {
       | 'SG'
       | 'MY'
       | 'HK'
-      | 'TR';
+      | 'TR'
+      | 'PT';
 
     /**
      * Background noise setting
@@ -547,7 +552,8 @@ export namespace SimulationPersonaListResponse {
       | 'TL'
       | 'MS'
       | 'ZH'
-      | 'TR';
+      | 'TR'
+      | 'PT';
 
     /**
      * How reliable the persona's memory is
@@ -655,7 +661,8 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'SG'
       | 'MY'
       | 'HK'
-      | 'TR';
+      | 'TR'
+      | 'PT';
 
     /**
      * Background noise setting
@@ -739,7 +746,8 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'TL'
       | 'MS'
       | 'ZH'
-      | 'TR';
+      | 'TR'
+      | 'PT';
 
     /**
      * How reliable the persona's memory is
@@ -820,7 +828,8 @@ export interface SimulationPersonaCreateParams {
     | 'SG'
     | 'MY'
     | 'HK'
-    | 'TR';
+    | 'TR'
+    | 'PT';
 
   /**
    * Gender of the persona
@@ -846,7 +855,8 @@ export interface SimulationPersonaCreateParams {
     | 'TL'
     | 'MS'
     | 'ZH'
-    | 'TR';
+    | 'TR'
+    | 'PT';
 
   /**
    * The name the agent will identify as during conversations
@@ -974,7 +984,8 @@ export interface SimulationPersonaUpdateParams {
     | 'SG'
     | 'MY'
     | 'HK'
-    | 'TR';
+    | 'TR'
+    | 'PT';
 
   /**
    * Background noise setting
@@ -1063,7 +1074,8 @@ export interface SimulationPersonaUpdateParams {
     | 'TL'
     | 'MS'
     | 'ZH'
-    | 'TR';
+    | 'TR'
+    | 'PT';
 
   /**
    * How reliable the persona's memory is
