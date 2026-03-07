@@ -1,5 +1,38 @@
 # Changelog
 
+## 2.27.0 (2026-03-07)
+
+Full Changelog: [v2.26.0...v2.27.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.26.0...v2.27.0)
+
+### Features
+
+* **api:** api update ([9709930](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9709930055f8afdec5f25384842adcf702b74bc1))
+* **api:** api update ([80274c3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/80274c38bf2c06b4bd8252af917a0336b0f55242))
+* **api:** api update ([5e15c30](https://github.com/roarkhq/sdk-roark-analytics-node/commit/5e15c30cf71d8319aab09479352f28a6377fb62e))
+* **api:** api update ([7c0b96a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/7c0b96a21db4b248ef66d1eba381dd5a2d2fee1d))
+* **api:** api update ([3f7b485](https://github.com/roarkhq/sdk-roark-analytics-node/commit/3f7b485f4d5dfcee6fd82efd5863b2995b234a51))
+* **api:** api update ([96b6be7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/96b6be72df50fbb25fda4aecb9d22b2c54f77cdd))
+* **api:** api update ([e9e343c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e9e343cdc65b1ed048320b198d3faaf9e93afef5))
+* **api:** api update ([2775974](https://github.com/roarkhq/sdk-roark-analytics-node/commit/277597454dd1470bc41854eeea5573c15ef4507a))
+* **mcp:** add an option to disable code tool ([be9517a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/be9517a961d1fb9b7c38de5e6a1e5d0d791ab1fa))
+
+
+### Bug Fixes
+
+* **mcp:** update prompt ([16abe1e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/16abe1e20f7e7fe775919870f4a348d10a06e17a))
+
+
+### Chores
+
+* **internal:** codegen related update ([6aa6168](https://github.com/roarkhq/sdk-roark-analytics-node/commit/6aa61684949458f09d1c6a2ba67d55b3b6043199))
+* **internal:** codegen related update ([3d6f48e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/3d6f48ea42b95ab6e1601ab888961a2759b9d87b))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([d94be9a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d94be9adf66223ecfc75903043e24b223ee0bd02))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([f84302a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f84302a1fe8959df66ff115eb421d10d096efd5c))
+* **internal:** move stringifyQuery implementation to internal function ([04a08df](https://github.com/roarkhq/sdk-roark-analytics-node/commit/04a08df20fb30c863cd8ef344c48a9a0693566a1))
+* **internal:** use x-stainless-mcp-client-envs header for MCP remote code tool calls ([fd44bbc](https://github.com/roarkhq/sdk-roark-analytics-node/commit/fd44bbc7c469f1172752e9b9513ea95371805bdd))
+* **mcp-server:** return access instructions for 404 without API key ([cb5a2c7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/cb5a2c752bec056e676afdd01864aee1c4ae9a00))
+* **test:** do not count install time for mock server timeout ([09e5230](https://github.com/roarkhq/sdk-roark-analytics-node/commit/09e5230a26544c197edf486e9882f5e3257721f3))
+
 ## 2.26.0 (2026-02-25)
 
 Full Changelog: [v2.25.0...v2.26.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.25.0...v2.26.0)
