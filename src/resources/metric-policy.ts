@@ -169,7 +169,7 @@ export namespace MetricPolicyCreateResponse {
          * Type of condition: AGENT (match by agent ID), CALL_SOURCE (match by source e.g.
          * VAPI, RETELL), CALL_PROPERTY (match by call property key/value)
          */
-        conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY';
+        conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
 
         /**
          * Value to compare against. Required for CALL_PROPERTY conditions.
@@ -268,7 +268,7 @@ export namespace MetricPolicyUpdateResponse {
          * Type of condition: AGENT (match by agent ID), CALL_SOURCE (match by source e.g.
          * VAPI, RETELL), CALL_PROPERTY (match by call property key/value)
          */
-        conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY';
+        conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
 
         /**
          * Value to compare against. Required for CALL_PROPERTY conditions.
@@ -369,7 +369,7 @@ export namespace MetricPolicyListResponse {
          * Type of condition: AGENT (match by agent ID), CALL_SOURCE (match by source e.g.
          * VAPI, RETELL), CALL_PROPERTY (match by call property key/value)
          */
-        conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY';
+        conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
 
         /**
          * Value to compare against. Required for CALL_PROPERTY conditions.
@@ -498,7 +498,7 @@ export namespace MetricPolicyGetByIDResponse {
          * Type of condition: AGENT (match by agent ID), CALL_SOURCE (match by source e.g.
          * VAPI, RETELL), CALL_PROPERTY (match by call property key/value)
          */
-        conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY';
+        conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
 
         /**
          * Value to compare against. Required for CALL_PROPERTY conditions.
@@ -556,7 +556,7 @@ export namespace MetricPolicyCreateParams {
        * Type of condition: AGENT (match by agent ID), CALL_SOURCE (match by source e.g.
        * VAPI, RETELL), CALL_PROPERTY (match by call property key/value)
        */
-      conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY';
+      conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
 
       /**
        * Comparison operator. Required for CALL_PROPERTY conditions.
@@ -620,7 +620,7 @@ export namespace MetricPolicyUpdateParams {
        * Type of condition: AGENT (match by agent ID), CALL_SOURCE (match by source e.g.
        * VAPI, RETELL), CALL_PROPERTY (match by call property key/value)
        */
-      conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY';
+      conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
 
       /**
        * Comparison operator. Required for CALL_PROPERTY conditions.

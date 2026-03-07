@@ -218,6 +218,11 @@ export namespace CallListResponse {
       | null;
 
     /**
+     * IDs of metric policies that have been applied to this call
+     */
+    policyIds?: Array<string> | null;
+
+    /**
      * Custom properties associated with the call
      */
     properties?: { [key: string]: unknown } | null;
@@ -381,6 +386,11 @@ export namespace CallGetByIDResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * IDs of metric policies that have been applied to this call
+     */
+    policyIds?: Array<string> | null;
 
     /**
      * Custom properties associated with the call
@@ -849,6 +859,11 @@ export namespace CallListMetricsResponse {
        * Role of participant (only for PER_PARTICIPANT metrics)
        */
       participantRole?: 'agent' | 'customer';
+
+      /**
+       * IDs of metric policies that triggered this metric computation
+       */
+      policyIds?: Array<string>;
 
       /**
        * Segment information (for SEGMENT context metrics)
@@ -1550,8 +1565,14 @@ export namespace CallCreateParams {
      * the agents array this tool invocation belongs to
      */
     export interface Agent {
+      /**
+       * The custom ID set on the agent
+       */
       customId?: string;
 
+      /**
+       * The Roark ID of the agent
+       */
       roarkId?: string;
     }
   }
@@ -1565,15 +1586,29 @@ export namespace CallCreateParams {
 
     text: string;
 
+    /**
+     * Metadata about the agent that spoke this turn - used to match which agent from
+     * the `agents` array this transcript entry belongs to
+     */
     agent?: TranscriptEntryAgent.Agent;
 
     languageCode?: string;
   }
 
   export namespace TranscriptEntryAgent {
+    /**
+     * Metadata about the agent that spoke this turn - used to match which agent from
+     * the `agents` array this transcript entry belongs to
+     */
     export interface Agent {
+      /**
+       * The custom ID set on the agent
+       */
       customId?: string;
 
+      /**
+       * The Roark ID of the agent
+       */
       roarkId?: string;
     }
   }

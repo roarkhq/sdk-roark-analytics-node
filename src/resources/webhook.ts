@@ -83,6 +83,8 @@ export namespace WebhookCreateResponse {
       | 'SIMULATION_JOB_COMPLETED'
       | 'SIMULATION_JOB_FAILED'
       | 'SIMULATION_JOB_CANCELLED'
+      | 'METRIC_COLLECTION_JOB_COMPLETED'
+      | 'METRIC_COLLECTION_JOB_FAILED'
     >;
 
     /**
@@ -150,6 +152,8 @@ export namespace WebhookListResponse {
       | 'SIMULATION_JOB_COMPLETED'
       | 'SIMULATION_JOB_FAILED'
       | 'SIMULATION_JOB_CANCELLED'
+      | 'METRIC_COLLECTION_JOB_COMPLETED'
+      | 'METRIC_COLLECTION_JOB_FAILED'
     >;
 
     /**
@@ -243,6 +247,8 @@ export namespace WebhookGetByIDResponse {
       | 'SIMULATION_JOB_COMPLETED'
       | 'SIMULATION_JOB_FAILED'
       | 'SIMULATION_JOB_CANCELLED'
+      | 'METRIC_COLLECTION_JOB_COMPLETED'
+      | 'METRIC_COLLECTION_JOB_FAILED'
     >;
 
     /**
@@ -280,6 +286,8 @@ export interface WebhookCreateParams {
     | 'SIMULATION_JOB_COMPLETED'
     | 'SIMULATION_JOB_FAILED'
     | 'SIMULATION_JOB_CANCELLED'
+    | 'METRIC_COLLECTION_JOB_COMPLETED'
+    | 'METRIC_COLLECTION_JOB_FAILED'
   >;
 
   /**

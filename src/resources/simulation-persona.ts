@@ -105,7 +105,14 @@ export namespace SimulationPersonaCreateResponse {
       | 'IT'
       | 'ID'
       | 'TH'
-      | 'JP';
+      | 'JP'
+      | 'NZ'
+      | 'PH'
+      | 'SG'
+      | 'MY'
+      | 'HK'
+      | 'TR'
+      | 'PT';
 
     /**
      * Background noise setting
@@ -123,7 +130,7 @@ export namespace SimulationPersonaCreateResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
 
     /**
      * How the persona confirms information
@@ -173,7 +180,24 @@ export namespace SimulationPersonaCreateResponse {
     /**
      * Primary language ISO 639-1 code for the persona
      */
-    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
+    language:
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT';
 
     /**
      * How reliable the persona's memory is
@@ -258,7 +282,14 @@ export namespace SimulationPersonaUpdateResponse {
       | 'IT'
       | 'ID'
       | 'TH'
-      | 'JP';
+      | 'JP'
+      | 'NZ'
+      | 'PH'
+      | 'SG'
+      | 'MY'
+      | 'HK'
+      | 'TR'
+      | 'PT';
 
     /**
      * Background noise setting
@@ -276,7 +307,7 @@ export namespace SimulationPersonaUpdateResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
 
     /**
      * How the persona confirms information
@@ -326,7 +357,24 @@ export namespace SimulationPersonaUpdateResponse {
     /**
      * Primary language ISO 639-1 code for the persona
      */
-    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
+    language:
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT';
 
     /**
      * How reliable the persona's memory is
@@ -413,7 +461,14 @@ export namespace SimulationPersonaListResponse {
       | 'IT'
       | 'ID'
       | 'TH'
-      | 'JP';
+      | 'JP'
+      | 'NZ'
+      | 'PH'
+      | 'SG'
+      | 'MY'
+      | 'HK'
+      | 'TR'
+      | 'PT';
 
     /**
      * Background noise setting
@@ -431,7 +486,7 @@ export namespace SimulationPersonaListResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
 
     /**
      * How the persona confirms information
@@ -481,7 +536,24 @@ export namespace SimulationPersonaListResponse {
     /**
      * Primary language ISO 639-1 code for the persona
      */
-    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
+    language:
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT';
 
     /**
      * How reliable the persona's memory is
@@ -583,7 +655,14 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'IT'
       | 'ID'
       | 'TH'
-      | 'JP';
+      | 'JP'
+      | 'NZ'
+      | 'PH'
+      | 'SG'
+      | 'MY'
+      | 'HK'
+      | 'TR'
+      | 'PT';
 
     /**
      * Background noise setting
@@ -601,7 +680,7 @@ export namespace SimulationPersonaGetByIDResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
 
     /**
      * How the persona confirms information
@@ -651,7 +730,24 @@ export namespace SimulationPersonaGetByIDResponse {
     /**
      * Primary language ISO 639-1 code for the persona
      */
-    language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
+    language:
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT';
 
     /**
      * How reliable the persona's memory is
@@ -726,7 +822,14 @@ export interface SimulationPersonaCreateParams {
     | 'IT'
     | 'ID'
     | 'TH'
-    | 'JP';
+    | 'JP'
+    | 'NZ'
+    | 'PH'
+    | 'SG'
+    | 'MY'
+    | 'HK'
+    | 'TR'
+    | 'PT';
 
   /**
    * Gender of the persona
@@ -736,7 +839,24 @@ export interface SimulationPersonaCreateParams {
   /**
    * Primary language ISO 639-1 code for the persona
    */
-  language: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
+  language:
+    | 'EN'
+    | 'ES'
+    | 'DE'
+    | 'HI'
+    | 'FR'
+    | 'NL'
+    | 'AR'
+    | 'EL'
+    | 'IT'
+    | 'ID'
+    | 'TH'
+    | 'JA'
+    | 'TL'
+    | 'MS'
+    | 'ZH'
+    | 'TR'
+    | 'PT';
 
   /**
    * The name the agent will identify as during conversations
@@ -764,7 +884,7 @@ export interface SimulationPersonaCreateParams {
   /**
    * Base emotional state of the persona
    */
-  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
 
   /**
    * How the persona confirms information
@@ -858,7 +978,14 @@ export interface SimulationPersonaUpdateParams {
     | 'IT'
     | 'ID'
     | 'TH'
-    | 'JP';
+    | 'JP'
+    | 'NZ'
+    | 'PH'
+    | 'SG'
+    | 'MY'
+    | 'HK'
+    | 'TR'
+    | 'PT';
 
   /**
    * Background noise setting
@@ -881,7 +1008,7 @@ export interface SimulationPersonaUpdateParams {
   /**
    * Base emotional state of the persona
    */
-  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED';
+  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
 
   /**
    * How the persona confirms information
@@ -931,7 +1058,24 @@ export interface SimulationPersonaUpdateParams {
   /**
    * Primary language ISO 639-1 code for the persona
    */
-  language?: 'EN' | 'ES' | 'DE' | 'HI' | 'FR' | 'NL' | 'AR' | 'EL' | 'IT' | 'ID' | 'TH' | 'JA';
+  language?:
+    | 'EN'
+    | 'ES'
+    | 'DE'
+    | 'HI'
+    | 'FR'
+    | 'NL'
+    | 'AR'
+    | 'EL'
+    | 'IT'
+    | 'ID'
+    | 'TH'
+    | 'JA'
+    | 'TL'
+    | 'MS'
+    | 'ZH'
+    | 'TR'
+    | 'PT';
 
   /**
    * How reliable the persona's memory is
