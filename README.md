@@ -35,9 +35,14 @@ const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
-const health = await client.health.get();
+const call = await client.call.create({
+  callDirection: 'INBOUND',
+  interfaceType: 'PHONE',
+  recordingUrl: 'https://example.com',
+  startedAt: 'startedAt',
+});
 
-console.log(health.data);
+console.log(call.data);
 ```
 
 ### Request & Response types
@@ -52,7 +57,13 @@ const client = new Roark({
   bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted
 });
 
-const health: Roark.HealthGetResponse = await client.health.get();
+const params: Roark.CallCreateParams = {
+  callDirection: 'INBOUND',
+  interfaceType: 'PHONE',
+  recordingUrl: 'https://example.com',
+  startedAt: 'startedAt',
+};
+const call: Roark.CallCreateResponse = await client.call.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -65,15 +76,22 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const health = await client.health.get().catch(async (err) => {
-  if (err instanceof Roark.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
-  }
-});
+const call = await client.call
+  .create({
+    callDirection: 'INBOUND',
+    interfaceType: 'PHONE',
+    recordingUrl: 'https://example.com',
+    startedAt: 'startedAt',
+  })
+  .catch(async (err) => {
+    if (err instanceof Roark.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
@@ -105,7 +123,12 @@ const client = new Roark({
 });
 
 // Or, configure per-request:
-await client.health.get({
+await client.call.create({
+  callDirection: 'INBOUND',
+  interfaceType: 'PHONE',
+  recordingUrl: 'https://example.com',
+  startedAt: 'startedAt',
+}, {
   maxRetries: 5,
 });
 ```
@@ -122,7 +145,12 @@ const client = new Roark({
 });
 
 // Override per-request:
-await client.health.get({
+await client.call.create({
+  callDirection: 'INBOUND',
+  interfaceType: 'PHONE',
+  recordingUrl: 'https://example.com',
+  startedAt: 'startedAt',
+}, {
   timeout: 5 * 1000,
 });
 ```
@@ -145,13 +173,27 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Roark();
 
-const response = await client.health.get().asResponse();
+const response = await client.call
+  .create({
+    callDirection: 'INBOUND',
+    interfaceType: 'PHONE',
+    recordingUrl: 'https://example.com',
+    startedAt: 'startedAt',
+  })
+  .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: health, response: raw } = await client.health.get().withResponse();
+const { data: call, response: raw } = await client.call
+  .create({
+    callDirection: 'INBOUND',
+    interfaceType: 'PHONE',
+    recordingUrl: 'https://example.com',
+    startedAt: 'startedAt',
+  })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(health.data);
+console.log(call.data);
 ```
 
 ### Logging
@@ -231,7 +273,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.health.get({
+client.call.create({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',

@@ -30,9 +30,14 @@ For example:
 
 \`\`\`
 async function run(client) {
-  const health = await client.health.get();
+  const call = await client.call.create({
+    callDirection: 'INBOUND',
+    interfaceType: 'PHONE',
+    recordingUrl: 'https://example.com',
+    startedAt: 'startedAt',
+  });
 
-  console.log(health.data);
+  console.log(call.data);
 }
 \`\`\`
 
