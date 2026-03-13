@@ -25,7 +25,15 @@ describe('resource simulationScenario', () => {
   test('create: required and optional params', async () => {
     const response = await client.simulationScenario.create({
       name: 'x',
-      steps: [{ content: 'content', type: 'AGENT_TURN' }],
+      steps: [
+        {
+          content: 'content',
+          type: 'AGENT_TURN',
+          dtmfDigits: 'dtmfDigits',
+          linkedScenarioId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          silenceDurationSeconds: 0,
+        },
+      ],
     });
   });
 
@@ -55,6 +63,9 @@ describe('resource simulationScenario', () => {
           action: 'create',
           content: 'content',
           type: 'AGENT_TURN',
+          dtmfDigits: 'dtmfDigits',
+          linkedScenarioId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          silenceDurationSeconds: 0,
         },
       ],
       name: 'x',
