@@ -111,13 +111,24 @@ export namespace SimulationScenarioCreateResponse {
         | 'CUSTOMER_FIRST_MESSAGE'
         | 'CUSTOMER_SILENCE'
         | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL';
+        | 'VOICEMAIL'
+        | 'SCENARIO_LINK';
 
       /**
        * DTMF digits to send during this step (e.g. 1w2w3#). Valid characters: 0-9, \*,
        * #, w/W for pauses.
        */
       dtmfDigits?: string | null;
+
+      /**
+       * ID of the linked scenario (only for SCENARIO_LINK type steps)
+       */
+      linkedScenarioId?: string | null;
+
+      /**
+       * Duration of silence in seconds (only for CUSTOMER_SILENCE type steps)
+       */
+      silenceDurationSeconds?: number | null;
     }
   }
 }
@@ -181,13 +192,24 @@ export namespace SimulationScenarioUpdateResponse {
         | 'CUSTOMER_FIRST_MESSAGE'
         | 'CUSTOMER_SILENCE'
         | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL';
+        | 'VOICEMAIL'
+        | 'SCENARIO_LINK';
 
       /**
        * DTMF digits to send during this step (e.g. 1w2w3#). Valid characters: 0-9, \*,
        * #, w/W for pauses.
        */
       dtmfDigits?: string | null;
+
+      /**
+       * ID of the linked scenario (only for SCENARIO_LINK type steps)
+       */
+      linkedScenarioId?: string | null;
+
+      /**
+       * Duration of silence in seconds (only for CUSTOMER_SILENCE type steps)
+       */
+      silenceDurationSeconds?: number | null;
     }
   }
 }
@@ -253,13 +275,24 @@ export namespace SimulationScenarioListResponse {
         | 'CUSTOMER_FIRST_MESSAGE'
         | 'CUSTOMER_SILENCE'
         | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL';
+        | 'VOICEMAIL'
+        | 'SCENARIO_LINK';
 
       /**
        * DTMF digits to send during this step (e.g. 1w2w3#). Valid characters: 0-9, \*,
        * #, w/W for pauses.
        */
       dtmfDigits?: string | null;
+
+      /**
+       * ID of the linked scenario (only for SCENARIO_LINK type steps)
+       */
+      linkedScenarioId?: string | null;
+
+      /**
+       * Duration of silence in seconds (only for CUSTOMER_SILENCE type steps)
+       */
+      silenceDurationSeconds?: number | null;
     }
   }
 
@@ -353,13 +386,24 @@ export namespace SimulationScenarioGetByIDResponse {
         | 'CUSTOMER_FIRST_MESSAGE'
         | 'CUSTOMER_SILENCE'
         | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL';
+        | 'VOICEMAIL'
+        | 'SCENARIO_LINK';
 
       /**
        * DTMF digits to send during this step (e.g. 1w2w3#). Valid characters: 0-9, \*,
        * #, w/W for pauses.
        */
       dtmfDigits?: string | null;
+
+      /**
+       * ID of the linked scenario (only for SCENARIO_LINK type steps)
+       */
+      linkedScenarioId?: string | null;
+
+      /**
+       * Duration of silence in seconds (only for CUSTOMER_SILENCE type steps)
+       */
+      silenceDurationSeconds?: number | null;
     }
   }
 }
@@ -395,7 +439,24 @@ export namespace SimulationScenarioCreateParams {
       | 'CUSTOMER_FIRST_MESSAGE'
       | 'CUSTOMER_SILENCE'
       | 'CUSTOMER_DTMF'
-      | 'VOICEMAIL';
+      | 'VOICEMAIL'
+      | 'SCENARIO_LINK';
+
+    /**
+     * DTMF digits to send (for CUSTOMER_DTMF type steps, e.g. 1w2w3#). Valid
+     * characters: 0-9, \*, #, w/W for pauses.
+     */
+    dtmfDigits?: string;
+
+    /**
+     * ID of the scenario to link to (required for SCENARIO_LINK type steps)
+     */
+    linkedScenarioId?: string;
+
+    /**
+     * Duration of silence in seconds (for CUSTOMER_SILENCE type steps)
+     */
+    silenceDurationSeconds?: number;
   }
 }
 
@@ -439,7 +500,23 @@ export namespace SimulationScenarioUpdateParams {
       | 'CUSTOMER_FIRST_MESSAGE'
       | 'CUSTOMER_SILENCE'
       | 'CUSTOMER_DTMF'
-      | 'VOICEMAIL';
+      | 'VOICEMAIL'
+      | 'SCENARIO_LINK';
+
+    /**
+     * DTMF digits to send (for CUSTOMER_DTMF type steps)
+     */
+    dtmfDigits?: string;
+
+    /**
+     * ID of the scenario to link to (for SCENARIO_LINK type steps)
+     */
+    linkedScenarioId?: string;
+
+    /**
+     * Duration of silence in seconds (for CUSTOMER_SILENCE type steps)
+     */
+    silenceDurationSeconds?: number;
   }
 
   /**
@@ -462,6 +539,21 @@ export namespace SimulationScenarioUpdateParams {
     content?: string;
 
     /**
+     * DTMF digits to send (for CUSTOMER_DTMF type steps)
+     */
+    dtmfDigits?: string;
+
+    /**
+     * ID of the scenario to link to (for SCENARIO_LINK type steps)
+     */
+    linkedScenarioId?: string;
+
+    /**
+     * Duration of silence in seconds (for CUSTOMER_SILENCE type steps)
+     */
+    silenceDurationSeconds?: number;
+
+    /**
      * The new type of the step (optional)
      */
     type?:
@@ -470,7 +562,8 @@ export namespace SimulationScenarioUpdateParams {
       | 'CUSTOMER_FIRST_MESSAGE'
       | 'CUSTOMER_SILENCE'
       | 'CUSTOMER_DTMF'
-      | 'VOICEMAIL';
+      | 'VOICEMAIL'
+      | 'SCENARIO_LINK';
   }
 
   /**

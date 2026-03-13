@@ -1,5 +1,66 @@
 # Changelog
 
+## 2.27.0 (2026-03-13)
+
+Full Changelog: [v2.26.0...v2.27.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.26.0...v2.27.0)
+
+### Features
+
+* **api:** api update ([0a84b9b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/0a84b9bab16ea37b579fe1ef50aed660b9631739))
+* **api:** api update ([575f1e3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/575f1e3da02acb84808fe8c280c57ed87e03d8b0))
+* **api:** api update ([b744571](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b74457121dc78f701bcde2f80cf03e925efb6c8b))
+* **api:** api update ([e6d7d27](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e6d7d27844505ea1c4b7abbea5fdcdd40e747452))
+* **api:** api update ([104a36e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/104a36e26dc13c9387ce4292ade19eb1c47cca36))
+* **api:** api update ([95224a0](https://github.com/roarkhq/sdk-roark-analytics-node/commit/95224a07787a0dae0c961484bbd84afaddcf667d))
+* **api:** api update ([9709930](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9709930055f8afdec5f25384842adcf702b74bc1))
+* **api:** api update ([80274c3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/80274c38bf2c06b4bd8252af917a0336b0f55242))
+* **api:** api update ([5e15c30](https://github.com/roarkhq/sdk-roark-analytics-node/commit/5e15c30cf71d8319aab09479352f28a6377fb62e))
+* **api:** api update ([7c0b96a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/7c0b96a21db4b248ef66d1eba381dd5a2d2fee1d))
+* **api:** api update ([3f7b485](https://github.com/roarkhq/sdk-roark-analytics-node/commit/3f7b485f4d5dfcee6fd82efd5863b2995b234a51))
+* **api:** api update ([96b6be7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/96b6be72df50fbb25fda4aecb9d22b2c54f77cdd))
+* **api:** api update ([e9e343c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e9e343cdc65b1ed048320b198d3faaf9e93afef5))
+* **api:** api update ([2775974](https://github.com/roarkhq/sdk-roark-analytics-node/commit/277597454dd1470bc41854eeea5573c15ef4507a))
+* **mcp:** add an option to disable code tool ([be9517a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/be9517a961d1fb9b7c38de5e6a1e5d0d791ab1fa))
+
+
+### Bug Fixes
+
+* **client:** preserve URL params already embedded in path ([f8b5c4e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f8b5c4e4b0c242e7623cfa049b1134f2c93c15ef))
+* **mcp:** update prompt ([16abe1e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/16abe1e20f7e7fe775919870f4a348d10a06e17a))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([9575211](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9575211edc2defb82ad5d574bca1436050fa7926))
+* **internal:** codegen related update ([8cad95b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8cad95b4204da8b66852635721e66f336c314ab0))
+* **internal:** codegen related update ([64f27d8](https://github.com/roarkhq/sdk-roark-analytics-node/commit/64f27d89e148eff5f47da971ba7c9799b2d49486))
+* **internal:** codegen related update ([62b5ae7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/62b5ae74f90d61bf37859fe0edca264c4475913c))
+* **internal:** codegen related update ([168e2c7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/168e2c77581860c5b2c8abf7cd6f99ec483cf613))
+* **internal:** codegen related update ([d68fcb2](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d68fcb2d8b4817300d1c3d8fab1246198be524c6))
+* **internal:** codegen related update ([9b6029f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9b6029f6758cd5c217c47d23876f3aa3356293f0))
+* **internal:** codegen related update ([c077d25](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c077d25cb8e8062496f63e024b332a81262b732f))
+* **internal:** codegen related update ([a4759f9](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a4759f948b4b1d81ec2fa3f540ee0fb50460fd36))
+* **internal:** codegen related update ([f7ec851](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f7ec85103038ac4416b667bbf64000c6a7d527d6))
+* **internal:** codegen related update ([047bd3d](https://github.com/roarkhq/sdk-roark-analytics-node/commit/047bd3d66b38399e989b933c4b144b999bb19039))
+* **internal:** codegen related update ([fef0d40](https://github.com/roarkhq/sdk-roark-analytics-node/commit/fef0d40e341daab5ead1bc5d12b86210513327dc))
+* **internal:** codegen related update ([a59d6d3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a59d6d31bcea13b7c543fd9615253a9809edeb47))
+* **internal:** codegen related update ([07695bf](https://github.com/roarkhq/sdk-roark-analytics-node/commit/07695bf589110f119cd9821d43cc23a84218a253))
+* **internal:** codegen related update ([c78d654](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c78d65474703889911526063dda235cb793cfb6c))
+* **internal:** codegen related update ([4ac734b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/4ac734b1722139035c33673120ee821c083708b9))
+* **internal:** codegen related update ([7b46d8f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/7b46d8f3be1d33a2ada064aae5b6f1ed2b2723f9))
+* **internal:** codegen related update ([522cf3c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/522cf3c3ca347584b5ea9ee3cd0ecf630e19d3c3))
+* **internal:** codegen related update ([6aa6168](https://github.com/roarkhq/sdk-roark-analytics-node/commit/6aa61684949458f09d1c6a2ba67d55b3b6043199))
+* **internal:** codegen related update ([3d6f48e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/3d6f48ea42b95ab6e1601ab888961a2759b9d87b))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([d94be9a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d94be9adf66223ecfc75903043e24b223ee0bd02))
+* **internal:** fix MCP Dockerfiles so they can be built without buildkit ([f84302a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f84302a1fe8959df66ff115eb421d10d096efd5c))
+* **internal:** move stringifyQuery implementation to internal function ([04a08df](https://github.com/roarkhq/sdk-roark-analytics-node/commit/04a08df20fb30c863cd8ef344c48a9a0693566a1))
+* **internal:** update dependencies to address dependabot vulnerabilities ([a1d75bc](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a1d75bc0abf89bffc839fd2496e67091cb1e4523))
+* **internal:** update lock file ([f3aaf45](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f3aaf4516faea68b8448c336d813d5c12e693db7))
+* **internal:** use x-stainless-mcp-client-envs header for MCP remote code tool calls ([fd44bbc](https://github.com/roarkhq/sdk-roark-analytics-node/commit/fd44bbc7c469f1172752e9b9513ea95371805bdd))
+* **mcp-server:** improve instructions ([ba312b5](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ba312b55feffc291bec16409585af301f7dc4de8))
+* **mcp-server:** return access instructions for 404 without API key ([cb5a2c7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/cb5a2c752bec056e676afdd01864aee1c4ae9a00))
+* **test:** do not count install time for mock server timeout ([09e5230](https://github.com/roarkhq/sdk-roark-analytics-node/commit/09e5230a26544c197edf486e9882f5e3257721f3))
+
 ## 2.26.0 (2026-02-25)
 
 Full Changelog: [v2.25.0...v2.26.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.25.0...v2.26.0)
