@@ -34,7 +34,6 @@ export {
   type CallGetTranscriptParams,
   type CallListMetricsParams,
 } from './call';
-export { Evaluation } from './evaluation';
 export {
   HTTPRequestDefinition,
   type HTTPRequestDefinitionCreateResponse,
@@ -46,7 +45,6 @@ export {
   type HTTPRequestDefinitionListParams,
 } from './http-request-definition';
 export { Health, type HealthGetResponse } from './health';
-export { Integrations } from './integrations';
 export {
   Metric,
   type MetricCreateDefinitionResponse,

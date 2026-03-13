@@ -51,7 +51,6 @@ import {
   CallListResponse,
   CallListSentimentRunsResponse,
 } from './resources/call';
-import { Evaluation } from './resources/evaluation';
 import { Health, HealthGetResponse } from './resources/health';
 import {
   HTTPRequestDefinition,
@@ -63,7 +62,6 @@ import {
   HTTPRequestDefinitionUpdateParams,
   HTTPRequestDefinitionUpdateResponse,
 } from './resources/http-request-definition';
-import { Integrations } from './resources/integrations';
 import {
   Metric,
   MetricCreateDefinitionParams,
@@ -842,12 +840,10 @@ export class Roark {
   static toFile = Uploads.toFile;
 
   health: API.Health = new API.Health(this);
-  evaluation: API.Evaluation = new API.Evaluation(this);
   call: API.Call = new API.Call(this);
   metric: API.Metric = new API.Metric(this);
   metricPolicy: API.MetricPolicy = new API.MetricPolicy(this);
   metricCollectionJob: API.MetricCollectionJob = new API.MetricCollectionJob(this);
-  integrations: API.Integrations = new API.Integrations(this);
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
@@ -860,12 +856,10 @@ export class Roark {
 }
 
 Roark.Health = Health;
-Roark.Evaluation = Evaluation;
 Roark.Call = Call;
 Roark.Metric = Metric;
 Roark.MetricPolicy = MetricPolicy;
 Roark.MetricCollectionJob = MetricCollectionJob;
-Roark.Integrations = Integrations;
 Roark.SimulationJob = SimulationJob;
 Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
@@ -880,8 +874,6 @@ export declare namespace Roark {
   export type RequestOptions = Opts.RequestOptions;
 
   export { Health as Health, type HealthGetResponse as HealthGetResponse };
-
-  export { Evaluation as Evaluation };
 
   export {
     Call as Call,
@@ -925,8 +917,6 @@ export declare namespace Roark {
     type MetricCollectionJobCreateParams as MetricCollectionJobCreateParams,
     type MetricCollectionJobListParams as MetricCollectionJobListParams,
   };
-
-  export { Integrations as Integrations };
 
   export {
     SimulationJob as SimulationJob,
