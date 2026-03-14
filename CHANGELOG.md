@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.28.1 (2026-03-14)
+
+Full Changelog: [v2.28.0...v2.28.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.28.0...v2.28.1)
+
+### Chores
+
+* **internal:** make generated MCP servers compatible with Cloudflare worker environments ([bdc8824](https://github.com/roarkhq/sdk-roark-analytics-node/commit/bdc8824269a4e4c83f284f2b9272fbf3091ae635))
+* **internal:** support x-stainless-mcp-client-envs header in MCP servers ([79a1c9a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/79a1c9ac390ab63bc61742b7803b53e4ff0880b8))
+* **internal:** update lockfile ([9befd49](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9befd4955485a55210ebd4d773e90a3fdf9c47a3))
+
 ## 2.28.0 (2026-03-13)
 
 Full Changelog: [v2.27.0...v2.28.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.27.0...v2.28.0)
