@@ -1021,8 +1021,8 @@ export interface CallCreateParams {
   interfaceType: 'PHONE' | 'WEB';
 
   /**
-   * URL of source recording (must be an accessible WAV, MP3, or MP4 file). Can be a
-   * signed URL.
+   * URL of source recording (must be an accessible WAV, MP3, MP4, or OGG file). Can
+   * be a signed URL.
    */
   recordingUrl: string;
 
@@ -1093,7 +1093,7 @@ export interface CallCreateParams {
 
   /**
    * URL of source stereo recording. Must be accessible. Can be a signed URL.
-   * Supported formats: WAV, MP3, MP4.
+   * Supported formats: WAV, MP3, MP4, OGG.
    */
   stereoRecordingUrl?: string;
 
