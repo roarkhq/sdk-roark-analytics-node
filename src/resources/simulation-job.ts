@@ -281,7 +281,7 @@ export namespace SimulationJobGetByIDResponse {
       /**
        * Speech pace of the persona
        */
-      speechPace: 'SLOW' | 'NORMAL' | 'FAST';
+      speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
 
       /**
        * Last update timestamp
@@ -562,7 +562,7 @@ export namespace SimulationJobLookupResponse {
       /**
        * Speech pace of the persona
        */
-      speechPace: 'SLOW' | 'NORMAL' | 'FAST';
+      speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
 
       /**
        * Last update timestamp
