@@ -50,7 +50,7 @@ describe('resource simulationPersona', () => {
       responseTiming: 'RELAXED',
       secondaryLanguage: 'EN',
       speechClarity: 'CLEAR',
-      speechPace: 'SLOW',
+      speechPace: 'SUPER_SLOW',
     });
   });
 
@@ -95,7 +95,7 @@ describe('resource simulationPersona', () => {
           responseTiming: 'RELAXED',
           secondaryLanguage: 'EN',
           speechClarity: 'CLEAR',
-          speechPace: 'SLOW',
+          speechPace: 'SUPER_SLOW',
         },
         { path: '/_stainless_unknown_path' },
       ),
