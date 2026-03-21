@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.29.0 (2026-03-21)
+
+Full Changelog: [v2.28.0...v2.29.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.28.0...v2.29.0)
+
+### Features
+
+* **api:** api update ([6e00fbd](https://github.com/roarkhq/sdk-roark-analytics-node/commit/6e00fbdad88f9c4433a35e815cd2e7ec11f92d43))
+* **api:** api update ([6a6889d](https://github.com/roarkhq/sdk-roark-analytics-node/commit/6a6889de99a9f44b2c5c07a2d3368cd983bd04a5))
+
+
+### Chores
+
+* **internal:** make generated MCP servers compatible with Cloudflare worker environments ([bdc8824](https://github.com/roarkhq/sdk-roark-analytics-node/commit/bdc8824269a4e4c83f284f2b9272fbf3091ae635))
+* **internal:** support x-stainless-mcp-client-envs header in MCP servers ([79a1c9a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/79a1c9ac390ab63bc61742b7803b53e4ff0880b8))
+* **internal:** support x-stainless-mcp-client-permissions headers in MCP servers ([11da672](https://github.com/roarkhq/sdk-roark-analytics-node/commit/11da6722582d8c2592275ee6194175b465bcd967))
+* **internal:** tweak CI branches ([7159922](https://github.com/roarkhq/sdk-roark-analytics-node/commit/71599228e9b624907b75881f32783d26ccc6cb2f))
+* **internal:** update lockfile ([9befd49](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9befd4955485a55210ebd4d773e90a3fdf9c47a3))
+* **tests:** bump steady to v0.19.4 ([e3b6a78](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e3b6a78f0d02bdae972fa90bd60259b1050a40d1))
+* **tests:** bump steady to v0.19.5 ([739c25e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/739c25e978c1d7422314a16b7268fc7c9a57de67))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([8051545](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8051545d035c0842dfc524b4bfa24051fb4bd955))
+
 ## 2.28.0 (2026-03-13)
 
 Full Changelog: [v2.27.0...v2.28.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.27.0...v2.28.0)
