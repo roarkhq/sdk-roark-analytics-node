@@ -20,7 +20,7 @@ export const newMcpServer = async (stainlessApiKey: string | undefined) =>
   new McpServer(
     {
       name: 'roarkanalytics_sdk_api',
-      version: '2.28.0',
+      version: '2.29.0',
     },
     {
       instructions: await getInstructions(stainlessApiKey),
