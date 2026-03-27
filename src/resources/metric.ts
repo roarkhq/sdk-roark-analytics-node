@@ -27,8 +27,7 @@ export class Metric extends APIResource {
 
   /**
    * Fetch all metric definitions available in the project, including both
-   * system-generated and custom metrics. Only returns metrics from enabled analysis
-   * packages.
+   * system-generated and custom metrics.
    *
    * @example
    * ```ts
