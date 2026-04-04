@@ -1168,7 +1168,8 @@ export namespace CallCreateParams {
   }
 
   /**
-   * Create a new agent or find existing by customId if provided
+   * Find existing by customId if provided, otherwise reuse exact project name match
+   * before creating
    */
   export interface AgentIdentificationByName {
     /**
@@ -1353,7 +1354,8 @@ export namespace CallCreateParams {
   }
 
   /**
-   * Create a new agent or find existing by customId if provided
+   * Find existing by customId if provided, otherwise reuse exact project name match
+   * before creating
    */
   export interface AgentIdentificationByName {
     /**
