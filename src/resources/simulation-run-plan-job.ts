@@ -290,7 +290,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         /**
          * Agent endpoint type
          */
-        type: 'PHONE' | 'WEBSOCKET';
+        type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC';
       }
 
       export interface Persona {
