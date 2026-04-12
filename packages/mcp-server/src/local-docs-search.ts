@@ -626,28 +626,28 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     httpMethod: 'post',
     summary: 'Create and run a metric collection job',
     description:
-      'Creates a metric collection job for the specified calls and metrics, then triggers processing.',
+      'Creates a metric collection job for the specified calls or chats and metrics, then triggers processing. Provide exactly one of callIds or chatIds.',
     stainlessPath: '(resource) metricCollectionJob > (method) create',
     qualified: 'client.metricCollectionJob.create',
-    params: ['callIds: string[];', 'metrics: { id: string; }[];'],
+    params: ['metrics: { id: string; }[];', 'callIds?: string[];', 'chatIds?: string[];'],
     response:
       "{ data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }; }",
     markdown:
-      "## create\n\n`client.metricCollectionJob.create(callIds: string[], metrics: { id: string; }[]): { data: object; }`\n\n**post** `/v1/metric/collection-jobs`\n\nCreates a metric collection job for the specified calls and metrics, then triggers processing.\n\n### Parameters\n\n- `callIds: string[]`\n  Call IDs to collect metrics for\n\n- `metrics: { id: string; }[]`\n  Metric definitions to collect\n\n### Returns\n\n- `{ data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }; }`\n\n  - `data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst metricCollectionJob = await client.metricCollectionJob.create({ callIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'], metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }] });\n\nconsole.log(metricCollectionJob);\n```",
+      "## create\n\n`client.metricCollectionJob.create(metrics: { id: string; }[], callIds?: string[], chatIds?: string[]): { data: object; }`\n\n**post** `/v1/metric/collection-jobs`\n\nCreates a metric collection job for the specified calls or chats and metrics, then triggers processing. Provide exactly one of callIds or chatIds.\n\n### Parameters\n\n- `metrics: { id: string; }[]`\n  Metric definitions to collect\n\n- `callIds?: string[]`\n  Call IDs to collect metrics for. Mutually exclusive with chatIds.\n\n- `chatIds?: string[]`\n  Chat IDs to collect metrics for. Mutually exclusive with callIds.\n\n### Returns\n\n- `{ data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }; }`\n\n  - `data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst metricCollectionJob = await client.metricCollectionJob.create({ metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }] });\n\nconsole.log(metricCollectionJob);\n```",
     perLanguage: {
       http: {
         example:
-          'curl https://api.roark.ai/v1/metric/collection-jobs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "callIds": [\n            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n          ],\n          "metrics": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ]\n        }\'',
+          'curl https://api.roark.ai/v1/metric/collection-jobs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "metrics": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ]\n        }\'',
       },
       python: {
         method: 'metric_collection_job.create',
         example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_collection_job = client.metric_collection_job.create(\n    call_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],\n    metrics=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n)\nprint(metric_collection_job.data)',
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_collection_job = client.metric_collection_job.create(\n    metrics=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n)\nprint(metric_collection_job.data)',
       },
       typescript: {
         method: 'client.metricCollectionJob.create',
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricCollectionJob = await client.metricCollectionJob.create({\n  callIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n});\n\nconsole.log(metricCollectionJob.data);",
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricCollectionJob = await client.metricCollectionJob.create({\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n});\n\nconsole.log(metricCollectionJob.data);",
       },
     },
   },

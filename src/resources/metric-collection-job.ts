@@ -7,8 +7,8 @@ import { path } from '../internal/utils/path';
 
 export class MetricCollectionJob extends APIResource {
   /**
-   * Creates a metric collection job for the specified calls and metrics, then
-   * triggers processing.
+   * Creates a metric collection job for the specified calls or chats and metrics,
+   * then triggers processing. Provide exactly one of callIds or chatIds.
    */
   create(
     body: MetricCollectionJobCreateParams,
@@ -37,14 +37,14 @@ export class MetricCollectionJob extends APIResource {
 
 export interface MetricCollectionJobCreateResponse {
   /**
-   * A metric collection job that processes metrics for calls
+   * A metric collection job that processes metrics for calls or chats
    */
   data: MetricCollectionJobCreateResponse.Data;
 }
 
 export namespace MetricCollectionJobCreateResponse {
   /**
-   * A metric collection job that processes metrics for calls
+   * A metric collection job that processes metrics for calls or chats
    */
   export interface Data {
     /**
@@ -120,7 +120,7 @@ export interface MetricCollectionJobListResponse {
 
 export namespace MetricCollectionJobListResponse {
   /**
-   * A metric collection job that processes metrics for calls
+   * A metric collection job that processes metrics for calls or chats
    */
   export interface Data {
     /**
@@ -204,14 +204,14 @@ export namespace MetricCollectionJobListResponse {
 
 export interface MetricCollectionJobGetByIDResponse {
   /**
-   * A metric collection job that processes metrics for calls
+   * A metric collection job that processes metrics for calls or chats
    */
   data: MetricCollectionJobGetByIDResponse.Data;
 }
 
 export namespace MetricCollectionJobGetByIDResponse {
   /**
-   * A metric collection job that processes metrics for calls
+   * A metric collection job that processes metrics for calls or chats
    */
   export interface Data {
     /**
@@ -278,14 +278,19 @@ export namespace MetricCollectionJobGetByIDResponse {
 
 export interface MetricCollectionJobCreateParams {
   /**
-   * Call IDs to collect metrics for
-   */
-  callIds: Array<string>;
-
-  /**
    * Metric definitions to collect
    */
   metrics: Array<MetricCollectionJobCreateParams.Metric>;
+
+  /**
+   * Call IDs to collect metrics for. Mutually exclusive with chatIds.
+   */
+  callIds?: Array<string>;
+
+  /**
+   * Chat IDs to collect metrics for. Mutually exclusive with callIds.
+   */
+  chatIds?: Array<string>;
 }
 
 export namespace MetricCollectionJobCreateParams {
