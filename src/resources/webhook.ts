@@ -85,6 +85,8 @@ export namespace WebhookCreateResponse {
       | 'SIMULATION_JOB_CANCELLED'
       | 'METRIC_COLLECTION_JOB_COMPLETED'
       | 'METRIC_COLLECTION_JOB_FAILED'
+      | 'CHAT_ANALYSIS_COMPLETED'
+      | 'CHAT_ANALYSIS_FAILED'
     >;
 
     /**
@@ -154,6 +156,8 @@ export namespace WebhookListResponse {
       | 'SIMULATION_JOB_CANCELLED'
       | 'METRIC_COLLECTION_JOB_COMPLETED'
       | 'METRIC_COLLECTION_JOB_FAILED'
+      | 'CHAT_ANALYSIS_COMPLETED'
+      | 'CHAT_ANALYSIS_FAILED'
     >;
 
     /**
@@ -249,6 +253,8 @@ export namespace WebhookGetByIDResponse {
       | 'SIMULATION_JOB_CANCELLED'
       | 'METRIC_COLLECTION_JOB_COMPLETED'
       | 'METRIC_COLLECTION_JOB_FAILED'
+      | 'CHAT_ANALYSIS_COMPLETED'
+      | 'CHAT_ANALYSIS_FAILED'
     >;
 
     /**
@@ -288,6 +294,8 @@ export interface WebhookCreateParams {
     | 'SIMULATION_JOB_CANCELLED'
     | 'METRIC_COLLECTION_JOB_COMPLETED'
     | 'METRIC_COLLECTION_JOB_FAILED'
+    | 'CHAT_ANALYSIS_COMPLETED'
+    | 'CHAT_ANALYSIS_FAILED'
   >;
 
   /**
