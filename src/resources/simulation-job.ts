@@ -130,7 +130,7 @@ export namespace SimulationJobGetByIDResponse {
       /**
        * Agent endpoint type
        */
-      type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS';
+      type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
     }
 
     export interface Persona {
@@ -411,7 +411,7 @@ export namespace SimulationJobLookupResponse {
       /**
        * Agent endpoint type
        */
-      type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS';
+      type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
     }
 
     export interface Persona {
