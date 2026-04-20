@@ -249,6 +249,12 @@ export namespace SimulationRunPlanCreateResponse {
 
       export interface Scenario {
         id: string;
+
+        /**
+         * Template variables for this scenario instance. Absent when no variables are set.
+         * The same scenario can appear multiple times with different variables.
+         */
+        variables?: { [key: string]: string };
       }
     }
 
@@ -418,6 +424,12 @@ export namespace SimulationRunPlanUpdateResponse {
 
     export interface Scenario {
       id: string;
+
+      /**
+       * Template variables for this scenario instance. Absent when no variables are set.
+       * The same scenario can appear multiple times with different variables.
+       */
+      variables?: { [key: string]: string };
     }
   }
 }
@@ -552,6 +564,12 @@ export namespace SimulationRunPlanListResponse {
 
     export interface Scenario {
       id: string;
+
+      /**
+       * Template variables for this scenario instance. Absent when no variables are set.
+       * The same scenario can appear multiple times with different variables.
+       */
+      variables?: { [key: string]: string };
     }
   }
 
@@ -714,6 +732,12 @@ export namespace SimulationRunPlanGetByIDResponse {
 
     export interface Scenario {
       id: string;
+
+      /**
+       * Template variables for this scenario instance. Absent when no variables are set.
+       * The same scenario can appear multiple times with different variables.
+       */
+      variables?: { [key: string]: string };
     }
   }
 }
