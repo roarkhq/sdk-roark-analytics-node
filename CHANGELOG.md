@@ -1,5 +1,46 @@
 # Changelog
 
+## 2.30.0 (2026-04-20)
+
+Full Changelog: [v2.29.0...v2.30.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.29.0...v2.30.0)
+
+### Features
+
+* **api:** api update ([8d6fee0](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8d6fee0291f502d0d96d83229d7b38b70bba3471))
+* **api:** api update ([b6521f7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b6521f7cf9c54927bd835704ead82f860641fa3d))
+* **api:** api update ([5b8a983](https://github.com/roarkhq/sdk-roark-analytics-node/commit/5b8a983d6c5d607b25770adc02d16b9083722aa8))
+* **api:** api update ([de187aa](https://github.com/roarkhq/sdk-roark-analytics-node/commit/de187aaef3996b5c216e18af09878864ce72cdd1))
+* **api:** api update ([b14d1c0](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b14d1c0726b1083ee06c3d79198a45973c0bd210))
+* **api:** api update ([421ce22](https://github.com/roarkhq/sdk-roark-analytics-node/commit/421ce223eac495232daace8d6d72960ee131c5b1))
+* **api:** api update ([a430f96](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a430f9636919fed31772c9be1a640040bfcf73b3))
+* **api:** api update ([d009396](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d009396ce75c3589c43814afcaa700a80db18414))
+* **api:** api update ([5a168e4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/5a168e49395425fe0a15af79fef1bf003a45fccf))
+
+
+### Chores
+
+* **ci:** escape input path in publish-npm workflow ([8846f26](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8846f269b8889d27b2fdf300634b274392f8623a))
+* **ci:** skip lint on metadata-only changes ([6355dd7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/6355dd743fc10bddcd5e500f1e1fc220274a8707))
+* **internal:** codegen related update ([3b35755](https://github.com/roarkhq/sdk-roark-analytics-node/commit/3b35755c8de4ac4a6cc8c4bc53a28e1607392d31))
+* **internal:** fix MCP server import ordering ([ccfb13b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ccfb13ba04c2b725f2f671f180c89d98e7cf6980))
+* **internal:** fix MCP server TS errors that occur with required client options ([e38c35e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e38c35e0c293c949d7ce116c4a9faf2dca29ad1b))
+* **internal:** improve local docs search for MCP servers ([5aca822](https://github.com/roarkhq/sdk-roark-analytics-node/commit/5aca822b90b2256cda6b515cbf915581c95b0878))
+* **internal:** improve local docs search for MCP servers ([aec645c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/aec645ce27b808ee5961349eeae06b349d9eeb60))
+* **internal:** show error causes in MCP servers when running in local mode ([93d8735](https://github.com/roarkhq/sdk-roark-analytics-node/commit/93d87353828a9d3d1cf75fd0cb8a343af07c15b8))
+* **internal:** support custom-instructions-path flag in MCP servers ([6471922](https://github.com/roarkhq/sdk-roark-analytics-node/commit/64719225d36dc2d7c93db6168469bc3d85ad6045))
+* **internal:** support local docs search in MCP servers ([b3be405](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b3be4056e314f04e89422a39fb2f615fe07d0f1b))
+* **internal:** support type annotations when running MCP in local execution mode ([842282f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/842282f6f61791da1b853064e4744b42c4ca2027))
+* **internal:** update gitignore ([cc48f7e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/cc48f7efc649738c9070a0c38e02436c337d29aa))
+* **internal:** update multipart form array serialization ([dea33dc](https://github.com/roarkhq/sdk-roark-analytics-node/commit/dea33dc3ad2244731eb3c773fdc2d577f18e0da9))
+* **mcp-server:** add support for session id, forward client info ([44477ba](https://github.com/roarkhq/sdk-roark-analytics-node/commit/44477bac896c762367c06e038a286c54f6e0721b))
+* **mcp-server:** increase local docs search result count from 5 to 10 ([29c2a47](https://github.com/roarkhq/sdk-roark-analytics-node/commit/29c2a47835b8ac809178488fce9bfdbf23e3c58e))
+* **mcp-server:** log client info ([7b37023](https://github.com/roarkhq/sdk-roark-analytics-node/commit/7b37023ee94c97e646cee5ada0f831591e6f341a))
+* **tests:** bump steady to v0.19.6 ([dbc386b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/dbc386b161dfe020654c157aea927df8465cd472))
+* **tests:** bump steady to v0.19.7 ([7378b69](https://github.com/roarkhq/sdk-roark-analytics-node/commit/7378b6926a2c70c9f86e8a7e4a96859e8caa2f2d))
+* **tests:** bump steady to v0.20.1 ([da4eb52](https://github.com/roarkhq/sdk-roark-analytics-node/commit/da4eb528dd8805fa5e47916f4e360a8bc94c6ca5))
+* **tests:** bump steady to v0.20.2 ([551452c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/551452ce7f0a23ff68157ad6fe4528bb98667e5a))
+* **tests:** bump steady to v0.22.1 ([da8955d](https://github.com/roarkhq/sdk-roark-analytics-node/commit/da8955dd22719b67603667cc52bbd4a27d1a2be8))
+
 ## 2.29.0 (2026-03-21)
 
 Full Changelog: [v2.28.0...v2.29.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.28.0...v2.29.0)
