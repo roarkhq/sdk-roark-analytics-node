@@ -91,9 +91,9 @@ export namespace AgentEndpointCreateResponse {
     outboundDialType: 'NONE' | 'HTTP_REQUEST';
 
     /**
-     * Agent endpoint type (PHONE or WEBSOCKET)
+     * Agent endpoint type (PHONE, WEBSOCKET, LIVEKIT, SMALL_WEBRTC, or ELEVENLABS_WS)
      */
-    type: 'PHONE' | 'WEBSOCKET';
+    type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
 
     /**
      * Last update timestamp
@@ -101,7 +101,7 @@ export namespace AgentEndpointCreateResponse {
     updatedAt: string;
 
     /**
-     * Agent endpoint value (phone number or websocket URL)
+     * Agent endpoint value (phone number, URL, etc.)
      */
     value: string;
   }
@@ -155,9 +155,9 @@ export namespace AgentEndpointUpdateResponse {
     outboundDialType: 'NONE' | 'HTTP_REQUEST';
 
     /**
-     * Agent endpoint type (PHONE or WEBSOCKET)
+     * Agent endpoint type (PHONE, WEBSOCKET, LIVEKIT, SMALL_WEBRTC, or ELEVENLABS_WS)
      */
-    type: 'PHONE' | 'WEBSOCKET';
+    type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
 
     /**
      * Last update timestamp
@@ -165,7 +165,7 @@ export namespace AgentEndpointUpdateResponse {
     updatedAt: string;
 
     /**
-     * Agent endpoint value (phone number or websocket URL)
+     * Agent endpoint value (phone number, URL, etc.)
      */
     value: string;
   }
@@ -218,9 +218,9 @@ export namespace AgentEndpointListResponse {
     outboundDialType: 'NONE' | 'HTTP_REQUEST';
 
     /**
-     * Agent endpoint type (PHONE or WEBSOCKET)
+     * Agent endpoint type (PHONE, WEBSOCKET, LIVEKIT, SMALL_WEBRTC, or ELEVENLABS_WS)
      */
-    type: 'PHONE' | 'WEBSOCKET';
+    type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
 
     /**
      * Last update timestamp
@@ -228,7 +228,7 @@ export namespace AgentEndpointListResponse {
     updatedAt: string;
 
     /**
-     * Agent endpoint value (phone number or websocket URL)
+     * Agent endpoint value (phone number, URL, etc.)
      */
     value: string;
   }
@@ -299,9 +299,9 @@ export namespace AgentEndpointGetByIDResponse {
     outboundDialType: 'NONE' | 'HTTP_REQUEST';
 
     /**
-     * Agent endpoint type (PHONE or WEBSOCKET)
+     * Agent endpoint type (PHONE, WEBSOCKET, LIVEKIT, SMALL_WEBRTC, or ELEVENLABS_WS)
      */
-    type: 'PHONE' | 'WEBSOCKET';
+    type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
 
     /**
      * Last update timestamp
@@ -309,7 +309,7 @@ export namespace AgentEndpointGetByIDResponse {
     updatedAt: string;
 
     /**
-     * Agent endpoint value (phone number or websocket URL)
+     * Agent endpoint value (phone number, URL, etc.)
      */
     value: string;
   }
