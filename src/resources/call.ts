@@ -493,12 +493,12 @@ export namespace CallGetTranscriptResponse {
      */
     export interface Entry {
       /**
-       * End time offset in milliseconds from the start of the call
+       * End time offset in milliseconds from the start of the conversation
        */
       endOffsetMs: number;
 
       /**
-       * ID of the conversation participant who spoke this entry. References
+       * ID of the conversation participant who produced this entry. References
        * participants[].id.
        */
       participantId: string | null;
@@ -509,7 +509,7 @@ export namespace CallGetTranscriptResponse {
       role: 'AGENT' | 'CUSTOMER' | null;
 
       /**
-       * Start time offset in milliseconds from the start of the call
+       * Start time offset in milliseconds from the start of the conversation
        */
       startOffsetMs: number;
 
@@ -774,14 +774,14 @@ export namespace CallListEvaluationRunsResponse {
 
 export interface CallListMetricsResponse {
   /**
-   * Call metrics response payload grouped by metric definition
+   * Conversation metrics response payload grouped by metric definition
    */
   data: Array<CallListMetricsResponse.Data>;
 }
 
 export namespace CallListMetricsResponse {
   /**
-   * Call metric data grouped by metric definition
+   * Metric data grouped by metric definition
    */
   export interface Data {
     /**
@@ -840,8 +840,8 @@ export namespace CallListMetricsResponse {
       confidence: number;
 
       /**
-       * Context level: CALL (entire call), SEGMENT (single segment), SEGMENT_RANGE
-       * (between/across segments)
+       * Context level: CALL (entire conversation), SEGMENT (single segment),
+       * SEGMENT_RANGE (between/across segments)
        */
       context: 'CALL' | 'SEGMENT' | 'SEGMENT_RANGE';
 
@@ -887,7 +887,7 @@ export namespace CallListMetricsResponse {
        */
       export interface FromSegment {
         /**
-         * Starting segment ID
+         * Segment ID
          */
         id: string;
 
@@ -902,7 +902,7 @@ export namespace CallListMetricsResponse {
         startOffsetMs: number;
 
         /**
-         * Starting segment text content
+         * Segment text content
          */
         text: string;
       }
@@ -937,7 +937,7 @@ export namespace CallListMetricsResponse {
        */
       export interface ToSegment {
         /**
-         * Ending segment ID
+         * Segment ID
          */
         id: string;
 
@@ -952,7 +952,7 @@ export namespace CallListMetricsResponse {
         startOffsetMs: number;
 
         /**
-         * Ending segment text content
+         * Segment text content
          */
         text: string;
       }
