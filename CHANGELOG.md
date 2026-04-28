@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.31.0 (2026-04-28)
+
+Full Changelog: [v2.30.0...v2.31.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.30.0...v2.31.0)
+
+### Features
+
+* **api:** api update ([9cdd3b5](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9cdd3b5eb68fd8713068268a2b1c995c8eed8f26))
+
+
+### Chores
+
+* **internal:** more robust bootstrap script ([892c263](https://github.com/roarkhq/sdk-roark-analytics-node/commit/892c2636c1d353f8ab0b630603aae2b2a14cb0db))
+
 ## 2.30.0 (2026-04-20)
 
 Full Changelog: [v2.29.0...v2.30.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.29.0...v2.30.0)
