@@ -96,6 +96,8 @@ export namespace CallCreateResponse {
 
     createdAt: string | null;
 
+    customerId: string | null;
+
     customers: Array<Data.Customer> | null;
 
     /**
@@ -176,6 +178,12 @@ export namespace CallListResponse {
      * Timestamp when the call record was created
      */
     createdAt?: string | null;
+
+    /**
+     * Customer-supplied correlation ID echoed back from the create request, if any was
+     * provided
+     */
+    customerId?: string | null;
 
     /**
      * Customer information
@@ -346,6 +354,12 @@ export namespace CallGetByIDResponse {
      * Timestamp when the call record was created
      */
     createdAt?: string | null;
+
+    /**
+     * Customer-supplied correlation ID echoed back from the create request, if any was
+     * provided
+     */
+    customerId?: string | null;
 
     /**
      * Customer information
@@ -1057,6 +1071,14 @@ export interface CallCreateParams {
   customer?: CallCreateParams.Customer;
 
   /**
+   * A stable identifier from your own system (e.g. session ID, conversation ID) used
+   * to correlate this call with OpenTelemetry traces. Set the same value as a
+   * `roark.customer_id` span or resource attribute on your traces and the matching
+   * trace will be linked automatically. Must be unique within a project.
+   */
+  customerId?: string;
+
+  /**
    * Customers participating in the call.
    */
   customers?: Array<CallCreateParams.Customer>;
@@ -1086,6 +1108,12 @@ export interface CallCreateParams {
     | 'UNKNOWN';
 
   /**
+   * The LiveKit Cloud room ID to link this call with OpenTelemetry trace data from
+   * LiveKit. Used for matching calls with OTEL traces.
+   */
+  livekitRoomId?: string;
+
+  /**
    * Custom properties to include with the call. These can be used for filtering and
    * will show in the call details page
    */
@@ -1106,6 +1134,12 @@ export interface CallCreateParams {
    * List of transcript entries made during the call
    */
   transcript?: Array<CallCreateParams.TranscriptEntryAgent | CallCreateParams.TranscriptEntryCustomer>;
+
+  /**
+   * The Vapi call ID (UUID) to link this call with OpenTelemetry trace data from
+   * Vapi. Used for matching calls with OTEL traces.
+   */
+  vapiCallId?: string;
 }
 
 export namespace CallCreateParams {
