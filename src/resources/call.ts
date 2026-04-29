@@ -96,9 +96,9 @@ export namespace CallCreateResponse {
 
     createdAt: string | null;
 
-    customerId: string | null;
-
     customers: Array<Data.Customer> | null;
+
+    externalId: string | null;
 
     /**
      * ID of the project this call belongs to
@@ -180,12 +180,6 @@ export namespace CallListResponse {
     createdAt?: string | null;
 
     /**
-     * Customer-supplied correlation ID echoed back from the create request, if any was
-     * provided
-     */
-    customerId?: string | null;
-
-    /**
      * Customer information
      */
     customers?: Array<Data.Customer> | null;
@@ -224,6 +218,12 @@ export namespace CallListResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * Caller-supplied correlation ID echoed back from the create request, if any was
+     * provided
+     */
+    externalId?: string | null;
 
     /**
      * IDs of metric policies that have been applied to this call
@@ -356,12 +356,6 @@ export namespace CallGetByIDResponse {
     createdAt?: string | null;
 
     /**
-     * Customer-supplied correlation ID echoed back from the create request, if any was
-     * provided
-     */
-    customerId?: string | null;
-
-    /**
      * Customer information
      */
     customers?: Array<Data.Customer> | null;
@@ -400,6 +394,12 @@ export namespace CallGetByIDResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * Caller-supplied correlation ID echoed back from the create request, if any was
+     * provided
+     */
+    externalId?: string | null;
 
     /**
      * IDs of metric policies that have been applied to this call
@@ -1071,14 +1071,6 @@ export interface CallCreateParams {
   customer?: CallCreateParams.Customer;
 
   /**
-   * A stable identifier from your own system (e.g. session ID, conversation ID) used
-   * to correlate this call with OpenTelemetry traces. Set the same value as a
-   * `roark.customer_id` span or resource attribute on your traces and the matching
-   * trace will be linked automatically. Must be unique within a project.
-   */
-  customerId?: string;
-
-  /**
    * Customers participating in the call.
    */
   customers?: Array<CallCreateParams.Customer>;
@@ -1106,6 +1098,14 @@ export interface CallCreateParams {
     | 'DIAL_ERROR'
     | 'MAX_DURATION_REACHED'
     | 'UNKNOWN';
+
+  /**
+   * A stable identifier from your own system (e.g. session ID, conversation ID) used
+   * to correlate this call with OpenTelemetry traces. Set the same value as a
+   * `roark.external_id` span or resource attribute on your traces and the matching
+   * trace will be linked automatically. Must be unique within a project.
+   */
+  externalId?: string;
 
   /**
    * The LiveKit Cloud room ID to link this call with OpenTelemetry trace data from
