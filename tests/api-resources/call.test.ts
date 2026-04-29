@@ -43,8 +43,10 @@ describe('resource call', () => {
         },
       ],
       customer: { phoneNumberE164: 'phoneNumberE164', label: 'label' },
+      customerId: 'customerId',
       customers: [{ phoneNumberE164: 'phoneNumberE164', label: 'label' }],
       endedStatus: 'PARTICIPANTS_DID_NOT_SPEAK',
+      livekitRoomId: 'livekitRoomId',
       properties: { foo: 'bar' },
       stereoRecordingUrl: 'https://example.com',
       toolInvocations: [
@@ -74,6 +76,7 @@ describe('resource call', () => {
           languageCode: 'languageCode',
         },
       ],
+      vapiCallId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
 
