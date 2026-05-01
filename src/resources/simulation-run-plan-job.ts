@@ -102,9 +102,11 @@ export namespace SimulationRunPlanJobListResponse {
 
     /**
      * How the job was triggered (SCHEDULED, USER_TRIGGERED_FROM_UI,
-     * TRIGGERED_FROM_API, or RE_RUN)
+     * TRIGGERED_FROM_API, RE_RUN, or SYSTEM). SYSTEM is used when the job was started
+     * by an internal admin acting on behalf of the project (the original user identity
+     * is not exposed).
      */
-    triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API';
+    triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API' | 'SYSTEM';
 
     /**
      * When the job ended
