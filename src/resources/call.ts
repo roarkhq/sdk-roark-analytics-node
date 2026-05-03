@@ -98,6 +98,8 @@ export namespace CallCreateResponse {
 
     customers: Array<Data.Customer> | null;
 
+    externalId: string | null;
+
     /**
      * ID of the project this call belongs to
      */
@@ -216,6 +218,12 @@ export namespace CallListResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * Caller-supplied correlation ID echoed back from the create request, if any was
+     * provided
+     */
+    externalId?: string | null;
 
     /**
      * IDs of metric policies that have been applied to this call
@@ -386,6 +394,12 @@ export namespace CallGetByIDResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * Caller-supplied correlation ID echoed back from the create request, if any was
+     * provided
+     */
+    externalId?: string | null;
 
     /**
      * IDs of metric policies that have been applied to this call
@@ -1086,6 +1100,20 @@ export interface CallCreateParams {
     | 'UNKNOWN';
 
   /**
+   * A stable identifier from your own system (e.g. session ID, conversation ID) used
+   * to correlate this call with OpenTelemetry traces. Set the same value as a
+   * `roark.external_id` span or resource attribute on your traces and the matching
+   * trace will be linked automatically. Must be unique within a project.
+   */
+  externalId?: string;
+
+  /**
+   * The LiveKit Cloud room ID to link this call with OpenTelemetry trace data from
+   * LiveKit. Used for matching calls with OTEL traces.
+   */
+  livekitRoomId?: string;
+
+  /**
    * Custom properties to include with the call. These can be used for filtering and
    * will show in the call details page
    */
@@ -1106,6 +1134,12 @@ export interface CallCreateParams {
    * List of transcript entries made during the call
    */
   transcript?: Array<CallCreateParams.TranscriptEntryAgent | CallCreateParams.TranscriptEntryCustomer>;
+
+  /**
+   * The Vapi call ID (UUID) to link this call with OpenTelemetry trace data from
+   * Vapi. Used for matching calls with OTEL traces.
+   */
+  vapiCallId?: string;
 }
 
 export namespace CallCreateParams {
@@ -1567,8 +1601,14 @@ export namespace CallCreateParams {
      * the agents array this tool invocation belongs to
      */
     export interface Agent {
+      /**
+       * The custom ID set on the agent
+       */
       customId?: string;
 
+      /**
+       * The Roark ID of the agent
+       */
       roarkId?: string;
     }
   }
@@ -1582,15 +1622,29 @@ export namespace CallCreateParams {
 
     text: string;
 
+    /**
+     * Metadata about the agent that spoke this turn - used to match which agent from
+     * the `agents` array this transcript entry belongs to
+     */
     agent?: TranscriptEntryAgent.Agent;
 
     languageCode?: string;
   }
 
   export namespace TranscriptEntryAgent {
+    /**
+     * Metadata about the agent that spoke this turn - used to match which agent from
+     * the `agents` array this transcript entry belongs to
+     */
     export interface Agent {
+      /**
+       * The custom ID set on the agent
+       */
       customId?: string;
 
+      /**
+       * The Roark ID of the agent
+       */
       roarkId?: string;
     }
   }

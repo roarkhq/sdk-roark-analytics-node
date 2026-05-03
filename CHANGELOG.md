@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.32.0 (2026-05-03)
+
+Full Changelog: [v2.31.0...v2.32.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.31.0...v2.32.0)
+
+### Features
+
+* **api:** api update ([e0d9e1f](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e0d9e1ff4e345897a100ebb2c91b441641378e7f))
+* **api:** api update ([d6281e7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d6281e783be34b7c736bf0564d1e0ad011fe1451))
+* **api:** api update ([970988a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/970988a4a988eefee4afe036d6131d35e0373c8e))
+* **api:** api update ([716f564](https://github.com/roarkhq/sdk-roark-analytics-node/commit/716f564353d6556ba27f0649f68bdff61b578b10))
+* **api:** api update ([7928e64](https://github.com/roarkhq/sdk-roark-analytics-node/commit/7928e644cd3a4c6ab4e361bc8d013fdbaba674d6))
+* support setting headers via env ([26a42f5](https://github.com/roarkhq/sdk-roark-analytics-node/commit/26a42f5c0eb0b458159c131c4f6e0fd15a5e02e9))
+
+
+### Chores
+
+* avoid formatting file that gets changed during releases ([36f50c9](https://github.com/roarkhq/sdk-roark-analytics-node/commit/36f50c9aa5a5d7ce611d4326dbbf883d15611980))
+* **format:** run eslint and prettier separately ([96386a4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/96386a4252f3e7d425d7f3868b073ff35cc21a32))
+* **internal:** codegen related update ([cb375b4](https://github.com/roarkhq/sdk-roark-analytics-node/commit/cb375b4e56531f6e6574f931db84e968a093baf0))
+* restructure docs search code ([9404012](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9404012b463c086dcab19f5c94e87af7ae4455e1))
+
 ## 2.31.0 (2026-04-28)
 
 Full Changelog: [v2.30.0...v2.31.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.30.0...v2.31.0)

@@ -63,19 +63,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## get\n\n`client.health.get(): { data: object; }`\n\n**get** `/health`\n\nReturns the health status of the API and its dependencies\n\n### Returns\n\n- `{ data: { status: 'healthy' | 'degraded' | 'unhealthy'; timestamp: string; version: string; }; }`\n\n  - `data: { status: 'healthy' | 'degraded' | 'unhealthy'; timestamp: string; version: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst health = await client.health.get();\n\nconsole.log(health);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.health.get',
         example:
-          'curl https://api.roark.ai/health \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst health = await client.health.get();\n\nconsole.log(health.data);",
       },
       python: {
         method: 'health.get',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nhealth = client.health.get()\nprint(health.data)',
       },
-      typescript: {
-        method: 'client.health.get',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst health = await client.health.get();\n\nconsole.log(health.data);",
+          'curl https://api.roark.ai/health \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -97,23 +97,23 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       "status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED';",
     ],
     response:
-      "{ data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: object; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }",
+      "{ data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: object; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; externalId?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }",
     markdown:
-      "## list\n\n`client.call.list(after?: string, limit?: number, searchText?: string, simulationRunPlanJobId?: string, sortBy?: 'createdAt' | 'startedAt' | 'endedAt' | 'duration' | 'title' | 'status', sortDirection?: 'asc' | 'desc', status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'): { data: object[]; pagination: object; }`\n\n**get** `/v1/call`\n\nReturns a paginated list of calls for the authenticated project.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - use the nextCursor value from a previous response\n\n- `limit?: number`\n  Maximum number of calls to return (default: 20, max: 100)\n\n- `searchText?: string`\n  Search text to filter calls by title, summary, or transcript\n\n- `simulationRunPlanJobId?: string`\n  Filter by simulation run plan job ID to get all calls from a specific simulation batch\n\n- `sortBy?: 'createdAt' | 'startedAt' | 'endedAt' | 'duration' | 'title' | 'status'`\n  Field to sort by (default: createdAt)\n\n- `sortDirection?: 'asc' | 'desc'`\n  Sort direction (default: desc)\n\n- `status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'`\n  Filter by call status\n\n### Returns\n\n- `{ data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: object; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n\n  - `data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: { id: string; environment: string; phoneNumberE164?: string; }; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst calls = await client.call.list();\n\nconsole.log(calls);\n```",
+      "## list\n\n`client.call.list(after?: string, limit?: number, searchText?: string, simulationRunPlanJobId?: string, sortBy?: 'createdAt' | 'startedAt' | 'endedAt' | 'duration' | 'title' | 'status', sortDirection?: 'asc' | 'desc', status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'): { data: object[]; pagination: object; }`\n\n**get** `/v1/call`\n\nReturns a paginated list of calls for the authenticated project.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - use the nextCursor value from a previous response\n\n- `limit?: number`\n  Maximum number of calls to return (default: 20, max: 100)\n\n- `searchText?: string`\n  Search text to filter calls by title, summary, or transcript\n\n- `simulationRunPlanJobId?: string`\n  Filter by simulation run plan job ID to get all calls from a specific simulation batch\n\n- `sortBy?: 'createdAt' | 'startedAt' | 'endedAt' | 'duration' | 'title' | 'status'`\n  Field to sort by (default: createdAt)\n\n- `sortDirection?: 'asc' | 'desc'`\n  Sort direction (default: desc)\n\n- `status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'`\n  Filter by call status\n\n### Returns\n\n- `{ data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: object; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; externalId?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n\n  - `data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: { id: string; environment: string; phoneNumberE164?: string; }; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; externalId?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst calls = await client.call.list();\n\nconsole.log(calls);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.call.list',
         example:
-          'curl https://api.roark.ai/v1/call \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst calls = await client.call.list();\n\nconsole.log(calls.data);",
       },
       python: {
         method: 'call.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncalls = client.call.list()\nprint(calls.data)',
       },
-      typescript: {
-        method: 'client.call.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst calls = await client.call.list();\n\nconsole.log(calls.data);",
+          'curl https://api.roark.ai/v1/call \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -135,29 +135,32 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'customer?: { phoneNumberE164: string; label?: string; };',
       'customers?: { phoneNumberE164: string; label?: string; }[];',
       'endedStatus?: string;',
+      'externalId?: string;',
+      'livekitRoomId?: string;',
       'properties?: object;',
       'stereoRecordingUrl?: string;',
       'toolInvocations?: { name: string; parameters: object; result: string | object; startOffsetMs: number; agent?: { customId?: string; roarkId?: string; }; description?: string; endOffsetMs?: number; }[];',
       "transcript?: { endOffsetMs: number; role: 'AGENT'; startOffsetMs: number; text: string; agent?: { customId?: string; roarkId?: string; }; languageCode?: string; } | { endOffsetMs: number; role: 'CUSTOMER'; startOffsetMs: number; text: string; customer?: { label?: string; phoneNumberE164?: string; }; languageCode?: string; }[];",
+      'vapiCallId?: string;',
     ],
     response:
-      "{ data: { id: string; agents: { id: string; endpoint?: object; }[]; callDirection: 'INBOUND' | 'OUTBOUND'; createdAt: string; customers: { label?: string; phoneNumberE164?: string; }[]; projectId: string; startedAt: string; status: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; }; }",
+      "{ data: { id: string; agents: { id: string; endpoint?: object; }[]; callDirection: 'INBOUND' | 'OUTBOUND'; createdAt: string; customers: { label?: string; phoneNumberE164?: string; }[]; externalId: string; projectId: string; startedAt: string; status: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; }; }",
     markdown:
-      "## create\n\n`client.call.create(callDirection: 'INBOUND' | 'OUTBOUND', interfaceType: 'PHONE' | 'WEB', recordingUrl: string, startedAt: string, agent?: { roarkId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { name: string; customId?: string; description?: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { customId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; }, agents?: { roarkId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { name: string; customId?: string; description?: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { customId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; }[], customer?: { phoneNumberE164: string; label?: string; }, customers?: { phoneNumberE164: string; label?: string; }[], endedStatus?: string, properties?: object, stereoRecordingUrl?: string, toolInvocations?: { name: string; parameters: object; result: string | object; startOffsetMs: number; agent?: { customId?: string; roarkId?: string; }; description?: string; endOffsetMs?: number; }[], transcript?: { endOffsetMs: number; role: 'AGENT'; startOffsetMs: number; text: string; agent?: { customId?: string; roarkId?: string; }; languageCode?: string; } | { endOffsetMs: number; role: 'CUSTOMER'; startOffsetMs: number; text: string; customer?: { label?: string; phoneNumberE164?: string; }; languageCode?: string; }[]): { data: object; }`\n\n**post** `/v1/call`\n\nCreate a new call with recording, transcript, agents, and customers\n\n### Parameters\n\n- `callDirection: 'INBOUND' | 'OUTBOUND'`\n  Direction of the call (INBOUND or OUTBOUND)\n\n- `interfaceType: 'PHONE' | 'WEB'`\n  Interface type of the call (PHONE or WEB)\n\n- `recordingUrl: string`\n  URL of source recording (must be an accessible WAV, MP3, MP4, or OGG file). Can be a signed URL.\n\n- `startedAt: string`\n  When the call started (ISO 8601 format)\n\n- `agent?: { roarkId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { name: string; customId?: string; description?: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { customId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; }`\n  Single agent participating in the call. Use this for simpler API when you have only one agent.\n\n- `agents?: { roarkId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { name: string; customId?: string; description?: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { customId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; }[]`\n  Agents participating in the call. Each agent requires identification and prompt information.\n\n- `customer?: { phoneNumberE164: string; label?: string; }`\n  Single customer participating in the call. Use this for simpler API when you have only one customer.\n  - `phoneNumberE164: string`\n    Customer phone number in E.164 format (e.g., +14155551234)\n  - `label?: string`\n    Label to identify this customer in the transcript (e.g., \"speaker-01\", \"speaker-02\")\n\n- `customers?: { phoneNumberE164: string; label?: string; }[]`\n  Customers participating in the call.\n\n- `endedStatus?: string`\n  High-level call end status, indicating how the call terminated\n\n- `properties?: object`\n  Custom properties to include with the call. These can be used for filtering and will show in the call details page\n\n- `stereoRecordingUrl?: string`\n  URL of source stereo recording. Must be accessible. Can be a signed URL. Supported formats: WAV, MP3, MP4, OGG.\n\n- `toolInvocations?: { name: string; parameters: object; result: string | object; startOffsetMs: number; agent?: { customId?: string; roarkId?: string; }; description?: string; endOffsetMs?: number; }[]`\n  List of tool invocations made during the call\n\n- `transcript?: { endOffsetMs: number; role: 'AGENT'; startOffsetMs: number; text: string; agent?: { customId?: string; roarkId?: string; }; languageCode?: string; } | { endOffsetMs: number; role: 'CUSTOMER'; startOffsetMs: number; text: string; customer?: { label?: string; phoneNumberE164?: string; }; languageCode?: string; }[]`\n  List of transcript entries made during the call\n\n### Returns\n\n- `{ data: { id: string; agents: { id: string; endpoint?: object; }[]; callDirection: 'INBOUND' | 'OUTBOUND'; createdAt: string; customers: { label?: string; phoneNumberE164?: string; }[]; projectId: string; startedAt: string; status: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; }; }`\n\n  - `data: { id: string; agents: { id: string; endpoint?: { id: string; environment: string; phoneNumberE164?: string; }; }[]; callDirection: 'INBOUND' | 'OUTBOUND'; createdAt: string; customers: { label?: string; phoneNumberE164?: string; }[]; projectId: string; startedAt: string; status: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst call = await client.call.create({\n  callDirection: 'INBOUND',\n  interfaceType: 'PHONE',\n  recordingUrl: 'https://example.com',\n  startedAt: 'startedAt',\n});\n\nconsole.log(call);\n```",
+      "## create\n\n`client.call.create(callDirection: 'INBOUND' | 'OUTBOUND', interfaceType: 'PHONE' | 'WEB', recordingUrl: string, startedAt: string, agent?: { roarkId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { name: string; customId?: string; description?: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { customId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; }, agents?: { roarkId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { name: string; customId?: string; description?: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { customId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; }[], customer?: { phoneNumberE164: string; label?: string; }, customers?: { phoneNumberE164: string; label?: string; }[], endedStatus?: string, externalId?: string, livekitRoomId?: string, properties?: object, stereoRecordingUrl?: string, toolInvocations?: { name: string; parameters: object; result: string | object; startOffsetMs: number; agent?: { customId?: string; roarkId?: string; }; description?: string; endOffsetMs?: number; }[], transcript?: { endOffsetMs: number; role: 'AGENT'; startOffsetMs: number; text: string; agent?: { customId?: string; roarkId?: string; }; languageCode?: string; } | { endOffsetMs: number; role: 'CUSTOMER'; startOffsetMs: number; text: string; customer?: { label?: string; phoneNumberE164?: string; }; languageCode?: string; }[], vapiCallId?: string): { data: object; }`\n\n**post** `/v1/call`\n\nCreate a new call with recording, transcript, agents, and customers\n\n### Parameters\n\n- `callDirection: 'INBOUND' | 'OUTBOUND'`\n  Direction of the call (INBOUND or OUTBOUND)\n\n- `interfaceType: 'PHONE' | 'WEB'`\n  Interface type of the call (PHONE or WEB)\n\n- `recordingUrl: string`\n  URL of source recording (must be an accessible WAV, MP3, MP4, or OGG file). Can be a signed URL.\n\n- `startedAt: string`\n  When the call started (ISO 8601 format)\n\n- `agent?: { roarkId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { name: string; customId?: string; description?: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { customId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; }`\n  Single agent participating in the call. Use this for simpler API when you have only one agent.\n\n- `agents?: { roarkId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { name: string; customId?: string; description?: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; } | { customId: string; endpoint?: { id: string; } | { type: string; value: string; direction?: string; }; prompt?: { resolvedPrompt: string; }; }[]`\n  Agents participating in the call. Each agent requires identification and prompt information.\n\n- `customer?: { phoneNumberE164: string; label?: string; }`\n  Single customer participating in the call. Use this for simpler API when you have only one customer.\n  - `phoneNumberE164: string`\n    Customer phone number in E.164 format (e.g., +14155551234)\n  - `label?: string`\n    Label to identify this customer in the transcript (e.g., \"speaker-01\", \"speaker-02\")\n\n- `customers?: { phoneNumberE164: string; label?: string; }[]`\n  Customers participating in the call.\n\n- `endedStatus?: string`\n  High-level call end status, indicating how the call terminated\n\n- `externalId?: string`\n  A stable identifier from your own system (e.g. session ID, conversation ID) used to correlate this call with OpenTelemetry traces. Set the same value as a `roark.external_id` span or resource attribute on your traces and the matching trace will be linked automatically. Must be unique within a project.\n\n- `livekitRoomId?: string`\n  The LiveKit Cloud room ID to link this call with OpenTelemetry trace data from LiveKit. Used for matching calls with OTEL traces.\n\n- `properties?: object`\n  Custom properties to include with the call. These can be used for filtering and will show in the call details page\n\n- `stereoRecordingUrl?: string`\n  URL of source stereo recording. Must be accessible. Can be a signed URL. Supported formats: WAV, MP3, MP4, OGG.\n\n- `toolInvocations?: { name: string; parameters: object; result: string | object; startOffsetMs: number; agent?: { customId?: string; roarkId?: string; }; description?: string; endOffsetMs?: number; }[]`\n  List of tool invocations made during the call\n\n- `transcript?: { endOffsetMs: number; role: 'AGENT'; startOffsetMs: number; text: string; agent?: { customId?: string; roarkId?: string; }; languageCode?: string; } | { endOffsetMs: number; role: 'CUSTOMER'; startOffsetMs: number; text: string; customer?: { label?: string; phoneNumberE164?: string; }; languageCode?: string; }[]`\n  List of transcript entries made during the call\n\n- `vapiCallId?: string`\n  The Vapi call ID (UUID) to link this call with OpenTelemetry trace data from Vapi. Used for matching calls with OTEL traces.\n\n### Returns\n\n- `{ data: { id: string; agents: { id: string; endpoint?: object; }[]; callDirection: 'INBOUND' | 'OUTBOUND'; createdAt: string; customers: { label?: string; phoneNumberE164?: string; }[]; externalId: string; projectId: string; startedAt: string; status: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; }; }`\n\n  - `data: { id: string; agents: { id: string; endpoint?: { id: string; environment: string; phoneNumberE164?: string; }; }[]; callDirection: 'INBOUND' | 'OUTBOUND'; createdAt: string; customers: { label?: string; phoneNumberE164?: string; }[]; externalId: string; projectId: string; startedAt: string; status: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst call = await client.call.create({\n  callDirection: 'INBOUND',\n  interfaceType: 'PHONE',\n  recordingUrl: 'https://example.com',\n  startedAt: 'startedAt',\n});\n\nconsole.log(call);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.call.create',
         example:
-          'curl https://api.roark.ai/v1/call \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "callDirection": "INBOUND",\n          "interfaceType": "PHONE",\n          "recordingUrl": "https://example.com",\n          "startedAt": "startedAt"\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst call = await client.call.create({\n  callDirection: 'INBOUND',\n  interfaceType: 'PHONE',\n  recordingUrl: 'https://example.com',\n  startedAt: 'startedAt',\n});\n\nconsole.log(call.data);",
       },
       python: {
         method: 'call.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncall = client.call.create(\n    call_direction="INBOUND",\n    interface_type="PHONE",\n    recording_url="https://example.com",\n    started_at="startedAt",\n)\nprint(call.data)',
       },
-      typescript: {
-        method: 'client.call.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst call = await client.call.create({\n  callDirection: 'INBOUND',\n  interfaceType: 'PHONE',\n  recordingUrl: 'https://example.com',\n  startedAt: 'startedAt',\n});\n\nconsole.log(call.data);",
+          'curl https://api.roark.ai/v1/call \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "callDirection": "INBOUND",\n          "interfaceType": "PHONE",\n          "recordingUrl": "https://example.com",\n          "startedAt": "startedAt"\n        }\'',
       },
     },
   },
@@ -171,23 +174,23 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     qualified: 'client.call.getByID',
     params: ['callId: string;'],
     response:
-      "{ data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: object; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }; }",
+      "{ data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: object; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; externalId?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }; }",
     markdown:
-      "## getById\n\n`client.call.getByID(callId: string): { data: object; }`\n\n**get** `/v1/call/{callId}`\n\nRetrieve an existing call by its unique identifier\n\n### Parameters\n\n- `callId: string`\n\n### Returns\n\n- `{ data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: object; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }; }`\n\n  - `data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: { id: string; environment: string; phoneNumberE164?: string; }; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.call.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+      "## getById\n\n`client.call.getByID(callId: string): { data: object; }`\n\n**get** `/v1/call/{callId}`\n\nRetrieve an existing call by its unique identifier\n\n### Parameters\n\n- `callId: string`\n\n### Returns\n\n- `{ data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: object; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; externalId?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }; }`\n\n  - `data: { id: string; callDirection: 'INBOUND' | 'OUTBOUND'; projectId: string; startedAt: string; agents?: { id: string; endpoint?: { id: string; environment: string; phoneNumberE164?: string; }; }[]; createdAt?: string; customers?: { label?: string; phoneNumberE164?: string; }[]; durationMs?: number; endedAt?: string; endedStatus?: string; externalId?: string; policyIds?: string[]; properties?: object; recordingUrl?: string; simulationJobId?: string; status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED'; summary?: string; supersededByCallId?: string; title?: string; updatedAt?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.call.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.call.getByID',
         example:
-          'curl https://api.roark.ai/v1/call/$CALL_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'call.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.call.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/call/$CALL_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -206,19 +209,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## listSentimentRuns\n\n`client.call.listSentimentRuns(callId: string): { data: object; }`\n\n**get** `/v1/call/{callId}/sentiment-run`\n\nFetch detailed sentiment analysis results for a specific call, including emotional tone, key phrases, and sentiment scores.\n\n### Parameters\n\n- `callId: string`\n  ID of the call to fetch sentiment run for\n\n### Returns\n\n- `{ data: { status: string; averageCategoricalSentiment?: string; averageSentiment?: number; commonEmotion?: string; }; }`\n\n  - `data: { status: string; averageCategoricalSentiment?: string; averageSentiment?: number; commonEmotion?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.call.listSentimentRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.call.listSentimentRuns',
         example:
-          'curl https://api.roark.ai/v1/call/$CALL_ID/sentiment-run \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.listSentimentRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'call.list_sentiment_runs',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.list_sentiment_runs(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.call.listSentimentRuns',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.listSentimentRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/call/$CALL_ID/sentiment-run \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -236,19 +239,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## listEvaluationRuns\n\n`client.call.listEvaluationRuns(callId: string): { data: object[]; }`\n\n**get** `/v1/call/{callId}/evaluation-run`\n\nFetch all evaluation run results for a specific call.\n\n### Parameters\n\n- `callId: string`\n  ID of the call to fetch evaluation run for\n\n### Returns\n\n- `{ data: { blockRuns: { blockDefinitionId: string; blockName: string; blockRunId: string; createdAt: string; reason: string; result: 'PASSED' | 'FAILED' | 'SKIPPED'; score: number; status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED'; }[]; evaluator: { id: string; name: string; weight?: number; }; evidence: { commentText: string; createdAt: string; isPositive: boolean; snippetText: string; }[]; metrics: { booleanValue: boolean; confidence: number; createdAt: string; name: string; numericValue: number; reasoning: string; role: string; textValue: string; valueType: string; }[]; status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED'; id?: string; completedAt?: string; result?: 'SUCCESS' | 'FAILURE' | 'SKIPPED'; score?: number; startedAt?: string; summary?: string; }[]; }`\n\n  - `data: { blockRuns: { blockDefinitionId: string; blockName: string; blockRunId: string; createdAt: string; reason: string; result: 'PASSED' | 'FAILED' | 'SKIPPED'; score: number; status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED'; }[]; evaluator: { id: string; name: string; weight?: number; }; evidence: { commentText: string; createdAt: string; isPositive: boolean; snippetText: string; }[]; metrics: { booleanValue: boolean; confidence: number; createdAt: string; name: string; numericValue: number; reasoning: string; role: string; textValue: string; valueType: string; }[]; status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED'; id?: string; completedAt?: string; result?: 'SUCCESS' | 'FAILURE' | 'SKIPPED'; score?: number; startedAt?: string; summary?: string; }[]`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.call.listEvaluationRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.call.listEvaluationRuns',
         example:
-          'curl https://api.roark.ai/v1/call/$CALL_ID/evaluation-run \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.listEvaluationRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'call.list_evaluation_runs',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.list_evaluation_runs(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.call.listEvaluationRuns',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.listEvaluationRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/call/$CALL_ID/evaluation-run \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -267,19 +270,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## listMetrics\n\n`client.call.listMetrics(callId: string, flatten?: string): { data: object[]; }`\n\n**get** `/v1/call/{callId}/metrics`\n\nFetch all call-level metrics for a specific call, including both system-generated and custom metrics. Only returns successfully computed metrics.\n\n### Parameters\n\n- `callId: string`\n\n- `flatten?: string`\n  Whether to return a flat list instead of grouped by metric definition (default: false)\n\n### Returns\n\n- `{ data: { description: string; metricDefinitionId: string; metricId: string; name: string; scope: 'GLOBAL' | 'PER_PARTICIPANT'; type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET'; values: { computedAt: string; confidence: number; context: 'CALL' | 'SEGMENT' | 'SEGMENT_RANGE'; value: number | boolean | string; fromSegment?: object; participantRole?: 'agent' | 'customer'; policyIds?: string[]; segment?: object; toSegment?: object; valueReasoning?: string; }[]; unit?: { name: string; symbol: string; }; }[]; }`\n\n  - `data: { description: string; metricDefinitionId: string; metricId: string; name: string; scope: 'GLOBAL' | 'PER_PARTICIPANT'; type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET'; values: { computedAt: string; confidence: number; context: 'CALL' | 'SEGMENT' | 'SEGMENT_RANGE'; value: number | boolean | string; fromSegment?: { id: string; endOffsetMs: number; startOffsetMs: number; text: string; }; participantRole?: 'agent' | 'customer'; policyIds?: string[]; segment?: { id: string; endOffsetMs: number; startOffsetMs: number; text: string; }; toSegment?: { id: string; endOffsetMs: number; startOffsetMs: number; text: string; }; valueReasoning?: string; }[]; unit?: { name: string; symbol: string; }; }[]`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.call.listMetrics('callId');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.call.listMetrics',
         example:
-          'curl https://api.roark.ai/v1/call/$CALL_ID/metrics \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.listMetrics('callId');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'call.list_metrics',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.list_metrics(\n    call_id="callId",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.call.listMetrics',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.listMetrics('callId');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/call/$CALL_ID/metrics \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -301,19 +304,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getTranscript\n\n`client.call.getTranscript(callId: string, source?: 'ROARK_POST_CALL' | 'SIMULATION_AGENT_REALTIME' | 'CUSTOMER_AGENT_REALTIME'): { data: object; }`\n\n**get** `/v1/call/{callId}/transcript`\n\nFetch the full transcript for a specific call. Optionally specify a transcription source; otherwise the best available source is used automatically.\n\n### Parameters\n\n- `callId: string`\n\n- `source?: 'ROARK_POST_CALL' | 'SIMULATION_AGENT_REALTIME' | 'CUSTOMER_AGENT_REALTIME'`\n  Transcription source to fetch. When omitted, uses the preferred source based on availability: CUSTOMER_AGENT_REALTIME > SIMULATION_AGENT_REALTIME > ROARK_POST_CALL\n\n### Returns\n\n- `{ data: { entries: { endOffsetMs: number; participantId: string; role: 'AGENT' | 'CUSTOMER'; startOffsetMs: number; text: string; }[]; participants: { id: string; agentId: string; type: 'AGENT'; } | { id: string; customerId: string; type: 'CUSTOMER'; } | { id: string; customerId: string; type: 'SIMULATED_CUSTOMER'; } | { id: string; type: 'BACKGROUND_SPEAKER'; }[]; transcriptionSource: 'ROARK_POST_CALL' | 'SIMULATION_AGENT_REALTIME' | 'CUSTOMER_AGENT_REALTIME'; }; }`\n\n  - `data: { entries: { endOffsetMs: number; participantId: string; role: 'AGENT' | 'CUSTOMER'; startOffsetMs: number; text: string; }[]; participants: { id: string; agentId: string; type: 'AGENT'; } | { id: string; customerId: string; type: 'CUSTOMER'; } | { id: string; customerId: string; type: 'SIMULATED_CUSTOMER'; } | { id: string; type: 'BACKGROUND_SPEAKER'; }[]; transcriptionSource: 'ROARK_POST_CALL' | 'SIMULATION_AGENT_REALTIME' | 'CUSTOMER_AGENT_REALTIME'; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.call.getTranscript('callId');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.call.getTranscript',
         example:
-          'curl https://api.roark.ai/v1/call/$CALL_ID/transcript \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.getTranscript('callId');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'call.get_transcript',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.get_transcript(\n    call_id="callId",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.call.getTranscript',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.getTranscript('callId');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/call/$CALL_ID/transcript \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -331,19 +334,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## listDefinitions\n\n`client.metric.listDefinitions(): { data: object[]; }`\n\n**get** `/v1/metric/definitions`\n\nFetch all metric definitions available in the project, including both system-generated and custom metrics.\n\n### Returns\n\n- `{ data: { id: string; description: string; metricId: string; name: string; scope: 'GLOBAL' | 'PER_PARTICIPANT'; supportedContexts: 'CALL' | 'SEGMENT' | 'TURN'[]; type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET'; unit?: { name: string; symbol: string; }; }[]; }`\n\n  - `data: { id: string; description: string; metricId: string; name: string; scope: 'GLOBAL' | 'PER_PARTICIPANT'; supportedContexts: 'CALL' | 'SEGMENT' | 'TURN'[]; type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET'; unit?: { name: string; symbol: string; }; }[]`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.metric.listDefinitions();\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metric.listDefinitions',
         example:
-          'curl https://api.roark.ai/v1/metric/definitions \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metric.listDefinitions();\n\nconsole.log(response.data);",
       },
       python: {
         method: 'metric.list_definitions',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.metric.list_definitions()\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.metric.listDefinitions',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metric.listDefinitions();\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/metric/definitions \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -378,19 +381,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## createDefinition\n\n`client.metric.createDefinition(analysisPackageId: string, name: string, outputType: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET', booleanFalseLabel?: string, booleanTrueLabel?: string, classificationOptions?: { description: string; displayOrder: number; label: string; }[], llmPrompt?: string, maxClassifications?: number, metricId?: string, participantRole?: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER', scaleLabels?: { displayOrder: number; label: string; rangeMax: number; rangeMin: number; colorHex?: string; description?: string; }[], scaleMax?: number, scaleMin?: number, scope?: 'GLOBAL' | 'PER_PARTICIPANT', supportedContexts?: 'CALL' | 'SEGMENT' | 'TURN'[]): { data: object; }`\n\n**post** `/v1/metric/definitions`\n\nCreate a new custom metric definition. The metric will be added to the specified analysis package and can be used for evaluating calls.\n\n### Parameters\n\n- `analysisPackageId: string`\n  ID of the analysis package to add this metric to\n\n- `name: string`\n  Name of the metric\n\n- `outputType: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET'`\n  Type of value this metric produces\n\n- `booleanFalseLabel?: string`\n  Label for the false/negative case (only for BOOLEAN type)\n\n- `booleanTrueLabel?: string`\n  Label for the true/positive case (only for BOOLEAN type)\n\n- `classificationOptions?: { description: string; displayOrder: number; label: string; }[]`\n  Options for classification. Required for CLASSIFICATION type.\n\n- `llmPrompt?: string`\n  LLM prompt/criteria for evaluating this metric. Used to instruct the model on how to score. Required for BOOLEAN, NUMERIC, TEXT, and SCALE types.\n\n- `maxClassifications?: number`\n  Maximum number of classifications that can be selected (only for CLASSIFICATION type)\n\n- `metricId?: string`\n  Unique identifier for the metric (e.g. \"customer_satisfaction\"). Auto-generated from name if not provided.\n\n- `participantRole?: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER'`\n  Participant role to evaluate. Required when scope is PER_PARTICIPANT.\n\n- `scaleLabels?: { displayOrder: number; label: string; rangeMax: number; rangeMin: number; colorHex?: string; description?: string; }[]`\n  Labels for scale ranges (only for SCALE type)\n\n- `scaleMax?: number`\n  Maximum value for scale. Required for SCALE type.\n\n- `scaleMin?: number`\n  Minimum value for scale. Required for SCALE type.\n\n- `scope?: 'GLOBAL' | 'PER_PARTICIPANT'`\n  Whether metric is global or per-participant (default: GLOBAL)\n\n- `supportedContexts?: 'CALL' | 'SEGMENT' | 'TURN'[]`\n  Which levels this metric can produce values at (default: [\"CALL\"])\n\n### Returns\n\n- `{ data: { id: string; description: string; metricId: string; name: string; scope: 'GLOBAL' | 'PER_PARTICIPANT'; supportedContexts: 'CALL' | 'SEGMENT' | 'TURN'[]; type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET'; unit?: { name: string; symbol: string; }; }; }`\n\n  - `data: { id: string; description: string; metricId: string; name: string; scope: 'GLOBAL' | 'PER_PARTICIPANT'; supportedContexts: 'CALL' | 'SEGMENT' | 'TURN'[]; type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET'; unit?: { name: string; symbol: string; }; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.metric.createDefinition({\n  analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  name: 'Customer Satisfaction',\n  outputType: 'BOOLEAN',\n});\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metric.createDefinition',
         example:
-          'curl https://api.roark.ai/v1/metric/definitions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "analysisPackageId": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "name": "Customer Satisfaction",\n          "outputType": "BOOLEAN",\n          "booleanFalseLabel": "Not Satisfied",\n          "booleanTrueLabel": "Satisfied",\n          "llmPrompt": "Evaluate whether the customer expressed satisfaction with the service provided.",\n          "metricId": "customer_satisfaction",\n          "scaleMax": 5,\n          "scaleMin": 1,\n          "scope": "GLOBAL",\n          "supportedContexts": [\n            "CALL"\n          ]\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metric.createDefinition({\n  analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  name: 'Customer Satisfaction',\n  outputType: 'BOOLEAN',\n});\n\nconsole.log(response.data);",
       },
       python: {
         method: 'metric.create_definition',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.metric.create_definition(\n    analysis_package_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    name="Customer Satisfaction",\n    output_type="BOOLEAN",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.metric.createDefinition',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metric.createDefinition({\n  analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  name: 'Customer Satisfaction',\n  outputType: 'BOOLEAN',\n});\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/metric/definitions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "analysisPackageId": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "name": "Customer Satisfaction",\n          "outputType": "BOOLEAN",\n          "booleanFalseLabel": "Not Satisfied",\n          "booleanTrueLabel": "Satisfied",\n          "llmPrompt": "Evaluate whether the customer expressed satisfaction with the service provided.",\n          "metricId": "customer_satisfaction",\n          "scaleMax": 5,\n          "scaleMin": 1,\n          "scope": "GLOBAL",\n          "supportedContexts": [\n            "CALL"\n          ]\n        }\'',
       },
     },
   },
@@ -408,19 +411,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.metricPolicy.list(after?: string, limit?: number, status?: 'ACTIVE' | 'INACTIVE'): { data: object[]; pagination: object; }`\n\n**get** `/v1/metric/policies`\n\nReturns a paginated list of metric policies for the project, including system policies.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - use the nextCursor value from a previous response\n\n- `limit?: number`\n  Maximum number of policies to return (default: 20, max: 50)\n\n- `status?: 'ACTIVE' | 'INACTIVE'`\n  Filter by policy status\n\n### Returns\n\n- `{ data: { id: string; conditions: { conditions: object[]; }[]; createdAt: string; metrics: { id: string; }[]; name: string; status: 'ACTIVE' | 'INACTIVE'; type: 'SYSTEM' | 'USER'; updatedAt: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n  Paginated list of metric policies\n\n  - `data: { id: string; conditions: { conditions: { conditionKey: string; conditionOperator: string; conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION'; conditionValue: string; }[]; }[]; createdAt: string; metrics: { id: string; }[]; name: string; status: 'ACTIVE' | 'INACTIVE'; type: 'SYSTEM' | 'USER'; updatedAt: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst metricPolicies = await client.metricPolicy.list();\n\nconsole.log(metricPolicies);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metricPolicy.list',
         example:
-          'curl https://api.roark.ai/v1/metric/policies \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicies = await client.metricPolicy.list();\n\nconsole.log(metricPolicies.data);",
       },
       python: {
         method: 'metric_policy.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_policies = client.metric_policy.list()\nprint(metric_policies.data)',
       },
-      typescript: {
-        method: 'client.metricPolicy.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicies = await client.metricPolicy.list();\n\nconsole.log(metricPolicies.data);",
+          'curl https://api.roark.ai/v1/metric/policies \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -438,19 +441,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.metricPolicy.getByID(policyId: string): { data: object; }`\n\n**get** `/v1/metric/policies/{policyId}`\n\nReturns a specific metric policy with its conditions and metrics.\n\n### Parameters\n\n- `policyId: string`\n\n### Returns\n\n- `{ data: { id: string; conditions: { conditions: object[]; }[]; createdAt: string; metrics: { id: string; }[]; name: string; status: 'ACTIVE' | 'INACTIVE'; type: 'SYSTEM' | 'USER'; updatedAt: string; }; }`\n\n  - `data: { id: string; conditions: { conditions: { conditionKey: string; conditionOperator: string; conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION'; conditionValue: string; }[]; }[]; createdAt: string; metrics: { id: string; }[]; name: string; status: 'ACTIVE' | 'INACTIVE'; type: 'SYSTEM' | 'USER'; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.metricPolicy.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metricPolicy.getByID',
         example:
-          'curl https://api.roark.ai/v1/metric/policies/$POLICY_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metricPolicy.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'metric_policy.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.metric_policy.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.metricPolicy.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metricPolicy.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/metric/policies/$POLICY_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -475,19 +478,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.metricPolicy.create(metrics: { id: string; }[], modality: 'call' | 'chat', name: string, conditions?: { conditions: { conditionKey: string; conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION'; conditionOperator?: string; conditionValue?: string; }[]; }[], status?: 'ACTIVE' | 'INACTIVE'): { data: object; }`\n\n**post** `/v1/metric/policies`\n\nCreates a new metric policy. Policies define which metrics to collect and under what conditions.\n\n### Parameters\n\n- `metrics: { id: string; }[]`\n  Metric definitions to collect when this policy matches\n\n- `modality: 'call' | 'chat'`\n  Modality this policy targets. A policy fires for exactly one modality and can only reference metrics that support that modality.\n\n- `name: string`\n  Name of the metric policy\n\n- `conditions?: { conditions: { conditionKey: string; conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION'; conditionOperator?: string; conditionValue?: string; }[]; }[]`\n  Condition groups. Omit to match all calls.\n\n- `status?: 'ACTIVE' | 'INACTIVE'`\n  Status of the policy (default: ACTIVE)\n\n### Returns\n\n- `{ data: { id: string; conditions: { conditions: object[]; }[]; createdAt: string; metrics: { id: string; }[]; name: string; status: 'ACTIVE' | 'INACTIVE'; type: 'SYSTEM' | 'USER'; updatedAt: string; }; }`\n\n  - `data: { id: string; conditions: { conditions: { conditionKey: string; conditionOperator: string; conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION'; conditionValue: string; }[]; }[]; createdAt: string; metrics: { id: string; }[]; name: string; status: 'ACTIVE' | 'INACTIVE'; type: 'SYSTEM' | 'USER'; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst metricPolicy = await client.metricPolicy.create({\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  modality: 'call',\n  name: 'Evaluate all inbound calls',\n});\n\nconsole.log(metricPolicy);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metricPolicy.create',
         example:
-          'curl https://api.roark.ai/v1/metric/policies \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "metrics": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "modality": "call",\n          "name": "Evaluate all inbound calls",\n          "status": "ACTIVE"\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicy = await client.metricPolicy.create({\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  modality: 'call',\n  name: 'Evaluate all inbound calls',\n});\n\nconsole.log(metricPolicy.data);",
       },
       python: {
         method: 'metric_policy.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_policy = client.metric_policy.create(\n    metrics=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n    modality="call",\n    name="Evaluate all inbound calls",\n)\nprint(metric_policy.data)',
       },
-      typescript: {
-        method: 'client.metricPolicy.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicy = await client.metricPolicy.create({\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  modality: 'call',\n  name: 'Evaluate all inbound calls',\n});\n\nconsole.log(metricPolicy.data);",
+          'curl https://api.roark.ai/v1/metric/policies \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "metrics": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "modality": "call",\n          "name": "Evaluate all inbound calls",\n          "status": "ACTIVE"\n        }\'',
       },
     },
   },
@@ -511,19 +514,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.metricPolicy.update(policyId: string, conditions?: { conditions: { conditionKey: string; conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION'; conditionOperator?: string; conditionValue?: string; }[]; }[], metrics?: { id: string; }[], name?: string, status?: 'ACTIVE' | 'INACTIVE'): { data: object; }`\n\n**put** `/v1/metric/policies/{policyId}`\n\nUpdates an existing metric policy. System policies cannot be modified.\n\n### Parameters\n\n- `policyId: string`\n\n- `conditions?: { conditions: { conditionKey: string; conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION'; conditionOperator?: string; conditionValue?: string; }[]; }[]`\n  Condition groups. Omit to keep existing, provide empty array to remove all conditions.\n\n- `metrics?: { id: string; }[]`\n  Metric definitions to collect when this policy matches\n\n- `name?: string`\n  Name of the metric policy\n\n- `status?: 'ACTIVE' | 'INACTIVE'`\n  Status of the policy\n\n### Returns\n\n- `{ data: { id: string; conditions: { conditions: object[]; }[]; createdAt: string; metrics: { id: string; }[]; name: string; status: 'ACTIVE' | 'INACTIVE'; type: 'SYSTEM' | 'USER'; updatedAt: string; }; }`\n\n  - `data: { id: string; conditions: { conditions: { conditionKey: string; conditionOperator: string; conditionType: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION'; conditionValue: string; }[]; }[]; createdAt: string; metrics: { id: string; }[]; name: string; status: 'ACTIVE' | 'INACTIVE'; type: 'SYSTEM' | 'USER'; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst metricPolicy = await client.metricPolicy.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(metricPolicy);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metricPolicy.update',
         example:
-          'curl https://api.roark.ai/v1/metric/policies/$POLICY_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicy = await client.metricPolicy.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(metricPolicy.data);",
       },
       python: {
         method: 'metric_policy.update',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_policy = client.metric_policy.update(\n    policy_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(metric_policy.data)',
       },
-      typescript: {
-        method: 'client.metricPolicy.update',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicy = await client.metricPolicy.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(metricPolicy.data);",
+          'curl https://api.roark.ai/v1/metric/policies/$POLICY_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -540,19 +543,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.metricPolicy.delete(policyId: string): { data: object; }`\n\n**delete** `/v1/metric/policies/{policyId}`\n\nSoft-deletes a metric policy. System policies cannot be deleted.\n\n### Parameters\n\n- `policyId: string`\n\n### Returns\n\n- `{ data: { deleted: boolean; }; }`\n\n  - `data: { deleted: boolean; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst metricPolicy = await client.metricPolicy.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(metricPolicy);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metricPolicy.delete',
         example:
-          'curl https://api.roark.ai/v1/metric/policies/$POLICY_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicy = await client.metricPolicy.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(metricPolicy.data);",
       },
       python: {
         method: 'metric_policy.delete',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_policy = client.metric_policy.delete(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(metric_policy.data)',
       },
-      typescript: {
-        method: 'client.metricPolicy.delete',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicy = await client.metricPolicy.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(metricPolicy.data);",
+          'curl https://api.roark.ai/v1/metric/policies/$POLICY_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -574,19 +577,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.metricCollectionJob.list(after?: string, limit?: number, status?: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'): { data: object[]; pagination: object; }`\n\n**get** `/v1/metric/collection-jobs`\n\nReturns a paginated list of metric collection jobs for the project.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - use the nextCursor value from a previous response\n\n- `limit?: number`\n  Maximum number of jobs to return (default: 20, max: 50)\n\n- `status?: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'`\n  Filter by job status\n\n### Returns\n\n- `{ data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n  Paginated list of metric collection jobs\n\n  - `data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst metricCollectionJobs = await client.metricCollectionJob.list();\n\nconsole.log(metricCollectionJobs);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metricCollectionJob.list',
         example:
-          'curl https://api.roark.ai/v1/metric/collection-jobs \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricCollectionJobs = await client.metricCollectionJob.list();\n\nconsole.log(metricCollectionJobs.data);",
       },
       python: {
         method: 'metric_collection_job.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_collection_jobs = client.metric_collection_job.list()\nprint(metric_collection_jobs.data)',
       },
-      typescript: {
-        method: 'client.metricCollectionJob.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricCollectionJobs = await client.metricCollectionJob.list();\n\nconsole.log(metricCollectionJobs.data);",
+          'curl https://api.roark.ai/v1/metric/collection-jobs \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -604,19 +607,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.metricCollectionJob.getByID(jobId: string): { data: object; }`\n\n**get** `/v1/metric/collection-jobs/{jobId}`\n\nReturns a specific metric collection job with progress information.\n\n### Parameters\n\n- `jobId: string`\n\n### Returns\n\n- `{ data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }; }`\n\n  - `data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.metricCollectionJob.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metricCollectionJob.getByID',
         example:
-          'curl https://api.roark.ai/v1/metric/collection-jobs/$JOB_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metricCollectionJob.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'metric_collection_job.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.metric_collection_job.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.metricCollectionJob.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metricCollectionJob.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/metric/collection-jobs/$JOB_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -635,19 +638,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.metricCollectionJob.create(metrics: { id: string; }[], callIds?: string[], chatIds?: string[]): { data: object; }`\n\n**post** `/v1/metric/collection-jobs`\n\nCreates a metric collection job for the specified calls or chats and metrics, then triggers processing. Provide exactly one of callIds or chatIds.\n\n### Parameters\n\n- `metrics: { id: string; }[]`\n  Metric definitions to collect\n\n- `callIds?: string[]`\n  Call IDs to collect metrics for. Mutually exclusive with chatIds.\n\n- `chatIds?: string[]`\n  Chat IDs to collect metrics for. Mutually exclusive with callIds.\n\n### Returns\n\n- `{ data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }; }`\n\n  - `data: { id: string; completedAt: string; completedItems: number; createdAt: string; errorMessage: string; failedItems: number; policyIds: string[]; startedAt: string; status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED'; totalItems: number; triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION'; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst metricCollectionJob = await client.metricCollectionJob.create({ metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }] });\n\nconsole.log(metricCollectionJob);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.metricCollectionJob.create',
         example:
-          'curl https://api.roark.ai/v1/metric/collection-jobs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "metrics": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ]\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricCollectionJob = await client.metricCollectionJob.create({\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n});\n\nconsole.log(metricCollectionJob.data);",
       },
       python: {
         method: 'metric_collection_job.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_collection_job = client.metric_collection_job.create(\n    metrics=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n)\nprint(metric_collection_job.data)',
       },
-      typescript: {
-        method: 'client.metricCollectionJob.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricCollectionJob = await client.metricCollectionJob.create({\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n});\n\nconsole.log(metricCollectionJob.data);",
+          'curl https://api.roark.ai/v1/metric/collection-jobs \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "metrics": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -665,19 +668,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## lookup\n\n`client.simulationJob.lookup(roarkPhoneNumber: object, callReceivedAt?: object): { data: object; }`\n\n**get** `/v1/simulation/job/lookup`\n\nFind the matching simulation using the number used by the Roark simulation agent.\n\n### Parameters\n\n- `roarkPhoneNumber: object`\n  Phone number provisioned by Roark for the simulation job in E.164 format. In the case of an inbound simulation, this is the number that calls your agent; in the case of an outbound simulation, this is the number you call from your agent.\n\n- `callReceivedAt?: object`\n  ISO 8601 timestamp of when the call was received. Alternatively, any time between the start and end of the call is valid. Defaults to the current time, which fetches any jobs that are currently ongoing.\n\n### Returns\n\n- `{ data: { agentEndpoint: { id: string; name: string; phoneNumber: string; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; }; createdAt: string; persona: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }; processingStatus: string; scenario: { id: string; description?: string; }; simulationJobId: string; status: string; callId?: string; completedAt?: string; roarkPhoneNumber?: string; startedAt?: string; }; }`\n\n  - `data: { agentEndpoint: { id: string; name: string; phoneNumber: string; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; }; createdAt: string; persona: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }; processingStatus: string; scenario: { id: string; description?: string; }; simulationJobId: string; status: string; callId?: string; completedAt?: string; roarkPhoneNumber?: string; startedAt?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationJob.lookup({ roarkPhoneNumber: {} });\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationJob.lookup',
         example:
-          'curl https://api.roark.ai/v1/simulation/job/lookup \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationJob.lookup({ roarkPhoneNumber: {} });\n\nconsole.log(response.data);",
       },
       python: {
         method: 'simulation_job.lookup',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_job.lookup(\n    roark_phone_number={},\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.simulationJob.lookup',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationJob.lookup({ roarkPhoneNumber: {} });\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/simulation/job/lookup \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -696,19 +699,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.simulationJob.getByID(jobId: object): { data: object; }`\n\n**get** `/v1/simulation/job/{jobId}`\n\nGet a individual simulation run directly by its ID. This is generally part of a larger simulation run plan job.\n\n### Parameters\n\n- `jobId: object`\n\n### Returns\n\n- `{ data: { agentEndpoint: { id: string; name: string; phoneNumber: string; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; }; createdAt: string; persona: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }; processingStatus: string; scenario: { id: string; description?: string; }; simulationJobId: string; status: string; callId?: string; completedAt?: string; roarkPhoneNumber?: string; startedAt?: string; }; }`\n\n  - `data: { agentEndpoint: { id: string; name: string; phoneNumber: string; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; }; createdAt: string; persona: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }; processingStatus: string; scenario: { id: string; description?: string; }; simulationJobId: string; status: string; callId?: string; completedAt?: string; roarkPhoneNumber?: string; startedAt?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationJob.getByID',
         example:
-          'curl https://api.roark.ai/v1/simulation/job/$JOB_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'simulation_job.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_job.get_by_id(\n    "7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.simulationJob.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/simulation/job/$JOB_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -727,19 +730,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.simulationRunPlan.list(after?: string, agentId?: string, limit?: number, searchText?: string): { data: object[]; pagination: object; }`\n\n**get** `/v1/simulation/plan`\n\nReturns a paginated list of simulation run plans. Optionally filter by search text or agent ID.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - use the nextCursor value from a previous response\n\n- `agentId?: string`\n  Filter run plans by agent ID\n\n- `limit?: number`\n  Maximum number of run plans to return (default: 20, max: 50)\n\n- `searchText?: string`\n  Search text to filter run plans by name\n\n### Returns\n\n- `{ data: { id: string; agentEndpoints: { id: string; }[]; createdAt: string; direction: 'INBOUND' | 'OUTBOUND'; endCallPhrases: string[]; endCallReasons: string[]; evaluators: { id: string; }[]; executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'; iterationCount: number; maxConcurrentJobs: number; maxSimulationDurationSeconds: number; metrics: { id: string; }[]; name: string; personas: { id: string; }[]; scenarios: { id: string; variables?: object; }[]; silenceTimeoutSeconds: number; testCaseCount: number; updatedAt: string; description?: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n  Paginated list of simulation run plans\n\n  - `data: { id: string; agentEndpoints: { id: string; }[]; createdAt: string; direction: 'INBOUND' | 'OUTBOUND'; endCallPhrases: string[]; endCallReasons: string[]; evaluators: { id: string; }[]; executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'; iterationCount: number; maxConcurrentJobs: number; maxSimulationDurationSeconds: number; metrics: { id: string; }[]; name: string; personas: { id: string; }[]; scenarios: { id: string; variables?: object; }[]; silenceTimeoutSeconds: number; testCaseCount: number; updatedAt: string; description?: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationRunPlans = await client.simulationRunPlan.list();\n\nconsole.log(simulationRunPlans);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationRunPlan.list',
         example:
-          'curl https://api.roark.ai/v1/simulation/plan \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlans = await client.simulationRunPlan.list();\n\nconsole.log(simulationRunPlans.data);",
       },
       python: {
         method: 'simulation_run_plan.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plans = client.simulation_run_plan.list()\nprint(simulation_run_plans.data)',
       },
-      typescript: {
-        method: 'client.simulationRunPlan.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlans = await client.simulationRunPlan.list();\n\nconsole.log(simulationRunPlans.data);",
+          'curl https://api.roark.ai/v1/simulation/plan \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -757,19 +760,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.simulationRunPlan.getByID(planId: string): { data: object; }`\n\n**get** `/v1/simulation/plan/{planId}`\n\nReturns a specific simulation run plan by its ID.\n\n### Parameters\n\n- `planId: string`\n\n### Returns\n\n- `{ data: { id: string; agentEndpoints: { id: string; }[]; createdAt: string; direction: 'INBOUND' | 'OUTBOUND'; endCallPhrases: string[]; endCallReasons: string[]; evaluators: { id: string; }[]; executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'; iterationCount: number; maxConcurrentJobs: number; maxSimulationDurationSeconds: number; metrics: { id: string; }[]; name: string; personas: { id: string; }[]; scenarios: { id: string; variables?: object; }[]; silenceTimeoutSeconds: number; testCaseCount: number; updatedAt: string; description?: string; }; }`\n\n  - `data: { id: string; agentEndpoints: { id: string; }[]; createdAt: string; direction: 'INBOUND' | 'OUTBOUND'; endCallPhrases: string[]; endCallReasons: string[]; evaluators: { id: string; }[]; executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'; iterationCount: number; maxConcurrentJobs: number; maxSimulationDurationSeconds: number; metrics: { id: string; }[]; name: string; personas: { id: string; }[]; scenarios: { id: string; variables?: object; }[]; silenceTimeoutSeconds: number; testCaseCount: number; updatedAt: string; description?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationRunPlan.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationRunPlan.getByID',
         example:
-          'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationRunPlan.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'simulation_run_plan.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_run_plan.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.simulationRunPlan.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationRunPlan.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -804,19 +807,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.simulationRunPlan.create(agentEndpoints: { id: string; }[], direction: 'INBOUND' | 'OUTBOUND', maxSimulationDurationSeconds: number, metrics: { id: string; }[], name: string, personas: { id: string; }[], scenarios: { id: string; variables?: object; }[], autoRun?: boolean, description?: string, endCallPhrases?: string[], endCallReasons?: string[], executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT', iterationCount?: number, maxConcurrentJobs?: number, silenceTimeoutSeconds?: number): { data: object; }`\n\n**post** `/v1/simulation/plan`\n\nCreates a new simulation run plan. Optionally triggers a job immediately if autoRun is true.\n\n### Parameters\n\n- `agentEndpoints: { id: string; }[]`\n  Agent endpoints to include in this run plan\n\n- `direction: 'INBOUND' | 'OUTBOUND'`\n  Direction of the simulation (INBOUND or OUTBOUND)\n\n- `maxSimulationDurationSeconds: number`\n  Maximum duration in seconds for each simulation\n\n- `metrics: { id: string; }[]`\n  Metric definitions to include in this run plan\n\n- `name: string`\n  Name of the run plan\n\n- `personas: { id: string; }[]`\n  Personas to include in this run plan\n\n- `scenarios: { id: string; variables?: object; }[]`\n  Scenarios to include in this run plan. The same scenario ID can appear multiple times with different variables.\n\n- `autoRun?: boolean`\n  Whether to automatically trigger a job after creating the run plan\n\n- `description?: string`\n  Description of the run plan\n\n- `endCallPhrases?: string[]`\n  Phrases that trigger end of call. Empty array disables the feature.\n\n- `endCallReasons?: string[]`\n  Semantic conditions that trigger end of call. The LLM evaluates the conversation against these conditions. Empty array disables the feature.\n\n- `executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'`\n  Execution mode (PARALLEL or SEQUENTIAL)\n\n- `iterationCount?: number`\n  Number of iterations to run for each test case. Must be 1 for OUTBOUND direction.\n\n- `maxConcurrentJobs?: number`\n  Maximum number of concurrent simulation jobs\n\n- `silenceTimeoutSeconds?: number`\n  Timeout in seconds for silence detection\n\n### Returns\n\n- `{ data: { runPlan: { id: string; agentEndpoints: object[]; createdAt: string; direction: 'INBOUND' | 'OUTBOUND'; endCallPhrases: string[]; endCallReasons: string[]; evaluators: object[]; executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'; iterationCount: number; maxConcurrentJobs: number; maxSimulationDurationSeconds: number; metrics: object[]; name: string; personas: object[]; scenarios: object[]; silenceTimeoutSeconds: number; testCaseCount: number; updatedAt: string; description?: string; }; runPlanJob?: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; }; }; }`\n\n  - `data: { runPlan: { id: string; agentEndpoints: { id: string; }[]; createdAt: string; direction: 'INBOUND' | 'OUTBOUND'; endCallPhrases: string[]; endCallReasons: string[]; evaluators: { id: string; }[]; executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'; iterationCount: number; maxConcurrentJobs: number; maxSimulationDurationSeconds: number; metrics: { id: string; }[]; name: string; personas: { id: string; }[]; scenarios: { id: string; variables?: object; }[]; silenceTimeoutSeconds: number; testCaseCount: number; updatedAt: string; description?: string; }; runPlanJob?: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; }; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationRunPlan = await client.simulationRunPlan.create({\n  agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  direction: 'INBOUND',\n  maxSimulationDurationSeconds: 300,\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  name: 'My Run Plan',\n  personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n});\n\nconsole.log(simulationRunPlan);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationRunPlan.create',
         example:
-          'curl https://api.roark.ai/v1/simulation/plan \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "agentEndpoints": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "direction": "INBOUND",\n          "maxSimulationDurationSeconds": 300,\n          "metrics": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "name": "My Run Plan",\n          "personas": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "scenarios": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "description": "A run plan for testing inbound calls",\n          "endCallPhrases": [\n            "goodbye"\n          ],\n          "endCallReasons": [\n            "Order has been confirmed by the agent"\n          ],\n          "executionMode": "PARALLEL",\n          "iterationCount": 1,\n          "maxConcurrentJobs": 5,\n          "silenceTimeoutSeconds": 30\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlan = await client.simulationRunPlan.create({\n  agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  direction: 'INBOUND',\n  maxSimulationDurationSeconds: 300,\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  name: 'My Run Plan',\n  personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n});\n\nconsole.log(simulationRunPlan.data);",
       },
       python: {
         method: 'simulation_run_plan.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plan = client.simulation_run_plan.create(\n    agent_endpoints=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n    direction="INBOUND",\n    max_simulation_duration_seconds=300,\n    metrics=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n    name="My Run Plan",\n    personas=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n    scenarios=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n)\nprint(simulation_run_plan.data)',
       },
-      typescript: {
-        method: 'client.simulationRunPlan.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlan = await client.simulationRunPlan.create({\n  agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  direction: 'INBOUND',\n  maxSimulationDurationSeconds: 300,\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  name: 'My Run Plan',\n  personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n});\n\nconsole.log(simulationRunPlan.data);",
+          'curl https://api.roark.ai/v1/simulation/plan \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "agentEndpoints": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "direction": "INBOUND",\n          "maxSimulationDurationSeconds": 300,\n          "metrics": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "name": "My Run Plan",\n          "personas": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "scenarios": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "description": "A run plan for testing inbound calls",\n          "endCallPhrases": [\n            "goodbye"\n          ],\n          "endCallReasons": [\n            "Order has been confirmed by the agent"\n          ],\n          "executionMode": "PARALLEL",\n          "iterationCount": 1,\n          "maxConcurrentJobs": 5,\n          "silenceTimeoutSeconds": 30\n        }\'',
       },
     },
   },
@@ -850,19 +853,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.simulationRunPlan.update(planId: string, agentEndpoints?: { id: string; }[], description?: string, direction?: 'INBOUND' | 'OUTBOUND', endCallPhrases?: string[], endCallReasons?: string[], executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT', iterationCount?: number, maxConcurrentJobs?: number, maxSimulationDurationSeconds?: number, metrics?: { id: string; }[], name?: string, personas?: { id: string; }[], scenarios?: { id: string; variables?: object; }[], silenceTimeoutSeconds?: number): { data: object; }`\n\n**put** `/v1/simulation/plan/{planId}`\n\nUpdates an existing simulation run plan by its ID.\n\n### Parameters\n\n- `planId: string`\n\n- `agentEndpoints?: { id: string; }[]`\n  Agent endpoints to include in this run plan\n\n- `description?: string`\n  Description of the run plan\n\n- `direction?: 'INBOUND' | 'OUTBOUND'`\n  Direction of the simulation (INBOUND or OUTBOUND)\n\n- `endCallPhrases?: string[]`\n  Phrases that trigger end of call. Empty array disables the feature.\n\n- `endCallReasons?: string[]`\n  Semantic conditions that trigger end of call. The LLM evaluates the conversation against these conditions. Empty array disables the feature.\n\n- `executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'`\n  Execution mode (PARALLEL or SEQUENTIAL)\n\n- `iterationCount?: number`\n  Number of iterations to run for each test case. Must be 1 for OUTBOUND direction.\n\n- `maxConcurrentJobs?: number`\n  Maximum number of concurrent simulation jobs\n\n- `maxSimulationDurationSeconds?: number`\n  Maximum duration in seconds for each simulation\n\n- `metrics?: { id: string; }[]`\n  Metric definitions to include in this run plan\n\n- `name?: string`\n  Name of the run plan\n\n- `personas?: { id: string; }[]`\n  Personas to include in this run plan\n\n- `scenarios?: { id: string; variables?: object; }[]`\n  Scenarios to include in this run plan. The same scenario ID can appear multiple times with different variables.\n\n- `silenceTimeoutSeconds?: number`\n  Timeout in seconds for silence detection\n\n### Returns\n\n- `{ data: { id: string; agentEndpoints: { id: string; }[]; createdAt: string; direction: 'INBOUND' | 'OUTBOUND'; endCallPhrases: string[]; endCallReasons: string[]; evaluators: { id: string; }[]; executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'; iterationCount: number; maxConcurrentJobs: number; maxSimulationDurationSeconds: number; metrics: { id: string; }[]; name: string; personas: { id: string; }[]; scenarios: { id: string; variables?: object; }[]; silenceTimeoutSeconds: number; testCaseCount: number; updatedAt: string; description?: string; }; }`\n\n  - `data: { id: string; agentEndpoints: { id: string; }[]; createdAt: string; direction: 'INBOUND' | 'OUTBOUND'; endCallPhrases: string[]; endCallReasons: string[]; evaluators: { id: string; }[]; executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT'; iterationCount: number; maxConcurrentJobs: number; maxSimulationDurationSeconds: number; metrics: { id: string; }[]; name: string; personas: { id: string; }[]; scenarios: { id: string; variables?: object; }[]; silenceTimeoutSeconds: number; testCaseCount: number; updatedAt: string; description?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationRunPlan = await client.simulationRunPlan.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(simulationRunPlan);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationRunPlan.update',
         example:
-          'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlan = await client.simulationRunPlan.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(simulationRunPlan.data);",
       },
       python: {
         method: 'simulation_run_plan.update',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plan = client.simulation_run_plan.update(\n    plan_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(simulation_run_plan.data)',
       },
-      typescript: {
-        method: 'client.simulationRunPlan.update',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlan = await client.simulationRunPlan.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(simulationRunPlan.data);",
+          'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -879,19 +882,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.simulationRunPlan.delete(planId: string): { data: object; }`\n\n**delete** `/v1/simulation/plan/{planId}`\n\nSoft-deletes a simulation run plan by its ID.\n\n### Parameters\n\n- `planId: string`\n\n### Returns\n\n- `{ data: { deleted: boolean; }; }`\n\n  - `data: { deleted: boolean; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationRunPlan = await client.simulationRunPlan.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(simulationRunPlan);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationRunPlan.delete',
         example:
-          'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlan = await client.simulationRunPlan.delete(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(simulationRunPlan.data);",
       },
       python: {
         method: 'simulation_run_plan.delete',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plan = client.simulation_run_plan.delete(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(simulation_run_plan.data)',
       },
-      typescript: {
-        method: 'client.simulationRunPlan.delete',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlan = await client.simulationRunPlan.delete(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(simulationRunPlan.data);",
+          'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -913,23 +916,23 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       'status?: string;',
     ],
     response:
-      "{ data: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API'; endedAt?: string; startedAt?: string; }[]; pagination: { hasMore: boolean; total: number; nextCursor?: string; }; }",
+      "{ data: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API' | 'SYSTEM'; endedAt?: string; startedAt?: string; }[]; pagination: { hasMore: boolean; total: number; nextCursor?: string; }; }",
     markdown:
-      "## list\n\n`client.simulationRunPlanJob.list(after?: string, labelId?: string, labelName?: string, limit?: number, simulationRunPlanId?: string, status?: string): { data: object[]; pagination: object; }`\n\n**get** `/v1/simulation/plan/jobs`\n\nReturns a paginated list of simulation run plan jobs. Filter by status, plan ID, or label to find specific simulation batches.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - use the nextCursor value from a previous response\n\n- `labelId?: string`\n  Filter by label ID attached to the plan job. Use this if you know the label ID.\n\n- `labelName?: string`\n  Filter by label name attached to the plan job. More user-friendly alternative to labelId. Case-insensitive.\n\n- `limit?: number`\n  Maximum number of plan jobs to return (default: 20, max: 50)\n\n- `simulationRunPlanId?: string`\n  Filter by simulation run plan ID\n\n- `status?: string`\n  Filter by plan job status (PENDING, CREATING_SNAPSHOTS, CREATING_SIMULATIONS, RUNNING_SIMULATIONS, ENDING_SIMULATIONS, COMPLETED, FAILED, TIMED_OUT, CANCELLED, CANCELLING)\n\n### Returns\n\n- `{ data: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API'; endedAt?: string; startedAt?: string; }[]; pagination: { hasMore: boolean; total: number; nextCursor?: string; }; }`\n  Paginated list of simulation run plan jobs\n\n  - `data: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API'; endedAt?: string; startedAt?: string; }[]`\n  - `pagination: { hasMore: boolean; total: number; nextCursor?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationRunPlanJobs = await client.simulationRunPlanJob.list();\n\nconsole.log(simulationRunPlanJobs);\n```",
+      "## list\n\n`client.simulationRunPlanJob.list(after?: string, labelId?: string, labelName?: string, limit?: number, simulationRunPlanId?: string, status?: string): { data: object[]; pagination: object; }`\n\n**get** `/v1/simulation/plan/jobs`\n\nReturns a paginated list of simulation run plan jobs. Filter by status, plan ID, or label to find specific simulation batches.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - use the nextCursor value from a previous response\n\n- `labelId?: string`\n  Filter by label ID attached to the plan job. Use this if you know the label ID.\n\n- `labelName?: string`\n  Filter by label name attached to the plan job. More user-friendly alternative to labelId. Case-insensitive.\n\n- `limit?: number`\n  Maximum number of plan jobs to return (default: 20, max: 50)\n\n- `simulationRunPlanId?: string`\n  Filter by simulation run plan ID\n\n- `status?: string`\n  Filter by plan job status (PENDING, CREATING_SNAPSHOTS, CREATING_SIMULATIONS, RUNNING_SIMULATIONS, ENDING_SIMULATIONS, COMPLETED, FAILED, TIMED_OUT, CANCELLED, CANCELLING)\n\n### Returns\n\n- `{ data: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API' | 'SYSTEM'; endedAt?: string; startedAt?: string; }[]; pagination: { hasMore: boolean; total: number; nextCursor?: string; }; }`\n  Paginated list of simulation run plan jobs\n\n  - `data: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API' | 'SYSTEM'; endedAt?: string; startedAt?: string; }[]`\n  - `pagination: { hasMore: boolean; total: number; nextCursor?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationRunPlanJobs = await client.simulationRunPlanJob.list();\n\nconsole.log(simulationRunPlanJobs);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationRunPlanJob.list',
         example:
-          'curl https://api.roark.ai/v1/simulation/plan/jobs \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlanJobs = await client.simulationRunPlanJob.list();\n\nconsole.log(simulationRunPlanJobs.data);",
       },
       python: {
         method: 'simulation_run_plan_job.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plan_jobs = client.simulation_run_plan_job.list()\nprint(simulation_run_plan_jobs.data)',
       },
-      typescript: {
-        method: 'client.simulationRunPlanJob.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlanJobs = await client.simulationRunPlanJob.list();\n\nconsole.log(simulationRunPlanJobs.data);",
+          'curl https://api.roark.ai/v1/simulation/plan/jobs \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -947,19 +950,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.simulationRunPlanJob.getByID(jobId: object): { data: object; }`\n\n**get** `/v1/simulation/plan/job/{jobId}`\n\nRetrieve details of a simulation plan job including all associated simulation jobs (calls)\n\n### Parameters\n\n- `jobId: object`\n\n### Returns\n\n- `{ data: { createdAt: string; simulationJobs: { agentEndpoint: object; createdAt: string; persona: object; processingStatus: string; scenario: object; simulationJobId: string; status: string; callId?: string; completedAt?: string; roarkPhoneNumber?: string; startedAt?: string; }[]; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; endedAt?: string; startedAt?: string; }; }`\n\n  - `data: { createdAt: string; simulationJobs: { agentEndpoint: { id: string; name: string; phoneNumber: string; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; }; createdAt: string; persona: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }; processingStatus: string; scenario: { id: string; description?: string; }; simulationJobId: string; status: string; callId?: string; completedAt?: string; roarkPhoneNumber?: string; startedAt?: string; }[]; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; endedAt?: string; startedAt?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationRunPlanJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationRunPlanJob.getByID',
         example:
-          'curl https://api.roark.ai/v1/simulation/plan/job/$JOB_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationRunPlanJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'simulation_run_plan_job.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_run_plan_job.get_by_id(\n    "7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.simulationRunPlanJob.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationRunPlanJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/simulation/plan/job/$JOB_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -978,19 +981,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       '## start\n\n`client.simulationRunPlanJob.start(planId: object, variables?: object | { scenarioId: string; variables: object; }[]): { data: object; }`\n\n**post** `/v1/simulation/plan/{planId}/job`\n\nCreate and execute a job for an existing simulation run plan. Optionally provide runtime variables to override plan-defined variables.\n\n### Parameters\n\n- `planId: object`\n\n- `variables?: object | { scenarioId: string; variables: object; }[]`\n  Runtime variables that override plan-defined scenario variables. Accepts one of two formats:\n\nOption 1 — Global (flat key-value object, applies to ALL scenarios):\n  { "orderNumber": "12345", "environment": "staging" }\n\nOption 2 — Per-scenario (array of objects with scenarioId + variables):\n  [\n    { "scenarioId": "550e8400-...", "variables": { "orderNumber": "12345" } },\n    { "scenarioId": "7a3d2e1f-...", "variables": { "orderNumber": "67890" } }\n  ]\n\n### Returns\n\n- `{ data: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; }; }`\n\n  - `data: { createdAt: string; simulationRunPlanId: string; simulationRunPlanJobId: string; status: string; }`\n\n### Example\n\n```typescript\nimport Roark from \'@roarkanalytics/sdk\';\n\nconst client = new Roark();\n\nconst response = await client.simulationRunPlanJob.start(\'7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f\');\n\nconsole.log(response);\n```',
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationRunPlanJob.start',
         example:
-          'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID/job \\\n    -X POST \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationRunPlanJob.start('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'simulation_run_plan_job.start',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_run_plan_job.start(\n    plan_id="7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.simulationRunPlanJob.start',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationRunPlanJob.start('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID/job \\\n    -X POST \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1008,19 +1011,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.simulationScenario.list(after?: string, limit?: number): { data: object[]; pagination: object; }`\n\n**get** `/v1/simulation/scenario`\n\nReturns a paginated list of simulation scenarios for the authenticated project.\n\n### Parameters\n\n- `after?: string`\n\n- `limit?: number`\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; description: string; name: string; steps: { content: string; nodeId: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]; updatedAt: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n\n  - `data: { id: string; createdAt: string; description: string; name: string; steps: { content: string; nodeId: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]; updatedAt: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationScenarios = await client.simulationScenario.list();\n\nconsole.log(simulationScenarios);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationScenario.list',
         example:
-          'curl https://api.roark.ai/v1/simulation/scenario \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationScenarios = await client.simulationScenario.list();\n\nconsole.log(simulationScenarios.data);",
       },
       python: {
         method: 'simulation_scenario.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_scenarios = client.simulation_scenario.list()\nprint(simulation_scenarios.data)',
       },
-      typescript: {
-        method: 'client.simulationScenario.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationScenarios = await client.simulationScenario.list();\n\nconsole.log(simulationScenarios.data);",
+          'curl https://api.roark.ai/v1/simulation/scenario \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1038,19 +1041,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.simulationScenario.getByID(scenarioId: string): { data: object; }`\n\n**get** `/v1/simulation/scenario/{scenarioId}`\n\nReturns a specific simulation scenario by its ID.\n\n### Parameters\n\n- `scenarioId: string`\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; description: string; name: string; steps: { content: string; nodeId: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]; updatedAt: string; }; }`\n\n  - `data: { id: string; createdAt: string; description: string; name: string; steps: { content: string; nodeId: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationScenario.getByID('scenarioId');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationScenario.getByID',
         example:
-          'curl https://api.roark.ai/v1/simulation/scenario/$SCENARIO_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationScenario.getByID('scenarioId');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'simulation_scenario.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_scenario.get_by_id(\n    "scenarioId",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.simulationScenario.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationScenario.getByID('scenarioId');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/simulation/scenario/$SCENARIO_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1071,19 +1074,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.simulationScenario.create(name: string, steps: { content: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]): { data: object; }`\n\n**post** `/v1/simulation/scenario`\n\nCreates a new simulation scenario for the authenticated project.\n\n### Parameters\n\n- `name: string`\n  Name of the scenario (used as the START node content)\n\n- `steps: { content: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]`\n  Ordered list of steps for the scenario (at least one step is required)\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; description: string; name: string; steps: { content: string; nodeId: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]; updatedAt: string; }; }`\n\n  - `data: { id: string; createdAt: string; description: string; name: string; steps: { content: string; nodeId: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationScenario = await client.simulationScenario.create({ name: 'x', steps: [{ content: 'content', type: 'AGENT_TURN' }] });\n\nconsole.log(simulationScenario);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationScenario.create',
         example:
-          'curl https://api.roark.ai/v1/simulation/scenario \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "name": "x",\n          "steps": [\n            {\n              "content": "content",\n              "type": "AGENT_TURN"\n            }\n          ]\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationScenario = await client.simulationScenario.create({\n  name: 'x',\n  steps: [{ content: 'content', type: 'AGENT_TURN' }],\n});\n\nconsole.log(simulationScenario.data);",
       },
       python: {
         method: 'simulation_scenario.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_scenario = client.simulation_scenario.create(\n    name="x",\n    steps=[{\n        "content": "content",\n        "type": "AGENT_TURN",\n    }],\n)\nprint(simulation_scenario.data)',
       },
-      typescript: {
-        method: 'client.simulationScenario.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationScenario = await client.simulationScenario.create({\n  name: 'x',\n  steps: [{ content: 'content', type: 'AGENT_TURN' }],\n});\n\nconsole.log(simulationScenario.data);",
+          'curl https://api.roark.ai/v1/simulation/scenario \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "name": "x",\n          "steps": [\n            {\n              "content": "content",\n              "type": "AGENT_TURN"\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -1105,19 +1108,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.simulationScenario.update(scenarioId: string, stepChanges: { action: 'create'; content: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; } | { action: 'update'; nodeId: string; content?: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; type?: string; } | { action: 'delete'; nodeId: string; }[], name?: string): { data: object; }`\n\n**put** `/v1/simulation/scenario/{scenarioId}`\n\nUpdates an existing simulation scenario by its ID.\n\n### Parameters\n\n- `scenarioId: string`\n\n- `stepChanges: { action: 'create'; content: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; } | { action: 'update'; nodeId: string; content?: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; type?: string; } | { action: 'delete'; nodeId: string; }[]`\n  List of step changes to apply to the scenario\n\n- `name?: string`\n  New name for the scenario (updates the START node content)\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; description: string; name: string; steps: { content: string; nodeId: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]; updatedAt: string; }; }`\n\n  - `data: { id: string; createdAt: string; description: string; name: string; steps: { content: string; nodeId: string; type: string; dtmfDigits?: string; linkedScenarioId?: string; silenceDurationSeconds?: number; }[]; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationScenario = await client.simulationScenario.update('scenarioId', { stepChanges: [{\n  action: 'create',\n  content: 'content',\n  type: 'AGENT_TURN',\n}] });\n\nconsole.log(simulationScenario);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationScenario.update',
         example:
-          'curl https://api.roark.ai/v1/simulation/scenario/$SCENARIO_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "stepChanges": [\n            {\n              "action": "create",\n              "content": "content",\n              "type": "AGENT_TURN"\n            }\n          ]\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationScenario = await client.simulationScenario.update('scenarioId', {\n  stepChanges: [\n    {\n      action: 'create',\n      content: 'content',\n      type: 'AGENT_TURN',\n    },\n  ],\n});\n\nconsole.log(simulationScenario.data);",
       },
       python: {
         method: 'simulation_scenario.update',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_scenario = client.simulation_scenario.update(\n    scenario_id="scenarioId",\n    step_changes=[{\n        "action": "create",\n        "content": "content",\n        "type": "AGENT_TURN",\n    }],\n)\nprint(simulation_scenario.data)',
       },
-      typescript: {
-        method: 'client.simulationScenario.update',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationScenario = await client.simulationScenario.update('scenarioId', {\n  stepChanges: [\n    {\n      action: 'create',\n      content: 'content',\n      type: 'AGENT_TURN',\n    },\n  ],\n});\n\nconsole.log(simulationScenario.data);",
+          'curl https://api.roark.ai/v1/simulation/scenario/$SCENARIO_ID \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "stepChanges": [\n            {\n              "action": "create",\n              "content": "content",\n              "type": "AGENT_TURN"\n            }\n          ]\n        }\'',
       },
     },
   },
@@ -1134,19 +1137,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.simulationScenario.delete(scenarioId: string): { data: object; }`\n\n**delete** `/v1/simulation/scenario/{scenarioId}`\n\nDeletes a simulation scenario by its ID.\n\n### Parameters\n\n- `scenarioId: string`\n\n### Returns\n\n- `{ data: { deleted: boolean; }; }`\n\n  - `data: { deleted: boolean; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationScenario = await client.simulationScenario.delete('scenarioId');\n\nconsole.log(simulationScenario);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationScenario.delete',
         example:
-          'curl https://api.roark.ai/v1/simulation/scenario/$SCENARIO_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationScenario = await client.simulationScenario.delete('scenarioId');\n\nconsole.log(simulationScenario.data);",
       },
       python: {
         method: 'simulation_scenario.delete',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_scenario = client.simulation_scenario.delete(\n    "scenarioId",\n)\nprint(simulation_scenario.data)',
       },
-      typescript: {
-        method: 'client.simulationScenario.delete',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationScenario = await client.simulationScenario.delete('scenarioId');\n\nconsole.log(simulationScenario.data);",
+          'curl https://api.roark.ai/v1/simulation/scenario/$SCENARIO_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1164,19 +1167,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.simulationPersona.list(after?: string, limit?: number, searchText?: string): { data: object[]; pagination: object; }`\n\n**get** `/v1/persona`\n\nReturns a paginated list of personas for the authenticated project.\n\n### Parameters\n\n- `after?: string`\n\n- `limit?: number`\n\n- `searchText?: string`\n\n### Returns\n\n- `{ data: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n\n  - `data: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationPersonas = await client.simulationPersona.list();\n\nconsole.log(simulationPersonas);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationPersona.list',
         example:
-          'curl https://api.roark.ai/v1/persona \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationPersonas = await client.simulationPersona.list();\n\nconsole.log(simulationPersonas.data);",
       },
       python: {
         method: 'simulation_persona.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_personas = client.simulation_persona.list()\nprint(simulation_personas.data)',
       },
-      typescript: {
-        method: 'client.simulationPersona.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationPersonas = await client.simulationPersona.list();\n\nconsole.log(simulationPersonas.data);",
+          'curl https://api.roark.ai/v1/persona \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1194,19 +1197,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.simulationPersona.getByID(personaId: string): { data: object; }`\n\n**get** `/v1/persona/{personaId}`\n\nReturns a specific persona by its ID.\n\n### Parameters\n\n- `personaId: string`\n\n### Returns\n\n- `{ data: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }; }`\n\n  - `data: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationPersona.getByID('personaId');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationPersona.getByID',
         example:
-          'curl https://api.roark.ai/v1/persona/$PERSONA_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationPersona.getByID('personaId');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'simulation_persona.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_persona.get_by_id(\n    "personaId",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.simulationPersona.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationPersona.getByID('personaId');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/persona/$PERSONA_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1246,19 +1249,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.simulationPersona.create(accent: string, gender: 'MALE' | 'FEMALE', language: string, name: string, backgroundNoise?: string, backstoryPrompt?: string, baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED', confirmationStyle?: 'EXPLICIT' | 'VAGUE', description?: string, hasDisfluencies?: boolean, idleMessageMaxSpokenCount?: number, idleMessageResetCountOnUserSpeechEnabled?: boolean, idleMessages?: string[], idleTimeoutSeconds?: number, intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE', memoryReliability?: 'HIGH' | 'LOW', properties?: object, responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK', secondaryLanguage?: 'EN', speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING', speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'): { data: object; }`\n\n**post** `/v1/persona`\n\nCreates a new persona for the authenticated project.\n\n### Parameters\n\n- `accent: string`\n  Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with optional variants\n\n- `gender: 'MALE' | 'FEMALE'`\n  Gender of the persona\n\n- `language: string`\n  Primary language ISO 639-1 code for the persona\n\n- `name: string`\n  The name the agent will identify as during conversations\n\n- `backgroundNoise?: string`\n  Background noise setting\n\n- `backstoryPrompt?: string`\n  Background story and behavioral patterns for the persona\n\n- `baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'`\n  Base emotional state of the persona\n\n- `confirmationStyle?: 'EXPLICIT' | 'VAGUE'`\n  How the persona confirms information\n\n- `description?: string`\n  Human-readable description of the persona\n\n- `hasDisfluencies?: boolean`\n  Whether the persona uses filler words like \"um\" and \"uh\"\n\n- `idleMessageMaxSpokenCount?: number`\n  Maximum number of idle messages the persona will send before giving up\n\n- `idleMessageResetCountOnUserSpeechEnabled?: boolean`\n  Whether the idle message counter resets when the agent speaks\n\n- `idleMessages?: string[]`\n  Messages the persona will say when the agent goes silent during a call\n\n- `idleTimeoutSeconds?: number`\n  Seconds of silence before the persona sends an idle message\n\n- `intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE'`\n  How clearly the persona expresses their intentions\n\n- `memoryReliability?: 'HIGH' | 'LOW'`\n  How reliable the persona's memory is\n\n- `properties?: object`\n  Additional custom properties about the persona\n\n- `responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK'`\n  Controls how quickly the persona responds to pauses in conversation (QUICK, NORMAL, RELAXED)\n\n- `secondaryLanguage?: 'EN'`\n  Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)\n\n- `speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING'`\n  Speech clarity of the persona\n\n- `speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'`\n  Speech pace of the persona\n\n### Returns\n\n- `{ data: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }; }`\n\n  - `data: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationPersona = await client.simulationPersona.create({\n  accent: 'US',\n  gender: 'MALE',\n  language: 'EN',\n  name: 'name',\n});\n\nconsole.log(simulationPersona);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationPersona.create',
         example:
-          'curl https://api.roark.ai/v1/persona \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "accent": "US",\n          "gender": "MALE",\n          "language": "EN",\n          "name": "name",\n          "backstoryPrompt": "A busy professional calling during lunch break",\n          "properties": {\n            "age": "bar",\n            "zipCode": "bar",\n            "occupation": "bar"\n          }\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationPersona = await client.simulationPersona.create({\n  accent: 'US',\n  gender: 'MALE',\n  language: 'EN',\n  name: 'name',\n});\n\nconsole.log(simulationPersona.data);",
       },
       python: {
         method: 'simulation_persona.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_persona = client.simulation_persona.create(\n    accent="US",\n    gender="MALE",\n    language="EN",\n    name="name",\n)\nprint(simulation_persona.data)',
       },
-      typescript: {
-        method: 'client.simulationPersona.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationPersona = await client.simulationPersona.create({\n  accent: 'US',\n  gender: 'MALE',\n  language: 'EN',\n  name: 'name',\n});\n\nconsole.log(simulationPersona.data);",
+          'curl https://api.roark.ai/v1/persona \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "accent": "US",\n          "gender": "MALE",\n          "language": "EN",\n          "name": "name",\n          "backstoryPrompt": "A busy professional calling during lunch break",\n          "properties": {\n            "age": "bar",\n            "zipCode": "bar",\n            "occupation": "bar"\n          }\n        }\'',
       },
     },
   },
@@ -1299,19 +1302,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.simulationPersona.update(personaId: string, accent?: string, backgroundNoise?: string, backstoryPrompt?: string, baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED', confirmationStyle?: 'EXPLICIT' | 'VAGUE', description?: string, gender?: 'MALE' | 'FEMALE', hasDisfluencies?: boolean, idleMessageMaxSpokenCount?: number, idleMessageResetCountOnUserSpeechEnabled?: boolean, idleMessages?: string[], idleTimeoutSeconds?: number, intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE', language?: string, memoryReliability?: 'HIGH' | 'LOW', name?: string, properties?: object, responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK', secondaryLanguage?: 'EN', speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING', speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'): { data: object; }`\n\n**put** `/v1/persona/{personaId}`\n\nUpdates an existing persona by its ID.\n\n### Parameters\n\n- `personaId: string`\n\n- `accent?: string`\n  Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with optional variants\n\n- `backgroundNoise?: string`\n  Background noise setting\n\n- `backstoryPrompt?: string`\n  Background story and behavioral patterns for the persona\n\n- `baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'`\n  Base emotional state of the persona\n\n- `confirmationStyle?: 'EXPLICIT' | 'VAGUE'`\n  How the persona confirms information\n\n- `description?: string`\n  Human-readable description of the persona\n\n- `gender?: 'MALE' | 'FEMALE'`\n  Gender of the persona\n\n- `hasDisfluencies?: boolean`\n  Whether the persona uses filler words like \"um\" and \"uh\"\n\n- `idleMessageMaxSpokenCount?: number`\n  Maximum number of idle messages the persona will send before giving up\n\n- `idleMessageResetCountOnUserSpeechEnabled?: boolean`\n  Whether the idle message counter resets when the agent speaks\n\n- `idleMessages?: string[]`\n  Messages the persona will say when the agent goes silent during a call\n\n- `idleTimeoutSeconds?: number`\n  Seconds of silence before the persona sends an idle message\n\n- `intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE'`\n  How clearly the persona expresses their intentions\n\n- `language?: string`\n  Primary language ISO 639-1 code for the persona\n\n- `memoryReliability?: 'HIGH' | 'LOW'`\n  How reliable the persona's memory is\n\n- `name?: string`\n  The name the agent will identify as during conversations\n\n- `properties?: object`\n  Additional custom properties about the persona\n\n- `responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK'`\n  Controls how quickly the persona responds to pauses in conversation (QUICK, NORMAL, RELAXED)\n\n- `secondaryLanguage?: 'EN'`\n  Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)\n\n- `speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING'`\n  Speech clarity of the persona\n\n- `speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'`\n  Speech pace of the persona\n\n### Returns\n\n- `{ data: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }; }`\n\n  - `data: { id: string; accent: string; backgroundNoise: string; baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED'; confirmationStyle: 'EXPLICIT' | 'VAGUE'; createdAt: string; gender: 'MALE' | 'FEMALE'; hasDisfluencies: boolean; idleMessageMaxSpokenCount: number; idleMessageResetCountOnUserSpeechEnabled: boolean; idleMessages: string[]; idleTimeoutSeconds: number; intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE'; language: string; memoryReliability: 'HIGH' | 'LOW'; name: string; properties: object; responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK'; speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING'; speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST'; updatedAt: string; backstoryPrompt?: string; description?: string; secondaryLanguage?: 'EN'; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationPersona = await client.simulationPersona.update('personaId');\n\nconsole.log(simulationPersona);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.simulationPersona.update',
         example:
-          'curl https://api.roark.ai/v1/persona/$PERSONA_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationPersona = await client.simulationPersona.update('personaId');\n\nconsole.log(simulationPersona.data);",
       },
       python: {
         method: 'simulation_persona.update',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_persona = client.simulation_persona.update(\n    persona_id="personaId",\n)\nprint(simulation_persona.data)',
       },
-      typescript: {
-        method: 'client.simulationPersona.update',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationPersona = await client.simulationPersona.update('personaId');\n\nconsole.log(simulationPersona.data);",
+          'curl https://api.roark.ai/v1/persona/$PERSONA_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1329,19 +1332,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.agent.list(after?: string, limit?: number, searchText?: string): { data: object[]; pagination: object; }`\n\n**get** `/v1/agent`\n\nReturns a paginated list of agents for the authenticated project.\n\n### Parameters\n\n- `after?: string`\n\n- `limit?: number`\n\n- `searchText?: string`\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; customId: string; description: string; name: string; updatedAt: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n\n  - `data: { id: string; createdAt: string; customId: string; description: string; name: string; updatedAt: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst agents = await client.agent.list();\n\nconsole.log(agents);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.agent.list',
         example:
-          'curl https://api.roark.ai/v1/agent \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agents = await client.agent.list();\n\nconsole.log(agents.data);",
       },
       python: {
         method: 'agent.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagents = client.agent.list()\nprint(agents.data)',
       },
-      typescript: {
-        method: 'client.agent.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agents = await client.agent.list();\n\nconsole.log(agents.data);",
+          'curl https://api.roark.ai/v1/agent \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1359,19 +1362,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.agent.getByID(agentId: string): { data: object; }`\n\n**get** `/v1/agent/{agentId}`\n\nReturns a specific agent by its ID.\n\n### Parameters\n\n- `agentId: string`\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; customId: string; description: string; name: string; updatedAt: string; }; }`\n\n  - `data: { id: string; createdAt: string; customId: string; description: string; name: string; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.agent.getByID('agentId');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.agent.getByID',
         example:
-          'curl https://api.roark.ai/v1/agent/$AGENT_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.agent.getByID('agentId');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'agent.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.agent.get_by_id(\n    "agentId",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.agent.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.agent.getByID('agentId');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/agent/$AGENT_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1389,19 +1392,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.agent.create(name: string, customId?: string, description?: string): { data: object; }`\n\n**post** `/v1/agent`\n\nCreates a new agent for the authenticated project.\n\n### Parameters\n\n- `name: string`\n  Name of the agent\n\n- `customId?: string`\n  Custom identifier for the agent\n\n- `description?: string`\n  Description of the agent\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; customId: string; description: string; name: string; updatedAt: string; }; }`\n\n  - `data: { id: string; createdAt: string; customId: string; description: string; name: string; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst agent = await client.agent.create({ name: 'x' });\n\nconsole.log(agent);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.agent.create',
         example:
-          'curl https://api.roark.ai/v1/agent \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "name": "x"\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agent = await client.agent.create({ name: 'x' });\n\nconsole.log(agent.data);",
       },
       python: {
         method: 'agent.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent = client.agent.create(\n    name="x",\n)\nprint(agent.data)',
       },
-      typescript: {
-        method: 'client.agent.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agent = await client.agent.create({ name: 'x' });\n\nconsole.log(agent.data);",
+          'curl https://api.roark.ai/v1/agent \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "name": "x"\n        }\'',
       },
     },
   },
@@ -1419,19 +1422,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.agent.update(agentId: string, description?: string, name?: string): { data: object; }`\n\n**put** `/v1/agent/{agentId}`\n\nUpdates an existing agent by its ID.\n\n### Parameters\n\n- `agentId: string`\n\n- `description?: string`\n  Description of the agent\n\n- `name?: string`\n  Name of the agent\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; customId: string; description: string; name: string; updatedAt: string; }; }`\n\n  - `data: { id: string; createdAt: string; customId: string; description: string; name: string; updatedAt: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst agent = await client.agent.update('agentId');\n\nconsole.log(agent);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.agent.update',
         example:
-          'curl https://api.roark.ai/v1/agent/$AGENT_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agent = await client.agent.update('agentId');\n\nconsole.log(agent.data);",
       },
       python: {
         method: 'agent.update',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent = client.agent.update(\n    agent_id="agentId",\n)\nprint(agent.data)',
       },
-      typescript: {
-        method: 'client.agent.update',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agent = await client.agent.update('agentId');\n\nconsole.log(agent.data);",
+          'curl https://api.roark.ai/v1/agent/$AGENT_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1449,19 +1452,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.agentEndpoint.list(after?: string, agentId?: string, limit?: number, searchText?: string): { data: object[]; pagination: object; }`\n\n**get** `/v1/agent/endpoint`\n\nReturns a paginated list of agent endpoints for the authenticated project.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - endpoint ID to start after\n\n- `agentId?: string`\n  Filter by agent ID\n\n- `limit?: number`\n  Maximum number of endpoints to return (default: 20, max: 50)\n\n- `searchText?: string`\n  Search text to filter endpoints\n\n### Returns\n\n- `{ data: { id: string; agentId: string; createdAt: string; direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING'; environment: string; outboundDialHttpRequestDefinitionId: string; outboundDialType: 'NONE' | 'HTTP_REQUEST'; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; updatedAt: string; value: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n\n  - `data: { id: string; agentId: string; createdAt: string; direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING'; environment: string; outboundDialHttpRequestDefinitionId: string; outboundDialType: 'NONE' | 'HTTP_REQUEST'; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; updatedAt: string; value: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst agentEndpoints = await client.agentEndpoint.list();\n\nconsole.log(agentEndpoints);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.agentEndpoint.list',
         example:
-          'curl https://api.roark.ai/v1/agent/endpoint \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agentEndpoints = await client.agentEndpoint.list();\n\nconsole.log(agentEndpoints.data);",
       },
       python: {
         method: 'agent_endpoint.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent_endpoints = client.agent_endpoint.list()\nprint(agent_endpoints.data)',
       },
-      typescript: {
-        method: 'client.agentEndpoint.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agentEndpoints = await client.agentEndpoint.list();\n\nconsole.log(agentEndpoints.data);",
+          'curl https://api.roark.ai/v1/agent/endpoint \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1479,19 +1482,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.agentEndpoint.getByID(endpointId: string): { data: object; }`\n\n**get** `/v1/agent/endpoint/{endpointId}`\n\nReturns a specific agent endpoint by its ID.\n\n### Parameters\n\n- `endpointId: string`\n\n### Returns\n\n- `{ data: { id: string; agentId: string; createdAt: string; direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING'; environment: string; outboundDialHttpRequestDefinitionId: string; outboundDialType: 'NONE' | 'HTTP_REQUEST'; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; updatedAt: string; value: string; }; }`\n\n  - `data: { id: string; agentId: string; createdAt: string; direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING'; environment: string; outboundDialHttpRequestDefinitionId: string; outboundDialType: 'NONE' | 'HTTP_REQUEST'; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; updatedAt: string; value: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.agentEndpoint.getByID('endpointId');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.agentEndpoint.getByID',
         example:
-          'curl https://api.roark.ai/v1/agent/endpoint/$ENDPOINT_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.agentEndpoint.getByID('endpointId');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'agent_endpoint.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.agent_endpoint.get_by_id(\n    "endpointId",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.agentEndpoint.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.agentEndpoint.getByID('endpointId');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/agent/endpoint/$ENDPOINT_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1516,19 +1519,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.agentEndpoint.create(agentId: string, direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING', value: string, environment?: string, outboundDialHttpRequestDefinitionId?: string, outboundDialType?: 'NONE' | 'HTTP_REQUEST'): { data: object; }`\n\n**post** `/v1/agent/endpoint`\n\nCreates a new agent endpoint for the authenticated project.\n\n### Parameters\n\n- `agentId: string`\n  Agent ID to associate this endpoint with\n\n- `direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING'`\n  Call direction: INCOMING, OUTGOING, or INCOMING_AND_OUTGOING\n\n- `value: string`\n  Phone number in E.164 format (e.g., +12345678900)\n\n- `environment?: string`\n  Environment name (default: production)\n\n- `outboundDialHttpRequestDefinitionId?: string`\n  ID of the HTTP request definition for outbound dialing (required when outboundDialType is HTTP_REQUEST)\n\n- `outboundDialType?: 'NONE' | 'HTTP_REQUEST'`\n  Outbound dial type: NONE or HTTP_REQUEST (default: NONE)\n\n### Returns\n\n- `{ data: { id: string; agentId: string; createdAt: string; direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING'; environment: string; outboundDialHttpRequestDefinitionId: string; outboundDialType: 'NONE' | 'HTTP_REQUEST'; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; updatedAt: string; value: string; }; }`\n\n  - `data: { id: string; agentId: string; createdAt: string; direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING'; environment: string; outboundDialHttpRequestDefinitionId: string; outboundDialType: 'NONE' | 'HTTP_REQUEST'; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; updatedAt: string; value: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst agentEndpoint = await client.agentEndpoint.create({\n  agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  direction: 'INCOMING',\n  value: 'value',\n});\n\nconsole.log(agentEndpoint);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.agentEndpoint.create',
         example:
-          'curl https://api.roark.ai/v1/agent/endpoint \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "agentId": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "direction": "INCOMING",\n          "value": "value"\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agentEndpoint = await client.agentEndpoint.create({\n  agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  direction: 'INCOMING',\n  value: 'value',\n});\n\nconsole.log(agentEndpoint.data);",
       },
       python: {
         method: 'agent_endpoint.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent_endpoint = client.agent_endpoint.create(\n    agent_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    direction="INCOMING",\n    value="value",\n)\nprint(agent_endpoint.data)',
       },
-      typescript: {
-        method: 'client.agentEndpoint.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agentEndpoint = await client.agentEndpoint.create({\n  agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  direction: 'INCOMING',\n  value: 'value',\n});\n\nconsole.log(agentEndpoint.data);",
+          'curl https://api.roark.ai/v1/agent/endpoint \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "agentId": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "direction": "INCOMING",\n          "value": "value"\n        }\'',
       },
     },
   },
@@ -1552,19 +1555,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.agentEndpoint.update(endpointId: string, environment?: string, outboundDialHttpRequestDefinitionId?: string, outboundDialType?: 'NONE' | 'HTTP_REQUEST'): { data: object; }`\n\n**put** `/v1/agent/endpoint/{endpointId}`\n\nUpdates an existing agent endpoint by its ID. Only environment and outboundDialType can be modified.\n\n### Parameters\n\n- `endpointId: string`\n\n- `environment?: string`\n  Environment name\n\n- `outboundDialHttpRequestDefinitionId?: string`\n  ID of the HTTP request definition for outbound dialing\n\n- `outboundDialType?: 'NONE' | 'HTTP_REQUEST'`\n  Outbound dial type: NONE or HTTP_REQUEST\n\n### Returns\n\n- `{ data: { id: string; agentId: string; createdAt: string; direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING'; environment: string; outboundDialHttpRequestDefinitionId: string; outboundDialType: 'NONE' | 'HTTP_REQUEST'; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; updatedAt: string; value: string; }; }`\n\n  - `data: { id: string; agentId: string; createdAt: string; direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING'; environment: string; outboundDialHttpRequestDefinitionId: string; outboundDialType: 'NONE' | 'HTTP_REQUEST'; type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES'; updatedAt: string; value: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst agentEndpoint = await client.agentEndpoint.update('endpointId');\n\nconsole.log(agentEndpoint);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.agentEndpoint.update',
         example:
-          'curl https://api.roark.ai/v1/agent/endpoint/$ENDPOINT_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agentEndpoint = await client.agentEndpoint.update('endpointId');\n\nconsole.log(agentEndpoint.data);",
       },
       python: {
         method: 'agent_endpoint.update',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent_endpoint = client.agent_endpoint.update(\n    endpoint_id="endpointId",\n)\nprint(agent_endpoint.data)',
       },
-      typescript: {
-        method: 'client.agentEndpoint.update',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agentEndpoint = await client.agentEndpoint.update('endpointId');\n\nconsole.log(agentEndpoint.data);",
+          'curl https://api.roark.ai/v1/agent/endpoint/$ENDPOINT_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1582,19 +1585,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.httpRequestDefinition.list(after?: string, limit?: number): { data: object[]; pagination: object; }`\n\n**get** `/v1/http-request-definition`\n\nReturns a paginated list of HTTP request definitions for the authenticated project.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - definition ID to start after\n\n- `limit?: number`\n  Maximum number of definitions to return (default: 20, max: 50)\n\n### Returns\n\n- `{ data: { id: string; body: string; createdAt: string; description: string; headers: object; method: 'POST' | 'PUT' | 'PATCH' | 'GET'; parsedBody: object | string; scope: 'AGENT_OUTBOUND_DIAL'; updatedAt: string; url: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n\n  - `data: { id: string; body: string; createdAt: string; description: string; headers: object; method: 'POST' | 'PUT' | 'PATCH' | 'GET'; parsedBody: object | string; scope: 'AGENT_OUTBOUND_DIAL'; updatedAt: string; url: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst httpRequestDefinitions = await client.httpRequestDefinition.list();\n\nconsole.log(httpRequestDefinitions);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.httpRequestDefinition.list',
         example:
-          'curl https://api.roark.ai/v1/http-request-definition \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst httpRequestDefinitions = await client.httpRequestDefinition.list();\n\nconsole.log(httpRequestDefinitions.data);",
       },
       python: {
         method: 'http_request_definition.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nhttp_request_definitions = client.http_request_definition.list()\nprint(http_request_definitions.data)',
       },
-      typescript: {
-        method: 'client.httpRequestDefinition.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst httpRequestDefinitions = await client.httpRequestDefinition.list();\n\nconsole.log(httpRequestDefinitions.data);",
+          'curl https://api.roark.ai/v1/http-request-definition \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1612,19 +1615,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.httpRequestDefinition.getByID(definitionId: string): { data: object; }`\n\n**get** `/v1/http-request-definition/{definitionId}`\n\nReturns a specific HTTP request definition by its ID.\n\n### Parameters\n\n- `definitionId: string`\n\n### Returns\n\n- `{ data: { id: string; body: string; createdAt: string; description: string; headers: object; method: 'POST' | 'PUT' | 'PATCH' | 'GET'; parsedBody: object | string; scope: 'AGENT_OUTBOUND_DIAL'; updatedAt: string; url: string; }; }`\n\n  - `data: { id: string; body: string; createdAt: string; description: string; headers: object; method: 'POST' | 'PUT' | 'PATCH' | 'GET'; parsedBody: object | string; scope: 'AGENT_OUTBOUND_DIAL'; updatedAt: string; url: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.httpRequestDefinition.getByID('definitionId');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.httpRequestDefinition.getByID',
         example:
-          'curl https://api.roark.ai/v1/http-request-definition/$DEFINITION_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.httpRequestDefinition.getByID('definitionId');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'http_request_definition.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.http_request_definition.get_by_id(\n    "definitionId",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.httpRequestDefinition.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.httpRequestDefinition.getByID('definitionId');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/http-request-definition/$DEFINITION_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1650,19 +1653,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.httpRequestDefinition.create(scope: 'AGENT_OUTBOUND_DIAL', url: string, body?: string | object, description?: string, headers?: object, method?: 'POST' | 'PUT' | 'PATCH' | 'GET'): { data: object; }`\n\n**post** `/v1/http-request-definition`\n\nCreates a new HTTP request definition. The signing secret is only returned in this response and cannot be retrieved later.\n\n### Parameters\n\n- `scope: 'AGENT_OUTBOUND_DIAL'`\n  Scope: AGENT_OUTBOUND_DIAL\n\n- `url: string`\n  URL for the HTTP request\n\n- `body?: string | object`\n  Request body template. Accepts a JSON object or a string with placeholders like {{phoneNumberToDial}}. Objects are serialized to JSON for storage.\n\n- `description?: string`\n  Description of the HTTP request definition\n\n- `headers?: object`\n  Request headers as key-value pairs\n\n- `method?: 'POST' | 'PUT' | 'PATCH' | 'GET'`\n  HTTP method (default: POST)\n\n### Returns\n\n- `{ data: { id: string; body: string; createdAt: string; description: string; headers: object; method: 'POST' | 'PUT' | 'PATCH' | 'GET'; parsedBody: object | string; scope: 'AGENT_OUTBOUND_DIAL'; signingSecret: string; updatedAt: string; url: string; }; }`\n\n  - `data: { id: string; body: string; createdAt: string; description: string; headers: object; method: 'POST' | 'PUT' | 'PATCH' | 'GET'; parsedBody: object | string; scope: 'AGENT_OUTBOUND_DIAL'; signingSecret: string; updatedAt: string; url: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst httpRequestDefinition = await client.httpRequestDefinition.create({ scope: 'AGENT_OUTBOUND_DIAL', url: 'https://example.com' });\n\nconsole.log(httpRequestDefinition);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.httpRequestDefinition.create',
         example:
-          'curl https://api.roark.ai/v1/http-request-definition \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "scope": "AGENT_OUTBOUND_DIAL",\n          "url": "https://example.com"\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst httpRequestDefinition = await client.httpRequestDefinition.create({\n  scope: 'AGENT_OUTBOUND_DIAL',\n  url: 'https://example.com',\n});\n\nconsole.log(httpRequestDefinition.data);",
       },
       python: {
         method: 'http_request_definition.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nhttp_request_definition = client.http_request_definition.create(\n    scope="AGENT_OUTBOUND_DIAL",\n    url="https://example.com",\n)\nprint(http_request_definition.data)',
       },
-      typescript: {
-        method: 'client.httpRequestDefinition.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst httpRequestDefinition = await client.httpRequestDefinition.create({\n  scope: 'AGENT_OUTBOUND_DIAL',\n  url: 'https://example.com',\n});\n\nconsole.log(httpRequestDefinition.data);",
+          'curl https://api.roark.ai/v1/http-request-definition \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "scope": "AGENT_OUTBOUND_DIAL",\n          "url": "https://example.com"\n        }\'',
       },
     },
   },
@@ -1687,19 +1690,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## update\n\n`client.httpRequestDefinition.update(definitionId: string, body?: string | object, description?: string, headers?: object, method?: 'POST' | 'PUT' | 'PATCH' | 'GET', url?: string): { data: object; }`\n\n**put** `/v1/http-request-definition/{definitionId}`\n\nUpdates an existing HTTP request definition.\n\n### Parameters\n\n- `definitionId: string`\n\n- `body?: string | object`\n  Request body template. Accepts a JSON object or a string with placeholders like {{phoneNumberToDial}}. Objects are serialized to JSON for storage.\n\n- `description?: string`\n  Description of the HTTP request definition\n\n- `headers?: object`\n  Request headers as key-value pairs\n\n- `method?: 'POST' | 'PUT' | 'PATCH' | 'GET'`\n  HTTP method: POST, PUT, PATCH, or GET\n\n- `url?: string`\n  URL for the HTTP request\n\n### Returns\n\n- `{ data: { id: string; body: string; createdAt: string; description: string; headers: object; method: 'POST' | 'PUT' | 'PATCH' | 'GET'; parsedBody: object | string; scope: 'AGENT_OUTBOUND_DIAL'; updatedAt: string; url: string; }; }`\n\n  - `data: { id: string; body: string; createdAt: string; description: string; headers: object; method: 'POST' | 'PUT' | 'PATCH' | 'GET'; parsedBody: object | string; scope: 'AGENT_OUTBOUND_DIAL'; updatedAt: string; url: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst httpRequestDefinition = await client.httpRequestDefinition.update('definitionId');\n\nconsole.log(httpRequestDefinition);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.httpRequestDefinition.update',
         example:
-          'curl https://api.roark.ai/v1/http-request-definition/$DEFINITION_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst httpRequestDefinition = await client.httpRequestDefinition.update('definitionId');\n\nconsole.log(httpRequestDefinition.data);",
       },
       python: {
         method: 'http_request_definition.update',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nhttp_request_definition = client.http_request_definition.update(\n    definition_id="definitionId",\n)\nprint(http_request_definition.data)',
       },
-      typescript: {
-        method: 'client.httpRequestDefinition.update',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst httpRequestDefinition = await client.httpRequestDefinition.update('definitionId');\n\nconsole.log(httpRequestDefinition.data);",
+          'curl https://api.roark.ai/v1/http-request-definition/$DEFINITION_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1717,19 +1720,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## list\n\n`client.webhook.list(after?: string, limit?: number): { data: object[]; pagination: object; }`\n\n**get** `/v1/webhook`\n\nReturns a paginated list of webhooks with their event subscriptions.\n\n### Parameters\n\n- `after?: string`\n  Cursor for pagination - webhook ID to start after\n\n- `limit?: number`\n  Maximum number of webhooks to return (default: 20, max: 50)\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; description: string; events: string[]; headers: object; updatedAt: string; url: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n\n  - `data: { id: string; createdAt: string; description: string; events: string[]; headers: object; updatedAt: string; url: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst webhooks = await client.webhook.list();\n\nconsole.log(webhooks);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.webhook.list',
         example:
-          'curl https://api.roark.ai/v1/webhook \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst webhooks = await client.webhook.list();\n\nconsole.log(webhooks.data);",
       },
       python: {
         method: 'webhook.list',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nwebhooks = client.webhook.list()\nprint(webhooks.data)',
       },
-      typescript: {
-        method: 'client.webhook.list',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst webhooks = await client.webhook.list();\n\nconsole.log(webhooks.data);",
+          'curl https://api.roark.ai/v1/webhook \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1747,19 +1750,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## getById\n\n`client.webhook.getByID(webhookId: string): { data: object; }`\n\n**get** `/v1/webhook/{webhookId}`\n\nReturns a specific webhook with its event subscriptions.\n\n### Parameters\n\n- `webhookId: string`\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; description: string; events: string[]; headers: object; updatedAt: string; url: string; }; }`\n\n  - `data: { id: string; createdAt: string; description: string; events: string[]; headers: object; updatedAt: string; url: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.webhook.getByID('webhookId');\n\nconsole.log(response);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.webhook.getByID',
         example:
-          'curl https://api.roark.ai/v1/webhook/$WEBHOOK_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.webhook.getByID('webhookId');\n\nconsole.log(response.data);",
       },
       python: {
         method: 'webhook.get_by_id',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.webhook.get_by_id(\n    "webhookId",\n)\nprint(response.data)',
       },
-      typescript: {
-        method: 'client.webhook.getByID',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.webhook.getByID('webhookId');\n\nconsole.log(response.data);",
+          'curl https://api.roark.ai/v1/webhook/$WEBHOOK_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
@@ -1778,19 +1781,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## create\n\n`client.webhook.create(events: string[], url: string, description?: string, headers?: object): { data: object; }`\n\n**post** `/v1/webhook`\n\nCreates a new webhook with event subscriptions. The signing secret is only returned in this response.\n\n### Parameters\n\n- `events: string[]`\n  Event types to subscribe to (at least one required)\n\n- `url: string`\n  Webhook URL\n\n- `description?: string`\n  Webhook description\n\n- `headers?: object`\n  Request headers (e.g. authorization tokens)\n\n### Returns\n\n- `{ data: { id: string; createdAt: string; description: string; events: string[]; headers: object; signingSecret: string; updatedAt: string; url: string; }; }`\n\n  - `data: { id: string; createdAt: string; description: string; events: string[]; headers: object; signingSecret: string; updatedAt: string; url: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst webhook = await client.webhook.create({ events: ['CALL_ANALYSIS_COMPLETED'], url: 'https://example.com' });\n\nconsole.log(webhook);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.webhook.create',
         example:
-          'curl https://api.roark.ai/v1/webhook \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "events": [\n            "CALL_ANALYSIS_COMPLETED"\n          ],\n          "url": "https://example.com"\n        }\'',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst webhook = await client.webhook.create({\n  events: ['CALL_ANALYSIS_COMPLETED'],\n  url: 'https://example.com',\n});\n\nconsole.log(webhook.data);",
       },
       python: {
         method: 'webhook.create',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nwebhook = client.webhook.create(\n    events=["CALL_ANALYSIS_COMPLETED"],\n    url="https://example.com",\n)\nprint(webhook.data)',
       },
-      typescript: {
-        method: 'client.webhook.create',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst webhook = await client.webhook.create({\n  events: ['CALL_ANALYSIS_COMPLETED'],\n  url: 'https://example.com',\n});\n\nconsole.log(webhook.data);",
+          'curl https://api.roark.ai/v1/webhook \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "events": [\n            "CALL_ANALYSIS_COMPLETED"\n          ],\n          "url": "https://example.com"\n        }\'',
       },
     },
   },
@@ -1807,19 +1810,19 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     markdown:
       "## delete\n\n`client.webhook.delete(webhookId: string): { data: object; }`\n\n**delete** `/v1/webhook/{webhookId}`\n\nDeletes a webhook and all its event subscriptions.\n\n### Parameters\n\n- `webhookId: string`\n\n### Returns\n\n- `{ data: { success: boolean; }; }`\n\n  - `data: { success: boolean; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst webhook = await client.webhook.delete('webhookId');\n\nconsole.log(webhook);\n```",
     perLanguage: {
-      http: {
+      typescript: {
+        method: 'client.webhook.delete',
         example:
-          'curl https://api.roark.ai/v1/webhook/$WEBHOOK_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst webhook = await client.webhook.delete('webhookId');\n\nconsole.log(webhook.data);",
       },
       python: {
         method: 'webhook.delete',
         example:
           'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nwebhook = client.webhook.delete(\n    "webhookId",\n)\nprint(webhook.data)',
       },
-      typescript: {
-        method: 'client.webhook.delete',
+      http: {
         example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst webhook = await client.webhook.delete('webhookId');\n\nconsole.log(webhook.data);",
+          'curl https://api.roark.ai/v1/webhook/$WEBHOOK_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
       },
     },
   },
