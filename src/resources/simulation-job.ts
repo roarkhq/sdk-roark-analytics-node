@@ -217,9 +217,10 @@ export namespace SimulationJobGetByIDResponse {
       idleMessageResetCountOnUserSpeechEnabled: boolean;
 
       /**
-       * Messages the persona will say when the agent goes silent during a call
+       * Messages the persona will say when the agent goes silent during a call. null =
+       * "Automatic": language-appropriate defaults are used at call time.
        */
-      idleMessages: Array<string>;
+      idleMessages: Array<string> | null;
 
       /**
        * Seconds of silence before the persona sends an idle message
@@ -500,9 +501,10 @@ export namespace SimulationJobLookupResponse {
       idleMessageResetCountOnUserSpeechEnabled: boolean;
 
       /**
-       * Messages the persona will say when the agent goes silent during a call
+       * Messages the persona will say when the agent goes silent during a call. null =
+       * "Automatic": language-appropriate defaults are used at call time.
        */
-      idleMessages: Array<string>;
+      idleMessages: Array<string> | null;
 
       /**
        * Seconds of silence before the persona sends an idle message

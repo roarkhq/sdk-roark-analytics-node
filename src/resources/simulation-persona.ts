@@ -164,9 +164,10 @@ export namespace SimulationPersonaCreateResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -343,9 +344,10 @@ export namespace SimulationPersonaUpdateResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -524,9 +526,10 @@ export namespace SimulationPersonaListResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -720,9 +723,10 @@ export namespace SimulationPersonaGetByIDResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -922,9 +926,10 @@ export interface SimulationPersonaCreateParams {
   idleMessageResetCountOnUserSpeechEnabled?: boolean;
 
   /**
-   * Messages the persona will say when the agent goes silent during a call
+   * Messages the persona will say when the agent goes silent during a call. Defaults
+   * to language-appropriate phrases when omitted or sent as null.
    */
-  idleMessages?: Array<string>;
+  idleMessages?: Array<string> | null;
 
   /**
    * Seconds of silence before the persona sends an idle message
@@ -1052,9 +1057,10 @@ export interface SimulationPersonaUpdateParams {
   idleMessageResetCountOnUserSpeechEnabled?: boolean;
 
   /**
-   * Messages the persona will say when the agent goes silent during a call
+   * Messages the persona will say when the agent goes silent during a call. null =
+   * "Automatic": language-appropriate defaults are used at call time.
    */
-  idleMessages?: Array<string>;
+  idleMessages?: Array<string> | null;
 
   /**
    * Seconds of silence before the persona sends an idle message
