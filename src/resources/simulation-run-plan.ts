@@ -758,7 +758,7 @@ export interface SimulationRunPlanCreateParams {
 
   /**
    * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
-   * `metricId` (slug).
+   * `slug`.
    */
   metrics: Array<SimulationRunPlanCreateParams.Metric>;
 
@@ -828,15 +828,15 @@ export namespace SimulationRunPlanCreateParams {
 
   export interface Metric {
     /**
-     * Metric definition UUID. Provide either this or `metricId`, not both.
+     * Metric definition UUID. Provide either this or `slug`, not both.
      */
     id?: string;
 
     /**
-     * Stable metric identifier slug (e.g. `customer_satisfaction`). Provide either
-     * this or `id`, not both.
+     * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+     * not both.
      */
-    metricId?: string;
+    slug?: string;
   }
 
   export interface Persona {
@@ -907,7 +907,7 @@ export interface SimulationRunPlanUpdateParams {
 
   /**
    * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
-   * `metricId` (slug).
+   * `slug`.
    */
   metrics?: Array<SimulationRunPlanUpdateParams.Metric>;
 
@@ -940,15 +940,15 @@ export namespace SimulationRunPlanUpdateParams {
 
   export interface Metric {
     /**
-     * Metric definition UUID. Provide either this or `metricId`, not both.
+     * Metric definition UUID. Provide either this or `slug`, not both.
      */
     id?: string;
 
     /**
-     * Stable metric identifier slug (e.g. `customer_satisfaction`). Provide either
-     * this or `id`, not both.
+     * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+     * not both.
      */
-    metricId?: string;
+    slug?: string;
   }
 
   export interface Persona {
