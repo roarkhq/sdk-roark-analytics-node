@@ -10,7 +10,7 @@ export class Metric extends APIResource {
    * LLM_JUDGE (LLM-evaluated), FORMULA (computed from a math expression over other
    * metrics), or PATTERN (detects a trigger→outcome pattern within a window). To
    * create a threshold on top of an existing metric, use
-   * `POST /metric/definitions/{idOrMetricId}/thresholds` instead.
+   * `POST /metric/definitions/{idOrSlug}/thresholds` instead.
    *
    * @example
    * ```ts
@@ -68,11 +68,6 @@ export namespace MetricCreateDefinitionResponse {
     description: string;
 
     /**
-     * Stable metric identifier (e.g. "call_reason", "customer_satisfaction")
-     */
-    metricId: string;
-
-    /**
      * Name of the metric
      */
     name: string;
@@ -81,6 +76,11 @@ export namespace MetricCreateDefinitionResponse {
      * Whether metric is global or per-participant
      */
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
 
     /**
      * Which levels this metric can produce values at
@@ -273,11 +273,6 @@ export namespace MetricListDefinitionsResponse {
     description: string;
 
     /**
-     * Stable metric identifier (e.g. "call_reason", "customer_satisfaction")
-     */
-    metricId: string;
-
-    /**
      * Name of the metric
      */
     name: string;
@@ -286,6 +281,11 @@ export namespace MetricListDefinitionsResponse {
      * Whether metric is global or per-participant
      */
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
 
     /**
      * Which levels this metric can produce values at
@@ -503,11 +503,6 @@ export declare namespace MetricCreateDefinitionParams {
     maxClassifications?: number;
 
     /**
-     * Unique identifier for the metric. Auto-generated from name if omitted.
-     */
-    metricId?: string;
-
-    /**
      * Participant role to evaluate. Required when scope is PER_PARTICIPANT.
      */
     participantRole?: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER';
@@ -531,6 +526,11 @@ export declare namespace MetricCreateDefinitionParams {
      * Whether metric is global or per-participant (default: GLOBAL)
      */
     scope?: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable slug for the metric. Auto-generated from name if omitted.
+     */
+    slug?: string;
 
     /**
      * Which levels this metric can produce values at (default: ["CALL"])
@@ -618,9 +618,9 @@ export declare namespace MetricCreateDefinitionParams {
     sources: Array<Variant1.Source>;
 
     /**
-     * Unique identifier for the metric. Auto-generated from name if omitted.
+     * Stable slug for the metric. Auto-generated from name if omitted.
      */
-    metricId?: string;
+    slug?: string;
   }
 
   export namespace Variant1 {
@@ -666,9 +666,9 @@ export declare namespace MetricCreateDefinitionParams {
     outcome: Variant2.Outcome;
 
     /**
-     * Unique identifier for the metric. Auto-generated from name if omitted.
+     * Stable slug for the metric. Auto-generated from name if omitted.
      */
-    metricId?: string;
+    slug?: string;
 
     /**
      * Single trigger condition. Use either trigger or triggers + triggerCombinator.
