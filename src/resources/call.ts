@@ -809,11 +809,6 @@ export namespace CallListMetricsResponse {
     metricDefinitionId: string;
 
     /**
-     * Stable metric identifier
-     */
-    metricId: string;
-
-    /**
      * Name of the metric
      */
     name: string;
@@ -822,6 +817,11 @@ export namespace CallListMetricsResponse {
      * Whether metric is global or per-participant
      */
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug
+     */
+    slug: string;
 
     /**
      * Type of value this metric produces

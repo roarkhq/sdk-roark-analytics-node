@@ -32,7 +32,7 @@ describe('resource simulationRunPlan', () => {
       agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       direction: 'INBOUND',
       maxSimulationDurationSeconds: 300,
-      metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', metricId: 'x' }],
+      metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', slug: 'x' }],
       name: 'My Run Plan',
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       scenarios: [
@@ -78,7 +78,7 @@ describe('resource simulationRunPlan', () => {
           iterationCount: 1,
           maxConcurrentJobs: 1,
           maxSimulationDurationSeconds: 1,
-          metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', metricId: 'x' }],
+          metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', slug: 'x' }],
           name: 'x',
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
           scenarios: [
