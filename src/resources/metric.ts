@@ -10,7 +10,7 @@ export class Metric extends APIResource {
    * LLM_JUDGE (LLM-evaluated), FORMULA (computed from a math expression over other
    * metrics), or PATTERN (detects a trigger→outcome pattern within a window). To
    * create a threshold on top of an existing metric, use
-   * `POST /metric/definitions/{metricId}/thresholds` instead.
+   * `POST /metric/definitions/{idOrMetricId}/thresholds` instead.
    *
    * @example
    * ```ts
