@@ -102,9 +102,11 @@ export namespace SimulationRunPlanJobListResponse {
 
     /**
      * How the job was triggered (SCHEDULED, USER_TRIGGERED_FROM_UI,
-     * TRIGGERED_FROM_API, or RE_RUN)
+     * TRIGGERED_FROM_API, RE_RUN, or SYSTEM). SYSTEM is used when the job was started
+     * by an internal admin acting on behalf of the project (the original user identity
+     * is not exposed).
      */
-    triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API';
+    triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API' | 'SYSTEM';
 
     /**
      * When the job ended
@@ -325,7 +327,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'MY'
           | 'HK'
           | 'TR'
-          | 'PT';
+          | 'PT'
+          | 'IL';
 
         /**
          * Background noise setting
@@ -383,9 +386,10 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         idleMessageResetCountOnUserSpeechEnabled: boolean;
 
         /**
-         * Messages the persona will say when the agent goes silent during a call
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
          */
-        idleMessages: Array<string>;
+        idleMessages: Array<string> | null;
 
         /**
          * Seconds of silence before the persona sends an idle message
@@ -417,7 +421,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'MS'
           | 'ZH'
           | 'TR'
-          | 'PT';
+          | 'PT'
+          | 'HE';
 
         /**
          * How reliable the persona's memory is

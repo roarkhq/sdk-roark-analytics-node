@@ -165,7 +165,8 @@ export namespace SimulationJobGetByIDResponse {
         | 'MY'
         | 'HK'
         | 'TR'
-        | 'PT';
+        | 'PT'
+        | 'IL';
 
       /**
        * Background noise setting
@@ -216,9 +217,10 @@ export namespace SimulationJobGetByIDResponse {
       idleMessageResetCountOnUserSpeechEnabled: boolean;
 
       /**
-       * Messages the persona will say when the agent goes silent during a call
+       * Messages the persona will say when the agent goes silent during a call. null =
+       * "Automatic": language-appropriate defaults are used at call time.
        */
-      idleMessages: Array<string>;
+      idleMessages: Array<string> | null;
 
       /**
        * Seconds of silence before the persona sends an idle message
@@ -250,7 +252,8 @@ export namespace SimulationJobGetByIDResponse {
         | 'MS'
         | 'ZH'
         | 'TR'
-        | 'PT';
+        | 'PT'
+        | 'HE';
 
       /**
        * How reliable the persona's memory is
@@ -446,7 +449,8 @@ export namespace SimulationJobLookupResponse {
         | 'MY'
         | 'HK'
         | 'TR'
-        | 'PT';
+        | 'PT'
+        | 'IL';
 
       /**
        * Background noise setting
@@ -497,9 +501,10 @@ export namespace SimulationJobLookupResponse {
       idleMessageResetCountOnUserSpeechEnabled: boolean;
 
       /**
-       * Messages the persona will say when the agent goes silent during a call
+       * Messages the persona will say when the agent goes silent during a call. null =
+       * "Automatic": language-appropriate defaults are used at call time.
        */
-      idleMessages: Array<string>;
+      idleMessages: Array<string> | null;
 
       /**
        * Seconds of silence before the persona sends an idle message
@@ -531,7 +536,8 @@ export namespace SimulationJobLookupResponse {
         | 'MS'
         | 'ZH'
         | 'TR'
-        | 'PT';
+        | 'PT'
+        | 'HE';
 
       /**
        * How reliable the persona's memory is

@@ -112,7 +112,8 @@ export namespace SimulationPersonaCreateResponse {
       | 'MY'
       | 'HK'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'IL';
 
     /**
      * Background noise setting
@@ -163,9 +164,10 @@ export namespace SimulationPersonaCreateResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -197,7 +199,8 @@ export namespace SimulationPersonaCreateResponse {
       | 'MS'
       | 'ZH'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'HE';
 
     /**
      * How reliable the persona's memory is
@@ -289,7 +292,8 @@ export namespace SimulationPersonaUpdateResponse {
       | 'MY'
       | 'HK'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'IL';
 
     /**
      * Background noise setting
@@ -340,9 +344,10 @@ export namespace SimulationPersonaUpdateResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -374,7 +379,8 @@ export namespace SimulationPersonaUpdateResponse {
       | 'MS'
       | 'ZH'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'HE';
 
     /**
      * How reliable the persona's memory is
@@ -468,7 +474,8 @@ export namespace SimulationPersonaListResponse {
       | 'MY'
       | 'HK'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'IL';
 
     /**
      * Background noise setting
@@ -519,9 +526,10 @@ export namespace SimulationPersonaListResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -553,7 +561,8 @@ export namespace SimulationPersonaListResponse {
       | 'MS'
       | 'ZH'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'HE';
 
     /**
      * How reliable the persona's memory is
@@ -662,7 +671,8 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'MY'
       | 'HK'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'IL';
 
     /**
      * Background noise setting
@@ -713,9 +723,10 @@ export namespace SimulationPersonaGetByIDResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -747,7 +758,8 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'MS'
       | 'ZH'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'HE';
 
     /**
      * How reliable the persona's memory is
@@ -829,7 +841,8 @@ export interface SimulationPersonaCreateParams {
     | 'MY'
     | 'HK'
     | 'TR'
-    | 'PT';
+    | 'PT'
+    | 'IL';
 
   /**
    * Gender of the persona
@@ -856,7 +869,8 @@ export interface SimulationPersonaCreateParams {
     | 'MS'
     | 'ZH'
     | 'TR'
-    | 'PT';
+    | 'PT'
+    | 'HE';
 
   /**
    * The name the agent will identify as during conversations
@@ -912,9 +926,10 @@ export interface SimulationPersonaCreateParams {
   idleMessageResetCountOnUserSpeechEnabled?: boolean;
 
   /**
-   * Messages the persona will say when the agent goes silent during a call
+   * Messages the persona will say when the agent goes silent during a call. Defaults
+   * to language-appropriate phrases when omitted or sent as null.
    */
-  idleMessages?: Array<string>;
+  idleMessages?: Array<string> | null;
 
   /**
    * Seconds of silence before the persona sends an idle message
@@ -985,7 +1000,8 @@ export interface SimulationPersonaUpdateParams {
     | 'MY'
     | 'HK'
     | 'TR'
-    | 'PT';
+    | 'PT'
+    | 'IL';
 
   /**
    * Background noise setting
@@ -1041,9 +1057,10 @@ export interface SimulationPersonaUpdateParams {
   idleMessageResetCountOnUserSpeechEnabled?: boolean;
 
   /**
-   * Messages the persona will say when the agent goes silent during a call
+   * Messages the persona will say when the agent goes silent during a call. null =
+   * "Automatic": language-appropriate defaults are used at call time.
    */
-  idleMessages?: Array<string>;
+  idleMessages?: Array<string> | null;
 
   /**
    * Seconds of silence before the persona sends an idle message
@@ -1075,7 +1092,8 @@ export interface SimulationPersonaUpdateParams {
     | 'MS'
     | 'ZH'
     | 'TR'
-    | 'PT';
+    | 'PT'
+    | 'HE';
 
   /**
    * How reliable the persona's memory is

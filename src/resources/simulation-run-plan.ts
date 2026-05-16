@@ -19,9 +19,7 @@ export class SimulationRunPlan extends APIResource {
    *     ],
    *     direction: 'INBOUND',
    *     maxSimulationDurationSeconds: 300,
-   *     metrics: [
-   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-   *     ],
+   *     metrics: [{}],
    *     name: 'My Run Plan',
    *     personas: [
    *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
@@ -759,7 +757,8 @@ export interface SimulationRunPlanCreateParams {
   maxSimulationDurationSeconds: number;
 
   /**
-   * Metric definitions to include in this run plan
+   * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
+   * `slug`.
    */
   metrics: Array<SimulationRunPlanCreateParams.Metric>;
 
@@ -828,7 +827,16 @@ export namespace SimulationRunPlanCreateParams {
   }
 
   export interface Metric {
-    id: string;
+    /**
+     * Metric definition UUID. Provide either this or `slug`, not both.
+     */
+    id?: string;
+
+    /**
+     * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+     * not both.
+     */
+    slug?: string;
   }
 
   export interface Persona {
@@ -898,7 +906,8 @@ export interface SimulationRunPlanUpdateParams {
   maxSimulationDurationSeconds?: number;
 
   /**
-   * Metric definitions to include in this run plan
+   * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
+   * `slug`.
    */
   metrics?: Array<SimulationRunPlanUpdateParams.Metric>;
 
@@ -930,7 +939,16 @@ export namespace SimulationRunPlanUpdateParams {
   }
 
   export interface Metric {
-    id: string;
+    /**
+     * Metric definition UUID. Provide either this or `slug`, not both.
+     */
+    id?: string;
+
+    /**
+     * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+     * not both.
+     */
+    slug?: string;
   }
 
   export interface Persona {
