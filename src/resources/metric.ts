@@ -40,27 +40,27 @@ export class Metric extends APIResource {
 
 export interface MetricCreateDefinitionResponse {
   /**
-   * Metric definition data
+   * Metric definition data. The variant is selected by `calculationType`.
    */
-  data: MetricCreateDefinitionResponse.Data;
+  data:
+    | MetricCreateDefinitionResponse.LlmJudgeMetricResponse
+    | MetricCreateDefinitionResponse.ProviderMetricResponse
+    | MetricCreateDefinitionResponse.ThresholdMetricResponse
+    | MetricCreateDefinitionResponse.FormulaMetricResponse
+    | MetricCreateDefinitionResponse.PatternMetricResponse;
 }
 
 export namespace MetricCreateDefinitionResponse {
-  /**
-   * Metric definition data
-   */
-  export interface Data {
+  export interface LlmJudgeMetricResponse {
     /**
      * Unique identifier for the metric definition
      */
     id: string;
 
     /**
-     * How the metric is calculated. LLM_JUDGE metrics are evaluated by an LLM against
-     * a prompt. THRESHOLD, FORMULA, and PATTERN metrics are derived from other
-     * metrics. PROVIDER metrics are system-managed.
+     * Metric evaluated by an LLM against a prompt.
      */
-    calculationType: 'PROVIDER' | 'LLM_JUDGE' | 'THRESHOLD' | 'PATTERN' | 'FORMULA';
+    calculationType: 'LLM_JUDGE';
 
     /**
      * Description of what the metric measures
@@ -111,29 +111,295 @@ export namespace MetricCreateDefinitionResponse {
     versionId: string;
 
     /**
-     * Formula configuration. Present only when calculationType is FORMULA.
+     * Unit information if applicable
      */
-    formula?: Data.Formula;
+    unit?: LlmJudgeMetricResponse.Unit;
+  }
+
+  export namespace LlmJudgeMetricResponse {
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface ProviderMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
 
     /**
-     * Pattern configuration. Present only when calculationType is PATTERN.
+     * System-managed metric produced by an analysis provider.
      */
-    pattern?: Data.Pattern;
+    calculationType: 'PROVIDER';
 
     /**
-     * Threshold configuration. Present only when calculationType is THRESHOLD.
+     * Description of what the metric measures
      */
-    threshold?: Data.Threshold;
+    description: string;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
 
     /**
      * Unit information if applicable
      */
-    unit?: Data.Unit;
+    unit?: ProviderMetricResponse.Unit;
   }
 
-  export namespace Data {
+  export namespace ProviderMetricResponse {
     /**
-     * Formula configuration. Present only when calculationType is FORMULA.
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface ThresholdMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * Boolean metric derived by comparing a source metric against a threshold.
+     */
+    calculationType: 'THRESHOLD';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Threshold configuration.
+     */
+    threshold?: ThresholdMetricResponse.Threshold;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: ThresholdMetricResponse.Unit;
+  }
+
+  export namespace ThresholdMetricResponse {
+    /**
+     * Threshold configuration.
+     */
+    export interface Threshold {
+      aggregationMode: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
+
+      countThreshold: number | null;
+
+      operator:
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUALS'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUALS'
+        | 'EQUALS'
+        | 'NOT_EQUALS';
+
+      sourceMetricDefinitionId: string;
+
+      sourceParticipantRole: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER' | null;
+
+      sourceVariantId: string | null;
+
+      thresholdValue: string;
+    }
+
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface FormulaMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * Metric computed by evaluating an expression over other metrics.
+     */
+    calculationType: 'FORMULA';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Formula configuration.
+     */
+    formula: FormulaMetricResponse.Formula;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: FormulaMetricResponse.Unit;
+  }
+
+  export namespace FormulaMetricResponse {
+    /**
+     * Formula configuration.
      */
     export interface Formula {
       expression: string;
@@ -150,7 +416,94 @@ export namespace MetricCreateDefinitionResponse {
     }
 
     /**
-     * Pattern configuration. Present only when calculationType is PATTERN.
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface PatternMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * Metric detecting a trigger condition followed by an outcome within a window.
+     */
+    calculationType: 'PATTERN';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Pattern configuration.
+     */
+    pattern: PatternMetricResponse.Pattern;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: PatternMetricResponse.Unit;
+  }
+
+  export namespace PatternMetricResponse {
+    /**
+     * Pattern configuration.
      */
     export interface Pattern {
       operation: 'PATTERN_EXISTS' | 'PATTERN_COUNT' | 'OUTCOME_AGGREGATE';
@@ -204,31 +557,6 @@ export namespace MetricCreateDefinitionResponse {
 
         thresholdValue: string;
       }
-    }
-
-    /**
-     * Threshold configuration. Present only when calculationType is THRESHOLD.
-     */
-    export interface Threshold {
-      aggregationMode: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
-
-      countThreshold: number | null;
-
-      operator:
-        | 'GREATER_THAN'
-        | 'GREATER_THAN_OR_EQUALS'
-        | 'LESS_THAN'
-        | 'LESS_THAN_OR_EQUALS'
-        | 'EQUALS'
-        | 'NOT_EQUALS';
-
-      sourceMetricDefinitionId: string;
-
-      sourceParticipantRole: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER' | null;
-
-      sourceVariantId: string | null;
-
-      thresholdValue: string;
     }
 
     /**
@@ -252,25 +580,26 @@ export interface MetricListDefinitionsResponse {
   /**
    * Metrics response payload
    */
-  data: Array<MetricListDefinitionsResponse.Data>;
+  data: Array<
+    | MetricListDefinitionsResponse.LlmJudgeMetricResponse
+    | MetricListDefinitionsResponse.ProviderMetricResponse
+    | MetricListDefinitionsResponse.ThresholdMetricResponse
+    | MetricListDefinitionsResponse.FormulaMetricResponse
+    | MetricListDefinitionsResponse.PatternMetricResponse
+  >;
 }
 
 export namespace MetricListDefinitionsResponse {
-  /**
-   * Metric definition data
-   */
-  export interface Data {
+  export interface LlmJudgeMetricResponse {
     /**
      * Unique identifier for the metric definition
      */
     id: string;
 
     /**
-     * How the metric is calculated. LLM_JUDGE metrics are evaluated by an LLM against
-     * a prompt. THRESHOLD, FORMULA, and PATTERN metrics are derived from other
-     * metrics. PROVIDER metrics are system-managed.
+     * Metric evaluated by an LLM against a prompt.
      */
-    calculationType: 'PROVIDER' | 'LLM_JUDGE' | 'THRESHOLD' | 'PATTERN' | 'FORMULA';
+    calculationType: 'LLM_JUDGE';
 
     /**
      * Description of what the metric measures
@@ -321,29 +650,295 @@ export namespace MetricListDefinitionsResponse {
     versionId: string;
 
     /**
-     * Formula configuration. Present only when calculationType is FORMULA.
+     * Unit information if applicable
      */
-    formula?: Data.Formula;
+    unit?: LlmJudgeMetricResponse.Unit;
+  }
+
+  export namespace LlmJudgeMetricResponse {
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface ProviderMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
 
     /**
-     * Pattern configuration. Present only when calculationType is PATTERN.
+     * System-managed metric produced by an analysis provider.
      */
-    pattern?: Data.Pattern;
+    calculationType: 'PROVIDER';
 
     /**
-     * Threshold configuration. Present only when calculationType is THRESHOLD.
+     * Description of what the metric measures
      */
-    threshold?: Data.Threshold;
+    description: string;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
 
     /**
      * Unit information if applicable
      */
-    unit?: Data.Unit;
+    unit?: ProviderMetricResponse.Unit;
   }
 
-  export namespace Data {
+  export namespace ProviderMetricResponse {
     /**
-     * Formula configuration. Present only when calculationType is FORMULA.
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface ThresholdMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * Boolean metric derived by comparing a source metric against a threshold.
+     */
+    calculationType: 'THRESHOLD';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Threshold configuration.
+     */
+    threshold?: ThresholdMetricResponse.Threshold;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: ThresholdMetricResponse.Unit;
+  }
+
+  export namespace ThresholdMetricResponse {
+    /**
+     * Threshold configuration.
+     */
+    export interface Threshold {
+      aggregationMode: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
+
+      countThreshold: number | null;
+
+      operator:
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUALS'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUALS'
+        | 'EQUALS'
+        | 'NOT_EQUALS';
+
+      sourceMetricDefinitionId: string;
+
+      sourceParticipantRole: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER' | null;
+
+      sourceVariantId: string | null;
+
+      thresholdValue: string;
+    }
+
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface FormulaMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * Metric computed by evaluating an expression over other metrics.
+     */
+    calculationType: 'FORMULA';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Formula configuration.
+     */
+    formula: FormulaMetricResponse.Formula;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: FormulaMetricResponse.Unit;
+  }
+
+  export namespace FormulaMetricResponse {
+    /**
+     * Formula configuration.
      */
     export interface Formula {
       expression: string;
@@ -360,7 +955,94 @@ export namespace MetricListDefinitionsResponse {
     }
 
     /**
-     * Pattern configuration. Present only when calculationType is PATTERN.
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface PatternMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * Metric detecting a trigger condition followed by an outcome within a window.
+     */
+    calculationType: 'PATTERN';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Pattern configuration.
+     */
+    pattern: PatternMetricResponse.Pattern;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: PatternMetricResponse.Unit;
+  }
+
+  export namespace PatternMetricResponse {
+    /**
+     * Pattern configuration.
      */
     export interface Pattern {
       operation: 'PATTERN_EXISTS' | 'PATTERN_COUNT' | 'OUTCOME_AGGREGATE';
@@ -417,31 +1099,6 @@ export namespace MetricListDefinitionsResponse {
     }
 
     /**
-     * Threshold configuration. Present only when calculationType is THRESHOLD.
-     */
-    export interface Threshold {
-      aggregationMode: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
-
-      countThreshold: number | null;
-
-      operator:
-        | 'GREATER_THAN'
-        | 'GREATER_THAN_OR_EQUALS'
-        | 'LESS_THAN'
-        | 'LESS_THAN_OR_EQUALS'
-        | 'EQUALS'
-        | 'NOT_EQUALS';
-
-      sourceMetricDefinitionId: string;
-
-      sourceParticipantRole: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER' | null;
-
-      sourceVariantId: string | null;
-
-      thresholdValue: string;
-    }
-
-    /**
      * Unit information if applicable
      */
     export interface Unit {
@@ -459,12 +1116,12 @@ export namespace MetricListDefinitionsResponse {
 }
 
 export type MetricCreateDefinitionParams =
-  | MetricCreateDefinitionParams.Variant0
-  | MetricCreateDefinitionParams.Variant1
-  | MetricCreateDefinitionParams.Variant2;
+  | MetricCreateDefinitionParams.PromptMetricInput
+  | MetricCreateDefinitionParams.FormulaMetricInput
+  | MetricCreateDefinitionParams.PatternMetricInput;
 
 export declare namespace MetricCreateDefinitionParams {
-  export interface Variant0 {
+  export interface PromptMetricInput {
     /**
      * ID of the analysis package to add this metric to
      */
@@ -498,7 +1155,7 @@ export declare namespace MetricCreateDefinitionParams {
     /**
      * Options for classification. Required for CLASSIFICATION type.
      */
-    classificationOptions?: Array<Variant0.ClassificationOption>;
+    classificationOptions?: Array<PromptMetricInput.ClassificationOption>;
 
     /**
      * LLM prompt/criteria for evaluating this metric. Required for BOOLEAN, NUMERIC,
@@ -526,7 +1183,7 @@ export declare namespace MetricCreateDefinitionParams {
     /**
      * Labels for scale ranges (only for SCALE type)
      */
-    scaleLabels?: Array<Variant0.ScaleLabel>;
+    scaleLabels?: Array<PromptMetricInput.ScaleLabel>;
 
     /**
      * Maximum value for scale. Required for SCALE type.
@@ -554,7 +1211,7 @@ export declare namespace MetricCreateDefinitionParams {
     supportedContexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
   }
 
-  export namespace Variant0 {
+  export namespace PromptMetricInput {
     /**
      * Option for classification metrics.
      */
@@ -599,7 +1256,7 @@ export declare namespace MetricCreateDefinitionParams {
     }
   }
 
-  export interface Variant1 {
+  export interface FormulaMetricInput {
     /**
      * ID of the analysis package to add this metric to
      */
@@ -631,7 +1288,7 @@ export declare namespace MetricCreateDefinitionParams {
     /**
      * Source metrics referenced by the formula. Minimum 2.
      */
-    sources: Array<Variant1.Source>;
+    sources: Array<FormulaMetricInput.Source>;
 
     /**
      * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
@@ -645,7 +1302,7 @@ export declare namespace MetricCreateDefinitionParams {
     slug?: string;
   }
 
-  export namespace Variant1 {
+  export namespace FormulaMetricInput {
     export interface Source {
       /**
        * ID of a metric referenced in the formula
@@ -659,7 +1316,7 @@ export declare namespace MetricCreateDefinitionParams {
     }
   }
 
-  export interface Variant2 {
+  export interface PatternMetricInput {
     /**
      * ID of the analysis package to add this metric to
      */
@@ -685,7 +1342,7 @@ export declare namespace MetricCreateDefinitionParams {
     /**
      * Outcome condition evaluated within the window relative to the trigger.
      */
-    outcome: Variant2.Outcome;
+    outcome: PatternMetricInput.Outcome;
 
     /**
      * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
@@ -701,7 +1358,7 @@ export declare namespace MetricCreateDefinitionParams {
     /**
      * Single trigger condition. Use either trigger or triggers + triggerCombinator.
      */
-    trigger?: Variant2.Trigger;
+    trigger?: PatternMetricInput.Trigger;
 
     /**
      * How to combine multiple triggers. Required when triggers has more than 1 entry.
@@ -711,7 +1368,7 @@ export declare namespace MetricCreateDefinitionParams {
     /**
      * Multiple trigger conditions. Use with triggerCombinator.
      */
-    triggers?: Array<Variant2.Trigger>;
+    triggers?: Array<PatternMetricInput.Trigger>;
 
     /**
      * Unit for trigger/outcome window values (default: seconds)
@@ -719,7 +1376,7 @@ export declare namespace MetricCreateDefinitionParams {
     windowMode?: 'seconds' | 'segments';
   }
 
-  export namespace Variant2 {
+  export namespace PatternMetricInput {
     /**
      * Outcome condition evaluated within the window relative to the trigger.
      */
