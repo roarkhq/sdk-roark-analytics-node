@@ -41,6 +41,7 @@ describe('resource metric', () => {
       ],
       llmPrompt: 'Evaluate whether the customer expressed satisfaction with the service provided.',
       maxClassifications: 1,
+      metricId: 'customer_satisfaction',
       participantRole: 'AGENT',
       scaleLabels: [
         {
