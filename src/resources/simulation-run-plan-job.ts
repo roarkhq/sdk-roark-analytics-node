@@ -219,6 +219,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         | 'SIMULATING'
         | 'ENDING'
         | 'ANALYZING'
+        | 'WAITING_FOR_LIVE_CONVERSATION'
         | 'EVALUATING'
         | 'COLLECTING_METRICS'
         | 'COMPLETED';
