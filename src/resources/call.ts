@@ -809,6 +809,11 @@ export namespace CallListMetricsResponse {
     metricDefinitionId: string;
 
     /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
      * Name of the metric
      */
     name: string;

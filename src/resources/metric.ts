@@ -68,6 +68,11 @@ export namespace MetricCreateDefinitionResponse {
     description: string;
 
     /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
      * Name of the metric
      */
     name: string;
@@ -271,6 +276,11 @@ export namespace MetricListDefinitionsResponse {
      * Description of what the metric measures
      */
     description: string;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
 
     /**
      * Name of the metric
@@ -503,6 +513,12 @@ export declare namespace MetricCreateDefinitionParams {
     maxClassifications?: number;
 
     /**
+     * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+     * integrations.
+     */
+    metricId?: string;
+
+    /**
      * Participant role to evaluate. Required when scope is PER_PARTICIPANT.
      */
     participantRole?: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER';
@@ -618,6 +634,12 @@ export declare namespace MetricCreateDefinitionParams {
     sources: Array<Variant1.Source>;
 
     /**
+     * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+     * integrations.
+     */
+    metricId?: string;
+
+    /**
      * Stable slug for the metric. Auto-generated from name if omitted.
      */
     slug?: string;
@@ -664,6 +686,12 @@ export declare namespace MetricCreateDefinitionParams {
      * Outcome condition evaluated within the window relative to the trigger.
      */
     outcome: Variant2.Outcome;
+
+    /**
+     * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+     * integrations.
+     */
+    metricId?: string;
 
     /**
      * Stable slug for the metric. Auto-generated from name if omitted.
