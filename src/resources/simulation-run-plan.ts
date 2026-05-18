@@ -833,6 +833,12 @@ export namespace SimulationRunPlanCreateParams {
     id?: string;
 
     /**
+     * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+     * integrations.
+     */
+    metricId?: string;
+
+    /**
      * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
      * not both.
      */
@@ -943,6 +949,12 @@ export namespace SimulationRunPlanUpdateParams {
      * Metric definition UUID. Provide either this or `slug`, not both.
      */
     id?: string;
+
+    /**
+     * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+     * integrations.
+     */
+    metricId?: string;
 
     /**
      * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
