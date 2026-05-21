@@ -69,6 +69,8 @@ export namespace SimulationJobGetByIDResponse {
      */
     processingStatus: string;
 
+    runPlan: Data.RunPlan;
+
     /**
      * Scenario used in a simulation
      */
@@ -305,6 +307,24 @@ export namespace SimulationJobGetByIDResponse {
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
+    }
+
+    export interface RunPlan {
+      /**
+       * Run plan ID
+       */
+      id: string;
+
+      /**
+       * Run plan name
+       */
+      name: string;
+
+      /**
+       * Run-plan-level variables resolved for this job, keyed by variable name. Values
+       * are stringified by their declared type.
+       */
+      variables: { [key: string]: string };
     }
 
     /**
@@ -353,6 +373,8 @@ export namespace SimulationJobLookupResponse {
      */
     processingStatus: string;
 
+    runPlan: Data.RunPlan;
+
     /**
      * Scenario used in a simulation
      */
@@ -589,6 +611,24 @@ export namespace SimulationJobLookupResponse {
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
+    }
+
+    export interface RunPlan {
+      /**
+       * Run plan ID
+       */
+      id: string;
+
+      /**
+       * Run plan name
+       */
+      name: string;
+
+      /**
+       * Run-plan-level variables resolved for this job, keyed by variable name. Values
+       * are stringified by their declared type.
+       */
+      variables: { [key: string]: string };
     }
 
     /**
