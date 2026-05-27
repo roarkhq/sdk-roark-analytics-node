@@ -51,7 +51,10 @@ export class Call extends APIResource {
 
   /**
    * Fetch all call-level metrics for a specific call, including both
-   * system-generated and custom metrics. Only returns successfully computed metrics.
+   * system-generated and custom metrics. By default returns only successfully
+   * computed metrics; pass `?status=all` to also include rows that resolved as
+   * NOT_APPLICABLE / DATA_MISSING / ERROR (the `value` field is omitted on those
+   * entries — check `captureStatus`).
    */
   listMetrics(
     callID: string,
@@ -848,15 +851,16 @@ export namespace CallListMetricsResponse {
   export namespace Data {
     export interface Value {
       /**
+       * Result state of this metric computation. SUCCESS carries a real `value`;
+       * NOT_APPLICABLE / DATA_MISSING / ERROR do not (the `value` field is omitted).
+       * Non-SUCCESS rows only appear when the request includes ?status=all.
+       */
+      captureStatus: 'SUCCESS' | 'NOT_APPLICABLE' | 'DATA_MISSING' | 'ERROR';
+
+      /**
        * ISO 8601 timestamp when the metric was computed
        */
       computedAt: string;
-
-      /**
-       * Confidence score (0-1) for the computed value. Defaults to 1.0 for deterministic
-       * metrics.
-       */
-      confidence: number;
 
       /**
        * Context level: CALL (entire conversation), SEGMENT (single segment),
@@ -865,9 +869,28 @@ export namespace CallListMetricsResponse {
       context: 'CALL' | 'SEGMENT' | 'SEGMENT_RANGE';
 
       /**
-       * The metric value (type depends on outputType)
+       * ID of the call this value was computed on. Only set when the response spans
+       * multiple conversations (e.g. job-scoped metric values).
        */
-      value: number | boolean | string;
+      callId?: string;
+
+      /**
+       * ID of the chat this value was computed on. Only set when the response spans
+       * multiple conversations (e.g. job-scoped metric values).
+       */
+      chatId?: string;
+
+      /**
+       * Confidence score (0-1) for the computed value. Defaults to 1.0 for deterministic
+       * metrics. Omitted on non-SUCCESS rows.
+       */
+      confidence?: number;
+
+      /**
+       * Error detail when captureStatus is ERROR — e.g. provider down, LLM timeout.
+       * Undefined for other statuses.
+       */
+      errorMessage?: string;
 
       /**
        * Starting segment information (for SEGMENT_RANGE context metrics)
@@ -893,6 +916,12 @@ export namespace CallListMetricsResponse {
        * Ending segment information (for SEGMENT_RANGE context metrics)
        */
       toSegment?: Value.ToSegment;
+
+      /**
+       * The metric value (type depends on outputType). Present only on SUCCESS rows;
+       * omitted for NOT_APPLICABLE / DATA_MISSING / ERROR.
+       */
+      value?: number | boolean | string;
 
       /**
        * Explanation for the metric value (especially useful for AI-computed metrics)
@@ -1745,6 +1774,15 @@ export interface CallListMetricsParams {
    * false)
    */
   flatten?: string;
+
+  /**
+   * Filter metrics by capture status. `success` (default) returns only successfully
+   * computed metrics — backwards-compatible with the historical behavior. `all` also
+   * returns NOT_APPLICABLE / DATA_MISSING / ERROR rows (with `value` omitted), so
+   * clients can distinguish "still computing" from "computed but no value" and exit
+   * retry loops correctly.
+   */
+  status?: 'success' | 'all';
 }
 
 export declare namespace Call {
