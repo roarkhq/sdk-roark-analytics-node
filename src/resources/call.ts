@@ -170,6 +170,14 @@ export namespace CallListResponse {
     projectId: string;
 
     /**
+     * Indicates the status of `recordingUrl`. `AVAILABLE`: signed URL returned.
+     * `NOT_AVAILABLE`: no recording on file yet (e.g. still processing). `RESTRICTED`:
+     * the calling API key does not have the `recording:read` permission and the URL
+     * has been withheld.
+     */
+    recordingUrlAccess: 'AVAILABLE' | 'NOT_AVAILABLE' | 'RESTRICTED';
+
+    /**
      * Timestamp when the call started
      */
     startedAt: string;
@@ -344,6 +352,14 @@ export namespace CallGetByIDResponse {
      * ID of the project this call belongs to
      */
     projectId: string;
+
+    /**
+     * Indicates the status of `recordingUrl`. `AVAILABLE`: signed URL returned.
+     * `NOT_AVAILABLE`: no recording on file yet (e.g. still processing). `RESTRICTED`:
+     * the calling API key does not have the `recording:read` permission and the URL
+     * has been withheld.
+     */
+    recordingUrlAccess: 'AVAILABLE' | 'NOT_AVAILABLE' | 'RESTRICTED';
 
     /**
      * Timestamp when the call started
