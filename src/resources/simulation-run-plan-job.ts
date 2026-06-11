@@ -211,9 +211,10 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       persona: SimulationJob.Persona;
 
       /**
-       * Processing status
+       * Processing status. PENDING until the job starts connecting.
        */
       processingStatus:
+        | 'PENDING'
         | 'CONNECTING'
         | 'WAITING_FOR_OUTBOUND_CALL'
         | 'SIMULATING'
