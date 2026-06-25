@@ -93,7 +93,15 @@ export namespace AgentEndpointCreateResponse {
     /**
      * Agent endpoint type (PHONE, WEBSOCKET, LIVEKIT, SMALL_WEBRTC, or ELEVENLABS_WS)
      */
-    type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
+    type:
+      | 'PHONE'
+      | 'WEBSOCKET'
+      | 'LIVEKIT'
+      | 'SMALL_WEBRTC'
+      | 'ELEVENLABS_WS'
+      | 'KORE'
+      | 'GOOGLE_CES'
+      | 'DAILY';
 
     /**
      * Last update timestamp
@@ -157,7 +165,15 @@ export namespace AgentEndpointUpdateResponse {
     /**
      * Agent endpoint type (PHONE, WEBSOCKET, LIVEKIT, SMALL_WEBRTC, or ELEVENLABS_WS)
      */
-    type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
+    type:
+      | 'PHONE'
+      | 'WEBSOCKET'
+      | 'LIVEKIT'
+      | 'SMALL_WEBRTC'
+      | 'ELEVENLABS_WS'
+      | 'KORE'
+      | 'GOOGLE_CES'
+      | 'DAILY';
 
     /**
      * Last update timestamp
@@ -220,7 +236,15 @@ export namespace AgentEndpointListResponse {
     /**
      * Agent endpoint type (PHONE, WEBSOCKET, LIVEKIT, SMALL_WEBRTC, or ELEVENLABS_WS)
      */
-    type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
+    type:
+      | 'PHONE'
+      | 'WEBSOCKET'
+      | 'LIVEKIT'
+      | 'SMALL_WEBRTC'
+      | 'ELEVENLABS_WS'
+      | 'KORE'
+      | 'GOOGLE_CES'
+      | 'DAILY';
 
     /**
      * Last update timestamp
@@ -301,7 +325,15 @@ export namespace AgentEndpointGetByIDResponse {
     /**
      * Agent endpoint type (PHONE, WEBSOCKET, LIVEKIT, SMALL_WEBRTC, or ELEVENLABS_WS)
      */
-    type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
+    type:
+      | 'PHONE'
+      | 'WEBSOCKET'
+      | 'LIVEKIT'
+      | 'SMALL_WEBRTC'
+      | 'ELEVENLABS_WS'
+      | 'KORE'
+      | 'GOOGLE_CES'
+      | 'DAILY';
 
     /**
      * Last update timestamp
