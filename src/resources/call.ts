@@ -1681,6 +1681,8 @@ export namespace CallCreateParams {
     agent?: TranscriptEntryAgent.Agent;
 
     languageCode?: string;
+
+    payload?: { [key: string]: unknown } | null;
   }
 
   export namespace TranscriptEntryAgent {
@@ -1717,6 +1719,8 @@ export namespace CallCreateParams {
     customer?: TranscriptEntryCustomer.Customer;
 
     languageCode?: string;
+
+    payload?: { [key: string]: unknown } | null;
   }
 
   export namespace TranscriptEntryCustomer {
