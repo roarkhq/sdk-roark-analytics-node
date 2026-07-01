@@ -71,7 +71,7 @@ describe('resource call', () => {
           endOffsetMs: 0,
           role: 'AGENT',
           startOffsetMs: 0,
-          text: 'x',
+          text: 'text',
           agent: { customId: 'customId', roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
           languageCode: 'languageCode',
           payload: { foo: 'bar' },
