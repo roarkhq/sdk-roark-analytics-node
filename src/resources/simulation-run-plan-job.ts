@@ -466,6 +466,31 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
 
         /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
          * Last update timestamp
          */
         updatedAt: string;

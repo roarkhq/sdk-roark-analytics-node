@@ -234,6 +234,31 @@ export namespace SimulationPersonaCreateResponse {
     speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
 
     /**
+     * Languages the persona can understand. Multilingual combinations are limited by
+     * multilingual speech recognition support.
+     */
+    understoodLanguages: Array<
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT'
+      | 'HE'
+    >;
+
+    /**
      * Last update timestamp
      */
     updatedAt: string;
@@ -412,6 +437,31 @@ export namespace SimulationPersonaUpdateResponse {
      * Speech pace of the persona
      */
     speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+    /**
+     * Languages the persona can understand. Multilingual combinations are limited by
+     * multilingual speech recognition support.
+     */
+    understoodLanguages: Array<
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT'
+      | 'HE'
+    >;
 
     /**
      * Last update timestamp
@@ -594,6 +644,31 @@ export namespace SimulationPersonaListResponse {
      * Speech pace of the persona
      */
     speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+    /**
+     * Languages the persona can understand. Multilingual combinations are limited by
+     * multilingual speech recognition support.
+     */
+    understoodLanguages: Array<
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT'
+      | 'HE'
+    >;
 
     /**
      * Last update timestamp
@@ -793,6 +868,31 @@ export namespace SimulationPersonaGetByIDResponse {
     speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
 
     /**
+     * Languages the persona can understand. Multilingual combinations are limited by
+     * multilingual speech recognition support.
+     */
+    understoodLanguages: Array<
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT'
+      | 'HE'
+    >;
+
+    /**
      * Last update timestamp
      */
     updatedAt: string;
@@ -971,6 +1071,31 @@ export interface SimulationPersonaCreateParams {
    * Speech pace of the persona
    */
   speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+  /**
+   * Languages the persona can understand. Defaults to the languages the persona
+   * speaks.
+   */
+  understoodLanguages?: Array<
+    | 'EN'
+    | 'ES'
+    | 'DE'
+    | 'HI'
+    | 'FR'
+    | 'NL'
+    | 'AR'
+    | 'EL'
+    | 'IT'
+    | 'ID'
+    | 'TH'
+    | 'JA'
+    | 'TL'
+    | 'MS'
+    | 'ZH'
+    | 'TR'
+    | 'PT'
+    | 'HE'
+  >;
 }
 
 export interface SimulationPersonaUpdateParams {
@@ -1130,6 +1255,31 @@ export interface SimulationPersonaUpdateParams {
    * Speech pace of the persona
    */
   speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+  /**
+   * Languages the persona can understand. Multilingual combinations are limited by
+   * multilingual speech recognition support.
+   */
+  understoodLanguages?: Array<
+    | 'EN'
+    | 'ES'
+    | 'DE'
+    | 'HI'
+    | 'FR'
+    | 'NL'
+    | 'AR'
+    | 'EL'
+    | 'IT'
+    | 'ID'
+    | 'TH'
+    | 'JA'
+    | 'TL'
+    | 'MS'
+    | 'ZH'
+    | 'TR'
+    | 'PT'
+    | 'HE'
+  >;
 }
 
 export interface SimulationPersonaListParams {
