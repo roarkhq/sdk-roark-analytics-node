@@ -805,8 +805,7 @@ export interface SimulationRunPlanCreateParams {
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
   /**
-   * Number of iterations to run for each test case. Must be 1 for OUTBOUND
-   * direction.
+   * Number of iterations to run for each test case (1-10000)
    */
   iterationCount?: number;
 
@@ -896,8 +895,7 @@ export interface SimulationRunPlanUpdateParams {
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
   /**
-   * Number of iterations to run for each test case. Must be 1 for OUTBOUND
-   * direction.
+   * Number of iterations to run for each test case (1-10000)
    */
   iterationCount?: number;
 
