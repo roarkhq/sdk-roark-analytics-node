@@ -7,7 +7,11 @@ import { path } from '../internal/utils/path';
 
 export class SimulationScenario extends APIResource {
   /**
-   * Creates a new simulation scenario for the authenticated project.
+   * Creates a new simulation scenario for the authenticated project. Deprecated:
+   * customer flows replace scenarios. Use the /v1/customer-flow endpoints instead.
+   * This endpoint keeps working and is not scheduled for removal.
+   *
+   * @deprecated
    */
   create(
     body: SimulationScenarioCreateParams,
@@ -17,7 +21,11 @@ export class SimulationScenario extends APIResource {
   }
 
   /**
-   * Updates an existing simulation scenario by its ID.
+   * Updates an existing simulation scenario by its ID. Deprecated: customer flows
+   * replace scenarios. Use the /v1/customer-flow endpoints instead. This endpoint
+   * keeps working and is not scheduled for removal.
+   *
+   * @deprecated
    */
   update(
     scenarioID: string,
@@ -29,6 +37,10 @@ export class SimulationScenario extends APIResource {
 
   /**
    * Returns a paginated list of simulation scenarios for the authenticated project.
+   * Deprecated: customer flows replace scenarios. Use the /v1/customer-flow
+   * endpoints instead. This endpoint keeps working and is not scheduled for removal.
+   *
+   * @deprecated
    */
   list(
     query: SimulationScenarioListParams | null | undefined = {},
@@ -38,14 +50,22 @@ export class SimulationScenario extends APIResource {
   }
 
   /**
-   * Deletes a simulation scenario by its ID.
+   * Deletes a simulation scenario by its ID. Deprecated: customer flows replace
+   * scenarios. Use the /v1/customer-flow endpoints instead. This endpoint keeps
+   * working and is not scheduled for removal.
+   *
+   * @deprecated
    */
   delete(scenarioID: string, options?: RequestOptions): APIPromise<SimulationScenarioDeleteResponse> {
     return this._client.delete(path`/v1/simulation/scenario/${scenarioID}`, options);
   }
 
   /**
-   * Returns a specific simulation scenario by its ID.
+   * Returns a specific simulation scenario by its ID. Deprecated: customer flows
+   * replace scenarios. Use the /v1/customer-flow endpoints instead. This endpoint
+   * keeps working and is not scheduled for removal.
+   *
+   * @deprecated
    */
   getByID(scenarioID: string, options?: RequestOptions): APIPromise<SimulationScenarioGetByIDResponse> {
     return this._client.get(path`/v1/simulation/scenario/${scenarioID}`, options);
