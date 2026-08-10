@@ -70,6 +70,7 @@ export {
   type MetricPolicyUpdateParams,
   type MetricPolicyListParams,
 } from './metric-policy';
+export { Simulation } from './simulation';
 export {
   SimulationCustomerFlow,
   type FlowStep,
@@ -78,11 +79,9 @@ export {
   type SimulationCustomerFlowListResponse,
   type SimulationCustomerFlowDeleteResponse,
   type SimulationCustomerFlowGetByIDResponse,
-  type SimulationCustomerFlowReplaceStepsResponse,
   type SimulationCustomerFlowCreateParams,
   type SimulationCustomerFlowUpdateParams,
   type SimulationCustomerFlowListParams,
-  type SimulationCustomerFlowReplaceStepsParams,
 } from './simulation-customer-flow';
 export {
   SimulationCustomerFlowVariant,

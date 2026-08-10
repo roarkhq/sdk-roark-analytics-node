@@ -275,12 +275,6 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v1/simulation/customer-flow/{flowId}',
   },
   {
-    clientCallName: 'client.simulationCustomerFlow.replaceSteps',
-    fullyQualifiedName: 'simulationCustomerFlow.replaceSteps',
-    httpMethod: 'put',
-    httpPath: '/v1/simulation/customer-flow/{flowId}/steps',
-  },
-  {
     clientCallName: 'client.simulationCustomerFlowVariant.create',
     fullyQualifiedName: 'simulationCustomerFlowVariant.create',
     httpMethod: 'post',
