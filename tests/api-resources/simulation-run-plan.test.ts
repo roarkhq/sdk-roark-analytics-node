@@ -15,8 +15,6 @@ describe('resource simulationRunPlan', () => {
       maxSimulationDurationSeconds: 300,
       metrics: [{}],
       name: 'My Run Plan',
-      personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-      scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -40,6 +38,33 @@ describe('resource simulationRunPlan', () => {
         },
       ],
       name: 'My Run Plan',
+      autoRun: false,
+      description: 'A run plan for testing inbound calls',
+      endCallPhrases: ['goodbye'],
+      endCallReasons: ['Order has been confirmed by the agent'],
+      executionMode: 'PARALLEL',
+      flows: [
+        {
+          customerFlowId: '550e8400-e29b-41d4-a716-446655440000',
+          variants: [
+            {
+              id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+              personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              variables: { tier: 'premium' },
+            },
+            {
+              id: '9f8c7b6a-5d4e-4c3b-8a29-1e0f2d3c4b5a',
+              personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              variables: { tier: 'basic' },
+            },
+          ],
+          personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          variables: { foo: 'string' },
+          variantSelectionMode: 'ALL_VARIANTS',
+        },
+      ],
+      iterationCount: 1,
+      maxConcurrentJobs: 5,
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       scenarios: [
         {
@@ -47,13 +72,6 @@ describe('resource simulationRunPlan', () => {
           variables: { customerName: 'John Doe', appointmentDate: '2024-02-15' },
         },
       ],
-      autoRun: false,
-      description: 'A run plan for testing inbound calls',
-      endCallPhrases: ['goodbye'],
-      endCallReasons: ['Order has been confirmed by the agent'],
-      executionMode: 'PARALLEL',
-      iterationCount: 1,
-      maxConcurrentJobs: 5,
       silenceTimeoutSeconds: 30,
     });
   });
@@ -81,6 +99,26 @@ describe('resource simulationRunPlan', () => {
           endCallPhrases: ['string'],
           endCallReasons: ['string'],
           executionMode: 'PARALLEL',
+          flows: [
+            {
+              customerFlowId: '550e8400-e29b-41d4-a716-446655440000',
+              variants: [
+                {
+                  id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+                  personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                  variables: { tier: 'premium' },
+                },
+                {
+                  id: '9f8c7b6a-5d4e-4c3b-8a29-1e0f2d3c4b5a',
+                  personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                  variables: { tier: 'basic' },
+                },
+              ],
+              personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              variables: { foo: 'string' },
+              variantSelectionMode: 'ALL_VARIANTS',
+            },
+          ],
           iterationCount: 1,
           maxConcurrentJobs: 1,
           maxSimulationDurationSeconds: 1,

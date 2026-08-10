@@ -21,12 +21,6 @@ export class SimulationRunPlan extends APIResource {
    *     maxSimulationDurationSeconds: 300,
    *     metrics: [{}],
    *     name: 'My Run Plan',
-   *     personas: [
-   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-   *     ],
-   *     scenarios: [
-   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-   *     ],
    *   });
    * ```
    */
@@ -173,6 +167,11 @@ export namespace SimulationRunPlanCreateResponse {
       executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
       /**
+       * Customer flows included in this run plan
+       */
+      flows: Array<RunPlan.Flow>;
+
+      /**
        * Number of iterations to run for each test case
        */
       iterationCount: number;
@@ -198,12 +197,13 @@ export namespace SimulationRunPlanCreateResponse {
       name: string;
 
       /**
-       * Personas included in this run plan
+       * Personas included in this run plan. Only meaningful alongside `scenarios`.
        */
       personas: Array<RunPlan.Persona>;
 
       /**
-       * Scenarios included in this run plan
+       * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
+       * plan.
        */
       scenarios: Array<RunPlan.Scenario>;
 
@@ -235,6 +235,51 @@ export namespace SimulationRunPlanCreateResponse {
 
       export interface Evaluator {
         id: string;
+      }
+
+      /**
+       * One customer flow attached to a run plan.
+       *
+       * To run specific variants, list them in `variants`. Each entry may carry its own
+       * `personaOverrideId` and `variables`, so pinning two variants of one flow at
+       * different values is a single attachment.
+       *
+       * To let the run resolve the variants instead, leave `variants` out and set
+       * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
+       * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
+       * moves
+       *
+       * There is no default mode. Each variant is a separate simulated call, so a
+       * forgotten field would quietly change how many calls a run places.
+       *
+       * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
+       * the attachment to apply to every variant it resolves, or on a `variants` entry
+       * for one. The entry wins. Attaching the same flow more than once with different
+       * overrides is how you fan it out across personas.
+       *
+       * `variables` pins {{variable}} values the same way. Anything left unset is asked
+       * for when the run starts.
+       */
+      export interface Flow {
+        customerFlowId: string;
+
+        variants: Array<Flow.Variant>;
+
+        personaOverrideId?: string | null;
+
+        variables?: { [key: string]: string };
+
+        variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
+      }
+
+      export namespace Flow {
+        export interface Variant {
+          id: string;
+
+          personaOverrideId?: string | null;
+
+          variables?: { [key: string]: string };
+        }
       }
 
       export interface Metric {
@@ -348,6 +393,11 @@ export namespace SimulationRunPlanUpdateResponse {
     executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
     /**
+     * Customer flows included in this run plan
+     */
+    flows: Array<Data.Flow>;
+
+    /**
      * Number of iterations to run for each test case
      */
     iterationCount: number;
@@ -373,12 +423,13 @@ export namespace SimulationRunPlanUpdateResponse {
     name: string;
 
     /**
-     * Personas included in this run plan
+     * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
 
     /**
-     * Scenarios included in this run plan
+     * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
+     * plan.
      */
     scenarios: Array<Data.Scenario>;
 
@@ -410,6 +461,51 @@ export namespace SimulationRunPlanUpdateResponse {
 
     export interface Evaluator {
       id: string;
+    }
+
+    /**
+     * One customer flow attached to a run plan.
+     *
+     * To run specific variants, list them in `variants`. Each entry may carry its own
+     * `personaOverrideId` and `variables`, so pinning two variants of one flow at
+     * different values is a single attachment.
+     *
+     * To let the run resolve the variants instead, leave `variants` out and set
+     * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
+     * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
+     * moves
+     *
+     * There is no default mode. Each variant is a separate simulated call, so a
+     * forgotten field would quietly change how many calls a run places.
+     *
+     * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
+     * the attachment to apply to every variant it resolves, or on a `variants` entry
+     * for one. The entry wins. Attaching the same flow more than once with different
+     * overrides is how you fan it out across personas.
+     *
+     * `variables` pins {{variable}} values the same way. Anything left unset is asked
+     * for when the run starts.
+     */
+    export interface Flow {
+      customerFlowId: string;
+
+      variants: Array<Flow.Variant>;
+
+      personaOverrideId?: string | null;
+
+      variables?: { [key: string]: string };
+
+      variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
+    }
+
+    export namespace Flow {
+      export interface Variant {
+        id: string;
+
+        personaOverrideId?: string | null;
+
+        variables?: { [key: string]: string };
+      }
     }
 
     export interface Metric {
@@ -488,6 +584,11 @@ export namespace SimulationRunPlanListResponse {
     executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
     /**
+     * Customer flows included in this run plan
+     */
+    flows: Array<Data.Flow>;
+
+    /**
      * Number of iterations to run for each test case
      */
     iterationCount: number;
@@ -513,12 +614,13 @@ export namespace SimulationRunPlanListResponse {
     name: string;
 
     /**
-     * Personas included in this run plan
+     * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
 
     /**
-     * Scenarios included in this run plan
+     * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
+     * plan.
      */
     scenarios: Array<Data.Scenario>;
 
@@ -550,6 +652,51 @@ export namespace SimulationRunPlanListResponse {
 
     export interface Evaluator {
       id: string;
+    }
+
+    /**
+     * One customer flow attached to a run plan.
+     *
+     * To run specific variants, list them in `variants`. Each entry may carry its own
+     * `personaOverrideId` and `variables`, so pinning two variants of one flow at
+     * different values is a single attachment.
+     *
+     * To let the run resolve the variants instead, leave `variants` out and set
+     * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
+     * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
+     * moves
+     *
+     * There is no default mode. Each variant is a separate simulated call, so a
+     * forgotten field would quietly change how many calls a run places.
+     *
+     * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
+     * the attachment to apply to every variant it resolves, or on a `variants` entry
+     * for one. The entry wins. Attaching the same flow more than once with different
+     * overrides is how you fan it out across personas.
+     *
+     * `variables` pins {{variable}} values the same way. Anything left unset is asked
+     * for when the run starts.
+     */
+    export interface Flow {
+      customerFlowId: string;
+
+      variants: Array<Flow.Variant>;
+
+      personaOverrideId?: string | null;
+
+      variables?: { [key: string]: string };
+
+      variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
+    }
+
+    export namespace Flow {
+      export interface Variant {
+        id: string;
+
+        personaOverrideId?: string | null;
+
+        variables?: { [key: string]: string };
+      }
     }
 
     export interface Metric {
@@ -656,6 +803,11 @@ export namespace SimulationRunPlanGetByIDResponse {
     executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
     /**
+     * Customer flows included in this run plan
+     */
+    flows: Array<Data.Flow>;
+
+    /**
      * Number of iterations to run for each test case
      */
     iterationCount: number;
@@ -681,12 +833,13 @@ export namespace SimulationRunPlanGetByIDResponse {
     name: string;
 
     /**
-     * Personas included in this run plan
+     * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
 
     /**
-     * Scenarios included in this run plan
+     * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
+     * plan.
      */
     scenarios: Array<Data.Scenario>;
 
@@ -718,6 +871,51 @@ export namespace SimulationRunPlanGetByIDResponse {
 
     export interface Evaluator {
       id: string;
+    }
+
+    /**
+     * One customer flow attached to a run plan.
+     *
+     * To run specific variants, list them in `variants`. Each entry may carry its own
+     * `personaOverrideId` and `variables`, so pinning two variants of one flow at
+     * different values is a single attachment.
+     *
+     * To let the run resolve the variants instead, leave `variants` out and set
+     * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
+     * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
+     * moves
+     *
+     * There is no default mode. Each variant is a separate simulated call, so a
+     * forgotten field would quietly change how many calls a run places.
+     *
+     * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
+     * the attachment to apply to every variant it resolves, or on a `variants` entry
+     * for one. The entry wins. Attaching the same flow more than once with different
+     * overrides is how you fan it out across personas.
+     *
+     * `variables` pins {{variable}} values the same way. Anything left unset is asked
+     * for when the run starts.
+     */
+    export interface Flow {
+      customerFlowId: string;
+
+      variants: Array<Flow.Variant>;
+
+      personaOverrideId?: string | null;
+
+      variables?: { [key: string]: string };
+
+      variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
+    }
+
+    export namespace Flow {
+      export interface Variant {
+        id: string;
+
+        personaOverrideId?: string | null;
+
+        variables?: { [key: string]: string };
+      }
     }
 
     export interface Metric {
@@ -768,17 +966,6 @@ export interface SimulationRunPlanCreateParams {
   name: string;
 
   /**
-   * Personas to include in this run plan
-   */
-  personas: Array<SimulationRunPlanCreateParams.Persona>;
-
-  /**
-   * Scenarios to include in this run plan. The same scenario ID can appear multiple
-   * times with different variables.
-   */
-  scenarios: Array<SimulationRunPlanCreateParams.Scenario>;
-
-  /**
    * Whether to automatically trigger a job after creating the run plan
    */
   autoRun?: boolean;
@@ -805,6 +992,12 @@ export interface SimulationRunPlanCreateParams {
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
   /**
+   * Customer flows to include in this run plan. The same flow can appear more than
+   * once with a different persona override or different variables.
+   */
+  flows?: Array<SimulationRunPlanCreateParams.Flow>;
+
+  /**
    * Number of iterations to run for each test case (1-10000)
    */
   iterationCount?: number;
@@ -813,6 +1006,18 @@ export interface SimulationRunPlanCreateParams {
    * Maximum number of concurrent simulation jobs
    */
   maxConcurrentJobs?: number;
+
+  /**
+   * Personas to include in this run plan. Required with `scenarios`; ignored with
+   * `flows`, where each variant carries its own persona.
+   */
+  personas?: Array<SimulationRunPlanCreateParams.Persona>;
+
+  /**
+   * @deprecated Deprecated: use `flows` instead. Scenarios to include in this run
+   * plan. The same scenario ID can appear multiple times with different variables.
+   */
+  scenarios?: Array<SimulationRunPlanCreateParams.Scenario>;
 
   /**
    * Timeout in seconds for silence detection
@@ -842,6 +1047,51 @@ export namespace SimulationRunPlanCreateParams {
      * not both.
      */
     slug?: string;
+  }
+
+  /**
+   * One customer flow attached to a run plan.
+   *
+   * To run specific variants, list them in `variants`. Each entry may carry its own
+   * `personaOverrideId` and `variables`, so pinning two variants of one flow at
+   * different values is a single attachment.
+   *
+   * To let the run resolve the variants instead, leave `variants` out and set
+   * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
+   * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
+   * moves
+   *
+   * There is no default mode. Each variant is a separate simulated call, so a
+   * forgotten field would quietly change how many calls a run places.
+   *
+   * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
+   * the attachment to apply to every variant it resolves, or on a `variants` entry
+   * for one. The entry wins. Attaching the same flow more than once with different
+   * overrides is how you fan it out across personas.
+   *
+   * `variables` pins {{variable}} values the same way. Anything left unset is asked
+   * for when the run starts.
+   */
+  export interface Flow {
+    customerFlowId: string;
+
+    variants: Array<Flow.Variant>;
+
+    personaOverrideId?: string | null;
+
+    variables?: { [key: string]: string };
+
+    variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
+  }
+
+  export namespace Flow {
+    export interface Variant {
+      id: string;
+
+      personaOverrideId?: string | null;
+
+      variables?: { [key: string]: string };
+    }
   }
 
   export interface Persona {
@@ -895,6 +1145,12 @@ export interface SimulationRunPlanUpdateParams {
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
   /**
+   * Replaces the customer flows attached to this run plan. Omit to leave them
+   * unchanged; send an empty array to detach them all.
+   */
+  flows?: Array<SimulationRunPlanUpdateParams.Flow>;
+
+  /**
    * Number of iterations to run for each test case (1-10000)
    */
   iterationCount?: number;
@@ -926,8 +1182,9 @@ export interface SimulationRunPlanUpdateParams {
   personas?: Array<SimulationRunPlanUpdateParams.Persona>;
 
   /**
-   * Scenarios to include in this run plan. The same scenario ID can appear multiple
-   * times with different variables.
+   * @deprecated Deprecated: use `flows` instead. Replaces the scenarios on this run
+   * plan. Omit to leave them unchanged; send an empty array to detach them all,
+   * which is how a scenario-based plan is moved over to flows.
    */
   scenarios?: Array<SimulationRunPlanUpdateParams.Scenario>;
 
@@ -940,6 +1197,51 @@ export interface SimulationRunPlanUpdateParams {
 export namespace SimulationRunPlanUpdateParams {
   export interface AgentEndpoint {
     id: string;
+  }
+
+  /**
+   * One customer flow attached to a run plan.
+   *
+   * To run specific variants, list them in `variants`. Each entry may carry its own
+   * `personaOverrideId` and `variables`, so pinning two variants of one flow at
+   * different values is a single attachment.
+   *
+   * To let the run resolve the variants instead, leave `variants` out and set
+   * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
+   * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
+   * moves
+   *
+   * There is no default mode. Each variant is a separate simulated call, so a
+   * forgotten field would quietly change how many calls a run places.
+   *
+   * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
+   * the attachment to apply to every variant it resolves, or on a `variants` entry
+   * for one. The entry wins. Attaching the same flow more than once with different
+   * overrides is how you fan it out across personas.
+   *
+   * `variables` pins {{variable}} values the same way. Anything left unset is asked
+   * for when the run starts.
+   */
+  export interface Flow {
+    customerFlowId: string;
+
+    variants: Array<Flow.Variant>;
+
+    personaOverrideId?: string | null;
+
+    variables?: { [key: string]: string };
+
+    variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
+  }
+
+  export namespace Flow {
+    export interface Variant {
+      id: string;
+
+      personaOverrideId?: string | null;
+
+      variables?: { [key: string]: string };
+    }
   }
 
   export interface Metric {
