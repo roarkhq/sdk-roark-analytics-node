@@ -87,6 +87,9 @@ import {
   MetricPolicyUpdateParams,
   MetricPolicyUpdateResponse,
 } from './resources/metric-policy';
+import { SimulationCustomerFlow } from './resources/simulation-customer-flow';
+import { SimulationCustomerFlowVariant } from './resources/simulation-customer-flow-variant';
+import { SimulationEnvironment } from './resources/simulation-environment';
 import {
   SimulationJob,
   SimulationJobGetByIDResponse,
@@ -869,6 +872,11 @@ export class Roark {
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
   simulationScenario: API.SimulationScenario = new API.SimulationScenario(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
+  simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
+  simulationCustomerFlow: API.SimulationCustomerFlow = new API.SimulationCustomerFlow(this);
+  simulationCustomerFlowVariant: API.SimulationCustomerFlowVariant = new API.SimulationCustomerFlowVariant(
+    this,
+  );
   agent: API.Agent = new API.Agent(this);
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
@@ -885,6 +893,9 @@ Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationScenario = SimulationScenario;
 Roark.SimulationPersona = SimulationPersona;
+Roark.SimulationEnvironment = SimulationEnvironment;
+Roark.SimulationCustomerFlow = SimulationCustomerFlow;
+Roark.SimulationCustomerFlowVariant = SimulationCustomerFlowVariant;
 Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
@@ -988,6 +999,12 @@ export declare namespace Roark {
     type SimulationPersonaUpdateParams as SimulationPersonaUpdateParams,
     type SimulationPersonaListParams as SimulationPersonaListParams,
   };
+
+  export { SimulationEnvironment as SimulationEnvironment };
+
+  export { SimulationCustomerFlow as SimulationCustomerFlow };
+
+  export { SimulationCustomerFlowVariant as SimulationCustomerFlowVariant };
 
   export {
     Agent as Agent,
