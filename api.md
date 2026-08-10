@@ -74,6 +74,8 @@ Methods:
 - <code title="get /v1/metric/collection-jobs">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">list</a>({ ...params }) -> MetricCollectionJobListResponse</code>
 - <code title="get /v1/metric/collection-jobs/{jobId}">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">getByID</a>(jobID) -> MetricCollectionJobGetByIDResponse</code>
 
+# Simulation
+
 # SimulationJob
 
 Types:
@@ -174,7 +176,6 @@ Types:
 - <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowListResponse</a></code>
 - <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowDeleteResponse</a></code>
 - <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowGetByIDResponse</a></code>
-- <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowReplaceStepsResponse</a></code>
 
 Methods:
 
@@ -183,7 +184,6 @@ Methods:
 - <code title="get /v1/simulation/customer-flow">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">list</a>({ ...params }) -> SimulationCustomerFlowListResponse</code>
 - <code title="delete /v1/simulation/customer-flow/{flowId}">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">delete</a>(flowID) -> SimulationCustomerFlowDeleteResponse</code>
 - <code title="get /v1/simulation/customer-flow/{flowId}">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">getByID</a>(flowID) -> SimulationCustomerFlowGetByIDResponse</code>
-- <code title="put /v1/simulation/customer-flow/{flowId}/steps">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">replaceSteps</a>(flowID, { ...params }) -> SimulationCustomerFlowReplaceStepsResponse</code>
 
 # SimulationCustomerFlowVariant
 
