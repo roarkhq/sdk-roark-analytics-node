@@ -152,6 +152,12 @@ Methods:
 - <code title="get /v1/persona">client.simulationPersona.<a href="./src/resources/simulation-persona.ts">list</a>({ ...params }) -> SimulationPersonaListResponse</code>
 - <code title="get /v1/persona/{personaId}">client.simulationPersona.<a href="./src/resources/simulation-persona.ts">getByID</a>(personaID) -> SimulationPersonaGetByIDResponse</code>
 
+# SimulationEnvironment
+
+# SimulationCustomerFlow
+
+# SimulationCustomerFlowVariant
+
 # Agent
 
 Types:
