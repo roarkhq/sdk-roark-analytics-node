@@ -1305,6 +1305,481 @@ const EMBEDDED_METHODS: MethodEntry[] = [
   },
   {
     name: 'list',
+    endpoint: '/v1/simulation/environment',
+    httpMethod: 'get',
+    summary: 'List environments',
+    description:
+      "Returns a paginated list of environments: the project's own plus the environments Roark curates and shares across every project. Reference one by id when setting a customer flow variant's environment.",
+    stainlessPath: '(resource) simulationEnvironment > (method) list',
+    qualified: 'client.simulationEnvironment.list',
+    params: ['after?: string;', 'limit?: number;'],
+    response:
+      "{ data: { id: string; backgroundNoise: string; createdAt: string; name: string; source: 'SYSTEM' | 'CUSTOM'; updatedAt: string; description?: string; systemKey?: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }",
+    markdown:
+      "## list\n\n`client.simulationEnvironment.list(after?: string, limit?: number): { data: object[]; pagination: object; }`\n\n**get** `/v1/simulation/environment`\n\nReturns a paginated list of environments: the project's own plus the environments Roark curates and shares across every project. Reference one by id when setting a customer flow variant's environment.\n\n### Parameters\n\n- `after?: string`\n\n- `limit?: number`\n\n### Returns\n\n- `{ data: { id: string; backgroundNoise: string; createdAt: string; name: string; source: 'SYSTEM' | 'CUSTOM'; updatedAt: string; description?: string; systemKey?: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n  Paginated list of environments: the project's own plus the shared Roark-curated ones\n\n  - `data: { id: string; backgroundNoise: string; createdAt: string; name: string; source: 'SYSTEM' | 'CUSTOM'; updatedAt: string; description?: string; systemKey?: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationEnvironments = await client.simulationEnvironment.list();\n\nconsole.log(simulationEnvironments);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationEnvironment.list',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationEnvironments = await client.simulationEnvironment.list();\n\nconsole.log(simulationEnvironments.data);",
+      },
+      python: {
+        method: 'simulation_environment.list',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_environments = client.simulation_environment.list()\nprint(simulation_environments.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/environment \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'getById',
+    endpoint: '/v1/simulation/environment/{environmentId}',
+    httpMethod: 'get',
+    summary: 'Get environment by ID',
+    description: 'Returns a single environment by its ID.',
+    stainlessPath: '(resource) simulationEnvironment > (method) getById',
+    qualified: 'client.simulationEnvironment.getByID',
+    params: ['environmentId: string;'],
+    response:
+      "{ data: { id: string; backgroundNoise: string; createdAt: string; name: string; source: 'SYSTEM' | 'CUSTOM'; updatedAt: string; description?: string; systemKey?: string; }; }",
+    markdown:
+      "## getById\n\n`client.simulationEnvironment.getByID(environmentId: string): { data: object; }`\n\n**get** `/v1/simulation/environment/{environmentId}`\n\nReturns a single environment by its ID.\n\n### Parameters\n\n- `environmentId: string`\n\n### Returns\n\n- `{ data: { id: string; backgroundNoise: string; createdAt: string; name: string; source: 'SYSTEM' | 'CUSTOM'; updatedAt: string; description?: string; systemKey?: string; }; }`\n\n  - `data: { id: string; backgroundNoise: string; createdAt: string; name: string; source: 'SYSTEM' | 'CUSTOM'; updatedAt: string; description?: string; systemKey?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationEnvironment.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationEnvironment.getByID',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationEnvironment.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'simulation_environment.get_by_id',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_environment.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/environment/$ENVIRONMENT_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/v1/simulation/customer-flow',
+    httpMethod: 'get',
+    summary: 'List customer flows',
+    description:
+      "Returns a paginated list of customer flows with their agents, expectations and variants. The step graph is the one field omitted: reading it walks the project's whole step graph, so it comes back from the single-flow endpoint instead.",
+    stainlessPath: '(resource) simulationCustomerFlow > (method) list',
+    qualified: 'client.simulationCustomerFlow.list',
+    params: [
+      'after?: string;',
+      "includeSystem?: 'true' | 'false';",
+      'limit?: number;',
+      "mode?: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL';",
+      'searchText?: string;',
+    ],
+    response:
+      "{ data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: object[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }",
+    markdown:
+      "## list\n\n`client.simulationCustomerFlow.list(after?: string, includeSystem?: 'true' | 'false', limit?: number, mode?: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL', searchText?: string): { data: object[]; pagination: object; }`\n\n**get** `/v1/simulation/customer-flow`\n\nReturns a paginated list of customer flows with their agents, expectations and variants. The step graph is the one field omitted: reading it walks the project's whole step graph, so it comes back from the single-flow endpoint instead.\n\n### Parameters\n\n- `after?: string`\n\n- `includeSystem?: 'true' | 'false'`\n\n- `limit?: number`\n\n- `mode?: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'`\n\n- `searchText?: string`\n\n### Returns\n\n- `{ data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: object[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }[]; pagination: { hasMore: boolean; nextCursor: string; total: number; }; }`\n  Paginated list of customer flows\n\n  - `data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: object[]; }[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }[]`\n  - `pagination: { hasMore: boolean; nextCursor: string; total: number; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationCustomerFlows = await client.simulationCustomerFlow.list();\n\nconsole.log(simulationCustomerFlows);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlow.list',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationCustomerFlows = await client.simulationCustomerFlow.list();\n\nconsole.log(simulationCustomerFlows.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow.list',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_customer_flows = client.simulation_customer_flow.list()\nprint(simulation_customer_flows.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'getById',
+    endpoint: '/v1/simulation/customer-flow/{flowId}',
+    httpMethod: 'get',
+    summary: 'Get customer flow by ID',
+    description:
+      'Returns a customer flow with its variants, expectations and linked agents. Scripted flows also carry their step graph.',
+    stainlessPath: '(resource) simulationCustomerFlow > (method) getById',
+    qualified: 'client.simulationCustomerFlow.getByID',
+    params: ['flowId: string;'],
+    response:
+      "{ data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: object[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }; }",
+    markdown:
+      "## getById\n\n`client.simulationCustomerFlow.getByID(flowId: string): { data: object; }`\n\n**get** `/v1/simulation/customer-flow/{flowId}`\n\nReturns a customer flow with its variants, expectations and linked agents. Scripted flows also carry their step graph.\n\n### Parameters\n\n- `flowId: string`\n\n### Returns\n\n- `{ data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: object[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }; }`\n\n  - `data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: object[]; }[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationCustomerFlow.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlow.getByID',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationCustomerFlow.getByID(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow.get_by_id',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_customer_flow.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'create',
+    endpoint: '/v1/simulation/customer-flow',
+    httpMethod: 'post',
+    summary: 'Create a customer flow',
+    description:
+      'Creates a customer flow. A SCRIPTED flow carries a step graph and gets one variant per path through it; an UNSCRIPTED flow carries briefs and gets the variants you send.',
+    stainlessPath: '(resource) simulationCustomerFlow > (method) create',
+    qualified: 'client.simulationCustomerFlow.create',
+    params: [
+      'agentIds: string[];',
+      "mode: 'UNSCRIPTED' | 'SCRIPTED';",
+      'title: string;',
+      'agentExpectations?: { llmPrompt: string; }[];',
+      'description?: string;',
+      "scriptedBranchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';",
+      'steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: flow_step[]; }[]; }[];',
+      'variants?: { title: string; environmentId?: string; isDefault?: boolean; personaId?: string; precededByCustomerFlowId?: string; precededByCustomerFlowVariantId?: string; prompt?: string; }[];',
+    ],
+    response:
+      "{ data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: object[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }; }",
+    markdown:
+      "## create\n\n`client.simulationCustomerFlow.create(agentIds: string[], mode: 'UNSCRIPTED' | 'SCRIPTED', title: string, agentExpectations?: { llmPrompt: string; }[], description?: string, scriptedBranchingMode?: 'DETERMINISTIC' | 'ADAPTIVE', steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: flow_step[]; }[], variants?: { title: string; environmentId?: string; isDefault?: boolean; personaId?: string; precededByCustomerFlowId?: string; precededByCustomerFlowVariantId?: string; prompt?: string; }[]): { data: object; }`\n\n**post** `/v1/simulation/customer-flow`\n\nCreates a customer flow. A SCRIPTED flow carries a step graph and gets one variant per path through it; an UNSCRIPTED flow carries briefs and gets the variants you send.\n\n### Parameters\n\n- `agentIds: string[]`\n  Agents this flow exercises. At least one is required.\n\n- `mode: 'UNSCRIPTED' | 'SCRIPTED'`\n  SCRIPTED follows a step graph you author; UNSCRIPTED gives the simulated customer a brief and lets it improvise.\n\n- `title: string`\n\n- `agentExpectations?: { llmPrompt: string; }[]`\n\n- `description?: string`\n\n- `scriptedBranchingMode?: 'DETERMINISTIC' | 'ADAPTIVE'`\n  Scripted flows only. DETERMINISTIC runs one variant per path through the graph; ADAPTIVE collapses the paths into one call the customer adapts across.\n\n- `steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: flow_step[]; }[]; }[]`\n  Required for SCRIPTED flows. At most 100 steps across at most 25 paths.\n\n- `variants?: { title: string; environmentId?: string; isDefault?: boolean; personaId?: string; precededByCustomerFlowId?: string; precededByCustomerFlowVariantId?: string; prompt?: string; }[]`\n  Required for UNSCRIPTED flows: the briefs to run. Scripted flows get one variant per path from the graph instead.\n\n### Returns\n\n- `{ data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: object[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }; }`\n\n  - `data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: object[]; }[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationCustomerFlow = await client.simulationCustomerFlow.create({\n  agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],\n  mode: 'UNSCRIPTED',\n  title: 'Reschedule an appointment',\n});\n\nconsole.log(simulationCustomerFlow);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlow.create',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationCustomerFlow = await client.simulationCustomerFlow.create({\n  agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],\n  mode: 'UNSCRIPTED',\n  title: 'Reschedule an appointment',\n});\n\nconsole.log(simulationCustomerFlow.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow.create',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_customer_flow = client.simulation_customer_flow.create(\n    agent_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],\n    mode="UNSCRIPTED",\n    title="Reschedule an appointment",\n)\nprint(simulation_customer_flow.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "agentIds": [\n            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n          ],\n          "mode": "UNSCRIPTED",\n          "title": "Reschedule an appointment"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v1/simulation/customer-flow/{flowId}',
+    httpMethod: 'put',
+    summary: 'Update a customer flow',
+    description:
+      "Updates a flow's title, description, branching mode, linked agents or flow-level expectations. The step graph is replaced through PUT /steps.",
+    stainlessPath: '(resource) simulationCustomerFlow > (method) update',
+    qualified: 'client.simulationCustomerFlow.update',
+    params: [
+      'flowId: string;',
+      'agentExpectations?: { llmPrompt: string; }[];',
+      'agentIds?: string[];',
+      'description?: string;',
+      "scriptedBranchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';",
+      'title?: string;',
+    ],
+    response:
+      "{ data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: object[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }; }",
+    markdown:
+      "## update\n\n`client.simulationCustomerFlow.update(flowId: string, agentExpectations?: { llmPrompt: string; }[], agentIds?: string[], description?: string, scriptedBranchingMode?: 'DETERMINISTIC' | 'ADAPTIVE', title?: string): { data: object; }`\n\n**put** `/v1/simulation/customer-flow/{flowId}`\n\nUpdates a flow's title, description, branching mode, linked agents or flow-level expectations. The step graph is replaced through PUT /steps.\n\n### Parameters\n\n- `flowId: string`\n\n- `agentExpectations?: { llmPrompt: string; }[]`\n  Replaces the flow-level expectations. Omit to leave them unchanged.\n\n- `agentIds?: string[]`\n  Replaces the linked agents. Omit to leave them unchanged.\n\n- `description?: string`\n\n- `scriptedBranchingMode?: 'DETERMINISTIC' | 'ADAPTIVE'`\n\n- `title?: string`\n\n### Returns\n\n- `{ data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: object[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }; }`\n\n  - `data: { id: string; agentExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; agentIds: string[]; createdAt: string; mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL'; scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE'; source: 'SYSTEM' | 'CUSTOM'; startNodeId: string; title: string; updatedAt: string; variants: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; description?: string; steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: object[]; }[]; stepsSharedWithOtherFlows?: string[]; systemKey?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationCustomerFlow = await client.simulationCustomerFlow.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(simulationCustomerFlow);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlow.update',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationCustomerFlow = await client.simulationCustomerFlow.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(simulationCustomerFlow.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow.update',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_customer_flow = client.simulation_customer_flow.update(\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(simulation_customer_flow.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v1/simulation/customer-flow/{flowId}',
+    httpMethod: 'delete',
+    summary: 'Delete a customer flow',
+    description:
+      'Soft-deletes a customer flow along with its variants, expectations and (for scripted flows) its step graph. Run plans that linked it drop it from their test cases.',
+    stainlessPath: '(resource) simulationCustomerFlow > (method) delete',
+    qualified: 'client.simulationCustomerFlow.delete',
+    params: ['flowId: string;'],
+    response: '{ data: { deleted: boolean; }; }',
+    markdown:
+      "## delete\n\n`client.simulationCustomerFlow.delete(flowId: string): { data: object; }`\n\n**delete** `/v1/simulation/customer-flow/{flowId}`\n\nSoft-deletes a customer flow along with its variants, expectations and (for scripted flows) its step graph. Run plans that linked it drop it from their test cases.\n\n### Parameters\n\n- `flowId: string`\n\n### Returns\n\n- `{ data: { deleted: boolean; }; }`\n\n  - `data: { deleted: boolean; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationCustomerFlow = await client.simulationCustomerFlow.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(simulationCustomerFlow);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlow.delete',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationCustomerFlow = await client.simulationCustomerFlow.delete(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(simulationCustomerFlow.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow.delete',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_customer_flow = client.simulation_customer_flow.delete(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(simulation_customer_flow.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'replaceSteps',
+    endpoint: '/v1/simulation/customer-flow/{flowId}/steps',
+    httpMethod: 'put',
+    summary: "Replace a scripted flow's steps",
+    description:
+      "Replaces a scripted flow's conversation graph with the tree you send. This is a full replace, not a merge:\na step you omit is removed.\n\nInclude `nodeId` on a step to update the existing one, omit it to create a new step. Where two branches\nrejoin, keep the `mergeIntoNodeIds` references a read gave you. Dropping them un-merges those branches\nand is refused unless `allowUnmerge` is set.\n\nA change to the set of paths re-seeds the flow's variants, which the response reports as\n`variantsReshaped` along with the resulting variants.",
+    stainlessPath: '(resource) simulationCustomerFlow > (method) replaceSteps',
+    qualified: 'client.simulationCustomerFlow.replaceSteps',
+    params: [
+      'flowId: string;',
+      'steps: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: flow_step[]; }[]; }[];',
+      'allowUnmerge?: boolean;',
+    ],
+    response:
+      '{ data: { steps: object[]; stepsSharedWithOtherFlows: string[]; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; variantsReshaped: boolean; warnings: string[]; }; }',
+    markdown:
+      "## replaceSteps\n\n`client.simulationCustomerFlow.replaceSteps(flowId: string, steps: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: flow_step[]; }[], allowUnmerge?: boolean): { data: object; }`\n\n**put** `/v1/simulation/customer-flow/{flowId}/steps`\n\nReplaces a scripted flow's conversation graph with the tree you send. This is a full replace, not a merge:\na step you omit is removed.\n\nInclude `nodeId` on a step to update the existing one, omit it to create a new step. Where two branches\nrejoin, keep the `mergeIntoNodeIds` references a read gave you. Dropping them un-merges those branches\nand is refused unless `allowUnmerge` is set.\n\nA change to the set of paths re-seeds the flow's variants, which the response reports as\n`variantsReshaped` along with the resulting variants.\n\n### Parameters\n\n- `flowId: string`\n\n- `steps: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: flow_step[]; }[]; }[]`\n  The complete set of steps. This replaces the flow's existing steps rather than merging into them.\n\n- `allowUnmerge?: boolean`\n  Confirms a write that drops branches which currently rejoin. Only needed when the request omits mergeIntoNodeIds references the flow already had; a faithful round trip never needs it.\n\n### Returns\n\n- `{ data: { steps: object[]; stepsSharedWithOtherFlows: string[]; variants: { id: string; additionalExpectations: object[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; variantsReshaped: boolean; warnings: string[]; }; }`\n\n  - `data: { steps: { type: string; content?: string; dtmfDigits?: string; linkedCustomerFlowId?: string; linkedCustomerFlowVariantId?: string; mergeIntoNodeIds?: string[]; nodeId?: string; ref?: string; silenceDurationSeconds?: number; steps?: object[]; }[]; stepsSharedWithOtherFlows: string[]; variants: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; variantsReshaped: boolean; warnings: string[]; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationCustomerFlow.replaceSteps('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { steps: [{ type: 'AGENT_TURN' }] });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlow.replaceSteps',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationCustomerFlow.replaceSteps(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { steps: [{ type: 'AGENT_TURN' }] },\n);\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow.replace_steps',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_customer_flow.replace_steps(\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    steps=[{\n        "type": "AGENT_TURN"\n    }],\n)\nprint(response.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID/steps \\\n    -X PUT \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "steps": [\n            {\n              "type": "AGENT_TURN"\n            }\n          ]\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'list',
+    endpoint: '/v1/simulation/customer-flow/{flowId}/variant',
+    httpMethod: 'get',
+    summary: "List a flow's variants",
+    description:
+      "Returns every variant of a customer flow with its additional expectations. Not paginated: a flow's variants are bounded by its paths.",
+    stainlessPath: '(resource) simulationCustomerFlowVariant > (method) list',
+    qualified: 'client.simulationCustomerFlowVariant.list',
+    params: ['flowId: string;'],
+    response:
+      '{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; }',
+    markdown:
+      "## list\n\n`client.simulationCustomerFlowVariant.list(flowId: string): { data: object[]; }`\n\n**get** `/v1/simulation/customer-flow/{flowId}/variant`\n\nReturns every variant of a customer flow with its additional expectations. Not paginated: a flow's variants are bounded by its paths.\n\n### Parameters\n\n- `flowId: string`\n\n### Returns\n\n- `{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]; }`\n\n  - `data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }[]`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationCustomerFlowVariants = await client.simulationCustomerFlowVariant.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(simulationCustomerFlowVariants);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlowVariant.list',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationCustomerFlowVariants = await client.simulationCustomerFlowVariant.list(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(simulationCustomerFlowVariants.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow_variant.list',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_customer_flow_variants = client.simulation_customer_flow_variant.list(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(simulation_customer_flow_variants.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID/variant \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'getById',
+    endpoint: '/v1/simulation/customer-flow/{flowId}/variant/{variantId}',
+    httpMethod: 'get',
+    summary: 'Get a flow variant',
+    description: 'Get a flow variant',
+    stainlessPath: '(resource) simulationCustomerFlowVariant > (method) getById',
+    qualified: 'client.simulationCustomerFlowVariant.getByID',
+    params: ['flowId: string;', 'variantId: string;'],
+    response:
+      '{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }; }',
+    markdown:
+      "## getById\n\n`client.simulationCustomerFlowVariant.getByID(flowId: string, variantId: string): { data: object; }`\n\n**get** `/v1/simulation/customer-flow/{flowId}/variant/{variantId}`\n\nGet a flow variant\n\n### Parameters\n\n- `flowId: string`\n\n- `variantId: string`\n\n### Returns\n\n- `{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }; }`\n\n  - `data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationCustomerFlowVariant.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlowVariant.getByID',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationCustomerFlowVariant.getByID(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },\n);\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow_variant.get_by_id',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_customer_flow_variant.get_by_id(\n    variant_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID/variant/$VARIANT_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'create',
+    endpoint: '/v1/simulation/customer-flow/{flowId}/variant',
+    httpMethod: 'post',
+    summary: 'Create a flow variant',
+    description:
+      "Adds a variant to an UNSCRIPTED flow.\n\nA scripted flow's variants are owned by the path engine, one per path through the graph, so they are\ncreated by editing the graph through PUT /v1/simulation/customer-flow/{flowId}/steps rather than here.\n\nLeave personaId or environmentId unset to inherit the default variant's.",
+    stainlessPath: '(resource) simulationCustomerFlowVariant > (method) create',
+    qualified: 'client.simulationCustomerFlowVariant.create',
+    params: [
+      'flowId: string;',
+      'title: string;',
+      'environmentId?: string;',
+      'isDefault?: boolean;',
+      'personaId?: string;',
+      'precededByCustomerFlowId?: string;',
+      'precededByCustomerFlowVariantId?: string;',
+      'prompt?: string;',
+    ],
+    response:
+      '{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }; }',
+    markdown:
+      "## create\n\n`client.simulationCustomerFlowVariant.create(flowId: string, title: string, environmentId?: string, isDefault?: boolean, personaId?: string, precededByCustomerFlowId?: string, precededByCustomerFlowVariantId?: string, prompt?: string): { data: object; }`\n\n**post** `/v1/simulation/customer-flow/{flowId}/variant`\n\nAdds a variant to an UNSCRIPTED flow.\n\nA scripted flow's variants are owned by the path engine, one per path through the graph, so they are\ncreated by editing the graph through PUT /v1/simulation/customer-flow/{flowId}/steps rather than here.\n\nLeave personaId or environmentId unset to inherit the default variant's.\n\n### Parameters\n\n- `flowId: string`\n\n- `title: string`\n\n- `environmentId?: string`\n\n- `isDefault?: boolean`\n\n- `personaId?: string`\n\n- `precededByCustomerFlowId?: string`\n\n- `precededByCustomerFlowVariantId?: string`\n\n- `prompt?: string`\n\n### Returns\n\n- `{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }; }`\n\n  - `data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationCustomerFlowVariant = await client.simulationCustomerFlowVariant.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { title: 'x' });\n\nconsole.log(simulationCustomerFlowVariant);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlowVariant.create',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationCustomerFlowVariant = await client.simulationCustomerFlowVariant.create(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { title: 'x' },\n);\n\nconsole.log(simulationCustomerFlowVariant.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow_variant.create',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_customer_flow_variant = client.simulation_customer_flow_variant.create(\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    title="x",\n)\nprint(simulation_customer_flow_variant.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID/variant \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "title": "x"\n        }\'',
+      },
+    },
+  },
+  {
+    name: 'update',
+    endpoint: '/v1/simulation/customer-flow/{flowId}/variant/{variantId}',
+    httpMethod: 'put',
+    summary: 'Update a flow variant',
+    description:
+      "Updates a variant's title, persona, environment, brief, preceded-by link or expectations. Omitted fields are left alone; `additionalExpectations` replaces the set wholesale rather than appending. Making it the flow's default is a separate call, since that also demotes the current default.",
+    stainlessPath: '(resource) simulationCustomerFlowVariant > (method) update',
+    qualified: 'client.simulationCustomerFlowVariant.update',
+    params: [
+      'flowId: string;',
+      'variantId: string;',
+      'additionalExpectations?: { llmPrompt: string; }[];',
+      'environmentId?: string;',
+      'personaId?: string;',
+      'precededByCustomerFlowId?: string;',
+      'precededByCustomerFlowVariantId?: string;',
+      'prompt?: string;',
+      'title?: string;',
+    ],
+    response:
+      '{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }; }',
+    markdown:
+      "## update\n\n`client.simulationCustomerFlowVariant.update(flowId: string, variantId: string, additionalExpectations?: { llmPrompt: string; }[], environmentId?: string, personaId?: string, precededByCustomerFlowId?: string, precededByCustomerFlowVariantId?: string, prompt?: string, title?: string): { data: object; }`\n\n**put** `/v1/simulation/customer-flow/{flowId}/variant/{variantId}`\n\nUpdates a variant's title, persona, environment, brief, preceded-by link or expectations. Omitted fields are left alone; `additionalExpectations` replaces the set wholesale rather than appending. Making it the flow's default is a separate call, since that also demotes the current default.\n\n### Parameters\n\n- `flowId: string`\n\n- `variantId: string`\n\n- `additionalExpectations?: { llmPrompt: string; }[]`\n  Replaces the expectations that apply to this variant on top of the flow's. Omit to leave them alone, send [] to clear. Unscripted flows only: a scripted variant's expectations come from the agent turns on its path and are rewritten on the next step edit.\n\n- `environmentId?: string`\n\n- `personaId?: string`\n\n- `precededByCustomerFlowId?: string`\n\n- `precededByCustomerFlowVariantId?: string`\n\n- `prompt?: string`\n\n- `title?: string`\n\n### Returns\n\n- `{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }; }`\n\n  - `data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationCustomerFlowVariant = await client.simulationCustomerFlowVariant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });\n\nconsole.log(simulationCustomerFlowVariant);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlowVariant.update',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationCustomerFlowVariant = await client.simulationCustomerFlowVariant.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },\n);\n\nconsole.log(simulationCustomerFlowVariant.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow_variant.update',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_customer_flow_variant = client.simulation_customer_flow_variant.update(\n    variant_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(simulation_customer_flow_variant.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID/variant/$VARIANT_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'delete',
+    endpoint: '/v1/simulation/customer-flow/{flowId}/variant/{variantId}',
+    httpMethod: 'delete',
+    summary: 'Delete a flow variant',
+    description:
+      'Soft-deletes a variant. On a scripted flow the path engine re-creates a variant for any path still in the graph, so remove the path through PUT /steps instead if that is what you meant.',
+    stainlessPath: '(resource) simulationCustomerFlowVariant > (method) delete',
+    qualified: 'client.simulationCustomerFlowVariant.delete',
+    params: ['flowId: string;', 'variantId: string;'],
+    response: '{ data: { deleted: boolean; }; }',
+    markdown:
+      "## delete\n\n`client.simulationCustomerFlowVariant.delete(flowId: string, variantId: string): { data: object; }`\n\n**delete** `/v1/simulation/customer-flow/{flowId}/variant/{variantId}`\n\nSoft-deletes a variant. On a scripted flow the path engine re-creates a variant for any path still in the graph, so remove the path through PUT /steps instead if that is what you meant.\n\n### Parameters\n\n- `flowId: string`\n\n- `variantId: string`\n\n### Returns\n\n- `{ data: { deleted: boolean; }; }`\n\n  - `data: { deleted: boolean; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst simulationCustomerFlowVariant = await client.simulationCustomerFlowVariant.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });\n\nconsole.log(simulationCustomerFlowVariant);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlowVariant.delete',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationCustomerFlowVariant = await client.simulationCustomerFlowVariant.delete(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },\n);\n\nconsole.log(simulationCustomerFlowVariant.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow_variant.delete',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_customer_flow_variant = client.simulation_customer_flow_variant.delete(\n    variant_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(simulation_customer_flow_variant.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID/variant/$VARIANT_ID \\\n    -X DELETE \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'setDefault',
+    endpoint: '/v1/simulation/customer-flow/{flowId}/variant/{variantId}/default',
+    httpMethod: 'post',
+    summary: 'Make a variant the flow default',
+    description:
+      "Promotes a variant to the flow's default, demoting the current one. The outgoing default's persona and environment are baked into it first, so variants that were inheriting keep the configuration they had.",
+    stainlessPath: '(resource) simulationCustomerFlowVariant > (method) setDefault',
+    qualified: 'client.simulationCustomerFlowVariant.setDefault',
+    params: ['flowId: string;', 'variantId: string;'],
+    response:
+      '{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }; }',
+    markdown:
+      "## setDefault\n\n`client.simulationCustomerFlowVariant.setDefault(flowId: string, variantId: string): { data: object; }`\n\n**post** `/v1/simulation/customer-flow/{flowId}/variant/{variantId}/default`\n\nPromotes a variant to the flow's default, demoting the current one. The outgoing default's persona and environment are baked into it first, so variants that were inheriting keep the configuration they had.\n\n### Parameters\n\n- `flowId: string`\n\n- `variantId: string`\n\n### Returns\n\n- `{ data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }; }`\n\n  - `data: { id: string; additionalExpectations: { id: string; llmPrompt: string; orderIndex: number; sourceStepNodeId: string; }[]; createdAt: string; customerFlowId: string; environmentId: string; isAutoGeneratedTitle: boolean; isDefault: boolean; isGenerated: boolean; latestPathId: string; personaId: string; precededByCustomerFlowId: string; precededByCustomerFlowVariantId: string; title: string; updatedAt: string; prompt?: string; }`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.simulationCustomerFlowVariant.setDefault('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' });\n\nconsole.log(response);\n```",
+    perLanguage: {
+      typescript: {
+        method: 'client.simulationCustomerFlowVariant.setDefault',
+        example:
+          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationCustomerFlowVariant.setDefault(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },\n);\n\nconsole.log(response.data);",
+      },
+      python: {
+        method: 'simulation_customer_flow_variant.set_default',
+        example:
+          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_customer_flow_variant.set_default(\n    variant_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
+      },
+      http: {
+        example:
+          'curl https://api.roark.ai/v1/simulation/customer-flow/$FLOW_ID/variant/$VARIANT_ID/default \\\n    -X POST \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
+      },
+    },
+  },
+  {
+    name: 'list',
     endpoint: '/v1/agent',
     httpMethod: 'get',
     summary: 'List agents',

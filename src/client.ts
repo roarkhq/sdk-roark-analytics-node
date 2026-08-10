@@ -87,9 +87,40 @@ import {
   MetricPolicyUpdateParams,
   MetricPolicyUpdateResponse,
 } from './resources/metric-policy';
-import { SimulationCustomerFlow } from './resources/simulation-customer-flow';
-import { SimulationCustomerFlowVariant } from './resources/simulation-customer-flow-variant';
-import { SimulationEnvironment } from './resources/simulation-environment';
+import {
+  FlowStep,
+  SimulationCustomerFlow,
+  SimulationCustomerFlowCreateParams,
+  SimulationCustomerFlowCreateResponse,
+  SimulationCustomerFlowDeleteResponse,
+  SimulationCustomerFlowGetByIDResponse,
+  SimulationCustomerFlowListParams,
+  SimulationCustomerFlowListResponse,
+  SimulationCustomerFlowReplaceStepsParams,
+  SimulationCustomerFlowReplaceStepsResponse,
+  SimulationCustomerFlowUpdateParams,
+  SimulationCustomerFlowUpdateResponse,
+} from './resources/simulation-customer-flow';
+import {
+  SimulationCustomerFlowVariant,
+  SimulationCustomerFlowVariantCreateParams,
+  SimulationCustomerFlowVariantCreateResponse,
+  SimulationCustomerFlowVariantDeleteParams,
+  SimulationCustomerFlowVariantDeleteResponse,
+  SimulationCustomerFlowVariantGetByIDParams,
+  SimulationCustomerFlowVariantGetByIDResponse,
+  SimulationCustomerFlowVariantListResponse,
+  SimulationCustomerFlowVariantSetDefaultParams,
+  SimulationCustomerFlowVariantSetDefaultResponse,
+  SimulationCustomerFlowVariantUpdateParams,
+  SimulationCustomerFlowVariantUpdateResponse,
+} from './resources/simulation-customer-flow-variant';
+import {
+  SimulationEnvironment,
+  SimulationEnvironmentGetByIDResponse,
+  SimulationEnvironmentListParams,
+  SimulationEnvironmentListResponse,
+} from './resources/simulation-environment';
 import {
   SimulationJob,
   SimulationJobGetByIDResponse,
@@ -1000,11 +1031,42 @@ export declare namespace Roark {
     type SimulationPersonaListParams as SimulationPersonaListParams,
   };
 
-  export { SimulationEnvironment as SimulationEnvironment };
+  export {
+    SimulationEnvironment as SimulationEnvironment,
+    type SimulationEnvironmentListResponse as SimulationEnvironmentListResponse,
+    type SimulationEnvironmentGetByIDResponse as SimulationEnvironmentGetByIDResponse,
+    type SimulationEnvironmentListParams as SimulationEnvironmentListParams,
+  };
 
-  export { SimulationCustomerFlow as SimulationCustomerFlow };
+  export {
+    SimulationCustomerFlow as SimulationCustomerFlow,
+    type FlowStep as FlowStep,
+    type SimulationCustomerFlowCreateResponse as SimulationCustomerFlowCreateResponse,
+    type SimulationCustomerFlowUpdateResponse as SimulationCustomerFlowUpdateResponse,
+    type SimulationCustomerFlowListResponse as SimulationCustomerFlowListResponse,
+    type SimulationCustomerFlowDeleteResponse as SimulationCustomerFlowDeleteResponse,
+    type SimulationCustomerFlowGetByIDResponse as SimulationCustomerFlowGetByIDResponse,
+    type SimulationCustomerFlowReplaceStepsResponse as SimulationCustomerFlowReplaceStepsResponse,
+    type SimulationCustomerFlowCreateParams as SimulationCustomerFlowCreateParams,
+    type SimulationCustomerFlowUpdateParams as SimulationCustomerFlowUpdateParams,
+    type SimulationCustomerFlowListParams as SimulationCustomerFlowListParams,
+    type SimulationCustomerFlowReplaceStepsParams as SimulationCustomerFlowReplaceStepsParams,
+  };
 
-  export { SimulationCustomerFlowVariant as SimulationCustomerFlowVariant };
+  export {
+    SimulationCustomerFlowVariant as SimulationCustomerFlowVariant,
+    type SimulationCustomerFlowVariantCreateResponse as SimulationCustomerFlowVariantCreateResponse,
+    type SimulationCustomerFlowVariantUpdateResponse as SimulationCustomerFlowVariantUpdateResponse,
+    type SimulationCustomerFlowVariantListResponse as SimulationCustomerFlowVariantListResponse,
+    type SimulationCustomerFlowVariantDeleteResponse as SimulationCustomerFlowVariantDeleteResponse,
+    type SimulationCustomerFlowVariantGetByIDResponse as SimulationCustomerFlowVariantGetByIDResponse,
+    type SimulationCustomerFlowVariantSetDefaultResponse as SimulationCustomerFlowVariantSetDefaultResponse,
+    type SimulationCustomerFlowVariantCreateParams as SimulationCustomerFlowVariantCreateParams,
+    type SimulationCustomerFlowVariantUpdateParams as SimulationCustomerFlowVariantUpdateParams,
+    type SimulationCustomerFlowVariantDeleteParams as SimulationCustomerFlowVariantDeleteParams,
+    type SimulationCustomerFlowVariantGetByIDParams as SimulationCustomerFlowVariantGetByIDParams,
+    type SimulationCustomerFlowVariantSetDefaultParams as SimulationCustomerFlowVariantSetDefaultParams,
+  };
 
   export {
     Agent as Agent,

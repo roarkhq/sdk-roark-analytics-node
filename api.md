@@ -154,9 +154,56 @@ Methods:
 
 # SimulationEnvironment
 
+Types:
+
+- <code><a href="./src/resources/simulation-environment.ts">SimulationEnvironmentListResponse</a></code>
+- <code><a href="./src/resources/simulation-environment.ts">SimulationEnvironmentGetByIDResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/simulation/environment">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">list</a>({ ...params }) -> SimulationEnvironmentListResponse</code>
+- <code title="get /v1/simulation/environment/{environmentId}">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">getByID</a>(environmentID) -> SimulationEnvironmentGetByIDResponse</code>
+
 # SimulationCustomerFlow
 
+Types:
+
+- <code><a href="./src/resources/simulation-customer-flow.ts">FlowStep</a></code>
+- <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowCreateResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowUpdateResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowListResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowDeleteResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowGetByIDResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow.ts">SimulationCustomerFlowReplaceStepsResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/simulation/customer-flow">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">create</a>({ ...params }) -> SimulationCustomerFlowCreateResponse</code>
+- <code title="put /v1/simulation/customer-flow/{flowId}">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">update</a>(flowID, { ...params }) -> SimulationCustomerFlowUpdateResponse</code>
+- <code title="get /v1/simulation/customer-flow">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">list</a>({ ...params }) -> SimulationCustomerFlowListResponse</code>
+- <code title="delete /v1/simulation/customer-flow/{flowId}">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">delete</a>(flowID) -> SimulationCustomerFlowDeleteResponse</code>
+- <code title="get /v1/simulation/customer-flow/{flowId}">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">getByID</a>(flowID) -> SimulationCustomerFlowGetByIDResponse</code>
+- <code title="put /v1/simulation/customer-flow/{flowId}/steps">client.simulationCustomerFlow.<a href="./src/resources/simulation-customer-flow.ts">replaceSteps</a>(flowID, { ...params }) -> SimulationCustomerFlowReplaceStepsResponse</code>
+
 # SimulationCustomerFlowVariant
+
+Types:
+
+- <code><a href="./src/resources/simulation-customer-flow-variant.ts">SimulationCustomerFlowVariantCreateResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow-variant.ts">SimulationCustomerFlowVariantUpdateResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow-variant.ts">SimulationCustomerFlowVariantListResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow-variant.ts">SimulationCustomerFlowVariantDeleteResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow-variant.ts">SimulationCustomerFlowVariantGetByIDResponse</a></code>
+- <code><a href="./src/resources/simulation-customer-flow-variant.ts">SimulationCustomerFlowVariantSetDefaultResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/simulation/customer-flow/{flowId}/variant">client.simulationCustomerFlowVariant.<a href="./src/resources/simulation-customer-flow-variant.ts">create</a>(flowID, { ...params }) -> SimulationCustomerFlowVariantCreateResponse</code>
+- <code title="put /v1/simulation/customer-flow/{flowId}/variant/{variantId}">client.simulationCustomerFlowVariant.<a href="./src/resources/simulation-customer-flow-variant.ts">update</a>(variantID, { ...params }) -> SimulationCustomerFlowVariantUpdateResponse</code>
+- <code title="get /v1/simulation/customer-flow/{flowId}/variant">client.simulationCustomerFlowVariant.<a href="./src/resources/simulation-customer-flow-variant.ts">list</a>(flowID) -> SimulationCustomerFlowVariantListResponse</code>
+- <code title="delete /v1/simulation/customer-flow/{flowId}/variant/{variantId}">client.simulationCustomerFlowVariant.<a href="./src/resources/simulation-customer-flow-variant.ts">delete</a>(variantID, { ...params }) -> SimulationCustomerFlowVariantDeleteResponse</code>
+- <code title="get /v1/simulation/customer-flow/{flowId}/variant/{variantId}">client.simulationCustomerFlowVariant.<a href="./src/resources/simulation-customer-flow-variant.ts">getByID</a>(variantID, { ...params }) -> SimulationCustomerFlowVariantGetByIDResponse</code>
+- <code title="post /v1/simulation/customer-flow/{flowId}/variant/{variantId}/default">client.simulationCustomerFlowVariant.<a href="./src/resources/simulation-customer-flow-variant.ts">setDefault</a>(variantID, { ...params }) -> SimulationCustomerFlowVariantSetDefaultResponse</code>
 
 # Agent
 
