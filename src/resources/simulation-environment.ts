@@ -39,8 +39,8 @@ export interface SimulationEnvironmentListResponse {
 export namespace SimulationEnvironmentListResponse {
   /**
    * A simulation environment: the ambient conditions a customer flow variant runs
-   * under. Environments with source SYSTEM are curated by Roark and shared across
-   * every project.
+   * under. The list includes both your own and the ones Roark curates for every
+   * project.
    */
   export interface Data {
     id: string;
@@ -62,16 +62,12 @@ export namespace SimulationEnvironmentListResponse {
 
     name: string;
 
-    source: 'SYSTEM' | 'CUSTOM';
-
     /**
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
 
     description?: string | null;
-
-    systemKey?: string | null;
   }
 
   export interface Pagination {
@@ -95,8 +91,8 @@ export namespace SimulationEnvironmentListResponse {
 export interface SimulationEnvironmentGetByIDResponse {
   /**
    * A simulation environment: the ambient conditions a customer flow variant runs
-   * under. Environments with source SYSTEM are curated by Roark and shared across
-   * every project.
+   * under. The list includes both your own and the ones Roark curates for every
+   * project.
    */
   data: SimulationEnvironmentGetByIDResponse.Data;
 }
@@ -104,8 +100,8 @@ export interface SimulationEnvironmentGetByIDResponse {
 export namespace SimulationEnvironmentGetByIDResponse {
   /**
    * A simulation environment: the ambient conditions a customer flow variant runs
-   * under. Environments with source SYSTEM are curated by Roark and shared across
-   * every project.
+   * under. The list includes both your own and the ones Roark curates for every
+   * project.
    */
   export interface Data {
     id: string;
@@ -127,16 +123,12 @@ export namespace SimulationEnvironmentGetByIDResponse {
 
     name: string;
 
-    source: 'SYSTEM' | 'CUSTOM';
-
     /**
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
 
     description?: string | null;
-
-    systemKey?: string | null;
   }
 }
 

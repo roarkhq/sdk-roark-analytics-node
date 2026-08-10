@@ -11,8 +11,9 @@ describe('resource simulationCustomerFlow', () => {
   test('create: only required params', async () => {
     const responsePromise = client.simulationCustomerFlow.create({
       agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
-      mode: 'UNSCRIPTED',
+      graph: [{ type: 'AGENT_TURN' }],
       title: 'Reschedule an appointment',
+      type: 'SCRIPTED',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -26,36 +27,21 @@ describe('resource simulationCustomerFlow', () => {
   test('create: required and optional params', async () => {
     const response = await client.simulationCustomerFlow.create({
       agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
-      mode: 'UNSCRIPTED',
-      title: 'Reschedule an appointment',
-      agentExpectations: [{ llmPrompt: 'x' }],
-      description: 'description',
-      scriptedBranchingMode: 'DETERMINISTIC',
-      steps: [
+      graph: [
         {
           type: 'AGENT_TURN',
           content: 'content',
-          dtmfDigits: 'dtmfDigits',
-          linkedCustomerFlowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          linkedCustomerFlowVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           mergeIntoNodeIds: ['x'],
           nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           ref: 'x',
-          silenceDurationSeconds: 1,
           steps: [],
         },
       ],
-      variants: [
-        {
-          title: 'x',
-          environmentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          isDefault: true,
-          personaId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          precededByCustomerFlowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          precededByCustomerFlowVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          prompt: 'prompt',
-        },
-      ],
+      title: 'Reschedule an appointment',
+      type: 'SCRIPTED',
+      agentExpectations: [{ prompt: 'The agent confirmed the new appointment time back to the customer' }],
+      branchingMode: 'DETERMINISTIC',
+      description: 'description',
     });
   });
 
@@ -76,10 +62,12 @@ describe('resource simulationCustomerFlow', () => {
       client.simulationCustomerFlow.update(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
-          agentExpectations: [{ llmPrompt: 'x' }],
+          agentExpectations: [
+            { prompt: 'The agent confirmed the new appointment time back to the customer' },
+          ],
           agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+          branchingMode: 'DETERMINISTIC',
           description: 'description',
-          scriptedBranchingMode: 'DETERMINISTIC',
           title: 'x',
         },
         { path: '/_stainless_unknown_path' },
@@ -106,8 +94,8 @@ describe('resource simulationCustomerFlow', () => {
           after: 'after',
           includeSystem: 'true',
           limit: 1,
-          mode: 'UNSCRIPTED',
           searchText: 'searchText',
+          type: 'SCRIPTED',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -134,5 +122,38 @@ describe('resource simulationCustomerFlow', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('replaceGraph: only required params', async () => {
+    const responsePromise = client.simulationCustomerFlow.replaceGraph(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      { graph: [{ type: 'AGENT_TURN' }] },
+    );
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('replaceGraph: required and optional params', async () => {
+    const response = await client.simulationCustomerFlow.replaceGraph(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      {
+        graph: [
+          {
+            type: 'AGENT_TURN',
+            content: 'content',
+            mergeIntoNodeIds: ['x'],
+            nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            ref: 'x',
+            steps: [],
+          },
+        ],
+        allowUnmerge: true,
+      },
+    );
   });
 });

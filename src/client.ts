@@ -87,7 +87,7 @@ import {
   MetricPolicyUpdateParams,
   MetricPolicyUpdateResponse,
 } from './resources/metric-policy';
-import { Simulation } from './resources/simulation';
+import { Simulation, SimulationRunParams, SimulationRunResponse } from './resources/simulation';
 import {
   FlowStep,
   SimulationCustomerFlow,
@@ -97,6 +97,8 @@ import {
   SimulationCustomerFlowGetByIDResponse,
   SimulationCustomerFlowListParams,
   SimulationCustomerFlowListResponse,
+  SimulationCustomerFlowReplaceGraphParams,
+  SimulationCustomerFlowReplaceGraphResponse,
   SimulationCustomerFlowUpdateParams,
   SimulationCustomerFlowUpdateResponse,
 } from './resources/simulation-customer-flow';
@@ -981,7 +983,11 @@ export declare namespace Roark {
     type MetricCollectionJobListParams as MetricCollectionJobListParams,
   };
 
-  export { Simulation as Simulation };
+  export {
+    Simulation as Simulation,
+    type SimulationRunResponse as SimulationRunResponse,
+    type SimulationRunParams as SimulationRunParams,
+  };
 
   export {
     SimulationJob as SimulationJob,
@@ -1049,9 +1055,11 @@ export declare namespace Roark {
     type SimulationCustomerFlowListResponse as SimulationCustomerFlowListResponse,
     type SimulationCustomerFlowDeleteResponse as SimulationCustomerFlowDeleteResponse,
     type SimulationCustomerFlowGetByIDResponse as SimulationCustomerFlowGetByIDResponse,
+    type SimulationCustomerFlowReplaceGraphResponse as SimulationCustomerFlowReplaceGraphResponse,
     type SimulationCustomerFlowCreateParams as SimulationCustomerFlowCreateParams,
     type SimulationCustomerFlowUpdateParams as SimulationCustomerFlowUpdateParams,
     type SimulationCustomerFlowListParams as SimulationCustomerFlowListParams,
+    type SimulationCustomerFlowReplaceGraphParams as SimulationCustomerFlowReplaceGraphParams,
   };
 
   export {
