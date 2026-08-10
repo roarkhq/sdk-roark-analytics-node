@@ -70,6 +70,9 @@ export {
   type MetricPolicyUpdateParams,
   type MetricPolicyListParams,
 } from './metric-policy';
+export { SimulationCustomerFlow } from './simulation-customer-flow';
+export { SimulationCustomerFlowVariant } from './simulation-customer-flow-variant';
+export { SimulationEnvironment } from './simulation-environment';
 export {
   SimulationJob,
   type SimulationJobGetByIDResponse,
