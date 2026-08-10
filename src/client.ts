@@ -87,6 +87,7 @@ import {
   MetricPolicyUpdateParams,
   MetricPolicyUpdateResponse,
 } from './resources/metric-policy';
+import { Simulation } from './resources/simulation';
 import {
   FlowStep,
   SimulationCustomerFlow,
@@ -96,8 +97,6 @@ import {
   SimulationCustomerFlowGetByIDResponse,
   SimulationCustomerFlowListParams,
   SimulationCustomerFlowListResponse,
-  SimulationCustomerFlowReplaceStepsParams,
-  SimulationCustomerFlowReplaceStepsResponse,
   SimulationCustomerFlowUpdateParams,
   SimulationCustomerFlowUpdateResponse,
 } from './resources/simulation-customer-flow';
@@ -898,6 +897,7 @@ export class Roark {
   metric: API.Metric = new API.Metric(this);
   metricPolicy: API.MetricPolicy = new API.MetricPolicy(this);
   metricCollectionJob: API.MetricCollectionJob = new API.MetricCollectionJob(this);
+  simulation: API.Simulation = new API.Simulation(this);
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
@@ -919,6 +919,7 @@ Roark.Call = Call;
 Roark.Metric = Metric;
 Roark.MetricPolicy = MetricPolicy;
 Roark.MetricCollectionJob = MetricCollectionJob;
+Roark.Simulation = Simulation;
 Roark.SimulationJob = SimulationJob;
 Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
@@ -979,6 +980,8 @@ export declare namespace Roark {
     type MetricCollectionJobCreateParams as MetricCollectionJobCreateParams,
     type MetricCollectionJobListParams as MetricCollectionJobListParams,
   };
+
+  export { Simulation as Simulation };
 
   export {
     SimulationJob as SimulationJob,
@@ -1046,11 +1049,9 @@ export declare namespace Roark {
     type SimulationCustomerFlowListResponse as SimulationCustomerFlowListResponse,
     type SimulationCustomerFlowDeleteResponse as SimulationCustomerFlowDeleteResponse,
     type SimulationCustomerFlowGetByIDResponse as SimulationCustomerFlowGetByIDResponse,
-    type SimulationCustomerFlowReplaceStepsResponse as SimulationCustomerFlowReplaceStepsResponse,
     type SimulationCustomerFlowCreateParams as SimulationCustomerFlowCreateParams,
     type SimulationCustomerFlowUpdateParams as SimulationCustomerFlowUpdateParams,
     type SimulationCustomerFlowListParams as SimulationCustomerFlowListParams,
-    type SimulationCustomerFlowReplaceStepsParams as SimulationCustomerFlowReplaceStepsParams,
   };
 
   export {

@@ -151,7 +151,6 @@ const fuse = new Fuse(
     'client.simulationCustomerFlow.delete',
     'client.simulationCustomerFlow.getByID',
     'client.simulationCustomerFlow.list',
-    'client.simulationCustomerFlow.replaceSteps',
     'client.simulationCustomerFlow.update',
     'client.simulationCustomerFlowVariant.create',
     'client.simulationCustomerFlowVariant.delete',

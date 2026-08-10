@@ -135,41 +135,4 @@ describe('resource simulationCustomerFlow', () => {
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
   });
-
-  test('replaceSteps: only required params', async () => {
-    const responsePromise = client.simulationCustomerFlow.replaceSteps(
-      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      { steps: [{ type: 'AGENT_TURN' }] },
-    );
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  test('replaceSteps: required and optional params', async () => {
-    const response = await client.simulationCustomerFlow.replaceSteps(
-      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      {
-        steps: [
-          {
-            type: 'AGENT_TURN',
-            content: 'content',
-            dtmfDigits: 'dtmfDigits',
-            linkedCustomerFlowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-            linkedCustomerFlowVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-            mergeIntoNodeIds: ['x'],
-            nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-            ref: 'x',
-            silenceDurationSeconds: 1,
-            steps: [],
-          },
-        ],
-        allowUnmerge: true,
-      },
-    );
-  });
 });
