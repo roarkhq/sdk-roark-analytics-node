@@ -39,15 +39,14 @@ export class SimulationRunPlanJob extends APIResource {
   }
 
   /**
-   * Create and execute a job for an existing simulation run plan. Optionally provide
-   * runtime variables to override plan-defined variables.
+   * Deprecated: use POST /v1/simulation/run, which does the same thing and can also
+   * take the plan configuration inline, so a one-off run does not have to create a
+   * plan first.
    *
-   * @example
-   * ```ts
-   * const response = await client.simulationRunPlanJob.start(
-   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
-   * );
-   * ```
+   * Creates and executes a job for an existing simulation run plan. Optionally
+   * provide runtime variables to override plan-defined variables.
+   *
+   * @deprecated
    */
   start(
     planID: unknown,

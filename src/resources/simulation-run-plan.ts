@@ -7,8 +7,11 @@ import { path } from '../internal/utils/path';
 
 export class SimulationRunPlan extends APIResource {
   /**
-   * Creates a new simulation run plan. Optionally triggers a job immediately if
-   * autoRun is true.
+   * Creates a new simulation run plan.
+   *
+   * To run a simulation, use POST /v1/simulation/run instead: it starts a run from a
+   * plan or from an inline configuration, and takes runtime variables. Create a plan
+   * here when you want a reusable, named one to run later.
    *
    * @example
    * ```ts
@@ -966,7 +969,9 @@ export interface SimulationRunPlanCreateParams {
   name: string;
 
   /**
-   * Whether to automatically trigger a job after creating the run plan
+   * @deprecated Deprecated: use POST /v1/simulation/run, which starts a run and
+   * accepts runtime `variables` as well. This flag runs the plan with only the
+   * values pinned on it.
    */
   autoRun?: boolean;
 
@@ -1149,6 +1154,15 @@ export interface SimulationRunPlanUpdateParams {
    * unchanged; send an empty array to detach them all.
    */
   flows?: Array<SimulationRunPlanUpdateParams.Flow>;
+
+  /**
+   * Whether this plan is hidden from GET /v1/simulation/plan.
+   *
+   * A run started without `saveAsPlanName` creates a hidden plan to carry it. Send
+   * `{ "name": "...", "isHidden": false }` to keep that configuration as a reusable
+   * plan, which is what the app does when you save a one-off run.
+   */
+  isHidden?: boolean;
 
   /**
    * Number of iterations to run for each test case (1-10000)

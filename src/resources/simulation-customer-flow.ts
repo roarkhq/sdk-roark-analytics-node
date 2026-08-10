@@ -9,16 +9,17 @@ import { path } from '../internal/utils/path';
 export class SimulationCustomerFlow extends APIResource {
   /**
    * Creates a customer flow. A SCRIPTED flow carries a step graph and gets one
-   * variant per path through it; an UNSCRIPTED flow carries briefs and gets the
-   * variants you send.
+   * variant per path through it; an IMPROV flow carries briefs and gets the variants
+   * you send.
    *
    * @example
    * ```ts
    * const simulationCustomerFlow =
    *   await client.simulationCustomerFlow.create({
    *     agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
-   *     mode: 'UNSCRIPTED',
+   *     graph: [{ type: 'AGENT_TURN' }],
    *     title: 'Reschedule an appointment',
+   *     type: 'SCRIPTED',
    *   });
    * ```
    */
@@ -31,15 +32,7 @@ export class SimulationCustomerFlow extends APIResource {
 
   /**
    * Updates a flow's title, description, branching mode, linked agents or flow-level
-   * expectations. The step graph is replaced through PUT /steps.
-   *
-   * @example
-   * ```ts
-   * const simulationCustomerFlow =
-   *   await client.simulationCustomerFlow.update(
-   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   );
-   * ```
+   * expectations. The step graph is replaced through PUT /graph.
    */
   update(
     flowID: string,
@@ -54,12 +47,6 @@ export class SimulationCustomerFlow extends APIResource {
    * variants. The step graph is the one field omitted: reading it walks the
    * project's whole step graph, so it comes back from the single-flow endpoint
    * instead.
-   *
-   * @example
-   * ```ts
-   * const simulationCustomerFlows =
-   *   await client.simulationCustomerFlow.list();
-   * ```
    */
   list(
     query: SimulationCustomerFlowListParams | null | undefined = {},
@@ -72,14 +59,6 @@ export class SimulationCustomerFlow extends APIResource {
    * Soft-deletes a customer flow along with its variants, expectations and (for
    * scripted flows) its step graph. Run plans that linked it drop it from their test
    * cases.
-   *
-   * @example
-   * ```ts
-   * const simulationCustomerFlow =
-   *   await client.simulationCustomerFlow.delete(
-   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   );
-   * ```
    */
   delete(flowID: string, options?: RequestOptions): APIPromise<SimulationCustomerFlowDeleteResponse> {
     return this._client.delete(path`/v1/simulation/customer-flow/${flowID}`, options);
@@ -88,17 +67,29 @@ export class SimulationCustomerFlow extends APIResource {
   /**
    * Returns a customer flow with its variants, expectations and linked agents.
    * Scripted flows also carry their step graph.
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.simulationCustomerFlow.getByID(
-   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   );
-   * ```
    */
   getByID(flowID: string, options?: RequestOptions): APIPromise<SimulationCustomerFlowGetByIDResponse> {
     return this._client.get(path`/v1/simulation/customer-flow/${flowID}`, options);
+  }
+
+  /**
+   * Replaces a scripted flow's conversation graph with the tree you send. This is a
+   * full replace, not a merge: a step you omit is removed.
+   *
+   * Include `nodeId` on a step to update the existing one, omit it to create a new
+   * step. Where two branches rejoin, keep the `mergeIntoNodeIds` references a read
+   * gave you. Dropping them un-merges those branches and is refused unless
+   * `allowUnmerge` is set.
+   *
+   * A change to the set of paths re-seeds the flow's variants, which the response
+   * reports as `variantsReshaped` along with the resulting variants.
+   */
+  replaceGraph(
+    flowID: string,
+    body: SimulationCustomerFlowReplaceGraphParams,
+    options?: RequestOptions,
+  ): APIPromise<SimulationCustomerFlowReplaceGraphResponse> {
+    return this._client.put(path`/v1/simulation/customer-flow/${flowID}/graph`, { body, ...options });
   }
 }
 
@@ -119,122 +110,228 @@ export class SimulationCustomerFlow extends APIResource {
  * step is a root wired straight from the start of the flow, so a merge target
  * parked there would also be reachable directly.
  */
-export interface FlowStep {
-  type:
-    | 'AGENT_TURN'
-    | 'CUSTOMER_TURN'
-    | 'CUSTOMER_FIRST_MESSAGE'
-    | 'CUSTOMER_SILENCE'
-    | 'CUSTOMER_DTMF'
-    | 'VOICEMAIL'
-    | 'SCENARIO_LINK';
+export type FlowStep =
+  | FlowStep.UnionMember0
+  | FlowStep.UnionMember1
+  | FlowStep.UnionMember2
+  | FlowStep.UnionMember3
+  | FlowStep.UnionMember4
+  | FlowStep.UnionMember5
+  | FlowStep.UnionMember6;
 
-  content?: string | null;
+export namespace FlowStep {
+  export interface UnionMember0 {
+    type: 'AGENT_TURN';
 
-  dtmfDigits?: string | null;
+    content?: string | null;
 
-  linkedCustomerFlowId?: string | null;
+    mergeIntoNodeIds?: Array<string>;
 
-  linkedCustomerFlowVariantId?: string | null;
+    nodeId?: string;
 
-  mergeIntoNodeIds?: Array<string>;
+    ref?: string;
 
-  nodeId?: string;
+    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
+  }
 
-  ref?: string;
+  export interface UnionMember1 {
+    type: 'CUSTOMER_TURN';
 
-  silenceDurationSeconds?: number | null;
+    content?: string | null;
 
-  steps?: Array<FlowStep>;
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
+  }
+
+  export interface UnionMember2 {
+    type: 'CUSTOMER_FIRST_MESSAGE';
+
+    content?: string | null;
+
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
+  }
+
+  export interface UnionMember3 {
+    type: 'CUSTOMER_SILENCE';
+
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    silenceDurationSeconds?: number | null;
+
+    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
+  }
+
+  export interface UnionMember4 {
+    type: 'CUSTOMER_DTMF';
+
+    dtmfDigits?: string | null;
+
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
+  }
+
+  export interface UnionMember5 {
+    type: 'VOICEMAIL';
+
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
+  }
+
+  export interface UnionMember6 {
+    type: 'SCENARIO_LINK';
+
+    linkedCustomerFlowId?: string | null;
+
+    linkedCustomerFlowVariantId?: string | null;
+
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
+  }
 }
 
 export interface SimulationCustomerFlowCreateResponse {
   /**
-   * A customer flow: the conversation a simulated customer has with the agent under
-   * test. Flows with source SYSTEM are curated by Roark, shared across projects, and
-   * read-only.
+   * The conversation a simulated customer has with the agent under test.
    */
-  data: SimulationCustomerFlowCreateResponse.Data;
+  data:
+    | SimulationCustomerFlowCreateResponse.ScriptedCustomerFlow
+    | SimulationCustomerFlowCreateResponse.ImprovCustomerFlow
+    | SimulationCustomerFlowCreateResponse.VoicemailCustomerFlow;
 }
 
 export namespace SimulationCustomerFlowCreateResponse {
   /**
-   * A customer flow: the conversation a simulated customer has with the agent under
-   * test. Flows with source SYSTEM are curated by Roark, shared across projects, and
-   * read-only.
+   * A flow whose conversation is written out as a graph of turns.
    */
-  export interface Data {
+  export interface ScriptedCustomerFlow {
     id: string;
 
-    agentExpectations: Array<Data.AgentExpectation>;
+    agentExpectations: Array<ScriptedCustomerFlow.AgentExpectation>;
 
     /**
-     * Agents this flow exercises
+     * The agents this flow is run against.
      */
-    agentIds: Array<string>;
+    agents: Array<ScriptedCustomerFlow.Agent>;
+
+    /**
+     * DETERMINISTIC runs one variant per path through the graph. ADAPTIVE collapses
+     * the paths into a single variant the simulated customer adapts across.
+     */
+    branchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
 
     /**
      * Creation timestamp in ISO 8601 format
      */
     createdAt: string;
 
-    mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL';
-
-    scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
-
     source: 'SYSTEM' | 'CUSTOM';
 
-    startNodeId: string | null;
-
     title: string;
+
+    type: 'SCRIPTED';
 
     /**
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
 
-    variants: Array<Data.Variant>;
+    variants: Array<ScriptedCustomerFlow.Variant>;
 
     description?: string | null;
 
     /**
-     * The conversation, as a tree of steps. Scripted flows only.
+     * The conversation, as a graph of steps. Present on a single flow; omitted from
+     * the list, where reading it would mean walking the project step graph once per
+     * row.
      */
-    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
-
-    /**
-     * Steps that another flow also uses. Removing one of these detaches it from this
-     * flow rather than deleting it, so the other flow keeps working.
-     */
-    stepsSharedWithOtherFlows?: Array<string>;
-
-    systemKey?: string | null;
+    graph?: Array<SimulationCustomerFlowAPI.FlowStep>;
   }
 
-  export namespace Data {
+  export namespace ScriptedCustomerFlow {
     /**
-     * An expectation the agent under test is graded against. On a scripted flow these
-     * are derived from the agent turns in the graph, so they are read-only there.
+     * One thing the agent under test is graded against.
      */
     export interface AgentExpectation {
       id: string;
 
-      llmPrompt: string;
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
 
-      orderIndex: number;
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
 
-      sourceStepNodeId: string | null;
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
     }
 
     /**
-     * One way of running a flow. Exactly one variant per flow is the default; the
-     * others inherit its persona and environment wherever they leave those unset. On a
-     * scripted flow each variant is bound to one path through the graph and the path
-     * engine owns that binding.
+     * One path through a scripted flow. The path engine owns which paths exist, so
+     * editing the graph is what creates and removes these.
      */
     export interface Variant {
       id: string;
 
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
       additionalExpectations: Array<Variant.AdditionalExpectation>;
 
       /**
@@ -242,19 +339,413 @@ export namespace SimulationCustomerFlowCreateResponse {
        */
       createdAt: string;
 
-      customerFlowId: string;
-
-      environmentId: string | null;
-
-      isAutoGeneratedTitle: boolean;
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
 
       isDefault: boolean;
 
       isGenerated: boolean;
 
-      latestPathId: string | null;
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
 
-      personaId: string | null;
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      /**
+       * The one path through the graph this variant runs, in order. Linear by
+       * construction, so these steps never nest.
+       */
+      steps: Array<SimulationCustomerFlowAPI.FlowStep>;
+
+      title: string;
+
+      type: 'SCRIPTED';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace Variant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+
+  /**
+   * A flow whose conversation is not written out: each variant gives the simulated
+   * customer a brief and lets it improvise.
+   */
+  export interface ImprovCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<ImprovCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<ImprovCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'IMPROV';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    variants: Array<ImprovCustomerFlow.Variant>;
+
+    description?: string | null;
+  }
+
+  export namespace ImprovCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One brief to run an improv flow with.
+     */
+    export interface Variant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<Variant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
 
       precededByCustomerFlowId: string | null;
 
@@ -262,27 +753,657 @@ export namespace SimulationCustomerFlowCreateResponse {
 
       title: string;
 
+      type: 'IMPROV';
+
       /**
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
 
+      /**
+       * The brief the simulated customer improvises from.
+       */
       prompt?: string | null;
     }
 
     export namespace Variant {
       /**
-       * An expectation the agent under test is graded against. On a scripted flow these
-       * are derived from the agent turns in the graph, so they are read-only there.
+       * One thing the agent under test is graded against.
        */
       export interface AdditionalExpectation {
         id: string;
 
-        llmPrompt: string;
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
 
-        orderIndex: number;
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
 
-        sourceStepNodeId: string | null;
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+
+  /**
+   * A flow that leaves a voicemail. Curated by Roark, read-only.
+   */
+  export interface VoicemailCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<VoicemailCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<VoicemailCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'VOICEMAIL';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    variants: Array<VoicemailCustomerFlow.Variant>;
+
+    description?: string | null;
+  }
+
+  export namespace VoicemailCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One voicemail greeting.
+     */
+    export interface Variant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<Variant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'VOICEMAIL';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace Variant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
       }
     }
   }
@@ -290,91 +1411,117 @@ export namespace SimulationCustomerFlowCreateResponse {
 
 export interface SimulationCustomerFlowUpdateResponse {
   /**
-   * A customer flow: the conversation a simulated customer has with the agent under
-   * test. Flows with source SYSTEM are curated by Roark, shared across projects, and
-   * read-only.
+   * The conversation a simulated customer has with the agent under test.
    */
-  data: SimulationCustomerFlowUpdateResponse.Data;
+  data:
+    | SimulationCustomerFlowUpdateResponse.ScriptedCustomerFlow
+    | SimulationCustomerFlowUpdateResponse.ImprovCustomerFlow
+    | SimulationCustomerFlowUpdateResponse.VoicemailCustomerFlow;
 }
 
 export namespace SimulationCustomerFlowUpdateResponse {
   /**
-   * A customer flow: the conversation a simulated customer has with the agent under
-   * test. Flows with source SYSTEM are curated by Roark, shared across projects, and
-   * read-only.
+   * A flow whose conversation is written out as a graph of turns.
    */
-  export interface Data {
+  export interface ScriptedCustomerFlow {
     id: string;
 
-    agentExpectations: Array<Data.AgentExpectation>;
+    agentExpectations: Array<ScriptedCustomerFlow.AgentExpectation>;
 
     /**
-     * Agents this flow exercises
+     * The agents this flow is run against.
      */
-    agentIds: Array<string>;
+    agents: Array<ScriptedCustomerFlow.Agent>;
+
+    /**
+     * DETERMINISTIC runs one variant per path through the graph. ADAPTIVE collapses
+     * the paths into a single variant the simulated customer adapts across.
+     */
+    branchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
 
     /**
      * Creation timestamp in ISO 8601 format
      */
     createdAt: string;
 
-    mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL';
-
-    scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
-
     source: 'SYSTEM' | 'CUSTOM';
 
-    startNodeId: string | null;
-
     title: string;
+
+    type: 'SCRIPTED';
 
     /**
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
 
-    variants: Array<Data.Variant>;
+    variants: Array<ScriptedCustomerFlow.Variant>;
 
     description?: string | null;
 
     /**
-     * The conversation, as a tree of steps. Scripted flows only.
+     * The conversation, as a graph of steps. Present on a single flow; omitted from
+     * the list, where reading it would mean walking the project step graph once per
+     * row.
      */
-    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
-
-    /**
-     * Steps that another flow also uses. Removing one of these detaches it from this
-     * flow rather than deleting it, so the other flow keeps working.
-     */
-    stepsSharedWithOtherFlows?: Array<string>;
-
-    systemKey?: string | null;
+    graph?: Array<SimulationCustomerFlowAPI.FlowStep>;
   }
 
-  export namespace Data {
+  export namespace ScriptedCustomerFlow {
     /**
-     * An expectation the agent under test is graded against. On a scripted flow these
-     * are derived from the agent turns in the graph, so they are read-only there.
+     * One thing the agent under test is graded against.
      */
     export interface AgentExpectation {
       id: string;
 
-      llmPrompt: string;
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
 
-      orderIndex: number;
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
 
-      sourceStepNodeId: string | null;
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
     }
 
     /**
-     * One way of running a flow. Exactly one variant per flow is the default; the
-     * others inherit its persona and environment wherever they leave those unset. On a
-     * scripted flow each variant is bound to one path through the graph and the path
-     * engine owns that binding.
+     * One path through a scripted flow. The path engine owns which paths exist, so
+     * editing the graph is what creates and removes these.
      */
     export interface Variant {
       id: string;
 
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
       additionalExpectations: Array<Variant.AdditionalExpectation>;
 
       /**
@@ -382,19 +1529,413 @@ export namespace SimulationCustomerFlowUpdateResponse {
        */
       createdAt: string;
 
-      customerFlowId: string;
-
-      environmentId: string | null;
-
-      isAutoGeneratedTitle: boolean;
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
 
       isDefault: boolean;
 
       isGenerated: boolean;
 
-      latestPathId: string | null;
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
 
-      personaId: string | null;
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      /**
+       * The one path through the graph this variant runs, in order. Linear by
+       * construction, so these steps never nest.
+       */
+      steps: Array<SimulationCustomerFlowAPI.FlowStep>;
+
+      title: string;
+
+      type: 'SCRIPTED';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace Variant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+
+  /**
+   * A flow whose conversation is not written out: each variant gives the simulated
+   * customer a brief and lets it improvise.
+   */
+  export interface ImprovCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<ImprovCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<ImprovCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'IMPROV';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    variants: Array<ImprovCustomerFlow.Variant>;
+
+    description?: string | null;
+  }
+
+  export namespace ImprovCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One brief to run an improv flow with.
+     */
+    export interface Variant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<Variant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
 
       precededByCustomerFlowId: string | null;
 
@@ -402,27 +1943,657 @@ export namespace SimulationCustomerFlowUpdateResponse {
 
       title: string;
 
+      type: 'IMPROV';
+
       /**
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
 
+      /**
+       * The brief the simulated customer improvises from.
+       */
       prompt?: string | null;
     }
 
     export namespace Variant {
       /**
-       * An expectation the agent under test is graded against. On a scripted flow these
-       * are derived from the agent turns in the graph, so they are read-only there.
+       * One thing the agent under test is graded against.
        */
       export interface AdditionalExpectation {
         id: string;
 
-        llmPrompt: string;
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
 
-        orderIndex: number;
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
 
-        sourceStepNodeId: string | null;
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+
+  /**
+   * A flow that leaves a voicemail. Curated by Roark, read-only.
+   */
+  export interface VoicemailCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<VoicemailCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<VoicemailCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'VOICEMAIL';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    variants: Array<VoicemailCustomerFlow.Variant>;
+
+    description?: string | null;
+  }
+
+  export namespace VoicemailCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One voicemail greeting.
+     */
+    export interface Variant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<Variant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'VOICEMAIL';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace Variant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
       }
     }
   }
@@ -432,89 +2603,118 @@ export namespace SimulationCustomerFlowUpdateResponse {
  * Paginated list of customer flows
  */
 export interface SimulationCustomerFlowListResponse {
-  data: Array<SimulationCustomerFlowListResponse.Data>;
+  data: Array<
+    | SimulationCustomerFlowListResponse.ScriptedCustomerFlow
+    | SimulationCustomerFlowListResponse.ImprovCustomerFlow
+    | SimulationCustomerFlowListResponse.VoicemailCustomerFlow
+  >;
 
   pagination: SimulationCustomerFlowListResponse.Pagination;
 }
 
 export namespace SimulationCustomerFlowListResponse {
   /**
-   * A customer flow: the conversation a simulated customer has with the agent under
-   * test. Flows with source SYSTEM are curated by Roark, shared across projects, and
-   * read-only.
+   * A flow whose conversation is written out as a graph of turns.
    */
-  export interface Data {
+  export interface ScriptedCustomerFlow {
     id: string;
 
-    agentExpectations: Array<Data.AgentExpectation>;
+    agentExpectations: Array<ScriptedCustomerFlow.AgentExpectation>;
 
     /**
-     * Agents this flow exercises
+     * The agents this flow is run against.
      */
-    agentIds: Array<string>;
+    agents: Array<ScriptedCustomerFlow.Agent>;
+
+    /**
+     * DETERMINISTIC runs one variant per path through the graph. ADAPTIVE collapses
+     * the paths into a single variant the simulated customer adapts across.
+     */
+    branchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
 
     /**
      * Creation timestamp in ISO 8601 format
      */
     createdAt: string;
 
-    mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL';
-
-    scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
-
     source: 'SYSTEM' | 'CUSTOM';
 
-    startNodeId: string | null;
-
     title: string;
+
+    type: 'SCRIPTED';
 
     /**
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
 
-    variants: Array<Data.Variant>;
+    variants: Array<ScriptedCustomerFlow.Variant>;
 
     description?: string | null;
 
     /**
-     * The conversation, as a tree of steps. Scripted flows only.
+     * The conversation, as a graph of steps. Present on a single flow; omitted from
+     * the list, where reading it would mean walking the project step graph once per
+     * row.
      */
-    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
-
-    /**
-     * Steps that another flow also uses. Removing one of these detaches it from this
-     * flow rather than deleting it, so the other flow keeps working.
-     */
-    stepsSharedWithOtherFlows?: Array<string>;
-
-    systemKey?: string | null;
+    graph?: Array<SimulationCustomerFlowAPI.FlowStep>;
   }
 
-  export namespace Data {
+  export namespace ScriptedCustomerFlow {
     /**
-     * An expectation the agent under test is graded against. On a scripted flow these
-     * are derived from the agent turns in the graph, so they are read-only there.
+     * One thing the agent under test is graded against.
      */
     export interface AgentExpectation {
       id: string;
 
-      llmPrompt: string;
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
 
-      orderIndex: number;
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
 
-      sourceStepNodeId: string | null;
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
     }
 
     /**
-     * One way of running a flow. Exactly one variant per flow is the default; the
-     * others inherit its persona and environment wherever they leave those unset. On a
-     * scripted flow each variant is bound to one path through the graph and the path
-     * engine owns that binding.
+     * One path through a scripted flow. The path engine owns which paths exist, so
+     * editing the graph is what creates and removes these.
      */
     export interface Variant {
       id: string;
 
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
       additionalExpectations: Array<Variant.AdditionalExpectation>;
 
       /**
@@ -522,19 +2722,413 @@ export namespace SimulationCustomerFlowListResponse {
        */
       createdAt: string;
 
-      customerFlowId: string;
-
-      environmentId: string | null;
-
-      isAutoGeneratedTitle: boolean;
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
 
       isDefault: boolean;
 
       isGenerated: boolean;
 
-      latestPathId: string | null;
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
 
-      personaId: string | null;
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      /**
+       * The one path through the graph this variant runs, in order. Linear by
+       * construction, so these steps never nest.
+       */
+      steps: Array<SimulationCustomerFlowAPI.FlowStep>;
+
+      title: string;
+
+      type: 'SCRIPTED';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace Variant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+
+  /**
+   * A flow whose conversation is not written out: each variant gives the simulated
+   * customer a brief and lets it improvise.
+   */
+  export interface ImprovCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<ImprovCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<ImprovCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'IMPROV';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    variants: Array<ImprovCustomerFlow.Variant>;
+
+    description?: string | null;
+  }
+
+  export namespace ImprovCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One brief to run an improv flow with.
+     */
+    export interface Variant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<Variant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
 
       precededByCustomerFlowId: string | null;
 
@@ -542,27 +3136,657 @@ export namespace SimulationCustomerFlowListResponse {
 
       title: string;
 
+      type: 'IMPROV';
+
       /**
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
 
+      /**
+       * The brief the simulated customer improvises from.
+       */
       prompt?: string | null;
     }
 
     export namespace Variant {
       /**
-       * An expectation the agent under test is graded against. On a scripted flow these
-       * are derived from the agent turns in the graph, so they are read-only there.
+       * One thing the agent under test is graded against.
        */
       export interface AdditionalExpectation {
         id: string;
 
-        llmPrompt: string;
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
 
-        orderIndex: number;
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
 
-        sourceStepNodeId: string | null;
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+
+  /**
+   * A flow that leaves a voicemail. Curated by Roark, read-only.
+   */
+  export interface VoicemailCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<VoicemailCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<VoicemailCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'VOICEMAIL';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    variants: Array<VoicemailCustomerFlow.Variant>;
+
+    description?: string | null;
+  }
+
+  export namespace VoicemailCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One voicemail greeting.
+     */
+    export interface Variant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<Variant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'VOICEMAIL';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace Variant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
       }
     }
   }
@@ -600,91 +3824,117 @@ export namespace SimulationCustomerFlowDeleteResponse {
 
 export interface SimulationCustomerFlowGetByIDResponse {
   /**
-   * A customer flow: the conversation a simulated customer has with the agent under
-   * test. Flows with source SYSTEM are curated by Roark, shared across projects, and
-   * read-only.
+   * The conversation a simulated customer has with the agent under test.
    */
-  data: SimulationCustomerFlowGetByIDResponse.Data;
+  data:
+    | SimulationCustomerFlowGetByIDResponse.ScriptedCustomerFlow
+    | SimulationCustomerFlowGetByIDResponse.ImprovCustomerFlow
+    | SimulationCustomerFlowGetByIDResponse.VoicemailCustomerFlow;
 }
 
 export namespace SimulationCustomerFlowGetByIDResponse {
   /**
-   * A customer flow: the conversation a simulated customer has with the agent under
-   * test. Flows with source SYSTEM are curated by Roark, shared across projects, and
-   * read-only.
+   * A flow whose conversation is written out as a graph of turns.
    */
-  export interface Data {
+  export interface ScriptedCustomerFlow {
     id: string;
 
-    agentExpectations: Array<Data.AgentExpectation>;
+    agentExpectations: Array<ScriptedCustomerFlow.AgentExpectation>;
 
     /**
-     * Agents this flow exercises
+     * The agents this flow is run against.
      */
-    agentIds: Array<string>;
+    agents: Array<ScriptedCustomerFlow.Agent>;
+
+    /**
+     * DETERMINISTIC runs one variant per path through the graph. ADAPTIVE collapses
+     * the paths into a single variant the simulated customer adapts across.
+     */
+    branchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
 
     /**
      * Creation timestamp in ISO 8601 format
      */
     createdAt: string;
 
-    mode: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL';
-
-    scriptedBranchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
-
     source: 'SYSTEM' | 'CUSTOM';
 
-    startNodeId: string | null;
-
     title: string;
+
+    type: 'SCRIPTED';
 
     /**
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
 
-    variants: Array<Data.Variant>;
+    variants: Array<ScriptedCustomerFlow.Variant>;
 
     description?: string | null;
 
     /**
-     * The conversation, as a tree of steps. Scripted flows only.
+     * The conversation, as a graph of steps. Present on a single flow; omitted from
+     * the list, where reading it would mean walking the project step graph once per
+     * row.
      */
-    steps?: Array<SimulationCustomerFlowAPI.FlowStep>;
-
-    /**
-     * Steps that another flow also uses. Removing one of these detaches it from this
-     * flow rather than deleting it, so the other flow keeps working.
-     */
-    stepsSharedWithOtherFlows?: Array<string>;
-
-    systemKey?: string | null;
+    graph?: Array<SimulationCustomerFlowAPI.FlowStep>;
   }
 
-  export namespace Data {
+  export namespace ScriptedCustomerFlow {
     /**
-     * An expectation the agent under test is graded against. On a scripted flow these
-     * are derived from the agent turns in the graph, so they are read-only there.
+     * One thing the agent under test is graded against.
      */
     export interface AgentExpectation {
       id: string;
 
-      llmPrompt: string;
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
 
-      orderIndex: number;
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
 
-      sourceStepNodeId: string | null;
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
     }
 
     /**
-     * One way of running a flow. Exactly one variant per flow is the default; the
-     * others inherit its persona and environment wherever they leave those unset. On a
-     * scripted flow each variant is bound to one path through the graph and the path
-     * engine owns that binding.
+     * One path through a scripted flow. The path engine owns which paths exist, so
+     * editing the graph is what creates and removes these.
      */
     export interface Variant {
       id: string;
 
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
       additionalExpectations: Array<Variant.AdditionalExpectation>;
 
       /**
@@ -692,19 +3942,413 @@ export namespace SimulationCustomerFlowGetByIDResponse {
        */
       createdAt: string;
 
-      customerFlowId: string;
-
-      environmentId: string | null;
-
-      isAutoGeneratedTitle: boolean;
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
 
       isDefault: boolean;
 
       isGenerated: boolean;
 
-      latestPathId: string | null;
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
 
-      personaId: string | null;
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      /**
+       * The one path through the graph this variant runs, in order. Linear by
+       * construction, so these steps never nest.
+       */
+      steps: Array<SimulationCustomerFlowAPI.FlowStep>;
+
+      title: string;
+
+      type: 'SCRIPTED';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace Variant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+
+  /**
+   * A flow whose conversation is not written out: each variant gives the simulated
+   * customer a brief and lets it improvise.
+   */
+  export interface ImprovCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<ImprovCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<ImprovCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'IMPROV';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    variants: Array<ImprovCustomerFlow.Variant>;
+
+    description?: string | null;
+  }
+
+  export namespace ImprovCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One brief to run an improv flow with.
+     */
+    export interface Variant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<Variant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
 
       precededByCustomerFlowId: string | null;
 
@@ -712,87 +4356,1700 @@ export namespace SimulationCustomerFlowGetByIDResponse {
 
       title: string;
 
+      type: 'IMPROV';
+
       /**
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
 
+      /**
+       * The brief the simulated customer improvises from.
+       */
       prompt?: string | null;
     }
 
     export namespace Variant {
       /**
-       * An expectation the agent under test is graded against. On a scripted flow these
-       * are derived from the agent turns in the graph, so they are read-only there.
+       * One thing the agent under test is graded against.
        */
       export interface AdditionalExpectation {
         id: string;
 
-        llmPrompt: string;
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
 
-        orderIndex: number;
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
 
-        sourceStepNodeId: string | null;
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+
+  /**
+   * A flow that leaves a voicemail. Curated by Roark, read-only.
+   */
+  export interface VoicemailCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<VoicemailCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<VoicemailCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'VOICEMAIL';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    variants: Array<VoicemailCustomerFlow.Variant>;
+
+    description?: string | null;
+  }
+
+  export namespace VoicemailCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One voicemail greeting.
+     */
+    export interface Variant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<Variant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: Variant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: Variant.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'VOICEMAIL';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace Variant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
       }
     }
   }
 }
 
-export interface SimulationCustomerFlowCreateParams {
-  /**
-   * Agents this flow exercises. At least one is required.
-   */
-  agentIds: Array<string>;
-
-  /**
-   * SCRIPTED follows a step graph you author; UNSCRIPTED gives the simulated
-   * customer a brief and lets it improvise.
-   */
-  mode: 'UNSCRIPTED' | 'SCRIPTED';
-
-  title: string;
-
-  agentExpectations?: Array<SimulationCustomerFlowCreateParams.AgentExpectation>;
-
-  description?: string | null;
-
-  /**
-   * Scripted flows only. DETERMINISTIC runs one variant per path through the graph;
-   * ADAPTIVE collapses the paths into one call the customer adapts across.
-   */
-  scriptedBranchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
-
-  /**
-   * Required for SCRIPTED flows. At most 100 steps across at most 25 paths.
-   */
-  steps?: Array<FlowStep>;
-
-  /**
-   * Required for UNSCRIPTED flows: the briefs to run. Scripted flows get one variant
-   * per path from the graph instead.
-   */
-  variants?: Array<SimulationCustomerFlowCreateParams.Variant>;
+export interface SimulationCustomerFlowReplaceGraphResponse {
+  data: SimulationCustomerFlowReplaceGraphResponse.Data;
 }
 
-export namespace SimulationCustomerFlowCreateParams {
-  export interface AgentExpectation {
-    llmPrompt: string;
+export namespace SimulationCustomerFlowReplaceGraphResponse {
+  export interface Data {
+    graph: Array<SimulationCustomerFlowAPI.FlowStep>;
+
+    /**
+     * The variants after the write.
+     */
+    variants: Array<Data.ScriptedFlowVariant | Data.ImprovFlowVariant | Data.VoicemailFlowVariant>;
+
+    /**
+     * True when the write changed the set of paths, so the flow's variants were
+     * re-seeded and any variant id you were holding may no longer exist.
+     */
+    variantsReshaped: boolean;
+
+    warnings: Array<string>;
   }
 
-  export interface Variant {
+  export namespace Data {
+    /**
+     * One path through a scripted flow. The path engine owns which paths exist, so
+     * editing the graph is what creates and removes these.
+     */
+    export interface ScriptedFlowVariant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<ScriptedFlowVariant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: ScriptedFlowVariant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: ScriptedFlowVariant.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      /**
+       * The one path through the graph this variant runs, in order. Linear by
+       * construction, so these steps never nest.
+       */
+      steps: Array<SimulationCustomerFlowAPI.FlowStep>;
+
+      title: string;
+
+      type: 'SCRIPTED';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace ScriptedFlowVariant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+
+    /**
+     * One brief to run an improv flow with.
+     */
+    export interface ImprovFlowVariant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<ImprovFlowVariant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: ImprovFlowVariant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: ImprovFlowVariant.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'IMPROV';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+
+      /**
+       * The brief the simulated customer improvises from.
+       */
+      prompt?: string | null;
+    }
+
+    export namespace ImprovFlowVariant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+
+    /**
+     * One voicemail greeting.
+     */
+    export interface VoicemailFlowVariant {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<VoicemailFlowVariant.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: VoicemailFlowVariant.Environment | null;
+
+      isDefault: boolean;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      personaOverride: VoicemailFlowVariant.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'VOICEMAIL';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    export namespace VoicemailFlowVariant {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this variant runs as instead of the default variant's. Null means it
+       * inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+}
+
+export type SimulationCustomerFlowCreateParams =
+  | SimulationCustomerFlowCreateParams.CreateScriptedCustomerFlowInput
+  | SimulationCustomerFlowCreateParams.CreateImprovCustomerFlowInput;
+
+export declare namespace SimulationCustomerFlowCreateParams {
+  export interface CreateScriptedCustomerFlowInput {
+    /**
+     * Agents this flow exercises. At least one is required.
+     */
+    agentIds: Array<string>;
+
+    /**
+     * The conversation, as a graph of steps. At most 100 steps across at most 25
+     * paths. The variants come from the graph: one per path, so they are not sent
+     * here.
+     */
+    graph: Array<FlowStep>;
+
     title: string;
 
-    environmentId?: string | null;
+    type: 'SCRIPTED';
 
-    isDefault?: boolean;
+    agentExpectations?: Array<CreateScriptedCustomerFlowInput.AgentExpectation>;
 
-    personaId?: string | null;
+    /**
+     * DETERMINISTIC (the default) runs one variant per path through the graph;
+     * ADAPTIVE collapses the paths into one call the simulated customer adapts across.
+     */
+    branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
 
-    precededByCustomerFlowId?: string | null;
+    description?: string | null;
+  }
 
-    precededByCustomerFlowVariantId?: string | null;
+  export namespace CreateScriptedCustomerFlowInput {
+    export interface AgentExpectation {
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+  }
 
-    prompt?: string | null;
+  export interface CreateImprovCustomerFlowInput {
+    /**
+     * Agents this flow exercises. At least one is required.
+     */
+    agentIds: Array<string>;
+
+    title: string;
+
+    type: 'IMPROV';
+
+    /**
+     * The briefs to run. At least one, and one of them is the default.
+     */
+    variants: Array<CreateImprovCustomerFlowInput.Variant>;
+
+    agentExpectations?: Array<CreateImprovCustomerFlowInput.AgentExpectation>;
+
+    description?: string | null;
+  }
+
+  export namespace CreateImprovCustomerFlowInput {
+    export interface Variant {
+      title: string;
+
+      environmentId?: string | null;
+
+      isDefault?: boolean;
+
+      /**
+       * The persona this variant runs as. Omit on a non-default variant to inherit the
+       * default variant's.
+       */
+      personaOverrideId?: string | null;
+
+      precededByCustomerFlowId?: string | null;
+
+      precededByCustomerFlowVariantId?: string | null;
+
+      prompt?: string | null;
+    }
+
+    export interface AgentExpectation {
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
   }
 }
 
@@ -807,16 +6064,22 @@ export interface SimulationCustomerFlowUpdateParams {
    */
   agentIds?: Array<string>;
 
-  description?: string | null;
+  /**
+   * Scripted flows only.
+   */
+  branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
 
-  scriptedBranchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
+  description?: string | null;
 
   title?: string;
 }
 
 export namespace SimulationCustomerFlowUpdateParams {
   export interface AgentExpectation {
-    llmPrompt: string;
+    /**
+     * What the agent under test is graded against.
+     */
+    prompt: string;
   }
 }
 
@@ -827,9 +6090,24 @@ export interface SimulationCustomerFlowListParams {
 
   limit?: number;
 
-  mode?: 'UNSCRIPTED' | 'SCRIPTED' | 'VOICEMAIL';
-
   searchText?: string;
+
+  type?: 'SCRIPTED' | 'IMPROV' | 'VOICEMAIL';
+}
+
+export interface SimulationCustomerFlowReplaceGraphParams {
+  /**
+   * The complete graph. This replaces the flow's existing steps rather than merging
+   * into them.
+   */
+  graph: Array<FlowStep>;
+
+  /**
+   * Confirms a write that drops branches which currently rejoin. Only needed when
+   * the request omits mergeIntoNodeIds references the flow already had; a faithful
+   * round trip never needs it.
+   */
+  allowUnmerge?: boolean;
 }
 
 export declare namespace SimulationCustomerFlow {
@@ -840,8 +6118,10 @@ export declare namespace SimulationCustomerFlow {
     type SimulationCustomerFlowListResponse as SimulationCustomerFlowListResponse,
     type SimulationCustomerFlowDeleteResponse as SimulationCustomerFlowDeleteResponse,
     type SimulationCustomerFlowGetByIDResponse as SimulationCustomerFlowGetByIDResponse,
+    type SimulationCustomerFlowReplaceGraphResponse as SimulationCustomerFlowReplaceGraphResponse,
     type SimulationCustomerFlowCreateParams as SimulationCustomerFlowCreateParams,
     type SimulationCustomerFlowUpdateParams as SimulationCustomerFlowUpdateParams,
     type SimulationCustomerFlowListParams as SimulationCustomerFlowListParams,
+    type SimulationCustomerFlowReplaceGraphParams as SimulationCustomerFlowReplaceGraphParams,
   };
 }

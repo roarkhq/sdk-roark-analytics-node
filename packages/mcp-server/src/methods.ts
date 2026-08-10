@@ -119,6 +119,12 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v1/metric/collection-jobs/{jobId}',
   },
   {
+    clientCallName: 'client.simulation.run',
+    fullyQualifiedName: 'simulation.run',
+    httpMethod: 'post',
+    httpPath: '/v1/simulation/run',
+  },
+  {
     clientCallName: 'client.simulationJob.getByID',
     fullyQualifiedName: 'simulationJob.getByID',
     httpMethod: 'get',
@@ -273,6 +279,12 @@ export const sdkMethods: SdkMethod[] = [
     fullyQualifiedName: 'simulationCustomerFlow.getByID',
     httpMethod: 'get',
     httpPath: '/v1/simulation/customer-flow/{flowId}',
+  },
+  {
+    clientCallName: 'client.simulationCustomerFlow.replaceGraph',
+    fullyQualifiedName: 'simulationCustomerFlow.replaceGraph',
+    httpMethod: 'put',
+    httpPath: '/v1/simulation/customer-flow/{flowId}/graph',
   },
   {
     clientCallName: 'client.simulationCustomerFlowVariant.create',

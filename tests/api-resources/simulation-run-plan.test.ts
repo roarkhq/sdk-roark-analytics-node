@@ -119,6 +119,7 @@ describe('resource simulationRunPlan', () => {
               variantSelectionMode: 'ALL_VARIANTS',
             },
           ],
+          isHidden: true,
           iterationCount: 1,
           maxConcurrentJobs: 1,
           maxSimulationDurationSeconds: 1,
