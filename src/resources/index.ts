@@ -70,9 +70,40 @@ export {
   type MetricPolicyUpdateParams,
   type MetricPolicyListParams,
 } from './metric-policy';
-export { SimulationCustomerFlow } from './simulation-customer-flow';
-export { SimulationCustomerFlowVariant } from './simulation-customer-flow-variant';
-export { SimulationEnvironment } from './simulation-environment';
+export {
+  SimulationCustomerFlow,
+  type FlowStep,
+  type SimulationCustomerFlowCreateResponse,
+  type SimulationCustomerFlowUpdateResponse,
+  type SimulationCustomerFlowListResponse,
+  type SimulationCustomerFlowDeleteResponse,
+  type SimulationCustomerFlowGetByIDResponse,
+  type SimulationCustomerFlowReplaceStepsResponse,
+  type SimulationCustomerFlowCreateParams,
+  type SimulationCustomerFlowUpdateParams,
+  type SimulationCustomerFlowListParams,
+  type SimulationCustomerFlowReplaceStepsParams,
+} from './simulation-customer-flow';
+export {
+  SimulationCustomerFlowVariant,
+  type SimulationCustomerFlowVariantCreateResponse,
+  type SimulationCustomerFlowVariantUpdateResponse,
+  type SimulationCustomerFlowVariantListResponse,
+  type SimulationCustomerFlowVariantDeleteResponse,
+  type SimulationCustomerFlowVariantGetByIDResponse,
+  type SimulationCustomerFlowVariantSetDefaultResponse,
+  type SimulationCustomerFlowVariantCreateParams,
+  type SimulationCustomerFlowVariantUpdateParams,
+  type SimulationCustomerFlowVariantDeleteParams,
+  type SimulationCustomerFlowVariantGetByIDParams,
+  type SimulationCustomerFlowVariantSetDefaultParams,
+} from './simulation-customer-flow-variant';
+export {
+  SimulationEnvironment,
+  type SimulationEnvironmentListResponse,
+  type SimulationEnvironmentGetByIDResponse,
+  type SimulationEnvironmentListParams,
+} from './simulation-environment';
 export {
   SimulationJob,
   type SimulationJobGetByIDResponse,
