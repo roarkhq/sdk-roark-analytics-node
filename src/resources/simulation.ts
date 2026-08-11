@@ -6,26 +6,27 @@ import { RequestOptions } from '../internal/request-options';
 
 export class Simulation extends APIResource {
   /**
-   * Runs a simulation and returns the run that was started.
+   * Starts a simulation and returns the run.
    *
-   * Describe the simulation in `plan`, or name an existing one with `planId`. Every
-   * run is backed by a run plan, but you only get one you can see and re-use if you
-   * ask for it with `saveAsPlanName`; otherwise the plan is created hidden and
-   * simply carries the run.
-   *
-   * This replaces creating a plan and then starting a job against it. The response
-   * carries `simulationJobCount`, the number of calls the run places, each of which
-   * is billed.
+   * Send `plan` to describe a simulation and run it once. Add `savePlanAs` to keep
+   * that configuration as a reusable run plan. Send `planId` instead to run a plan
+   * you already have.
    *
    * @example
    * ```ts
-   * const response = await client.simulation.run();
+   * const response = await client.simulation.run({
+   *   plan: {
+   *     agentEndpoints: [
+   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+   *     ],
+   *     direction: 'INBOUND',
+   *     maxSimulationDurationSeconds: 300,
+   *     metrics: [{}],
+   *   },
+   * });
    * ```
    */
-  run(
-    body: SimulationRunParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<SimulationRunResponse> {
+  run(body: SimulationRunParams, options?: RequestOptions): APIPromise<SimulationRunResponse> {
     return this._client.post('/v1/simulation/run', { body, ...options });
   }
 }
@@ -54,7 +55,7 @@ export namespace SimulationRunResponse {
     savedAsPlan: boolean;
 
     /**
-     * How many simulated calls this run places. Each is billed.
+     * How many simulated calls this run places.
      */
     simulationJobCount: number;
 
@@ -88,251 +89,322 @@ export namespace SimulationRunResponse {
   }
 }
 
-export interface SimulationRunParams {
-  /**
-   * Runtime variable overrides targeted at the plan’s customer flows, taking
-   * precedence over the values pinned on the flow attachment.
-   *
-   * An entry without `variantId` applies to every variant the attachment resolves. A
-   * flow that is not attached to this plan, or a variant that does not belong to the
-   * flow, is rejected rather than ignored.
-   */
-  flowVariables?: Array<SimulationRunParams.FlowVariable>;
+export type SimulationRunParams =
+  | SimulationRunParams.RunSimulationFromConfig
+  | SimulationRunParams.RunSimulationFromPlanID;
 
-  /**
-   * The simulation to run. A run plan is created for it behind the scenes.
-   */
-  plan?: SimulationRunParams.Plan;
-
-  /**
-   * Run a plan that already exists instead of describing one. Mutually exclusive
-   * with `plan`.
-   */
-  planId?: string;
-
-  /**
-   * Keep this run as a reusable plan under this name.
-   *
-   * Left unset, the run still needs a plan to execute, but it is created hidden: it
-   * does not appear in GET /v1/simulation/plan and exists only to carry the run.
-   * Applies only alongside `plan`, since `planId` names a plan that already exists.
-   */
-  saveAsPlanName?: string;
-
-  /**
-   * Runtime variables that override the values defined on the plan. Accepts one of
-   * two formats:
-   *
-   * Option 1, global (a flat key-value object): { "orderNumber": "12345",
-   * "environment": "staging" }
-   *
-   * Option 2, per-scenario (an array of objects with scenarioId + variables): [ {
-   * "scenarioId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
-   * "scenarioId": "7a3d2e1f-...", "variables": { "orderNumber": "67890" } } ]
-   *
-   * On a flow-based plan the global format applies to every variant the run
-   * resolves. The per-scenario format targets scenarios, so use `flowVariables` to
-   * override a specific flow or variant instead.
-   */
-  variables?: { [key: string]: string } | Array<SimulationRunParams.UnionMember1>;
-}
-
-export namespace SimulationRunParams {
-  export interface FlowVariable {
+export declare namespace SimulationRunParams {
+  export interface RunSimulationFromConfig {
     /**
-     * ID of a customer flow attached to this plan
+     * The simulation to run: what to call, who calls it, and what to measure.
      */
-    flowId: string;
+    plan: RunSimulationFromConfig.Plan;
 
     /**
-     * Key-value pairs to apply
+     * Keeps this configuration as a run plan under this name, listed by GET
+     * /v1/simulation/plan and re-runnable with `planId`.
+     *
+     * Omit it for a one-off. The run still needs a plan to execute, so one is created
+     * either way, but an unnamed one is hidden: it carries this run and nothing else.
      */
-    variables: { [key: string]: string };
+    savePlanAs?: string;
 
     /**
-     * Target a single variant. Omit to apply to every variant this plan runs for the
-     * flow.
+     * Values for the {{variables}} the run resolves, overriding whatever the plan has
+     * pinned.
+     *
+     * An object applies them to the whole run:
+     *
+     * { "orderNumber": "12345", "tier": "gold" }
+     *
+     * An array applies them per flow, or per variant of one, when a single set will
+     * not do. Each entry carries what it applies to:
+     *
+     * [ { "flowId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
+     * "flowId": "550e8400-...", "variantId": "7a3d2e1f-...", "variables": {
+     * "orderNumber": "67890" } } ]
+     *
+     * An entry without `variantId` covers every variant that flow resolves. A flow
+     * this plan does not attach, or a variant that does not belong to the flow, is
+     * rejected rather than ignored.
+     *
+     * A plan built on scenarios rather than customer flows targets them the same way,
+     * with `scenarioId` in place of `flowId`. That form is deprecated alongside
+     * scenarios themselves, and still accepted so runs against those plans keep
+     * working.
      */
-    variantId?: string;
+    variables?:
+      | { [key: string]: string }
+      | Array<RunSimulationFromConfig.UnionMember1>
+      | Array<RunSimulationFromConfig.UnionMember2>;
   }
 
-  /**
-   * The simulation to run. A run plan is created for it behind the scenes.
-   */
-  export interface Plan {
+  export namespace RunSimulationFromConfig {
     /**
-     * Agent endpoints to include in this run plan
+     * The simulation to run: what to call, who calls it, and what to measure.
      */
-    agentEndpoints: Array<Plan.AgentEndpoint>;
-
-    /**
-     * Direction of the simulation (INBOUND or OUTBOUND)
-     */
-    direction: 'INBOUND' | 'OUTBOUND';
-
-    /**
-     * Maximum duration in seconds for each simulation
-     */
-    maxSimulationDurationSeconds: number;
-
-    /**
-     * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
-     * `slug`.
-     */
-    metrics: Array<Plan.Metric>;
-
-    /**
-     * Description of the run plan
-     */
-    description?: string;
-
-    /**
-     * Phrases that trigger end of call. Empty array disables the feature.
-     */
-    endCallPhrases?: Array<string>;
-
-    /**
-     * Semantic conditions that trigger end of call. The LLM evaluates the conversation
-     * against these conditions. Empty array disables the feature.
-     */
-    endCallReasons?: Array<string>;
-
-    /**
-     * Execution mode (PARALLEL or SEQUENTIAL)
-     */
-    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
-
-    /**
-     * Customer flows to include in this run plan. The same flow can appear more than
-     * once with a different persona override or different variables.
-     */
-    flows?: Array<Plan.Flow>;
-
-    /**
-     * Number of iterations to run for each test case (1-10000)
-     */
-    iterationCount?: number;
-
-    /**
-     * Maximum number of concurrent simulation jobs
-     */
-    maxConcurrentJobs?: number;
-
-    /**
-     * Personas to include in this run plan. Required with `scenarios`; ignored with
-     * `flows`, where each variant carries its own persona.
-     */
-    personas?: Array<Plan.Persona>;
-
-    /**
-     * @deprecated Deprecated: use `flows` instead. Scenarios to include in this run
-     * plan. The same scenario ID can appear multiple times with different variables.
-     */
-    scenarios?: Array<Plan.Scenario>;
-
-    /**
-     * Timeout in seconds for silence detection
-     */
-    silenceTimeoutSeconds?: number;
-  }
-
-  export namespace Plan {
-    export interface AgentEndpoint {
-      id: string;
-    }
-
-    export interface Metric {
+    export interface Plan {
       /**
-       * Metric definition UUID. Provide either this or `slug`, not both.
+       * Agent endpoints to include in this run plan
        */
-      id?: string;
+      agentEndpoints: Array<Plan.AgentEndpoint>;
 
       /**
-       * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
-       * integrations.
+       * Direction of the simulation (INBOUND or OUTBOUND)
        */
-      metricId?: string;
+      direction: 'INBOUND' | 'OUTBOUND';
 
       /**
-       * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
-       * not both.
+       * Maximum duration in seconds for each simulation
        */
-      slug?: string;
+      maxSimulationDurationSeconds: number;
+
+      /**
+       * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
+       * `slug`.
+       */
+      metrics: Array<Plan.Metric>;
+
+      /**
+       * Description of the run plan
+       */
+      description?: string;
+
+      /**
+       * Phrases that trigger end of call. Empty array disables the feature.
+       */
+      endCallPhrases?: Array<string>;
+
+      /**
+       * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+       * against these conditions. Empty array disables the feature.
+       */
+      endCallReasons?: Array<string>;
+
+      /**
+       * Execution mode (PARALLEL or SEQUENTIAL)
+       */
+      executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+      /**
+       * Customer flows to include in this run plan. The same flow can appear more than
+       * once with a different persona override or different variables.
+       */
+      flows?: Array<Plan.Flow>;
+
+      /**
+       * Number of iterations to run for each test case (1-10000)
+       */
+      iterationCount?: number;
+
+      /**
+       * Maximum number of concurrent simulation jobs
+       */
+      maxConcurrentJobs?: number;
+
+      /**
+       * Personas to include in this run plan. Required with `scenarios`; ignored with
+       * `flows`, where each variant carries its own persona.
+       */
+      personas?: Array<Plan.Persona>;
+
+      /**
+       * @deprecated Deprecated: use `flows` instead. Scenarios to include in this run
+       * plan. The same scenario ID can appear multiple times with different variables.
+       */
+      scenarios?: Array<Plan.Scenario>;
+
+      /**
+       * Timeout in seconds for silence detection
+       */
+      silenceTimeoutSeconds?: number;
     }
 
-    /**
-     * One customer flow attached to a run plan.
-     *
-     * To run specific variants, list them in `variants`. Each entry may carry its own
-     * `personaOverrideId` and `variables`, so pinning two variants of one flow at
-     * different values is a single attachment.
-     *
-     * To let the run resolve the variants instead, leave `variants` out and set
-     * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
-     * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
-     * moves
-     *
-     * There is no default mode. Each variant is a separate simulated call, so a
-     * forgotten field would quietly change how many calls a run places.
-     *
-     * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
-     * the attachment to apply to every variant it resolves, or on a `variants` entry
-     * for one. The entry wins. Attaching the same flow more than once with different
-     * overrides is how you fan it out across personas.
-     *
-     * `variables` pins {{variable}} values the same way. Anything left unset is asked
-     * for when the run starts.
-     */
-    export interface Flow {
-      customerFlowId: string;
-
-      variants: Array<Flow.Variant>;
-
-      personaOverrideId?: string | null;
-
-      variables?: { [key: string]: string };
-
-      variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
-    }
-
-    export namespace Flow {
-      export interface Variant {
+    export namespace Plan {
+      export interface AgentEndpoint {
         id: string;
+      }
+
+      export interface Metric {
+        /**
+         * Metric definition UUID. Provide either this or `slug`, not both.
+         */
+        id?: string;
+
+        /**
+         * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+         * integrations.
+         */
+        metricId?: string;
+
+        /**
+         * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+         * not both.
+         */
+        slug?: string;
+      }
+
+      /**
+       * One customer flow attached to a run plan.
+       *
+       * To run specific variants, list them in `variants`. Each entry may carry its own
+       * `personaOverrideId` and `variables`, so pinning two variants of one flow at
+       * different values is a single attachment.
+       *
+       * To let the run resolve the variants instead, leave `variants` out and set
+       * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
+       * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
+       * moves
+       *
+       * There is no default mode. Each variant is a separate simulated call, so a
+       * forgotten field would quietly change how many calls a run places.
+       *
+       * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
+       * the attachment to apply to every variant it resolves, or on a `variants` entry
+       * for one. The entry wins. Attaching the same flow more than once with different
+       * overrides is how you fan it out across personas.
+       *
+       * `variables` pins {{variable}} values the same way. Anything left unset is asked
+       * for when the run starts.
+       */
+      export interface Flow {
+        customerFlowId: string;
+
+        variants: Array<Flow.Variant>;
 
         personaOverrideId?: string | null;
 
         variables?: { [key: string]: string };
+
+        variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
+      }
+
+      export namespace Flow {
+        export interface Variant {
+          id: string;
+
+          personaOverrideId?: string | null;
+
+          variables?: { [key: string]: string };
+        }
+      }
+
+      export interface Persona {
+        id: string;
+      }
+
+      export interface Scenario {
+        /**
+         * Scenario ID
+         */
+        id: string;
+
+        /**
+         * Template variables for this scenario instance. The same scenario can appear
+         * multiple times with different variables.
+         */
+        variables?: { [key: string]: string };
       }
     }
 
-    export interface Persona {
-      id: string;
+    export interface UnionMember1 {
+      /**
+       * ID of a customer flow attached to this plan
+       */
+      flowId: string;
+
+      /**
+       * Key-value pairs to apply
+       */
+      variables: { [key: string]: string };
+
+      /**
+       * Target a single variant. Omit to apply to every variant this plan runs for the
+       * flow.
+       */
+      variantId?: string;
     }
 
-    export interface Scenario {
+    export interface UnionMember2 {
       /**
-       * Scenario ID
+       * ID of the scenario to apply variables to
        */
-      id: string;
+      scenarioId: string;
 
       /**
-       * Template variables for this scenario instance. The same scenario can appear
-       * multiple times with different variables.
+       * Key-value pairs for this scenario
        */
-      variables?: { [key: string]: string };
+      variables: { [key: string]: string };
     }
   }
 
-  export interface UnionMember1 {
+  export interface RunSimulationFromPlanID {
     /**
-     * ID of the scenario to apply variables to
+     * The run plan to run, saved or hidden. Rename or unhide it with PUT
+     * /v1/simulation/plan/{planId}.
      */
-    scenarioId: string;
+    planId: string;
 
     /**
-     * Key-value pairs for this scenario
+     * Values for the {{variables}} the run resolves, overriding whatever the plan has
+     * pinned.
+     *
+     * An object applies them to the whole run:
+     *
+     * { "orderNumber": "12345", "tier": "gold" }
+     *
+     * An array applies them per flow, or per variant of one, when a single set will
+     * not do. Each entry carries what it applies to:
+     *
+     * [ { "flowId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
+     * "flowId": "550e8400-...", "variantId": "7a3d2e1f-...", "variables": {
+     * "orderNumber": "67890" } } ]
+     *
+     * An entry without `variantId` covers every variant that flow resolves. A flow
+     * this plan does not attach, or a variant that does not belong to the flow, is
+     * rejected rather than ignored.
+     *
+     * A plan built on scenarios rather than customer flows targets them the same way,
+     * with `scenarioId` in place of `flowId`. That form is deprecated alongside
+     * scenarios themselves, and still accepted so runs against those plans keep
+     * working.
      */
-    variables: { [key: string]: string };
+    variables?:
+      | { [key: string]: string }
+      | Array<RunSimulationFromPlanID.UnionMember1>
+      | Array<RunSimulationFromPlanID.UnionMember2>;
+  }
+
+  export namespace RunSimulationFromPlanID {
+    export interface UnionMember1 {
+      /**
+       * ID of a customer flow attached to this plan
+       */
+      flowId: string;
+
+      /**
+       * Key-value pairs to apply
+       */
+      variables: { [key: string]: string };
+
+      /**
+       * Target a single variant. Omit to apply to every variant this plan runs for the
+       * flow.
+       */
+      variantId?: string;
+    }
+
+    export interface UnionMember2 {
+      /**
+       * ID of the scenario to apply variables to
+       */
+      scenarioId: string;
+
+      /**
+       * Key-value pairs for this scenario
+       */
+      variables: { [key: string]: string };
+    }
   }
 }
 

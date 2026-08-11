@@ -621,35 +621,37 @@ export interface SimulationRunPlanJobListParams {
 
 export interface SimulationRunPlanJobStartParams {
   /**
-   * Runtime variable overrides targeted at the plan’s customer flows, taking
-   * precedence over the values pinned on the flow attachment.
+   * Values for the {{variables}} the run resolves, overriding whatever the plan has
+   * pinned.
    *
-   * An entry without `variantId` applies to every variant the attachment resolves. A
-   * flow that is not attached to this plan, or a variant that does not belong to the
-   * flow, is rejected rather than ignored.
+   * An object applies them to the whole run:
+   *
+   * { "orderNumber": "12345", "tier": "gold" }
+   *
+   * An array applies them per flow, or per variant of one, when a single set will
+   * not do. Each entry carries what it applies to:
+   *
+   * [ { "flowId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
+   * "flowId": "550e8400-...", "variantId": "7a3d2e1f-...", "variables": {
+   * "orderNumber": "67890" } } ]
+   *
+   * An entry without `variantId` covers every variant that flow resolves. A flow
+   * this plan does not attach, or a variant that does not belong to the flow, is
+   * rejected rather than ignored.
+   *
+   * A plan built on scenarios rather than customer flows targets them the same way,
+   * with `scenarioId` in place of `flowId`. That form is deprecated alongside
+   * scenarios themselves, and still accepted so runs against those plans keep
+   * working.
    */
-  flowVariables?: Array<SimulationRunPlanJobStartParams.FlowVariable>;
-
-  /**
-   * Runtime variables that override the values defined on the plan. Accepts one of
-   * two formats:
-   *
-   * Option 1, global (a flat key-value object): { "orderNumber": "12345",
-   * "environment": "staging" }
-   *
-   * Option 2, per-scenario (an array of objects with scenarioId + variables): [ {
-   * "scenarioId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
-   * "scenarioId": "7a3d2e1f-...", "variables": { "orderNumber": "67890" } } ]
-   *
-   * On a flow-based plan the global format applies to every variant the run
-   * resolves. The per-scenario format targets scenarios, so use `flowVariables` to
-   * override a specific flow or variant instead.
-   */
-  variables?: { [key: string]: string } | Array<SimulationRunPlanJobStartParams.UnionMember1>;
+  variables?:
+    | { [key: string]: string }
+    | Array<SimulationRunPlanJobStartParams.UnionMember1>
+    | Array<SimulationRunPlanJobStartParams.UnionMember2>;
 }
 
 export namespace SimulationRunPlanJobStartParams {
-  export interface FlowVariable {
+  export interface UnionMember1 {
     /**
      * ID of a customer flow attached to this plan
      */
@@ -667,7 +669,7 @@ export namespace SimulationRunPlanJobStartParams {
     variantId?: string;
   }
 
-  export interface UnionMember1 {
+  export interface UnionMember2 {
     /**
      * ID of the scenario to apply variables to
      */
