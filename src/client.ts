@@ -51,6 +51,8 @@ import {
   CallListResponse,
   CallListSentimentRunsResponse,
 } from './resources/call';
+import { CustomerFlow, FlowStep } from './resources/customer-flow';
+import { CustomerFlowEdgeCase } from './resources/customer-flow-edge-case';
 import { Health, HealthGetResponse } from './resources/health';
 import {
   HTTPRequestDefinition,
@@ -88,34 +90,6 @@ import {
   MetricPolicyUpdateResponse,
 } from './resources/metric-policy';
 import { Simulation, SimulationRunParams, SimulationRunResponse } from './resources/simulation';
-import {
-  FlowStep,
-  SimulationCustomerFlow,
-  SimulationCustomerFlowCreateParams,
-  SimulationCustomerFlowCreateResponse,
-  SimulationCustomerFlowDeleteResponse,
-  SimulationCustomerFlowGetByIDResponse,
-  SimulationCustomerFlowListParams,
-  SimulationCustomerFlowListResponse,
-  SimulationCustomerFlowReplaceGraphParams,
-  SimulationCustomerFlowReplaceGraphResponse,
-  SimulationCustomerFlowUpdateParams,
-  SimulationCustomerFlowUpdateResponse,
-} from './resources/simulation-customer-flow';
-import {
-  SimulationCustomerFlowVariant,
-  SimulationCustomerFlowVariantCreateParams,
-  SimulationCustomerFlowVariantCreateResponse,
-  SimulationCustomerFlowVariantDeleteParams,
-  SimulationCustomerFlowVariantDeleteResponse,
-  SimulationCustomerFlowVariantGetByIDParams,
-  SimulationCustomerFlowVariantGetByIDResponse,
-  SimulationCustomerFlowVariantListResponse,
-  SimulationCustomerFlowVariantSetDefaultParams,
-  SimulationCustomerFlowVariantSetDefaultResponse,
-  SimulationCustomerFlowVariantUpdateParams,
-  SimulationCustomerFlowVariantUpdateResponse,
-} from './resources/simulation-customer-flow-variant';
 import {
   SimulationEnvironment,
   SimulationEnvironmentGetByIDResponse,
@@ -906,10 +880,8 @@ export class Roark {
   simulationScenario: API.SimulationScenario = new API.SimulationScenario(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
   simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
-  simulationCustomerFlow: API.SimulationCustomerFlow = new API.SimulationCustomerFlow(this);
-  simulationCustomerFlowVariant: API.SimulationCustomerFlowVariant = new API.SimulationCustomerFlowVariant(
-    this,
-  );
+  customerFlow: API.CustomerFlow = new API.CustomerFlow(this);
+  customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
   agent: API.Agent = new API.Agent(this);
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
@@ -928,8 +900,8 @@ Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationScenario = SimulationScenario;
 Roark.SimulationPersona = SimulationPersona;
 Roark.SimulationEnvironment = SimulationEnvironment;
-Roark.SimulationCustomerFlow = SimulationCustomerFlow;
-Roark.SimulationCustomerFlowVariant = SimulationCustomerFlowVariant;
+Roark.CustomerFlow = CustomerFlow;
+Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
 Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
@@ -1047,35 +1019,9 @@ export declare namespace Roark {
     type SimulationEnvironmentListParams as SimulationEnvironmentListParams,
   };
 
-  export {
-    SimulationCustomerFlow as SimulationCustomerFlow,
-    type FlowStep as FlowStep,
-    type SimulationCustomerFlowCreateResponse as SimulationCustomerFlowCreateResponse,
-    type SimulationCustomerFlowUpdateResponse as SimulationCustomerFlowUpdateResponse,
-    type SimulationCustomerFlowListResponse as SimulationCustomerFlowListResponse,
-    type SimulationCustomerFlowDeleteResponse as SimulationCustomerFlowDeleteResponse,
-    type SimulationCustomerFlowGetByIDResponse as SimulationCustomerFlowGetByIDResponse,
-    type SimulationCustomerFlowReplaceGraphResponse as SimulationCustomerFlowReplaceGraphResponse,
-    type SimulationCustomerFlowCreateParams as SimulationCustomerFlowCreateParams,
-    type SimulationCustomerFlowUpdateParams as SimulationCustomerFlowUpdateParams,
-    type SimulationCustomerFlowListParams as SimulationCustomerFlowListParams,
-    type SimulationCustomerFlowReplaceGraphParams as SimulationCustomerFlowReplaceGraphParams,
-  };
+  export { CustomerFlow as CustomerFlow, type FlowStep as FlowStep };
 
-  export {
-    SimulationCustomerFlowVariant as SimulationCustomerFlowVariant,
-    type SimulationCustomerFlowVariantCreateResponse as SimulationCustomerFlowVariantCreateResponse,
-    type SimulationCustomerFlowVariantUpdateResponse as SimulationCustomerFlowVariantUpdateResponse,
-    type SimulationCustomerFlowVariantListResponse as SimulationCustomerFlowVariantListResponse,
-    type SimulationCustomerFlowVariantDeleteResponse as SimulationCustomerFlowVariantDeleteResponse,
-    type SimulationCustomerFlowVariantGetByIDResponse as SimulationCustomerFlowVariantGetByIDResponse,
-    type SimulationCustomerFlowVariantSetDefaultResponse as SimulationCustomerFlowVariantSetDefaultResponse,
-    type SimulationCustomerFlowVariantCreateParams as SimulationCustomerFlowVariantCreateParams,
-    type SimulationCustomerFlowVariantUpdateParams as SimulationCustomerFlowVariantUpdateParams,
-    type SimulationCustomerFlowVariantDeleteParams as SimulationCustomerFlowVariantDeleteParams,
-    type SimulationCustomerFlowVariantGetByIDParams as SimulationCustomerFlowVariantGetByIDParams,
-    type SimulationCustomerFlowVariantSetDefaultParams as SimulationCustomerFlowVariantSetDefaultParams,
-  };
+  export { CustomerFlowEdgeCase as CustomerFlowEdgeCase };
 
   export {
     Agent as Agent,
