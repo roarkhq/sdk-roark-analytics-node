@@ -34,6 +34,8 @@ export {
   type CallGetTranscriptParams,
   type CallListMetricsParams,
 } from './call';
+export { CustomerFlow, type FlowStep } from './customer-flow';
+export { CustomerFlowEdgeCase } from './customer-flow-edge-case';
 export {
   HTTPRequestDefinition,
   type HTTPRequestDefinitionCreateResponse,
@@ -71,34 +73,6 @@ export {
   type MetricPolicyListParams,
 } from './metric-policy';
 export { Simulation, type SimulationRunResponse, type SimulationRunParams } from './simulation';
-export {
-  SimulationCustomerFlow,
-  type FlowStep,
-  type SimulationCustomerFlowCreateResponse,
-  type SimulationCustomerFlowUpdateResponse,
-  type SimulationCustomerFlowListResponse,
-  type SimulationCustomerFlowDeleteResponse,
-  type SimulationCustomerFlowGetByIDResponse,
-  type SimulationCustomerFlowReplaceGraphResponse,
-  type SimulationCustomerFlowCreateParams,
-  type SimulationCustomerFlowUpdateParams,
-  type SimulationCustomerFlowListParams,
-  type SimulationCustomerFlowReplaceGraphParams,
-} from './simulation-customer-flow';
-export {
-  SimulationCustomerFlowVariant,
-  type SimulationCustomerFlowVariantCreateResponse,
-  type SimulationCustomerFlowVariantUpdateResponse,
-  type SimulationCustomerFlowVariantListResponse,
-  type SimulationCustomerFlowVariantDeleteResponse,
-  type SimulationCustomerFlowVariantGetByIDResponse,
-  type SimulationCustomerFlowVariantSetDefaultResponse,
-  type SimulationCustomerFlowVariantCreateParams,
-  type SimulationCustomerFlowVariantUpdateParams,
-  type SimulationCustomerFlowVariantDeleteParams,
-  type SimulationCustomerFlowVariantGetByIDParams,
-  type SimulationCustomerFlowVariantSetDefaultParams,
-} from './simulation-customer-flow-variant';
 export {
   SimulationEnvironment,
   type SimulationEnvironmentListResponse,
