@@ -8,17 +8,6 @@ import { path } from '../internal/utils/path';
 export class SimulationPersona extends APIResource {
   /**
    * Creates a new persona for the authenticated project.
-   *
-   * @example
-   * ```ts
-   * const simulationPersona =
-   *   await client.simulationPersona.create({
-   *     accent: 'US',
-   *     gender: 'MALE',
-   *     language: 'EN',
-   *     name: 'name',
-   *   });
-   * ```
    */
   create(
     body: SimulationPersonaCreateParams,
@@ -29,12 +18,6 @@ export class SimulationPersona extends APIResource {
 
   /**
    * Updates an existing persona by its ID.
-   *
-   * @example
-   * ```ts
-   * const simulationPersona =
-   *   await client.simulationPersona.update('personaId');
-   * ```
    */
   update(
     personaID: string,
@@ -46,12 +29,6 @@ export class SimulationPersona extends APIResource {
 
   /**
    * Returns a paginated list of personas for the authenticated project.
-   *
-   * @example
-   * ```ts
-   * const simulationPersonas =
-   *   await client.simulationPersona.list();
-   * ```
    */
   list(
     query: SimulationPersonaListParams | null | undefined = {},
@@ -62,13 +39,6 @@ export class SimulationPersona extends APIResource {
 
   /**
    * Returns a specific persona by its ID.
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulationPersona.getByID(
-   *   'personaId',
-   * );
-   * ```
    */
   getByID(personaID: string, options?: RequestOptions): APIPromise<SimulationPersonaGetByIDResponse> {
     return this._client.get(path`/v1/persona/${personaID}`, options);

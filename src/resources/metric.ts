@@ -11,16 +11,6 @@ export class Metric extends APIResource {
    * metrics), or PATTERN (detects a trigger→outcome pattern within a window). To
    * create a threshold on top of an existing metric, use
    * `POST /metric/definitions/{idOrSlug}/thresholds` instead.
-   *
-   * @example
-   * ```ts
-   * const response = await client.metric.createDefinition({
-   *   analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   calculationType: 'LLM_JUDGE',
-   *   name: 'Customer Satisfaction',
-   *   outputType: 'BOOLEAN',
-   * });
-   * ```
    */
   createDefinition(
     body: MetricCreateDefinitionParams,
@@ -1216,24 +1206,6 @@ export declare namespace MetricCreateDefinitionParams {
     /**
      * Single trigger condition. Use either trigger or triggers + triggerCombinator.
      */
-    export interface Trigger {
-      operator:
-        | 'GREATER_THAN'
-        | 'GREATER_THAN_OR_EQUALS'
-        | 'LESS_THAN'
-        | 'LESS_THAN_OR_EQUALS'
-        | 'EQUALS'
-        | 'NOT_EQUALS';
-
-      sourceMetricDefinitionId: string;
-
-      thresholdValue: string;
-
-      sourceParticipantRole?: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER';
-
-      sourceVariantId?: string;
-    }
-
     export interface Trigger {
       operator:
         | 'GREATER_THAN'

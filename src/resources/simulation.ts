@@ -11,20 +11,6 @@ export class Simulation extends APIResource {
    * Send `plan` to describe a simulation and run it once. Add `saveAsPlan` to keep
    * that configuration as a reusable run plan. Send `planId` instead to run a plan
    * you already have.
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulation.run({
-   *   plan: {
-   *     agentEndpoints: [
-   *       { id: '7c9e6679-7425-40de-944b-e07fc1f90ae7' },
-   *     ],
-   *     direction: 'OUTBOUND',
-   *     maxSimulationDurationSeconds: 300,
-   *     metrics: [{}],
-   *   },
-   * });
-   * ```
    */
   run(body: SimulationRunParams, options?: RequestOptions): APIPromise<SimulationRunResponse> {
     return this._client.post('/v1/simulation/run', { body, ...options });

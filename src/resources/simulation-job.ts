@@ -9,13 +9,6 @@ export class SimulationJob extends APIResource {
   /**
    * Get a individual simulation run directly by its ID. This is generally part of a
    * larger simulation run plan job.
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulationJob.getByID(
-   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
-   * );
-   * ```
    */
   getByID(jobID: unknown, options?: RequestOptions): APIPromise<SimulationJobGetByIDResponse> {
     return this._client.get(path`/v1/simulation/job/${jobID}`, options);
@@ -24,13 +17,6 @@ export class SimulationJob extends APIResource {
   /**
    * Find the matching simulation using the number used by the Roark simulation
    * agent.
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulationJob.lookup({
-   *   roarkPhoneNumber: {},
-   * });
-   * ```
    */
   lookup(
     query: SimulationJobLookupParams,

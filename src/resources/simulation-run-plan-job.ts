@@ -9,12 +9,6 @@ export class SimulationRunPlanJob extends APIResource {
   /**
    * Returns a paginated list of simulation run plan jobs. Filter by status, plan ID,
    * or label to find specific simulation batches.
-   *
-   * @example
-   * ```ts
-   * const simulationRunPlanJobs =
-   *   await client.simulationRunPlanJob.list();
-   * ```
    */
   list(
     query: SimulationRunPlanJobListParams | null | undefined = {},
@@ -26,13 +20,6 @@ export class SimulationRunPlanJob extends APIResource {
   /**
    * Retrieve details of a simulation plan job including all associated simulation
    * jobs (calls)
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulationRunPlanJob.getByID(
-   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
-   * );
-   * ```
    */
   getByID(jobID: unknown, options?: RequestOptions): APIPromise<SimulationRunPlanJobGetByIDResponse> {
     return this._client.get(path`/v1/simulation/plan/job/${jobID}`, options);

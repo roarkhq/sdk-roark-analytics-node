@@ -12,20 +12,6 @@ export class SimulationRunPlan extends APIResource {
    * To run a simulation, use POST /v1/simulation/run instead: it starts a run from a
    * plan or from an inline configuration, and takes runtime variables. Create a plan
    * here when you want a reusable, named one to run later.
-   *
-   * @example
-   * ```ts
-   * const simulationRunPlan =
-   *   await client.simulationRunPlan.create({
-   *     agentEndpoints: [
-   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-   *     ],
-   *     direction: 'INBOUND',
-   *     maxSimulationDurationSeconds: 300,
-   *     metrics: [{}],
-   *     name: 'My Run Plan',
-   *   });
-   * ```
    */
   create(
     body: SimulationRunPlanCreateParams,
@@ -36,14 +22,6 @@ export class SimulationRunPlan extends APIResource {
 
   /**
    * Updates an existing simulation run plan by its ID.
-   *
-   * @example
-   * ```ts
-   * const simulationRunPlan =
-   *   await client.simulationRunPlan.update(
-   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   );
-   * ```
    */
   update(
     planID: string,
@@ -56,12 +34,6 @@ export class SimulationRunPlan extends APIResource {
   /**
    * Returns a paginated list of simulation run plans. Optionally filter by search
    * text or agent ID.
-   *
-   * @example
-   * ```ts
-   * const simulationRunPlans =
-   *   await client.simulationRunPlan.list();
-   * ```
    */
   list(
     query: SimulationRunPlanListParams | null | undefined = {},
@@ -72,14 +44,6 @@ export class SimulationRunPlan extends APIResource {
 
   /**
    * Soft-deletes a simulation run plan by its ID.
-   *
-   * @example
-   * ```ts
-   * const simulationRunPlan =
-   *   await client.simulationRunPlan.delete(
-   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   );
-   * ```
    */
   delete(planID: string, options?: RequestOptions): APIPromise<SimulationRunPlanDeleteResponse> {
     return this._client.delete(path`/v1/simulation/plan/${planID}`, options);
@@ -87,13 +51,6 @@ export class SimulationRunPlan extends APIResource {
 
   /**
    * Returns a specific simulation run plan by its ID.
-   *
-   * @example
-   * ```ts
-   * const response = await client.simulationRunPlan.getByID(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
    */
   getByID(planID: string, options?: RequestOptions): APIPromise<SimulationRunPlanGetByIDResponse> {
     return this._client.get(path`/v1/simulation/plan/${planID}`, options);

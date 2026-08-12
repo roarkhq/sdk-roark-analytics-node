@@ -9,15 +9,6 @@ export class MetricPolicy extends APIResource {
   /**
    * Creates a new metric policy. Policies define which metrics to collect and under
    * what conditions.
-   *
-   * @example
-   * ```ts
-   * const metricPolicy = await client.metricPolicy.create({
-   *   metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-   *   modality: 'call',
-   *   name: 'Evaluate all inbound calls',
-   * });
-   * ```
    */
   create(body: MetricPolicyCreateParams, options?: RequestOptions): APIPromise<MetricPolicyCreateResponse> {
     return this._client.post('/v1/metric/policies', { body, ...options });
@@ -25,13 +16,6 @@ export class MetricPolicy extends APIResource {
 
   /**
    * Updates an existing metric policy. System policies cannot be modified.
-   *
-   * @example
-   * ```ts
-   * const metricPolicy = await client.metricPolicy.update(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
    */
   update(
     policyID: string,
@@ -44,11 +28,6 @@ export class MetricPolicy extends APIResource {
   /**
    * Returns a paginated list of metric policies for the project, including system
    * policies.
-   *
-   * @example
-   * ```ts
-   * const metricPolicies = await client.metricPolicy.list();
-   * ```
    */
   list(
     query: MetricPolicyListParams | null | undefined = {},
@@ -59,13 +38,6 @@ export class MetricPolicy extends APIResource {
 
   /**
    * Soft-deletes a metric policy. System policies cannot be deleted.
-   *
-   * @example
-   * ```ts
-   * const metricPolicy = await client.metricPolicy.delete(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
    */
   delete(policyID: string, options?: RequestOptions): APIPromise<MetricPolicyDeleteResponse> {
     return this._client.delete(path`/v1/metric/policies/${policyID}`, options);
@@ -73,13 +45,6 @@ export class MetricPolicy extends APIResource {
 
   /**
    * Returns a specific metric policy with its conditions and metrics.
-   *
-   * @example
-   * ```ts
-   * const response = await client.metricPolicy.getByID(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
    */
   getByID(policyID: string, options?: RequestOptions): APIPromise<MetricPolicyGetByIDResponse> {
     return this._client.get(path`/v1/metric/policies/${policyID}`, options);
