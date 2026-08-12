@@ -30,6 +30,24 @@ Methods:
 - <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">listMetrics</a>(callID, { ...params }) -> CallListMetricsResponse</code>
 - <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">listSentimentRuns</a>(callID) -> CallListSentimentRunsResponse</code>
 
+# Chat
+
+Types:
+
+- <code><a href="./src/resources/chat.ts">ChatCreateResponse</a></code>
+- <code><a href="./src/resources/chat.ts">ChatListResponse</a></code>
+- <code><a href="./src/resources/chat.ts">ChatGetByIDResponse</a></code>
+- <code><a href="./src/resources/chat.ts">ChatGetTranscriptResponse</a></code>
+- <code><a href="./src/resources/chat.ts">ChatListMetricsResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/chat">client.chat.<a href="./src/resources/chat.ts">create</a>({ ...params }) -> ChatCreateResponse</code>
+- <code title="get /v1/chat">client.chat.<a href="./src/resources/chat.ts">list</a>({ ...params }) -> ChatListResponse</code>
+- <code title="get /v1/chat/{id}">client.chat.<a href="./src/resources/chat.ts">getByID</a>(id) -> ChatGetByIDResponse</code>
+- <code title="get /v1/chat/{id}/transcript">client.chat.<a href="./src/resources/chat.ts">getTranscript</a>(id) -> ChatGetTranscriptResponse</code>
+- <code title="get /v1/chat/{id}/metrics">client.chat.<a href="./src/resources/chat.ts">listMetrics</a>(id, { ...params }) -> ChatListMetricsResponse</code>
+
 # Metric
 
 Types:

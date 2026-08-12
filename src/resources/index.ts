@@ -35,6 +35,17 @@ export {
   type CallListMetricsParams,
 } from './call';
 export {
+  Chat,
+  type ChatCreateResponse,
+  type ChatListResponse,
+  type ChatGetByIDResponse,
+  type ChatGetTranscriptResponse,
+  type ChatListMetricsResponse,
+  type ChatCreateParams,
+  type ChatListParams,
+  type ChatListMetricsParams,
+} from './chat';
+export {
   CustomerFlow,
   type FlowStep,
   type CustomerFlowCreateResponse,

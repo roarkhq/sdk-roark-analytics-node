@@ -52,6 +52,17 @@ import {
   CallListSentimentRunsResponse,
 } from './resources/call';
 import {
+  Chat,
+  ChatCreateParams,
+  ChatCreateResponse,
+  ChatGetByIDResponse,
+  ChatGetTranscriptResponse,
+  ChatListMetricsParams,
+  ChatListMetricsResponse,
+  ChatListParams,
+  ChatListResponse,
+} from './resources/chat';
+import {
   CustomerFlow,
   CustomerFlowCreateParams,
   CustomerFlowCreateResponse,
@@ -895,6 +906,7 @@ export class Roark {
 
   health: API.Health = new API.Health(this);
   call: API.Call = new API.Call(this);
+  chat: API.Chat = new API.Chat(this);
   metric: API.Metric = new API.Metric(this);
   metricPolicy: API.MetricPolicy = new API.MetricPolicy(this);
   metricCollectionJob: API.MetricCollectionJob = new API.MetricCollectionJob(this);
@@ -915,6 +927,7 @@ export class Roark {
 
 Roark.Health = Health;
 Roark.Call = Call;
+Roark.Chat = Chat;
 Roark.Metric = Metric;
 Roark.MetricPolicy = MetricPolicy;
 Roark.MetricCollectionJob = MetricCollectionJob;
@@ -950,6 +963,18 @@ export declare namespace Roark {
     type CallListParams as CallListParams,
     type CallGetTranscriptParams as CallGetTranscriptParams,
     type CallListMetricsParams as CallListMetricsParams,
+  };
+
+  export {
+    Chat as Chat,
+    type ChatCreateResponse as ChatCreateResponse,
+    type ChatListResponse as ChatListResponse,
+    type ChatGetByIDResponse as ChatGetByIDResponse,
+    type ChatGetTranscriptResponse as ChatGetTranscriptResponse,
+    type ChatListMetricsResponse as ChatListMetricsResponse,
+    type ChatCreateParams as ChatCreateParams,
+    type ChatListParams as ChatListParams,
+    type ChatListMetricsParams as ChatListMetricsParams,
   };
 
   export {
