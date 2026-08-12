@@ -926,6 +926,12 @@ export namespace CallListMetricsResponse {
       policyIds?: Array<string>;
 
       /**
+       * Per-property verdicts for the Property Mismatch metric, in the order the
+       * properties were checked. Omitted for every other metric.
+       */
+      propertyVerdicts?: Array<Value.PropertyVerdict>;
+
+      /**
        * Segment information (for SEGMENT context metrics)
        */
       segment?: Value.Segment;
@@ -971,6 +977,70 @@ export namespace CallListMetricsResponse {
          * Segment text content
          */
         text: string;
+      }
+
+      export interface PropertyVerdict {
+        /**
+         * The value supplied at ingest, frozen at scoring time
+         */
+        expectedValue: string;
+
+        /**
+         * The call property checked, as sent at ingest
+         */
+        propertyName: string;
+
+        /**
+         * How this property resolved against the transcript. NOT_MENTIONED means the
+         * subject never came up and is not a mismatch.
+         */
+        verdict: 'MATCH' | 'MISMATCH' | 'NOT_MENTIONED';
+
+        /**
+         * What the transcript said instead. Only present when verdict is MISMATCH.
+         */
+        observedValue?: string;
+
+        /**
+         * Judge reasoning for this verdict
+         */
+        reasoning?: string;
+
+        /**
+         * The transcript segment this property was referred to in: the conflicting value
+         * for MISMATCH, the confirming reference for MATCH. Omitted for NOT_MENTIONED and
+         * when the verdict could not be anchored.
+         */
+        segment?: PropertyVerdict.Segment;
+      }
+
+      export namespace PropertyVerdict {
+        /**
+         * The transcript segment this property was referred to in: the conflicting value
+         * for MISMATCH, the confirming reference for MATCH. Omitted for NOT_MENTIONED and
+         * when the verdict could not be anchored.
+         */
+        export interface Segment {
+          /**
+           * Segment ID
+           */
+          id: string;
+
+          /**
+           * End time offset in milliseconds
+           */
+          endOffsetMs: number;
+
+          /**
+           * Start time offset in milliseconds
+           */
+          startOffsetMs: number;
+
+          /**
+           * Segment text content
+           */
+          text: string;
+        }
       }
 
       /**
