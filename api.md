@@ -179,8 +179,39 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/customer-flow.ts">FlowStep</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowCreateResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowUpdateResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowListResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowDeleteResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowGetByIDResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowReplaceGraphResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowUpdateHappyPathResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/customer-flow">client.customerFlow.<a href="./src/resources/customer-flow.ts">create</a>({ ...params }) -> CustomerFlowCreateResponse</code>
+- <code title="put /v1/customer-flow/{flowId}">client.customerFlow.<a href="./src/resources/customer-flow.ts">update</a>(flowID, { ...params }) -> CustomerFlowUpdateResponse</code>
+- <code title="get /v1/customer-flow">client.customerFlow.<a href="./src/resources/customer-flow.ts">list</a>({ ...params }) -> CustomerFlowListResponse</code>
+- <code title="delete /v1/customer-flow/{flowId}">client.customerFlow.<a href="./src/resources/customer-flow.ts">delete</a>(flowID) -> CustomerFlowDeleteResponse</code>
+- <code title="get /v1/customer-flow/{flowId}">client.customerFlow.<a href="./src/resources/customer-flow.ts">getByID</a>(flowID) -> CustomerFlowGetByIDResponse</code>
+- <code title="put /v1/customer-flow/{flowId}/graph">client.customerFlow.<a href="./src/resources/customer-flow.ts">replaceGraph</a>(flowID, { ...params }) -> CustomerFlowReplaceGraphResponse</code>
+- <code title="put /v1/customer-flow/{flowId}/happy-path">client.customerFlow.<a href="./src/resources/customer-flow.ts">updateHappyPath</a>(flowID, { ...params }) -> CustomerFlowUpdateHappyPathResponse</code>
 
 # CustomerFlowEdgeCase
+
+Types:
+
+- <code><a href="./src/resources/customer-flow-edge-case.ts">CustomerFlowEdgeCaseUpdateResponse</a></code>
+- <code><a href="./src/resources/customer-flow-edge-case.ts">CustomerFlowEdgeCaseAddResponse</a></code>
+- <code><a href="./src/resources/customer-flow-edge-case.ts">CustomerFlowEdgeCasePromoteResponse</a></code>
+- <code><a href="./src/resources/customer-flow-edge-case.ts">CustomerFlowEdgeCaseRemoveResponse</a></code>
+
+Methods:
+
+- <code title="put /v1/customer-flow/{flowId}/edge-case/{edgeCaseId}">client.customerFlowEdgeCase.<a href="./src/resources/customer-flow-edge-case.ts">update</a>(edgeCaseID, { ...params }) -> CustomerFlowEdgeCaseUpdateResponse</code>
+- <code title="post /v1/customer-flow/{flowId}/edge-case">client.customerFlowEdgeCase.<a href="./src/resources/customer-flow-edge-case.ts">add</a>(flowID, { ...params }) -> CustomerFlowEdgeCaseAddResponse</code>
+- <code title="post /v1/customer-flow/{flowId}/edge-case/{edgeCaseId}/promote">client.customerFlowEdgeCase.<a href="./src/resources/customer-flow-edge-case.ts">promote</a>(edgeCaseID, { ...params }) -> CustomerFlowEdgeCasePromoteResponse</code>
+- <code title="delete /v1/customer-flow/{flowId}/edge-case/{edgeCaseId}">client.customerFlowEdgeCase.<a href="./src/resources/customer-flow-edge-case.ts">remove</a>(edgeCaseID, { ...params }) -> CustomerFlowEdgeCaseRemoveResponse</code>
 
 # Agent
 

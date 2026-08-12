@@ -241,46 +241,56 @@ export namespace SimulationRunPlanCreateResponse {
       }
 
       /**
-       * One customer flow attached to a run plan.
+       * One customer flow attached to a run plan, and which of its ways of running you
+       * cover.
        *
-       * To run specific variants, list them in `variants`. Each entry may carry its own
-       * `personaOverrideId` and `variables`, so pinning two variants of one flow at
-       * different values is a single attachment.
-       *
-       * To let the run resolve the variants instead, leave `variants` out and set
-       * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
-       * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
-       * moves
-       *
-       * There is no default mode. Each variant is a separate simulated call, so a
-       * forgotten field would quietly change how many calls a run places.
-       *
-       * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
-       * the attachment to apply to every variant it resolves, or on a `variants` entry
-       * for one. The entry wins. Attaching the same flow more than once with different
-       * overrides is how you fan it out across personas.
-       *
-       * `variables` pins {{variable}} values the same way. Anything left unset is asked
-       * for when the run starts.
+       * Attaching the same flow more than once with different overrides is how you fan
+       * it out across personas or values.
        */
       export interface Flow {
-        customerFlowId: string;
+        /**
+         * The customer flow to run.
+         */
+        id: string;
 
-        variants: Array<Flow.Variant>;
+        /**
+         * `"ALL"` runs every edge case the flow has when the run starts, so one added
+         * later is covered. An array runs only the ones you name, each able to carry its
+         * own persona override and values.
+         */
+        edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
 
+        /**
+         * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+         */
+        happyPath?: boolean;
+
+        /**
+         * Runs everything this attachment resolves as that persona instead of its own.
+         */
         personaOverrideId?: string | null;
 
+        /**
+         * Values for everything it resolves.
+         */
         variables?: { [key: string]: string };
-
-        variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
       }
 
       export namespace Flow {
-        export interface Variant {
+        export interface UnionMember1 {
+          /**
+           * The edge case to run.
+           */
           id: string;
 
+          /**
+           * Run this one as that persona instead of its own.
+           */
           personaOverrideId?: string | null;
 
+          /**
+           * Values for this one only.
+           */
           variables?: { [key: string]: string };
         }
       }
@@ -467,46 +477,56 @@ export namespace SimulationRunPlanUpdateResponse {
     }
 
     /**
-     * One customer flow attached to a run plan.
+     * One customer flow attached to a run plan, and which of its ways of running you
+     * cover.
      *
-     * To run specific variants, list them in `variants`. Each entry may carry its own
-     * `personaOverrideId` and `variables`, so pinning two variants of one flow at
-     * different values is a single attachment.
-     *
-     * To let the run resolve the variants instead, leave `variants` out and set
-     * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
-     * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
-     * moves
-     *
-     * There is no default mode. Each variant is a separate simulated call, so a
-     * forgotten field would quietly change how many calls a run places.
-     *
-     * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
-     * the attachment to apply to every variant it resolves, or on a `variants` entry
-     * for one. The entry wins. Attaching the same flow more than once with different
-     * overrides is how you fan it out across personas.
-     *
-     * `variables` pins {{variable}} values the same way. Anything left unset is asked
-     * for when the run starts.
+     * Attaching the same flow more than once with different overrides is how you fan
+     * it out across personas or values.
      */
     export interface Flow {
-      customerFlowId: string;
+      /**
+       * The customer flow to run.
+       */
+      id: string;
 
-      variants: Array<Flow.Variant>;
+      /**
+       * `"ALL"` runs every edge case the flow has when the run starts, so one added
+       * later is covered. An array runs only the ones you name, each able to carry its
+       * own persona override and values.
+       */
+      edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
 
+      /**
+       * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+       */
+      happyPath?: boolean;
+
+      /**
+       * Runs everything this attachment resolves as that persona instead of its own.
+       */
       personaOverrideId?: string | null;
 
+      /**
+       * Values for everything it resolves.
+       */
       variables?: { [key: string]: string };
-
-      variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
     }
 
     export namespace Flow {
-      export interface Variant {
+      export interface UnionMember1 {
+        /**
+         * The edge case to run.
+         */
         id: string;
 
+        /**
+         * Run this one as that persona instead of its own.
+         */
         personaOverrideId?: string | null;
 
+        /**
+         * Values for this one only.
+         */
         variables?: { [key: string]: string };
       }
     }
@@ -658,46 +678,56 @@ export namespace SimulationRunPlanListResponse {
     }
 
     /**
-     * One customer flow attached to a run plan.
+     * One customer flow attached to a run plan, and which of its ways of running you
+     * cover.
      *
-     * To run specific variants, list them in `variants`. Each entry may carry its own
-     * `personaOverrideId` and `variables`, so pinning two variants of one flow at
-     * different values is a single attachment.
-     *
-     * To let the run resolve the variants instead, leave `variants` out and set
-     * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
-     * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
-     * moves
-     *
-     * There is no default mode. Each variant is a separate simulated call, so a
-     * forgotten field would quietly change how many calls a run places.
-     *
-     * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
-     * the attachment to apply to every variant it resolves, or on a `variants` entry
-     * for one. The entry wins. Attaching the same flow more than once with different
-     * overrides is how you fan it out across personas.
-     *
-     * `variables` pins {{variable}} values the same way. Anything left unset is asked
-     * for when the run starts.
+     * Attaching the same flow more than once with different overrides is how you fan
+     * it out across personas or values.
      */
     export interface Flow {
-      customerFlowId: string;
+      /**
+       * The customer flow to run.
+       */
+      id: string;
 
-      variants: Array<Flow.Variant>;
+      /**
+       * `"ALL"` runs every edge case the flow has when the run starts, so one added
+       * later is covered. An array runs only the ones you name, each able to carry its
+       * own persona override and values.
+       */
+      edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
 
+      /**
+       * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+       */
+      happyPath?: boolean;
+
+      /**
+       * Runs everything this attachment resolves as that persona instead of its own.
+       */
       personaOverrideId?: string | null;
 
+      /**
+       * Values for everything it resolves.
+       */
       variables?: { [key: string]: string };
-
-      variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
     }
 
     export namespace Flow {
-      export interface Variant {
+      export interface UnionMember1 {
+        /**
+         * The edge case to run.
+         */
         id: string;
 
+        /**
+         * Run this one as that persona instead of its own.
+         */
         personaOverrideId?: string | null;
 
+        /**
+         * Values for this one only.
+         */
         variables?: { [key: string]: string };
       }
     }
@@ -877,46 +907,56 @@ export namespace SimulationRunPlanGetByIDResponse {
     }
 
     /**
-     * One customer flow attached to a run plan.
+     * One customer flow attached to a run plan, and which of its ways of running you
+     * cover.
      *
-     * To run specific variants, list them in `variants`. Each entry may carry its own
-     * `personaOverrideId` and `variables`, so pinning two variants of one flow at
-     * different values is a single attachment.
-     *
-     * To let the run resolve the variants instead, leave `variants` out and set
-     * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
-     * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
-     * moves
-     *
-     * There is no default mode. Each variant is a separate simulated call, so a
-     * forgotten field would quietly change how many calls a run places.
-     *
-     * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
-     * the attachment to apply to every variant it resolves, or on a `variants` entry
-     * for one. The entry wins. Attaching the same flow more than once with different
-     * overrides is how you fan it out across personas.
-     *
-     * `variables` pins {{variable}} values the same way. Anything left unset is asked
-     * for when the run starts.
+     * Attaching the same flow more than once with different overrides is how you fan
+     * it out across personas or values.
      */
     export interface Flow {
-      customerFlowId: string;
+      /**
+       * The customer flow to run.
+       */
+      id: string;
 
-      variants: Array<Flow.Variant>;
+      /**
+       * `"ALL"` runs every edge case the flow has when the run starts, so one added
+       * later is covered. An array runs only the ones you name, each able to carry its
+       * own persona override and values.
+       */
+      edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
 
+      /**
+       * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+       */
+      happyPath?: boolean;
+
+      /**
+       * Runs everything this attachment resolves as that persona instead of its own.
+       */
       personaOverrideId?: string | null;
 
+      /**
+       * Values for everything it resolves.
+       */
       variables?: { [key: string]: string };
-
-      variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
     }
 
     export namespace Flow {
-      export interface Variant {
+      export interface UnionMember1 {
+        /**
+         * The edge case to run.
+         */
         id: string;
 
+        /**
+         * Run this one as that persona instead of its own.
+         */
         personaOverrideId?: string | null;
 
+        /**
+         * Values for this one only.
+         */
         variables?: { [key: string]: string };
       }
     }
@@ -1055,46 +1095,56 @@ export namespace SimulationRunPlanCreateParams {
   }
 
   /**
-   * One customer flow attached to a run plan.
+   * One customer flow attached to a run plan, and which of its ways of running you
+   * cover.
    *
-   * To run specific variants, list them in `variants`. Each entry may carry its own
-   * `personaOverrideId` and `variables`, so pinning two variants of one flow at
-   * different values is a single attachment.
-   *
-   * To let the run resolve the variants instead, leave `variants` out and set
-   * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
-   * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
-   * moves
-   *
-   * There is no default mode. Each variant is a separate simulated call, so a
-   * forgotten field would quietly change how many calls a run places.
-   *
-   * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
-   * the attachment to apply to every variant it resolves, or on a `variants` entry
-   * for one. The entry wins. Attaching the same flow more than once with different
-   * overrides is how you fan it out across personas.
-   *
-   * `variables` pins {{variable}} values the same way. Anything left unset is asked
-   * for when the run starts.
+   * Attaching the same flow more than once with different overrides is how you fan
+   * it out across personas or values.
    */
   export interface Flow {
-    customerFlowId: string;
+    /**
+     * The customer flow to run.
+     */
+    id: string;
 
-    variants: Array<Flow.Variant>;
+    /**
+     * `"ALL"` runs every edge case the flow has when the run starts, so one added
+     * later is covered. An array runs only the ones you name, each able to carry its
+     * own persona override and values.
+     */
+    edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
 
+    /**
+     * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+     */
+    happyPath?: boolean;
+
+    /**
+     * Runs everything this attachment resolves as that persona instead of its own.
+     */
     personaOverrideId?: string | null;
 
+    /**
+     * Values for everything it resolves.
+     */
     variables?: { [key: string]: string };
-
-    variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
   }
 
   export namespace Flow {
-    export interface Variant {
+    export interface UnionMember1 {
+      /**
+       * The edge case to run.
+       */
       id: string;
 
+      /**
+       * Run this one as that persona instead of its own.
+       */
       personaOverrideId?: string | null;
 
+      /**
+       * Values for this one only.
+       */
       variables?: { [key: string]: string };
     }
   }
@@ -1158,7 +1208,7 @@ export interface SimulationRunPlanUpdateParams {
   /**
    * Whether this plan is hidden from GET /v1/simulation/plan.
    *
-   * A run started without `savePlanAs` creates a hidden plan to carry it. Send
+   * A run started without `saveAsPlan` creates a hidden plan to carry it. Send
    * `{ "name": "...", "isHidden": false }` to keep that configuration as a reusable
    * plan, which is what the app does when you save a one-off run.
    */
@@ -1214,46 +1264,56 @@ export namespace SimulationRunPlanUpdateParams {
   }
 
   /**
-   * One customer flow attached to a run plan.
+   * One customer flow attached to a run plan, and which of its ways of running you
+   * cover.
    *
-   * To run specific variants, list them in `variants`. Each entry may carry its own
-   * `personaOverrideId` and `variables`, so pinning two variants of one flow at
-   * different values is a single attachment.
-   *
-   * To let the run resolve the variants instead, leave `variants` out and set
-   * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
-   * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
-   * moves
-   *
-   * There is no default mode. Each variant is a separate simulated call, so a
-   * forgotten field would quietly change how many calls a run places.
-   *
-   * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
-   * the attachment to apply to every variant it resolves, or on a `variants` entry
-   * for one. The entry wins. Attaching the same flow more than once with different
-   * overrides is how you fan it out across personas.
-   *
-   * `variables` pins {{variable}} values the same way. Anything left unset is asked
-   * for when the run starts.
+   * Attaching the same flow more than once with different overrides is how you fan
+   * it out across personas or values.
    */
   export interface Flow {
-    customerFlowId: string;
+    /**
+     * The customer flow to run.
+     */
+    id: string;
 
-    variants: Array<Flow.Variant>;
+    /**
+     * `"ALL"` runs every edge case the flow has when the run starts, so one added
+     * later is covered. An array runs only the ones you name, each able to carry its
+     * own persona override and values.
+     */
+    edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
 
+    /**
+     * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+     */
+    happyPath?: boolean;
+
+    /**
+     * Runs everything this attachment resolves as that persona instead of its own.
+     */
     personaOverrideId?: string | null;
 
+    /**
+     * Values for everything it resolves.
+     */
     variables?: { [key: string]: string };
-
-    variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
   }
 
   export namespace Flow {
-    export interface Variant {
+    export interface UnionMember1 {
+      /**
+       * The edge case to run.
+       */
       id: string;
 
+      /**
+       * Run this one as that persona instead of its own.
+       */
       personaOverrideId?: string | null;
 
+      /**
+       * Values for this one only.
+       */
       variables?: { [key: string]: string };
     }
   }

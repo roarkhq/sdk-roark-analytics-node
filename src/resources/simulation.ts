@@ -8,7 +8,7 @@ export class Simulation extends APIResource {
   /**
    * Starts a simulation and returns the run.
    *
-   * Send `plan` to describe a simulation and run it once. Add `savePlanAs` to keep
+   * Send `plan` to describe a simulation and run it once. Add `saveAsPlan` to keep
    * that configuration as a reusable run plan. Send `planId` instead to run a plan
    * you already have.
    *
@@ -17,9 +17,9 @@ export class Simulation extends APIResource {
    * const response = await client.simulation.run({
    *   plan: {
    *     agentEndpoints: [
-   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+   *       { id: '7c9e6679-7425-40de-944b-e07fc1f90ae7' },
    *     ],
-   *     direction: 'INBOUND',
+   *     direction: 'OUTBOUND',
    *     maxSimulationDurationSeconds: 300,
    *     metrics: [{}],
    *   },
@@ -101,13 +101,14 @@ export declare namespace SimulationRunParams {
     plan: RunSimulationFromConfig.Plan;
 
     /**
-     * Keeps this configuration as a run plan under this name, listed by GET
-     * /v1/simulation/plan and re-runnable with `planId`.
+     * Keeps this configuration as a run plan, listed by GET /v1/simulation/plan and
+     * re-runnable with `planId`. Requires `plan.name`, since a plan you meant to keep
+     * should not be filed under a generated one.
      *
-     * Omit it for a one-off. The run still needs a plan to execute, so one is created
-     * either way, but an unnamed one is hidden: it carries this run and nothing else.
+     * Omitted or false gives a one-off. The run still needs a plan to execute, so one
+     * is created either way, but it is hidden: it carries this run and nothing else.
      */
-    savePlanAs?: string;
+    saveAsPlan?: boolean;
 
     /**
      * Values for the {{variables}} the run resolves, overriding whatever the plan has
@@ -117,15 +118,16 @@ export declare namespace SimulationRunParams {
      *
      * { "orderNumber": "12345", "tier": "gold" }
      *
-     * An array applies them per flow, or per variant of one, when a single set will
-     * not do. Each entry carries what it applies to:
+     * An array applies them per flow, or to just its happy path or one of its edge
+     * cases, when a single set will not do. Each entry carries what it applies to:
      *
      * [ { "flowId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
-     * "flowId": "550e8400-...", "variantId": "7a3d2e1f-...", "variables": {
-     * "orderNumber": "67890" } } ]
+     * "flowId": "550e8400-...", "happyPath": true, "variables": { "orderNumber":
+     * "55555" } }, { "flowId": "550e8400-...", "edgeCaseId": "7a3d2e1f-...",
+     * "variables": { "orderNumber": "67890" } } ]
      *
-     * An entry without `variantId` covers every variant that flow resolves. A flow
-     * this plan does not attach, or a variant that does not belong to the flow, is
+     * An entry that narrows to neither covers everything that flow resolves. A flow
+     * this plan does not attach, or an edge case that does not belong to the flow, is
      * rejected rather than ignored.
      *
      * A plan built on scenarios rather than customer flows targets them the same way,
@@ -203,6 +205,12 @@ export declare namespace SimulationRunParams {
       maxConcurrentJobs?: number;
 
       /**
+       * What to call this. Generated from the date when omitted, and required with
+       * `saveAsPlan`.
+       */
+      name?: string;
+
+      /**
        * Personas to include in this run plan. Required with `scenarios`; ignored with
        * `flows`, where each variant carries its own persona.
        */
@@ -245,46 +253,56 @@ export declare namespace SimulationRunParams {
       }
 
       /**
-       * One customer flow attached to a run plan.
+       * One customer flow attached to a run plan, and which of its ways of running you
+       * cover.
        *
-       * To run specific variants, list them in `variants`. Each entry may carry its own
-       * `personaOverrideId` and `variables`, so pinning two variants of one flow at
-       * different values is a single attachment.
-       *
-       * To let the run resolve the variants instead, leave `variants` out and set
-       * `variantSelectionMode`: ALL_VARIANTS: every variant the flow has when the run
-       * starts DEFAULT_VARIANT: only its default, so it follows the flow as the default
-       * moves
-       *
-       * There is no default mode. Each variant is a separate simulated call, so a
-       * forgotten field would quietly change how many calls a run places.
-       *
-       * `personaOverrideId` runs a variant as that persona instead of its own. Set it on
-       * the attachment to apply to every variant it resolves, or on a `variants` entry
-       * for one. The entry wins. Attaching the same flow more than once with different
-       * overrides is how you fan it out across personas.
-       *
-       * `variables` pins {{variable}} values the same way. Anything left unset is asked
-       * for when the run starts.
+       * Attaching the same flow more than once with different overrides is how you fan
+       * it out across personas or values.
        */
       export interface Flow {
-        customerFlowId: string;
+        /**
+         * The customer flow to run.
+         */
+        id: string;
 
-        variants: Array<Flow.Variant>;
+        /**
+         * `"ALL"` runs every edge case the flow has when the run starts, so one added
+         * later is covered. An array runs only the ones you name, each able to carry its
+         * own persona override and values.
+         */
+        edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
 
+        /**
+         * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+         */
+        happyPath?: boolean;
+
+        /**
+         * Runs everything this attachment resolves as that persona instead of its own.
+         */
         personaOverrideId?: string | null;
 
+        /**
+         * Values for everything it resolves.
+         */
         variables?: { [key: string]: string };
-
-        variantSelectionMode?: 'ALL_VARIANTS' | 'DEFAULT_VARIANT' | 'SPECIFIC_VARIANT';
       }
 
       export namespace Flow {
-        export interface Variant {
+        export interface UnionMember1 {
+          /**
+           * The edge case to run.
+           */
           id: string;
 
+          /**
+           * Run this one as that persona instead of its own.
+           */
           personaOverrideId?: string | null;
 
+          /**
+           * Values for this one only.
+           */
           variables?: { [key: string]: string };
         }
       }
@@ -309,20 +327,24 @@ export declare namespace SimulationRunParams {
 
     export interface UnionMember1 {
       /**
-       * ID of a customer flow attached to this plan
+       * A customer flow this plan runs.
        */
       flowId: string;
 
       /**
-       * Key-value pairs to apply
+       * The values to apply.
        */
       variables: { [key: string]: string };
 
       /**
-       * Target a single variant. Omit to apply to every variant this plan runs for the
-       * flow.
+       * Narrow to one edge case of that flow.
        */
-      variantId?: string;
+      edgeCaseId?: string;
+
+      /**
+       * Narrow to the flow's happy path.
+       */
+      happyPath?: true;
     }
 
     export interface UnionMember2 {
@@ -353,15 +375,16 @@ export declare namespace SimulationRunParams {
      *
      * { "orderNumber": "12345", "tier": "gold" }
      *
-     * An array applies them per flow, or per variant of one, when a single set will
-     * not do. Each entry carries what it applies to:
+     * An array applies them per flow, or to just its happy path or one of its edge
+     * cases, when a single set will not do. Each entry carries what it applies to:
      *
      * [ { "flowId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
-     * "flowId": "550e8400-...", "variantId": "7a3d2e1f-...", "variables": {
-     * "orderNumber": "67890" } } ]
+     * "flowId": "550e8400-...", "happyPath": true, "variables": { "orderNumber":
+     * "55555" } }, { "flowId": "550e8400-...", "edgeCaseId": "7a3d2e1f-...",
+     * "variables": { "orderNumber": "67890" } } ]
      *
-     * An entry without `variantId` covers every variant that flow resolves. A flow
-     * this plan does not attach, or a variant that does not belong to the flow, is
+     * An entry that narrows to neither covers everything that flow resolves. A flow
+     * this plan does not attach, or an edge case that does not belong to the flow, is
      * rejected rather than ignored.
      *
      * A plan built on scenarios rather than customer flows targets them the same way,
@@ -378,20 +401,24 @@ export declare namespace SimulationRunParams {
   export namespace RunSimulationFromPlanID {
     export interface UnionMember1 {
       /**
-       * ID of a customer flow attached to this plan
+       * A customer flow this plan runs.
        */
       flowId: string;
 
       /**
-       * Key-value pairs to apply
+       * The values to apply.
        */
       variables: { [key: string]: string };
 
       /**
-       * Target a single variant. Omit to apply to every variant this plan runs for the
-       * flow.
+       * Narrow to one edge case of that flow.
        */
-      variantId?: string;
+      edgeCaseId?: string;
+
+      /**
+       * Narrow to the flow's happy path.
+       */
+      happyPath?: true;
     }
 
     export interface UnionMember2 {

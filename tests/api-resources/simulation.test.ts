@@ -11,8 +11,8 @@ describe('resource simulation', () => {
   test('run: only required params', async () => {
     const responsePromise = client.simulation.run({
       plan: {
-        agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-        direction: 'INBOUND',
+        agentEndpoints: [{ id: '7c9e6679-7425-40de-944b-e07fc1f90ae7' }],
+        direction: 'OUTBOUND',
         maxSimulationDurationSeconds: 300,
         metrics: [{}],
       },
@@ -29,14 +29,14 @@ describe('resource simulation', () => {
   test('run: required and optional params', async () => {
     const response = await client.simulation.run({
       plan: {
-        agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-        direction: 'INBOUND',
+        agentEndpoints: [{ id: '7c9e6679-7425-40de-944b-e07fc1f90ae7' }],
+        direction: 'OUTBOUND',
         maxSimulationDurationSeconds: 300,
         metrics: [
           {
             id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
             metricId: 'x',
-            slug: 'x',
+            slug: 'customer_satisfaction',
           },
         ],
         description: 'A run plan for testing inbound calls',
@@ -45,26 +45,16 @@ describe('resource simulation', () => {
         executionMode: 'PARALLEL',
         flows: [
           {
-            customerFlowId: '550e8400-e29b-41d4-a716-446655440000',
-            variants: [
-              {
-                id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-                personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-                variables: { tier: 'premium' },
-              },
-              {
-                id: '9f8c7b6a-5d4e-4c3b-8a29-1e0f2d3c4b5a',
-                personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-                variables: { tier: 'basic' },
-              },
-            ],
+            id: '550e8400-e29b-41d4-a716-446655440000',
+            edgeCases: 'ALL',
+            happyPath: true,
             personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
             variables: { foo: 'string' },
-            variantSelectionMode: 'ALL_VARIANTS',
           },
         ],
         iterationCount: 1,
         maxConcurrentJobs: 5,
+        name: 'Billing regression',
         personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
         scenarios: [
           {
@@ -74,8 +64,8 @@ describe('resource simulation', () => {
         ],
         silenceTimeoutSeconds: 30,
       },
-      savePlanAs: 'Billing regression',
-      variables: { orderNumber: '12345', environment: 'staging' },
+      saveAsPlan: true,
+      variables: { orderNumber: '12345' },
     });
   });
 });

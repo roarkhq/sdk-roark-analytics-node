@@ -45,22 +45,17 @@ describe('resource simulationRunPlan', () => {
       executionMode: 'PARALLEL',
       flows: [
         {
-          customerFlowId: '550e8400-e29b-41d4-a716-446655440000',
-          variants: [
+          id: '550e8400-e29b-41d4-a716-446655440000',
+          edgeCases: [
             {
               id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
               personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
               variables: { tier: 'premium' },
             },
-            {
-              id: '9f8c7b6a-5d4e-4c3b-8a29-1e0f2d3c4b5a',
-              personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-              variables: { tier: 'basic' },
-            },
           ],
+          happyPath: true,
           personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           variables: { foo: 'string' },
-          variantSelectionMode: 'ALL_VARIANTS',
         },
       ],
       iterationCount: 1,
@@ -101,22 +96,17 @@ describe('resource simulationRunPlan', () => {
           executionMode: 'PARALLEL',
           flows: [
             {
-              customerFlowId: '550e8400-e29b-41d4-a716-446655440000',
-              variants: [
+              id: '550e8400-e29b-41d4-a716-446655440000',
+              edgeCases: [
                 {
                   id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
                   personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
                   variables: { tier: 'premium' },
                 },
-                {
-                  id: '9f8c7b6a-5d4e-4c3b-8a29-1e0f2d3c4b5a',
-                  personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-                  variables: { tier: 'basic' },
-                },
               ],
+              happyPath: true,
               personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
               variables: { foo: 'string' },
-              variantSelectionMode: 'ALL_VARIANTS',
             },
           ],
           isHidden: true,
