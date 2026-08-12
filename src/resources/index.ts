@@ -34,8 +34,33 @@ export {
   type CallGetTranscriptParams,
   type CallListMetricsParams,
 } from './call';
-export { CustomerFlow, type FlowStep } from './customer-flow';
-export { CustomerFlowEdgeCase } from './customer-flow-edge-case';
+export {
+  CustomerFlow,
+  type FlowStep,
+  type CustomerFlowCreateResponse,
+  type CustomerFlowUpdateResponse,
+  type CustomerFlowListResponse,
+  type CustomerFlowDeleteResponse,
+  type CustomerFlowGetByIDResponse,
+  type CustomerFlowReplaceGraphResponse,
+  type CustomerFlowUpdateHappyPathResponse,
+  type CustomerFlowCreateParams,
+  type CustomerFlowUpdateParams,
+  type CustomerFlowListParams,
+  type CustomerFlowReplaceGraphParams,
+  type CustomerFlowUpdateHappyPathParams,
+} from './customer-flow';
+export {
+  CustomerFlowEdgeCase,
+  type CustomerFlowEdgeCaseUpdateResponse,
+  type CustomerFlowEdgeCaseAddResponse,
+  type CustomerFlowEdgeCasePromoteResponse,
+  type CustomerFlowEdgeCaseRemoveResponse,
+  type CustomerFlowEdgeCaseUpdateParams,
+  type CustomerFlowEdgeCaseAddParams,
+  type CustomerFlowEdgeCasePromoteParams,
+  type CustomerFlowEdgeCaseRemoveParams,
+} from './customer-flow-edge-case';
 export {
   HTTPRequestDefinition,
   type HTTPRequestDefinitionCreateResponse,
