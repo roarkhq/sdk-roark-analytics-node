@@ -51,8 +51,33 @@ import {
   CallListResponse,
   CallListSentimentRunsResponse,
 } from './resources/call';
-import { CustomerFlow, FlowStep } from './resources/customer-flow';
-import { CustomerFlowEdgeCase } from './resources/customer-flow-edge-case';
+import {
+  CustomerFlow,
+  CustomerFlowCreateParams,
+  CustomerFlowCreateResponse,
+  CustomerFlowDeleteResponse,
+  CustomerFlowGetByIDResponse,
+  CustomerFlowListParams,
+  CustomerFlowListResponse,
+  CustomerFlowReplaceGraphParams,
+  CustomerFlowReplaceGraphResponse,
+  CustomerFlowUpdateHappyPathParams,
+  CustomerFlowUpdateHappyPathResponse,
+  CustomerFlowUpdateParams,
+  CustomerFlowUpdateResponse,
+  FlowStep,
+} from './resources/customer-flow';
+import {
+  CustomerFlowEdgeCase,
+  CustomerFlowEdgeCaseAddParams,
+  CustomerFlowEdgeCaseAddResponse,
+  CustomerFlowEdgeCasePromoteParams,
+  CustomerFlowEdgeCasePromoteResponse,
+  CustomerFlowEdgeCaseRemoveParams,
+  CustomerFlowEdgeCaseRemoveResponse,
+  CustomerFlowEdgeCaseUpdateParams,
+  CustomerFlowEdgeCaseUpdateResponse,
+} from './resources/customer-flow-edge-case';
 import { Health, HealthGetResponse } from './resources/health';
 import {
   HTTPRequestDefinition,
@@ -1019,9 +1044,34 @@ export declare namespace Roark {
     type SimulationEnvironmentListParams as SimulationEnvironmentListParams,
   };
 
-  export { CustomerFlow as CustomerFlow, type FlowStep as FlowStep };
+  export {
+    CustomerFlow as CustomerFlow,
+    type FlowStep as FlowStep,
+    type CustomerFlowCreateResponse as CustomerFlowCreateResponse,
+    type CustomerFlowUpdateResponse as CustomerFlowUpdateResponse,
+    type CustomerFlowListResponse as CustomerFlowListResponse,
+    type CustomerFlowDeleteResponse as CustomerFlowDeleteResponse,
+    type CustomerFlowGetByIDResponse as CustomerFlowGetByIDResponse,
+    type CustomerFlowReplaceGraphResponse as CustomerFlowReplaceGraphResponse,
+    type CustomerFlowUpdateHappyPathResponse as CustomerFlowUpdateHappyPathResponse,
+    type CustomerFlowCreateParams as CustomerFlowCreateParams,
+    type CustomerFlowUpdateParams as CustomerFlowUpdateParams,
+    type CustomerFlowListParams as CustomerFlowListParams,
+    type CustomerFlowReplaceGraphParams as CustomerFlowReplaceGraphParams,
+    type CustomerFlowUpdateHappyPathParams as CustomerFlowUpdateHappyPathParams,
+  };
 
-  export { CustomerFlowEdgeCase as CustomerFlowEdgeCase };
+  export {
+    CustomerFlowEdgeCase as CustomerFlowEdgeCase,
+    type CustomerFlowEdgeCaseUpdateResponse as CustomerFlowEdgeCaseUpdateResponse,
+    type CustomerFlowEdgeCaseAddResponse as CustomerFlowEdgeCaseAddResponse,
+    type CustomerFlowEdgeCasePromoteResponse as CustomerFlowEdgeCasePromoteResponse,
+    type CustomerFlowEdgeCaseRemoveResponse as CustomerFlowEdgeCaseRemoveResponse,
+    type CustomerFlowEdgeCaseUpdateParams as CustomerFlowEdgeCaseUpdateParams,
+    type CustomerFlowEdgeCaseAddParams as CustomerFlowEdgeCaseAddParams,
+    type CustomerFlowEdgeCasePromoteParams as CustomerFlowEdgeCasePromoteParams,
+    type CustomerFlowEdgeCaseRemoveParams as CustomerFlowEdgeCaseRemoveParams,
+  };
 
   export {
     Agent as Agent,
