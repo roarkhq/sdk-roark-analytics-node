@@ -59,6 +59,36 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v1/call/{callId}/sentiment-run',
   },
   {
+    clientCallName: 'client.chat.create',
+    fullyQualifiedName: 'chat.create',
+    httpMethod: 'post',
+    httpPath: '/v1/chat',
+  },
+  {
+    clientCallName: 'client.chat.list',
+    fullyQualifiedName: 'chat.list',
+    httpMethod: 'get',
+    httpPath: '/v1/chat',
+  },
+  {
+    clientCallName: 'client.chat.getByID',
+    fullyQualifiedName: 'chat.getByID',
+    httpMethod: 'get',
+    httpPath: '/v1/chat/{id}',
+  },
+  {
+    clientCallName: 'client.chat.getTranscript',
+    fullyQualifiedName: 'chat.getTranscript',
+    httpMethod: 'get',
+    httpPath: '/v1/chat/{id}/transcript',
+  },
+  {
+    clientCallName: 'client.chat.listMetrics',
+    fullyQualifiedName: 'chat.listMetrics',
+    httpMethod: 'get',
+    httpPath: '/v1/chat/{id}/metrics',
+  },
+  {
     clientCallName: 'client.metric.createDefinition',
     fullyQualifiedName: 'metric.createDefinition',
     httpMethod: 'post',
