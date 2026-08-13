@@ -1,0 +1,136 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-SIMULATION\-PLAN\-UPDATE" "1" "" "roark-simulation-plan-update" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-simulation\-plan\-update \- Update a run plan
+.SH "SYNOPSIS"
+.B roark simulation plan update
+\fIplan\-id\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Updates an existing simulation run plan by its ID.
+.SH "API"
+PUT /v1/simulation/plan/{planId}
+.SH "ARGUMENTS"
+.TP
+\fIplan\-id\fR
+The ID of the run plan to update
+.SH "OPTIONS"
+.TP
+\fB\-\-is\-hidden\fR
+Whether this plan is hidden from GET /v1/simulation/plan. A run started without `saveAsPlan` creates a hidden plan to carry it. Send `{ "name": "...", "isHidden": false }` to keep that configuration as a reusable plan, which is what the app does when you save a one\-off run. Optional.
+.TP
+\fB\-\-name\fR \fI<value>\fR
+Name of the run plan Optional.
+.TP
+\fB\-\-description\fR \fI<value>\fR
+Description of the run plan Optional.
+.TP
+\fB\-\-direction\fR \fI<value>\fR
+Direction of the simulation (INBOUND or OUTBOUND) One of: INBOUND, OUTBOUND. Optional.
+.TP
+\fB\-\-iteration\-count\fR \fI<value>\fR
+Number of iterations to run for each test case (1\-10000) Optional.
+.TP
+\fB\-\-max\-concurrent\-jobs\fR \fI<value>\fR
+Maximum number of concurrent simulation jobs Optional.
+.TP
+\fB\-\-max\-simulation\-duration\-seconds\fR \fI<value>\fR
+Maximum duration in seconds for each simulation Optional.
+.TP
+\fB\-\-silence\-timeout\-seconds\fR \fI<value>\fR
+Timeout in seconds for silence detection Optional.
+.TP
+\fB\-\-end\-call\-phrases\fR \fI<value>\fR
+Phrases that trigger end of call. Empty array disables the feature. Repeatable. Optional.
+.TP
+\fB\-\-end\-call\-reasons\fR \fI<value>\fR
+Semantic conditions that trigger end of call. The LLM evaluates the conversation against these conditions. Empty array disables the feature. Repeatable. Optional.
+.TP
+\fB\-\-execution\-mode\fR \fI<value>\fR
+Execution mode (PARALLEL or SEQUENTIAL) One of: PARALLEL, SEQUENTIAL_SAME_RUN_PLAN, SEQUENTIAL_PROJECT. Optional.
+.TP
+\fB\-\-scenarios\fR \fI<value>\fR
+Deprecated: use `flows` instead. Replaces the scenarios on this run plan. Omit to leave them unchanged; send an empty array to detach them all, which is how a scenario\-based plan is moved over to flows. Optional.
+.TP
+\fB\-\-flows\fR \fI<value>\fR
+Replaces the customer flows attached to this run plan. Omit to leave them unchanged; send an empty array to detach them all. Optional.
+.TP
+\fB\-\-personas\fR \fI<value>\fR
+Personas to include in this run plan Optional.
+.TP
+\fB\-\-agent\-endpoints\fR \fI<value>\fR
+Agent endpoints to include in this run plan Optional.
+.TP
+\fB\-\-metrics\fR \fI<value>\fR
+Metric definitions to include in this run plan. Reference each by `id` (UUID) or `slug`. Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark simulation plan update <plan\-id>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

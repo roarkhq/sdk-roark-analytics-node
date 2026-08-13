@@ -1,0 +1,96 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-WEBHOOK\-CREATE" "1" "" "roark-webhook-create" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-webhook\-create \- Create webhook
+.SH "SYNOPSIS"
+.B roark webhook create
+[\fIoptions\fR]
+.SH "DESCRIPTION"
+Creates a new webhook with event subscriptions. The signing secret is only returned in this response.
+.SH "API"
+POST /v1/webhook
+.SH "OPTIONS"
+.TP
+\fB\-\-url\fR \fI<value>\fR
+Webhook URL Required.
+.TP
+\fB\-\-description\fR \fI<value>\fR
+Webhook description Optional.
+.TP
+\fB\-\-headers\fR \fI<value>\fR
+Request headers (e.g. authorization tokens) Optional.
+.TP
+\fB\-\-events\fR \fI<value>\fR
+Event types to subscribe to (at least one required) One of: CALL_ANALYSIS_COMPLETED, CALL_ANALYSIS_FAILED, CALL_ANALYSIS_CANCELLED, CALL_EVALUATION_COMPLETED, CALL_EVALUATION_FAILED, SIMULATION_RUN_PLAN_JOB_STARTED, SIMULATION_RUN_PLAN_JOB_COMPLETED, SIMULATION_RUN_PLAN_JOB_FAILED, SIMULATION_RUN_PLAN_JOB_CANCELLED, SIMULATION_JOB_STARTED, SIMULATION_JOB_COMPLETED, SIMULATION_JOB_FAILED, SIMULATION_JOB_CANCELLED, METRIC_COLLECTION_JOB_COMPLETED, METRIC_COLLECTION_JOB_FAILED, CHAT_ANALYSIS_COMPLETED, CHAT_ANALYSIS_FAILED, ISSUE_OPENED, ISSUE_RESOLVED. Repeatable. Required.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark webhook create \-\-url <value> \-\-events <value>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

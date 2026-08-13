@@ -1,0 +1,94 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-CUSTOMER\-FLOW\-GRAPH\-REPLACE" "1" "" "roark-customer-flow-graph-replace" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-customer\-flow\-graph\-replace \- Replace a scripted flow's steps
+.SH "SYNOPSIS"
+.B roark customer\-flow graph replace
+\fIflow\-id\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Replaces a scripted flow's conversation graph with the tree you send. This is a full replace, not a merge: a step you omit is removed. Include `nodeId` on a step to update the existing one, omit it to create a new step. Where two branches rejoin, keep the `mergeIntoNodeIds` references a read gave you. Dropping them un\-merges those branches and is refused unless `allowUnmerge` is set. A change to the set of paths re\-seeds how the flow runs, which the response reports as `variantsReshaped` along with the resulting happy path and edge cases.
+.SH "API"
+PUT /v1/customer\-flow/{flowId}/graph
+.SH "ARGUMENTS"
+.TP
+\fIflow\-id\fR
+The flow\-id.
+.SH "OPTIONS"
+.TP
+\fB\-\-graph\fR \fI<value>\fR
+The complete graph. This replaces the flow's existing steps rather than merging into them. Required.
+.TP
+\fB\-\-allow\-unmerge\fR
+Confirms a write that drops branches which currently rejoin. Only needed when the request omits mergeIntoNodeIds references the flow already had; a faithful round trip never needs it. Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark customer\-flow graph replace <flow\-id> \-\-graph <value>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)
