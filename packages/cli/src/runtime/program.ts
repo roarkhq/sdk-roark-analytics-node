@@ -24,6 +24,8 @@ export interface ProgramOptions {
   version: string;
   description: string;
   commands: readonly CliCommand[];
+  /** Help text for the command groups, keyed by space-joined path. */
+  groups: Readonly<Record<string, string>>;
   completions: Readonly<Record<string, string>>;
 }
 
@@ -159,7 +161,11 @@ const variantHelp = (command: CliCommand, binaryName: string): string => {
 };
 
 /** Finds or creates the parent command for a path, so groups are built once. */
-const ensureGroup = (root: Command, path: string[], binaryName: string): Command => {
+const ensureGroup = (
+  root: Command,
+  path: string[],
+  groups: Readonly<Record<string, string>>,
+): Command => {
   let parent = root;
   const walked: string[] = [];
 
@@ -170,8 +176,11 @@ const ensureGroup = (root: Command, path: string[], binaryName: string): Command
       parent = existing;
       continue;
     }
+    const key = walked.join(' ');
     const group = new Command(segment)
-      .description(`Commands for ${walked.join(' ')}`)
+      .description(
+        Object.prototype.hasOwnProperty.call(groups, key) ? groups[key]! : `Commands for ${key}`,
+      )
       .showHelpAfterError();
     // A group with no action prints its own help rather than exiting silently.
     group.action(() => {
@@ -182,12 +191,11 @@ const ensureGroup = (root: Command, path: string[], binaryName: string): Command
     parent = group;
   }
 
-  void binaryName;
   return parent;
 };
 
 const addApiCommand = (root: Command, options: ProgramOptions, definition: CliCommand): void => {
-  const parent = ensureGroup(root, definition.commandPath.slice(0, -1), options.binaryName);
+  const parent = ensureGroup(root, definition.commandPath.slice(0, -1), options.groups);
   const name = definition.commandPath.at(-1)!;
 
   const command = new Command(name)

@@ -14,13 +14,18 @@ import { UsageError } from '../errors';
 import { readData, readStdin, stdinIsPiped } from '../input';
 import { render, write, type OutputFormat } from '../output';
 
-const METHODS = ['get', 'post', 'put', 'patch', 'delete'] as const;
+export const METHODS = ['get', 'post', 'put', 'patch', 'delete'] as const;
 type Method = (typeof METHODS)[number];
 
-const isMethod = (value: string): value is Method => METHODS.includes(value as Method);
+export const isMethod = (value: string): value is Method => METHODS.includes(value as Method);
 
-/** `--query k=v` repeated, so no shell quoting of a whole query string. */
-const parseQuery = (entries: string[] | undefined): Record<string, string> | undefined => {
+/**
+ * `--query k=v` repeated, so no shell quoting of a whole query string.
+ *
+ * Splits on the first `=` only: a value can legitimately contain one, as in
+ * `--query filter=status=open`.
+ */
+export const parseQuery = (entries: string[] | undefined): Record<string, string> | undefined => {
   if (!entries || entries.length === 0) return undefined;
   const query: Record<string, string> = {};
   for (const entry of entries) {

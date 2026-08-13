@@ -8,6 +8,37 @@ export const BINARY_NAME = 'roark';
 
 export const DESCRIPTION = 'Command line interface for the Roark Analytics API';
 
+// Help text for the command groups, which have no operation of their own.
+export const GROUPS: Readonly<Record<string, string>> = {
+  agent: 'Manage agents',
+  'agent endpoint': 'Manage agent endpoints',
+  call: 'Manage calls',
+  'call evaluation-run': 'Read call evaluation runs',
+  'call metric': 'Read call metrics',
+  'call sentiment-run': 'Read call sentiment runs',
+  'call transcript': 'Read call transcript',
+  chat: 'Manage chats',
+  'chat metric': 'Read chat metrics',
+  'chat transcript': 'Read chat transcript',
+  'customer-flow': 'Manage customer flows',
+  'customer-flow edge-case': 'Manage customer flow edge cases',
+  'customer-flow graph': 'Manage customer flow graph',
+  'customer-flow happy-path': 'Manage customer flow happy path',
+  'http-request-definition': 'Manage HTTP request definitions',
+  metric: 'Manage metrics',
+  'metric collection-job': 'Manage metric collection jobs',
+  'metric definition': 'Manage metric definitions',
+  'metric policy': 'Manage metric policies',
+  simulation: 'Manage simulations',
+  'simulation environment': 'Read simulation environments',
+  'simulation job': 'Read simulation jobs',
+  'simulation persona': 'Manage simulation personas',
+  'simulation plan': 'Manage simulation plans',
+  'simulation plan job': 'Manage simulation plan jobs',
+  'simulation scenario': 'Manage simulation scenarios',
+  webhook: 'Manage webhooks',
+};
+
 export const COMMANDS: readonly CliCommand[] = [
   {
     commandPath: ['agent', 'create'],
