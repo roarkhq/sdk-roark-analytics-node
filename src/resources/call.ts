@@ -858,7 +858,7 @@ export namespace CallListMetricsResponse {
      * Array of metric values (multiple for PER_PARTICIPANT metrics, or multiple
      * segments/turns)
      */
-    values: Array<Data.Value>;
+    values: Array<Data.StandardMetricValue | Data.PropertyVerificationMetricValue>;
 
     /**
      * Unit information if applicable
@@ -867,7 +867,10 @@ export namespace CallListMetricsResponse {
   }
 
   export namespace Data {
-    export interface Value {
+    /**
+     * A metric value entry. Applies to every metric.
+     */
+    export interface StandardMetricValue {
       /**
        * Result state of this metric computation. SUCCESS carries a real `value`;
        * NOT_APPLICABLE / DATA_MISSING / ERROR do not (the `value` field is omitted).
@@ -913,7 +916,168 @@ export namespace CallListMetricsResponse {
       /**
        * Starting segment information (for SEGMENT_RANGE context metrics)
        */
-      fromSegment?: Value.FromSegment;
+      fromSegment?: StandardMetricValue.FromSegment;
+
+      /**
+       * Role of participant (only for PER_PARTICIPANT metrics)
+       */
+      participantRole?: 'agent' | 'customer';
+
+      /**
+       * IDs of metric policies that triggered this metric computation
+       */
+      policyIds?: Array<string>;
+
+      /**
+       * Segment information (for SEGMENT context metrics)
+       */
+      segment?: StandardMetricValue.Segment;
+
+      /**
+       * Ending segment information (for SEGMENT_RANGE context metrics)
+       */
+      toSegment?: StandardMetricValue.ToSegment;
+
+      /**
+       * The metric value (type depends on outputType). Present only on SUCCESS rows;
+       * omitted for NOT_APPLICABLE / DATA_MISSING / ERROR.
+       */
+      value?: number | boolean | string;
+
+      /**
+       * Explanation for the metric value (especially useful for AI-computed metrics)
+       */
+      valueReasoning?: string;
+    }
+
+    export namespace StandardMetricValue {
+      /**
+       * Starting segment information (for SEGMENT_RANGE context metrics)
+       */
+      export interface FromSegment {
+        /**
+         * Segment ID
+         */
+        id: string;
+
+        /**
+         * End time offset in milliseconds
+         */
+        endOffsetMs: number;
+
+        /**
+         * Start time offset in milliseconds
+         */
+        startOffsetMs: number;
+
+        /**
+         * Segment text content
+         */
+        text: string;
+      }
+
+      /**
+       * Segment information (for SEGMENT context metrics)
+       */
+      export interface Segment {
+        /**
+         * Segment ID
+         */
+        id: string;
+
+        /**
+         * End time offset in milliseconds
+         */
+        endOffsetMs: number;
+
+        /**
+         * Start time offset in milliseconds
+         */
+        startOffsetMs: number;
+
+        /**
+         * Segment text content
+         */
+        text: string;
+      }
+
+      /**
+       * Ending segment information (for SEGMENT_RANGE context metrics)
+       */
+      export interface ToSegment {
+        /**
+         * Segment ID
+         */
+        id: string;
+
+        /**
+         * End time offset in milliseconds
+         */
+        endOffsetMs: number;
+
+        /**
+         * Start time offset in milliseconds
+         */
+        startOffsetMs: number;
+
+        /**
+         * Segment text content
+         */
+        text: string;
+      }
+    }
+
+    /**
+     * Returned for the Property Mismatch metric (`property_transcript_mismatch`): the
+     * standard entry plus the per-property verdict breakdown.
+     */
+    export interface PropertyVerificationMetricValue {
+      /**
+       * Result state of this metric computation. SUCCESS carries a real `value`;
+       * NOT_APPLICABLE / DATA_MISSING / ERROR do not (the `value` field is omitted).
+       * Non-SUCCESS rows only appear when the request includes ?status=all.
+       */
+      captureStatus: 'SUCCESS' | 'NOT_APPLICABLE' | 'DATA_MISSING' | 'ERROR';
+
+      /**
+       * ISO 8601 timestamp when the metric was computed
+       */
+      computedAt: string;
+
+      /**
+       * Context level: CALL (entire conversation), SEGMENT (single segment),
+       * SEGMENT_RANGE (between/across segments)
+       */
+      context: 'CALL' | 'SEGMENT' | 'SEGMENT_RANGE';
+
+      /**
+       * ID of the call this value was computed on. Only set when the response spans
+       * multiple conversations (e.g. job-scoped metric values).
+       */
+      callId?: string;
+
+      /**
+       * ID of the chat this value was computed on. Only set when the response spans
+       * multiple conversations (e.g. job-scoped metric values).
+       */
+      chatId?: string;
+
+      /**
+       * Confidence score (0-1) for the computed value. Defaults to 1.0 for deterministic
+       * metrics. Omitted on non-SUCCESS rows.
+       */
+      confidence?: number;
+
+      /**
+       * Error detail when captureStatus is ERROR — e.g. provider down, LLM timeout.
+       * Undefined for other statuses.
+       */
+      errorMessage?: string;
+
+      /**
+       * Starting segment information (for SEGMENT_RANGE context metrics)
+       */
+      fromSegment?: PropertyVerificationMetricValue.FromSegment;
 
       /**
        * Role of participant (only for PER_PARTICIPANT metrics)
@@ -929,17 +1093,17 @@ export namespace CallListMetricsResponse {
        * Per-property verdicts for the Property Mismatch metric, in the order the
        * properties were checked. Omitted for every other metric.
        */
-      propertyVerdicts?: Array<Value.PropertyVerdict>;
+      propertyVerdicts?: Array<PropertyVerificationMetricValue.PropertyVerdict>;
 
       /**
        * Segment information (for SEGMENT context metrics)
        */
-      segment?: Value.Segment;
+      segment?: PropertyVerificationMetricValue.Segment;
 
       /**
        * Ending segment information (for SEGMENT_RANGE context metrics)
        */
-      toSegment?: Value.ToSegment;
+      toSegment?: PropertyVerificationMetricValue.ToSegment;
 
       /**
        * The metric value (type depends on outputType). Present only on SUCCESS rows;
@@ -953,7 +1117,7 @@ export namespace CallListMetricsResponse {
       valueReasoning?: string;
     }
 
-    export namespace Value {
+    export namespace PropertyVerificationMetricValue {
       /**
        * Starting segment information (for SEGMENT_RANGE context metrics)
        */
