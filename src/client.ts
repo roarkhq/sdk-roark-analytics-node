@@ -157,17 +157,6 @@ import {
   SimulationRunPlanJobStartResponse,
 } from './resources/simulation-run-plan-job';
 import {
-  SimulationScenario,
-  SimulationScenarioCreateParams,
-  SimulationScenarioCreateResponse,
-  SimulationScenarioDeleteResponse,
-  SimulationScenarioGetByIDResponse,
-  SimulationScenarioListParams,
-  SimulationScenarioListResponse,
-  SimulationScenarioUpdateParams,
-  SimulationScenarioUpdateResponse,
-} from './resources/simulation-scenario';
-import {
   Webhook,
   WebhookCreateParams,
   WebhookCreateResponse,
@@ -902,7 +891,6 @@ export class Roark {
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
-  simulationScenario: API.SimulationScenario = new API.SimulationScenario(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
   simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
   customerFlow: API.CustomerFlow = new API.CustomerFlow(this);
@@ -922,7 +910,6 @@ Roark.Simulation = Simulation;
 Roark.SimulationJob = SimulationJob;
 Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
-Roark.SimulationScenario = SimulationScenario;
 Roark.SimulationPersona = SimulationPersona;
 Roark.SimulationEnvironment = SimulationEnvironment;
 Roark.CustomerFlow = CustomerFlow;
@@ -1012,18 +999,6 @@ export declare namespace Roark {
     type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
     type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,
     type SimulationRunPlanJobStartParams as SimulationRunPlanJobStartParams,
-  };
-
-  export {
-    SimulationScenario as SimulationScenario,
-    type SimulationScenarioCreateResponse as SimulationScenarioCreateResponse,
-    type SimulationScenarioUpdateResponse as SimulationScenarioUpdateResponse,
-    type SimulationScenarioListResponse as SimulationScenarioListResponse,
-    type SimulationScenarioDeleteResponse as SimulationScenarioDeleteResponse,
-    type SimulationScenarioGetByIDResponse as SimulationScenarioGetByIDResponse,
-    type SimulationScenarioCreateParams as SimulationScenarioCreateParams,
-    type SimulationScenarioUpdateParams as SimulationScenarioUpdateParams,
-    type SimulationScenarioListParams as SimulationScenarioListParams,
   };
 
   export {
