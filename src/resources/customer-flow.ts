@@ -10,7 +10,8 @@ export class CustomerFlow extends APIResource {
   /**
    * Creates a customer flow. A SCRIPTED flow carries a step graph and gets one way
    * of running it per path through the graph; an IMPROV flow carries the briefs you
-   * send.
+   * send. Customer flows replace the older simulation scenarios, so build a flow for
+   * anything new.
    *
    * @example
    * ```ts
@@ -42,7 +43,8 @@ export class CustomerFlow extends APIResource {
    * Returns a paginated list of customer flows with their agents, expectations,
    * happy path and edge cases. The step graph is the one field omitted: reading it
    * walks the project's whole step graph, so it comes back from the single-flow
-   * endpoint instead.
+   * endpoint instead. Customer flows are how a project describes what to test; they
+   * replace the older simulation scenarios.
    */
   list(
     query: CustomerFlowListParams | null | undefined = {},
