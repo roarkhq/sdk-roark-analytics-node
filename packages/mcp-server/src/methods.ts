@@ -185,36 +185,6 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v1/simulation/plan/{planId}/job',
   },
   {
-    clientCallName: 'client.simulationScenario.create',
-    fullyQualifiedName: 'simulationScenario.create',
-    httpMethod: 'post',
-    httpPath: '/v1/simulation/scenario',
-  },
-  {
-    clientCallName: 'client.simulationScenario.update',
-    fullyQualifiedName: 'simulationScenario.update',
-    httpMethod: 'put',
-    httpPath: '/v1/simulation/scenario/{scenarioId}',
-  },
-  {
-    clientCallName: 'client.simulationScenario.list',
-    fullyQualifiedName: 'simulationScenario.list',
-    httpMethod: 'get',
-    httpPath: '/v1/simulation/scenario',
-  },
-  {
-    clientCallName: 'client.simulationScenario.delete',
-    fullyQualifiedName: 'simulationScenario.delete',
-    httpMethod: 'delete',
-    httpPath: '/v1/simulation/scenario/{scenarioId}',
-  },
-  {
-    clientCallName: 'client.simulationScenario.getByID',
-    fullyQualifiedName: 'simulationScenario.getByID',
-    httpMethod: 'get',
-    httpPath: '/v1/simulation/scenario/{scenarioId}',
-  },
-  {
     clientCallName: 'client.simulationPersona.create',
     fullyQualifiedName: 'simulationPersona.create',
     httpMethod: 'post',

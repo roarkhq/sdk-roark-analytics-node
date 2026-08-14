@@ -140,17 +140,6 @@ export {
   type SimulationRunPlanJobStartParams,
 } from './simulation-run-plan-job';
 export {
-  SimulationScenario,
-  type SimulationScenarioCreateResponse,
-  type SimulationScenarioUpdateResponse,
-  type SimulationScenarioListResponse,
-  type SimulationScenarioDeleteResponse,
-  type SimulationScenarioGetByIDResponse,
-  type SimulationScenarioCreateParams,
-  type SimulationScenarioUpdateParams,
-  type SimulationScenarioListParams,
-} from './simulation-scenario';
-export {
   Webhook,
   type WebhookCreateResponse,
   type WebhookListResponse,

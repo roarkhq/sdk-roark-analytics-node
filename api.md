@@ -128,24 +128,6 @@ Methods:
 - <code title="get /v1/simulation/plan/job/{jobId}">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">getByID</a>(jobID) -> SimulationRunPlanJobGetByIDResponse</code>
 - <code title="post /v1/simulation/plan/{planId}/job">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">start</a>(planID, { ...params }) -> SimulationRunPlanJobStartResponse</code>
 
-# SimulationScenario
-
-Types:
-
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioCreateResponse</a></code>
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioUpdateResponse</a></code>
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioListResponse</a></code>
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioDeleteResponse</a></code>
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioGetByIDResponse</a></code>
-
-Methods:
-
-- <code title="post /v1/simulation/scenario">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">create</a>({ ...params }) -> SimulationScenarioCreateResponse</code>
-- <code title="put /v1/simulation/scenario/{scenarioId}">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">update</a>(scenarioID, { ...params }) -> SimulationScenarioUpdateResponse</code>
-- <code title="get /v1/simulation/scenario">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">list</a>({ ...params }) -> SimulationScenarioListResponse</code>
-- <code title="delete /v1/simulation/scenario/{scenarioId}">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">delete</a>(scenarioID) -> SimulationScenarioDeleteResponse</code>
-- <code title="get /v1/simulation/scenario/{scenarioId}">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">getByID</a>(scenarioID) -> SimulationScenarioGetByIDResponse</code>
-
 # SimulationPersona
 
 Types:
