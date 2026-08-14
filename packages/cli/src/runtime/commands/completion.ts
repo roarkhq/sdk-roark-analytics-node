@@ -15,7 +15,8 @@ const LOADING_INSTRUCTIONS: Record<string, (binaryName: string) => string> = {
   bash: (binary) => `  eval "$(${binary} completion bash)"   # or install into /etc/bash_completion.d`,
   zsh: (binary) => `  eval "$(${binary} completion zsh)"    # or write to a directory on $fpath`,
   fish: (binary) => `  ${binary} completion fish | source     # or write to ~/.config/fish/completions`,
-  powershell: (binary) => `  ${binary} completion powershell | Out-String | Invoke-Expression   # or add to $PROFILE`,
+  powershell: (binary) =>
+    `  ${binary} completion powershell | Out-String | Invoke-Expression   # or add to $PROFILE`,
 };
 
 export const registerCompletionCommand = (

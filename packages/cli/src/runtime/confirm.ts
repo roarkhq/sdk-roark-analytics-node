@@ -11,8 +11,7 @@ import { createInterface } from 'node:readline';
 
 import { UsageError } from './errors';
 
-export const isInteractive = (): boolean =>
-  process.stdin.isTTY === true && process.stdout.isTTY === true;
+export const isInteractive = (): boolean => process.stdin.isTTY === true && process.stdout.isTTY === true;
 
 export interface ConfirmOptions {
   /** `--yes`: the user has already agreed. */

@@ -97,9 +97,7 @@ const assertEnum = (values: unknown[], flag: CliFlag): void => {
   for (const value of values) {
     if (typeof value !== 'string') continue;
     if (!flag.enumValues.includes(value)) {
-      throw new UsageError(
-        `--${flag.name} expects one of ${flag.enumValues.join(', ')}, got '${value}'`,
-      );
+      throw new UsageError(`--${flag.name} expects one of ${flag.enumValues.join(', ')}, got '${value}'`);
     }
   }
 };

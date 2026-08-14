@@ -136,8 +136,6 @@ describe('roark api', () => {
   });
 
   it('rejects malformed JSON rather than sending it', async () => {
-    await expect(run(['api', 'post', '/v1/webhook', '--data', '{oops'])).rejects.toThrow(
-      /not valid JSON/,
-    );
+    await expect(run(['api', 'post', '/v1/webhook', '--data', '{oops'])).rejects.toThrow(/not valid JSON/);
   });
 });

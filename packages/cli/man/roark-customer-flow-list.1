@@ -6,7 +6,7 @@ roark\-customer\-flow\-list \- List customer flows
 .B roark customer\-flow list
 [\fIoptions\fR]
 .SH "DESCRIPTION"
-Returns a paginated list of customer flows with their agents, expectations, happy path and edge cases. The step graph is the one field omitted: reading it walks the project's whole step graph, so it comes back from the single\-flow endpoint instead.
+Returns a paginated list of customer flows with their agents, expectations, happy path and edge cases. The step graph is the one field omitted: reading it walks the project's whole step graph, so it comes back from the single\-flow endpoint instead. Customer flows are how a project describes what to test; they replace the older simulation scenarios.
 .SH "API"
 GET /v1/customer\-flow
 .SH "OPTIONS"

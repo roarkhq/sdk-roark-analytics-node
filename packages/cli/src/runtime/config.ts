@@ -57,9 +57,7 @@ const number = (value: string | undefined): number | undefined => {
 };
 
 const fromEnvironment = (): CliConfig => ({
-  ...(process.env['ROARK_API_BEARER_TOKEN'] ?
-    { bearerToken: process.env['ROARK_API_BEARER_TOKEN'] }
-  : {}),
+  ...(process.env['ROARK_API_BEARER_TOKEN'] ? { bearerToken: process.env['ROARK_API_BEARER_TOKEN'] } : {}),
   ...(process.env['ROARK_BASE_URL'] ? { baseURL: process.env['ROARK_BASE_URL'] } : {}),
   ...(number(process.env['ROARK_TIMEOUT']) !== undefined ?
     { timeout: number(process.env['ROARK_TIMEOUT'])! }

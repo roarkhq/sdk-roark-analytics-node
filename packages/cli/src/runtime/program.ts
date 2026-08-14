@@ -15,7 +15,7 @@ import { registerCompletionCommand } from './commands/completion';
 import { confirm } from './confirm';
 import { loadConfig, type CliConfig } from './config';
 import { AuthRequiredError, EXIT, exitCodeFor, reportError } from './errors';
-import { buildArgs, optionKey, readData, readStdin, stdinIsPiped } from './input';
+import { buildArgs, readData, readStdin, stdinIsPiped } from './input';
 import { OUTPUT_FORMATS, paint, render, supportsColor, write, type OutputFormat } from './output';
 import type { CliCommand, CliFlag } from './types';
 
@@ -51,9 +51,9 @@ interface GlobalOptions {
 
 interface ExtraOptions {
   /** `--data`, only where the endpoint has a request body to fill. */
-  body: boolean
+  body: boolean;
   /** `--yes` and `--no-input`, only where something is confirmed. */
-  confirmation: boolean
+  confirmation: boolean;
 }
 
 /**
@@ -71,9 +71,7 @@ const addGlobalOptions = (command: Command, extra: ExtraOptions): Command => {
     .option('--token <token>', 'bearer token (prefer ROARK_API_BEARER_TOKEN or `auth login`)')
     .option('--timeout <ms>', 'request timeout in milliseconds')
     .option('--max-retries <count>', 'retries for retryable failures')
-    .addOption(
-      new Option('--format <format>', 'output format').choices(OUTPUT_FORMATS).default('auto'),
-    )
+    .addOption(new Option('--format <format>', 'output format').choices(OUTPUT_FORMATS).default('auto'))
     .option('--json', 'shorthand for --format json')
     .option('--no-color', 'disable colour')
     .option('-q, --quiet', 'suppress non-essential output');
@@ -83,7 +81,9 @@ const addGlobalOptions = (command: Command, extra: ExtraOptions): Command => {
   }
 
   if (extra.confirmation) {
-    command.option('-y, --yes', 'skip confirmation prompts').option('--no-input', 'never prompt; fail instead');
+    command
+      .option('-y, --yes', 'skip confirmation prompts')
+      .option('--no-input', 'never prompt; fail instead');
   }
 
   return command;
@@ -116,7 +116,7 @@ const clientFor = (options: GlobalOptions, requiresAuth = true): Roark => {
 };
 
 export const resolveOutput = (options: GlobalOptions): { format: OutputFormat; color: boolean } => ({
-  format: options.json ? 'json' : (options.format ?? 'auto'),
+  format: options.json ? 'json' : options.format ?? 'auto',
   // `--no-color` sets color to false; otherwise defer to the environment.
   color: options.color === false ? false : supportsColor(),
 });
@@ -161,11 +161,7 @@ const variantHelp = (command: CliCommand, binaryName: string): string => {
 };
 
 /** Finds or creates the parent command for a path, so groups are built once. */
-const ensureGroup = (
-  root: Command,
-  path: string[],
-  groups: Readonly<Record<string, string>>,
-): Command => {
+const ensureGroup = (root: Command, path: string[], groups: Readonly<Record<string, string>>): Command => {
   let parent = root;
   const walked: string[] = [];
 
@@ -178,9 +174,7 @@ const ensureGroup = (
     }
     const key = walked.join(' ');
     const group = new Command(segment)
-      .description(
-        Object.prototype.hasOwnProperty.call(groups, key) ? groups[key]! : `Commands for ${key}`,
-      )
+      .description(Object.prototype.hasOwnProperty.call(groups, key) ? groups[key]! : `Commands for ${key}`)
       .showHelpAfterError();
     // A group with no action prints its own help rather than exiting silently.
     group.action(() => {
@@ -206,10 +200,7 @@ const addApiCommand = (root: Command, options: ProgramOptions, definition: CliCo
     command.addHelpText('after', `\n${definition.description.replace(/\s+/g, ' ').trim()}`);
   }
   command.addHelpText('after', variantHelp(definition, options.binaryName));
-  command.addHelpText(
-    'after',
-    `\n${definition.httpMethod.toUpperCase()} ${definition.httpPath}`,
-  );
+  command.addHelpText('after', `\n${definition.httpMethod.toUpperCase()} ${definition.httpPath}`);
 
   for (const positional of definition.positionals) {
     command.argument(`<${positional.name}>`, positional.description ?? '');
@@ -218,10 +209,7 @@ const addApiCommand = (root: Command, options: ProgramOptions, definition: CliCo
   for (const flag of definition.flags) {
     const option = new Option(flagSpec(flag), flagDescription(flag));
     if (flag.repeatable) {
-      option.argParser((value: string, previous: string[] | undefined) => [
-        ...(previous ?? []),
-        value,
-      ]);
+      option.argParser((value: string, previous: string[] | undefined) => [...(previous ?? []), value]);
     }
     command.addOption(option);
   }
@@ -234,8 +222,7 @@ const addApiCommand = (root: Command, options: ProgramOptions, definition: CliCo
   command.action(async (...actionArgs: unknown[]) => {
     // Commander passes positionals, then the options object, then the Command.
     const positionals = actionArgs.slice(0, definition.positionals.length) as string[];
-    const options_ = actionArgs[definition.positionals.length] as GlobalOptions &
-      Record<string, unknown>;
+    const options_ = actionArgs[definition.positionals.length] as GlobalOptions & Record<string, unknown>;
 
     await runApiCommand(definition, positionals, options_, options);
   });
@@ -252,10 +239,10 @@ const runApiCommand = async (
   const output = resolveOutput(options);
 
   if (isDestructive(definition)) {
-    await confirm(
-      `Permanently delete ${positionals.join(' ') || definition.commandPath.join(' ')}?`,
-      { assumeYes: options.yes === true, noInput: options.input === false },
-    );
+    await confirm(`Permanently delete ${positionals.join(' ') || definition.commandPath.join(' ')}?`, {
+      assumeYes: options.yes === true,
+      noInput: options.input === false,
+    });
   }
 
   // stdin is only consulted when the command can actually take a body and no
@@ -279,9 +266,7 @@ const runApiCommand = async (
   });
 
   const client = clientFor(options, definition.requiresAuth);
-  const resource = (client as unknown as Record<string, Record<string, unknown>>)[
-    definition.clientProperty
-  ];
+  const resource = (client as unknown as Record<string, Record<string, unknown>>)[definition.clientProperty];
   const method = resource?.[definition.methodName];
   if (typeof method !== 'function') {
     // Only reachable if the table and the installed SDK disagree, which means
@@ -291,10 +276,7 @@ const runApiCommand = async (
     );
   }
 
-  const result: unknown = await (method as (...args: unknown[]) => Promise<unknown>).apply(
-    resource,
-    args,
-  );
+  const result: unknown = await (method as (...args: unknown[]) => Promise<unknown>).apply(resource, args);
 
   if (options.quiet === true) return;
   write(render(result, output));

@@ -1,0 +1,30 @@
+{
+  "include": ["src", "tests"],
+  "exclude": [],
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": ["es2022"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "paths": { "@roarkanalytics/sdk-mcp/*": ["./src/*"], "@roarkanalytics/sdk-mcp": ["./src/index.ts"] },
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "alwaysStrict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "skipLibCheck": true,
+    "typeRoots": ["/var/folders/5s/xcjr4x_91_378fyq27hlr9hc0000gn/T/codegen-types-PXCuM6"]
+  }
+}

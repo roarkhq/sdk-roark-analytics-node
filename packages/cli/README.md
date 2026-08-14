@@ -87,14 +87,14 @@ roark completion fish | source
 
 ## Exit codes
 
-| Code | Meaning |
-| --- | --- |
-| 0 | Success |
-| 1 | The API rejected the request |
-| 2 | The command line was wrong |
-| 3 | No credential, or the credential was refused |
-| 4 | The addressed resource does not exist |
-| 5 | The request never completed: connection, timeout, or abort |
+| Code | Meaning                                                    |
+| ---- | ---------------------------------------------------------- |
+| 0    | Success                                                    |
+| 1    | The API rejected the request                               |
+| 2    | The command line was wrong                                 |
+| 3    | No credential, or the credential was refused               |
+| 4    | The addressed resource does not exist                      |
+| 5    | The request never completed: connection, timeout, or abort |
 
 ## Commands
 
@@ -102,120 +102,105 @@ roark completion fish | source
 
 ### agent
 
-| Command | Description |
-| --- | --- |
-| `roark agent create --name <value>` | Create a new agent |
+| Command                                                                              | Description                 |
+| ------------------------------------------------------------------------------------ | --------------------------- |
+| `roark agent create --name <value>`                                                  | Create a new agent          |
 | `roark agent endpoint create --agent-id <value> --value <value> --direction <value>` | Create a new agent endpoint |
-| `roark agent endpoint get <endpoint-id>` | Get agent endpoint by ID |
-| `roark agent endpoint list` | List agent endpoints |
-| `roark agent endpoint update <endpoint-id>` | Update an agent endpoint |
-| `roark agent get <agent-id>` | Get agent by ID |
-| `roark agent list` | List agents |
-| `roark agent update <agent-id>` | Update an agent |
+| `roark agent endpoint get <endpoint-id>`                                             | Get agent endpoint by ID    |
+| `roark agent endpoint list`                                                          | List agent endpoints        |
+| `roark agent endpoint update <endpoint-id>`                                          | Update an agent endpoint    |
+| `roark agent get <agent-id>`                                                         | Get agent by ID             |
+| `roark agent list`                                                                   | List agents                 |
+| `roark agent update <agent-id>`                                                      | Update an agent             |
 
 ### call
 
-| Command | Description |
-| --- | --- |
-| `roark call create --recording-url <value> --started-at <value> --interface-type <value> --call-direction <value> --customer.phone-number-e164 <value>` | Create a call |
-| `roark call evaluation-run list <call-id>` | List call evaluation runs |
-| `roark call get <call-id>` | Get a call by ID |
-| `roark call list` | List calls |
-| `roark call metric list <call-id>` | List call metrics |
-| `roark call sentiment-run list <call-id>` | List call sentiment runs |
-| `roark call transcript get <call-id>` | Get call transcript |
-
-### chat
-
-| Command | Description |
-| --- | --- |
-| `roark chat create --start-timestamp <value> --end-timestamp <value> --messages <value> --customer.phone-number-e164 <value>` | Create a chat |
-| `roark chat get <chat-id>` | Get a chat by ID |
-| `roark chat list` | List chats |
-| `roark chat metric list <chat-id>` | List chat metrics |
-| `roark chat transcript get <chat-id>` | Get chat transcript |
+| Command                                                                                                                                                 | Description               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `roark call create --recording-url <value> --started-at <value> --interface-type <value> --call-direction <value> --customer.phone-number-e164 <value>` | Create a call             |
+| `roark call evaluation-run list <call-id>`                                                                                                              | List call evaluation runs |
+| `roark call get <call-id>`                                                                                                                              | Get a call by ID          |
+| `roark call list`                                                                                                                                       | List calls                |
+| `roark call metric list <call-id>`                                                                                                                      | List call metrics         |
+| `roark call sentiment-run list <call-id>`                                                                                                               | List call sentiment runs  |
+| `roark call transcript get <call-id>`                                                                                                                   | Get call transcript       |
 
 ### customer-flow
 
-| Command | Description |
-| --- | --- |
-| `roark customer-flow create --data '{ ... }'` | Create a customer flow |
-| `roark customer-flow delete <flow-id>` | Delete a customer flow |
-| `roark customer-flow edge-case create <flow-id> --title <value>` | Add an edge case |
-| `roark customer-flow edge-case delete <flow-id> <edge-case-id>` | Remove an edge case |
+| Command                                                          | Description                            |
+| ---------------------------------------------------------------- | -------------------------------------- |
+| `roark customer-flow create --data '{ ... }'`                    | Create a customer flow                 |
+| `roark customer-flow delete <flow-id>`                           | Delete a customer flow                 |
+| `roark customer-flow edge-case create <flow-id> --title <value>` | Add an edge case                       |
+| `roark customer-flow edge-case delete <flow-id> <edge-case-id>`  | Remove an edge case                    |
 | `roark customer-flow edge-case promote <flow-id> <edge-case-id>` | Promote an edge case to the happy path |
-| `roark customer-flow edge-case update <flow-id> <edge-case-id>` | Update an edge case |
-| `roark customer-flow get <flow-id>` | Get customer flow by ID |
-| `roark customer-flow graph replace <flow-id> --graph <value>` | Replace a scripted flow's steps |
-| `roark customer-flow happy-path update <flow-id>` | Update a flow's happy path |
-| `roark customer-flow list` | List customer flows |
-| `roark customer-flow update <flow-id>` | Update a customer flow |
+| `roark customer-flow edge-case update <flow-id> <edge-case-id>`  | Update an edge case                    |
+| `roark customer-flow get <flow-id>`                              | Get customer flow by ID                |
+| `roark customer-flow graph replace <flow-id> --graph <value>`    | Replace a scripted flow's steps        |
+| `roark customer-flow happy-path update <flow-id>`                | Update a flow's happy path             |
+| `roark customer-flow list`                                       | List customer flows                    |
+| `roark customer-flow update <flow-id>`                           | Update a customer flow                 |
 
 ### health
 
-| Command | Description |
-| --- | --- |
+| Command        | Description           |
+| -------------- | --------------------- |
 | `roark health` | Get API health status |
 
 ### http-request-definition
 
-| Command | Description |
-| --- | --- |
-| `roark http-request-definition create --scope <value> --url <value>` | Create HTTP request definition |
-| `roark http-request-definition get <definition-id>` | Get HTTP request definition by ID |
-| `roark http-request-definition list` | List HTTP request definitions |
-| `roark http-request-definition update <definition-id>` | Update HTTP request definition |
+| Command                                                              | Description                       |
+| -------------------------------------------------------------------- | --------------------------------- |
+| `roark http-request-definition create --scope <value> --url <value>` | Create HTTP request definition    |
+| `roark http-request-definition get <definition-id>`                  | Get HTTP request definition by ID |
+| `roark http-request-definition list`                                 | List HTTP request definitions     |
+| `roark http-request-definition update <definition-id>`               | Update HTTP request definition    |
 
 ### metric
 
-| Command | Description |
-| --- | --- |
-| `roark metric collection-job create --metrics <value>` | Create and run a metric collection job |
-| `roark metric collection-job get <job-id>` | Get metric collection job by ID |
-| `roark metric collection-job list` | List metric collection jobs |
-| `roark metric definition create --data '{ ... }'` | Create custom metric definition |
-| `roark metric definition list` | List metric definitions |
-| `roark metric policy create --name <value> --modality <value> --metrics <value>` | Create a metric policy |
-| `roark metric policy delete <policy-id>` | Delete a metric policy |
-| `roark metric policy get <policy-id>` | Get metric policy by ID |
-| `roark metric policy list` | List metric policies |
-| `roark metric policy update <policy-id>` | Update a metric policy |
+| Command                                                                          | Description                            |
+| -------------------------------------------------------------------------------- | -------------------------------------- |
+| `roark metric collection-job create --metrics <value>`                           | Create and run a metric collection job |
+| `roark metric collection-job get <job-id>`                                       | Get metric collection job by ID        |
+| `roark metric collection-job list`                                               | List metric collection jobs            |
+| `roark metric definition create --data '{ ... }'`                                | Create custom metric definition        |
+| `roark metric definition list`                                                   | List metric definitions                |
+| `roark metric policy create --name <value> --modality <value> --metrics <value>` | Create a metric policy                 |
+| `roark metric policy delete <policy-id>`                                         | Delete a metric policy                 |
+| `roark metric policy get <policy-id>`                                            | Get metric policy by ID                |
+| `roark metric policy list`                                                       | List metric policies                   |
+| `roark metric policy update <policy-id>`                                         | Update a metric policy                 |
 
 ### simulation
 
-| Command | Description |
-| --- | --- |
-| `roark simulation environment get <environment-id>` | Get environment by ID |
-| `roark simulation environment list` | List environments |
-| `roark simulation job get <job-id>` | Get simulation by ID |
-| `roark simulation job lookup --roark-phone-number <value>` | Lookup by phone number |
-| `roark simulation persona create --name <value> --language <value> --accent <value> --gender <value>` | Create a new persona |
-| `roark simulation persona get <persona-id>` | Get persona by ID |
-| `roark simulation persona list` | List personas |
-| `roark simulation persona update <persona-id>` | Update a persona |
-| `roark simulation plan create --name <value> --direction <value> --max-simulation-duration-seconds <value> --agent-endpoints <value> --metrics <value>` | Create a run plan |
-| `roark simulation plan delete <plan-id>` | Delete a run plan |
-| `roark simulation plan get <plan-id>` | Get run plan by ID |
-| `roark simulation plan job get <job-id>` | Get simulation plan job |
-| `roark simulation plan job list` | List simulation plan jobs |
-| `roark simulation plan job start <plan-id>` | Run a simulation plan |
-| `roark simulation plan list` | List run plans |
-| `roark simulation plan update <plan-id>` | Update a run plan |
-| `roark simulation run --data '{ ... }'` | Run a simulation |
-| `roark simulation scenario create --name <value> --steps <value>` | Create a scenario |
-| `roark simulation scenario delete <scenario-id>` | Delete a scenario |
-| `roark simulation scenario get <scenario-id>` | Get scenario by ID |
-| `roark simulation scenario list` | List simulation scenarios |
-| `roark simulation scenario update <scenario-id> --step-changes <value>` | Update a scenario |
+| Command                                                                                                                                                 | Description               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `roark simulation environment get <environment-id>`                                                                                                     | Get environment by ID     |
+| `roark simulation environment list`                                                                                                                     | List environments         |
+| `roark simulation job get <job-id>`                                                                                                                     | Get simulation by ID      |
+| `roark simulation job lookup --roark-phone-number <value>`                                                                                              | Lookup by phone number    |
+| `roark simulation persona create --name <value> --language <value> --accent <value> --gender <value>`                                                   | Create a new persona      |
+| `roark simulation persona get <persona-id>`                                                                                                             | Get persona by ID         |
+| `roark simulation persona list`                                                                                                                         | List personas             |
+| `roark simulation persona update <persona-id>`                                                                                                          | Update a persona          |
+| `roark simulation plan create --name <value> --direction <value> --max-simulation-duration-seconds <value> --agent-endpoints <value> --metrics <value>` | Create a run plan         |
+| `roark simulation plan delete <plan-id>`                                                                                                                | Delete a run plan         |
+| `roark simulation plan get <plan-id>`                                                                                                                   | Get run plan by ID        |
+| `roark simulation plan job get <job-id>`                                                                                                                | Get simulation plan job   |
+| `roark simulation plan job list`                                                                                                                        | List simulation plan jobs |
+| `roark simulation plan job start <plan-id>`                                                                                                             | Run a simulation plan     |
+| `roark simulation plan list`                                                                                                                            | List run plans            |
+| `roark simulation plan update <plan-id>`                                                                                                                | Update a run plan         |
+| `roark simulation run --data '{ ... }'`                                                                                                                 | Run a simulation          |
 
 ### webhook
 
-| Command | Description |
-| --- | --- |
-| `roark webhook create --url <value> --events <value>` | Create webhook |
-| `roark webhook delete <webhook-id>` | Delete webhook |
-| `roark webhook get <webhook-id>` | Get webhook by ID |
-| `roark webhook list` | List webhooks |
+| Command                                               | Description       |
+| ----------------------------------------------------- | ----------------- |
+| `roark webhook create --url <value> --events <value>` | Create webhook    |
+| `roark webhook delete <webhook-id>`                   | Delete webhook    |
+| `roark webhook get <webhook-id>`                      | Get webhook by ID |
+| `roark webhook list`                                  | List webhooks     |
 
 ## Requirements
 

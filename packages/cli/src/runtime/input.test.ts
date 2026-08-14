@@ -61,15 +61,15 @@ describe('setPath', () => {
 describe('coerceFlag', () => {
   it('parses numbers and rejects non-numbers', () => {
     expect(coerceFlag('5', flag({ name: 'limit', path: ['limit'], valueKind: 'integer' }))).toBe(5);
-    expect(() =>
-      coerceFlag('abc', flag({ name: 'limit', path: ['limit'], valueKind: 'integer' })),
-    ).toThrow(UsageError);
+    expect(() => coerceFlag('abc', flag({ name: 'limit', path: ['limit'], valueKind: 'integer' }))).toThrow(
+      UsageError,
+    );
   });
 
   it('rejects a fractional value for an integer flag', () => {
-    expect(() =>
-      coerceFlag('1.5', flag({ name: 'limit', path: ['limit'], valueKind: 'integer' })),
-    ).toThrow(/whole number/);
+    expect(() => coerceFlag('1.5', flag({ name: 'limit', path: ['limit'], valueKind: 'integer' }))).toThrow(
+      /whole number/,
+    );
   });
 
   it('splits a comma list, and still accepts JSON', () => {
@@ -156,10 +156,7 @@ describe('buildArgs', () => {
 
   it('lets flags override a piped body, and --data override both', () => {
     const definition = command({
-      flags: [
-        flag({ name: 'title', path: ['title'] }),
-        flag({ name: 'agent-id', path: ['agentId'] }),
-      ],
+      flags: [flag({ name: 'title', path: ['title'] }), flag({ name: 'agent-id', path: ['agentId'] })],
     });
 
     const args = buildArgs({
@@ -175,15 +172,15 @@ describe('buildArgs', () => {
 
   it('keeps a key the spec does not name when it arrives in the body', () => {
     const definition = command({ flags: [] });
-    expect(
-      buildArgs({ command: definition, positionals: [], options: {}, data: { unknown: 1 } }),
-    ).toEqual([{ unknown: 1 }]);
+    expect(buildArgs({ command: definition, positionals: [], options: {}, data: { unknown: 1 } })).toEqual([
+      { unknown: 1 },
+    ]);
   });
 
   it('rejects a body that is not a JSON object', () => {
-    expect(() =>
-      buildArgs({ command: command({}), positionals: [], options: {}, data: [1, 2] }),
-    ).toThrow(/must be a JSON object/);
+    expect(() => buildArgs({ command: command({}), positionals: [], options: {}, data: [1, 2] })).toThrow(
+      /must be a JSON object/,
+    );
   });
 
   it('reports a missing required flag before making a request', () => {
@@ -199,17 +196,17 @@ describe('buildArgs', () => {
     const definition = command({
       flags: [flag({ name: 'agent-id', path: ['agentId'], required: true })],
     });
-    expect(
-      buildArgs({ command: definition, positionals: [], options: {}, data: { agentId: 'a1' } }),
-    ).toEqual([{ agentId: 'a1' }]);
+    expect(buildArgs({ command: definition, positionals: [], options: {}, data: { agentId: 'a1' } })).toEqual(
+      [{ agentId: 'a1' }],
+    );
   });
 
   it('writes a dotted leaf into its nested wire position', () => {
     const definition = command({
       flags: [flag({ name: 'persona.name', path: ['persona', 'name'] })],
     });
-    expect(
-      buildArgs({ command: definition, positionals: [], options: { personaName: 'Ada' } }),
-    ).toEqual([{ persona: { name: 'Ada' } }]);
+    expect(buildArgs({ command: definition, positionals: [], options: { personaName: 'Ada' } })).toEqual([
+      { persona: { name: 'Ada' } },
+    ]);
   });
 });

@@ -38,9 +38,7 @@ const keyFor = (name: string): keyof CliConfig => {
 };
 
 export const registerConfigCommands = (root: Command, binaryName: string): void => {
-  const config = new Command('config')
-    .description('Read and write CLI settings')
-    .showHelpAfterError();
+  const config = new Command('config').description('Read and write CLI settings').showHelpAfterError();
   config.action(() => config.outputHelp());
 
   config
@@ -51,9 +49,7 @@ export const registerConfigCommands = (root: Command, binaryName: string): void 
       const effective = loadConfig();
       const shown = {
         ...effective,
-        ...(effective.bearerToken === undefined ?
-          {}
-        : { bearerToken: maskToken(effective.bearerToken) }),
+        ...(effective.bearerToken === undefined ? {} : { bearerToken: maskToken(effective.bearerToken) }),
       };
 
       if (options.json === true) {

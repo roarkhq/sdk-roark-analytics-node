@@ -1,6 +1,6 @@
 ---
 name: roark-cli
-description: "Command line interface for the Roark Analytics API, published as @roarkanalytics/cli. Use when calling the API from a shell, a script or a CI job: installing it, authenticating, and invoking operations."
+description: 'Command line interface for the Roark Analytics API, published as @roarkanalytics/cli. Use when calling the API from a shell, a script or a CI job: installing it, authenticating, and invoking operations.'
 ---
 
 # roark CLI
@@ -57,11 +57,6 @@ operations (`run`, `start`, `lookup`, `promote`, `replace`). There is no `post`,
 - `roark call metric list <call-id>` - List call metrics
 - `roark call sentiment-run list <call-id>` - List call sentiment runs
 - `roark call transcript get <call-id>` - Get call transcript
-- `roark chat create --start-timestamp <value> --end-timestamp <value> --messages <value> --customer.phone-number-e164 <value>` - Create a chat
-- `roark chat get <chat-id>` - Get a chat by ID
-- `roark chat list` - List chats
-- `roark chat metric list <chat-id>` - List chat metrics
-- `roark chat transcript get <chat-id>` - Get chat transcript
 - `roark customer-flow create --data '{...}'` - Create a customer flow
 - `roark customer-flow delete <flow-id>` - Delete a customer flow
 - `roark customer-flow edge-case create <flow-id> --title <value>` - Add an edge case
@@ -105,11 +100,6 @@ operations (`run`, `start`, `lookup`, `promote`, `replace`). There is no `post`,
 - `roark simulation plan list` - List run plans
 - `roark simulation plan update <plan-id>` - Update a run plan
 - `roark simulation run --data '{...}'` - Run a simulation
-- `roark simulation scenario create --name <value> --steps <value>` - Create a scenario
-- `roark simulation scenario delete <scenario-id>` - Delete a scenario
-- `roark simulation scenario get <scenario-id>` - Get scenario by ID
-- `roark simulation scenario list` - List simulation scenarios
-- `roark simulation scenario update <scenario-id> --step-changes <value>` - Update a scenario
 - `roark webhook create --url <value> --events <value>` - Create webhook
 - `roark webhook delete <webhook-id>` - Delete webhook
 - `roark webhook get <webhook-id>` - Get webhook by ID
