@@ -79,6 +79,7 @@ export namespace SimulationRunResponse {
       | 'QUEUED'
       | 'CREATING_SNAPSHOTS'
       | 'CREATING_SIMULATIONS'
+      | 'PREPARING_CAPACITY'
       | 'RUNNING_SIMULATIONS'
       | 'COMPLETED'
       | 'FAILED'
