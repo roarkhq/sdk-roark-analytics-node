@@ -41,12 +41,6 @@ export const sdkMethods: SdkMethod[] = [
     httpPath: '/v1/call/{callId}/transcript',
   },
   {
-    clientCallName: 'client.call.listEvaluationRuns',
-    fullyQualifiedName: 'call.listEvaluationRuns',
-    httpMethod: 'get',
-    httpPath: '/v1/call/{callId}/evaluation-run',
-  },
-  {
     clientCallName: 'client.call.listMetrics',
     fullyQualifiedName: 'call.listMetrics',
     httpMethod: 'get',

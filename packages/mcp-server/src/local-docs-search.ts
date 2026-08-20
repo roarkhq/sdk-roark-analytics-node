@@ -226,36 +226,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
     },
   },
   {
-    name: 'listEvaluationRuns',
-    endpoint: '/v1/call/{callId}/evaluation-run',
-    httpMethod: 'get',
-    summary: 'List call evaluation runs',
-    description: 'Fetch all evaluation run results for a specific call.',
-    stainlessPath: '(resource) call > (method) listEvaluationRuns',
-    qualified: 'client.call.listEvaluationRuns',
-    params: ['callId: string;'],
-    response:
-      "{ data: { blockRuns: { blockDefinitionId: string; blockName: string; blockRunId: string; createdAt: string; reason: string; result: 'PASSED' | 'FAILED' | 'SKIPPED'; score: number; status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED'; }[]; evaluator: { id: string; name: string; weight?: number; }; evidence: { commentText: string; createdAt: string; isPositive: boolean; snippetText: string; }[]; metrics: { booleanValue: boolean; confidence: number; createdAt: string; name: string; numericValue: number; reasoning: string; role: string; textValue: string; valueType: string; }[]; status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED'; id?: string; completedAt?: string; result?: 'SUCCESS' | 'FAILURE' | 'SKIPPED'; score?: number; startedAt?: string; summary?: string; }[]; }",
-    markdown:
-      "## listEvaluationRuns\n\n`client.call.listEvaluationRuns(callId: string): { data: object[]; }`\n\n**get** `/v1/call/{callId}/evaluation-run`\n\nFetch all evaluation run results for a specific call.\n\n### Parameters\n\n- `callId: string`\n  ID of the call to fetch evaluation run for\n\n### Returns\n\n- `{ data: { blockRuns: { blockDefinitionId: string; blockName: string; blockRunId: string; createdAt: string; reason: string; result: 'PASSED' | 'FAILED' | 'SKIPPED'; score: number; status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED'; }[]; evaluator: { id: string; name: string; weight?: number; }; evidence: { commentText: string; createdAt: string; isPositive: boolean; snippetText: string; }[]; metrics: { booleanValue: boolean; confidence: number; createdAt: string; name: string; numericValue: number; reasoning: string; role: string; textValue: string; valueType: string; }[]; status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED'; id?: string; completedAt?: string; result?: 'SUCCESS' | 'FAILURE' | 'SKIPPED'; score?: number; startedAt?: string; summary?: string; }[]; }`\n\n  - `data: { blockRuns: { blockDefinitionId: string; blockName: string; blockRunId: string; createdAt: string; reason: string; result: 'PASSED' | 'FAILED' | 'SKIPPED'; score: number; status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED'; }[]; evaluator: { id: string; name: string; weight?: number; }; evidence: { commentText: string; createdAt: string; isPositive: boolean; snippetText: string; }[]; metrics: { booleanValue: boolean; confidence: number; createdAt: string; name: string; numericValue: number; reasoning: string; role: string; textValue: string; valueType: string; }[]; status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED'; id?: string; completedAt?: string; result?: 'SUCCESS' | 'FAILURE' | 'SKIPPED'; score?: number; startedAt?: string; summary?: string; }[]`\n\n### Example\n\n```typescript\nimport Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark();\n\nconst response = await client.call.listEvaluationRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response);\n```",
-    perLanguage: {
-      typescript: {
-        method: 'client.call.listEvaluationRuns',
-        example:
-          "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.listEvaluationRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'call.list_evaluation_runs',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.list_evaluation_runs(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
-      },
-      http: {
-        example:
-          'curl https://api.roark.ai/v1/call/$CALL_ID/evaluation-run \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
-      },
-    },
-  },
-  {
     name: 'listMetrics',
     endpoint: '/v1/call/{callId}/metrics',
     httpMethod: 'get',

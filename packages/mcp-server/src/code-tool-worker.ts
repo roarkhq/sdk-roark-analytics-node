@@ -113,7 +113,6 @@ const fuse = new Fuse(
     'client.call.getByID',
     'client.call.getTranscript',
     'client.call.list',
-    'client.call.listEvaluationRuns',
     'client.call.listMetrics',
     'client.call.listSentimentRuns',
     'client.metric.createDefinition',

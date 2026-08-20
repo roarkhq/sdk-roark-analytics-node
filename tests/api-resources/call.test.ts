@@ -144,17 +144,6 @@ describe('resource call', () => {
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
-  test('listEvaluationRuns', async () => {
-    const responsePromise = client.call.listEvaluationRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
   test('listMetrics', async () => {
     const responsePromise = client.call.listMetrics('callId');
     const rawResponse = await responsePromise.asResponse();
