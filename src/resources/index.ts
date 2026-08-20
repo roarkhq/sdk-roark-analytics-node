@@ -26,7 +26,6 @@ export {
   type CallListResponse,
   type CallGetByIDResponse,
   type CallGetTranscriptResponse,
-  type CallListEvaluationRunsResponse,
   type CallListMetricsResponse,
   type CallListSentimentRunsResponse,
   type CallCreateParams,

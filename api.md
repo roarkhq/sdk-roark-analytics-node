@@ -16,7 +16,6 @@ Types:
 - <code><a href="./src/resources/call.ts">CallListResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetByIDResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetTranscriptResponse</a></code>
-- <code><a href="./src/resources/call.ts">CallListEvaluationRunsResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListMetricsResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListSentimentRunsResponse</a></code>
 
@@ -26,7 +25,6 @@ Methods:
 - <code title="get /v1/call">client.call.<a href="./src/resources/call.ts">list</a>({ ...params }) -> CallListResponse</code>
 - <code title="get /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">getByID</a>(callID) -> CallGetByIDResponse</code>
 - <code title="get /v1/call/{callId}/transcript">client.call.<a href="./src/resources/call.ts">getTranscript</a>(callID, { ...params }) -> CallGetTranscriptResponse</code>
-- <code title="get /v1/call/{callId}/evaluation-run">client.call.<a href="./src/resources/call.ts">listEvaluationRuns</a>(callID) -> CallListEvaluationRunsResponse</code>
 - <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">listMetrics</a>(callID, { ...params }) -> CallListMetricsResponse</code>
 - <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">listSentimentRuns</a>(callID) -> CallListSentimentRunsResponse</code>
 
