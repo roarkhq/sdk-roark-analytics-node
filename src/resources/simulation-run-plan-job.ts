@@ -91,6 +91,7 @@ export namespace SimulationRunPlanJobListResponse {
       | 'QUEUED'
       | 'CREATING_SNAPSHOTS'
       | 'CREATING_SIMULATIONS'
+      | 'PREPARING_CAPACITY'
       | 'RUNNING_SIMULATIONS'
       | 'COMPLETED'
       | 'FAILED'
@@ -176,6 +177,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       | 'QUEUED'
       | 'CREATING_SNAPSHOTS'
       | 'CREATING_SIMULATIONS'
+      | 'PREPARING_CAPACITY'
       | 'RUNNING_SIMULATIONS'
       | 'COMPLETED'
       | 'FAILED'
@@ -563,6 +565,7 @@ export namespace SimulationRunPlanJobStartResponse {
       | 'QUEUED'
       | 'CREATING_SNAPSHOTS'
       | 'CREATING_SIMULATIONS'
+      | 'PREPARING_CAPACITY'
       | 'RUNNING_SIMULATIONS'
       | 'COMPLETED'
       | 'FAILED'
@@ -601,15 +604,16 @@ export interface SimulationRunPlanJobListParams {
   simulationRunPlanId?: string;
 
   /**
-   * Filter by plan job status (PENDING, CREATING_SNAPSHOTS, CREATING_SIMULATIONS,
-   * RUNNING_SIMULATIONS, ENDING_SIMULATIONS, COMPLETED, FAILED, TIMED_OUT,
-   * CANCELLED, CANCELLING)
+   * Filter by plan job status (PENDING, QUEUED, CREATING_SNAPSHOTS,
+   * CREATING_SIMULATIONS, PREPARING_CAPACITY, RUNNING_SIMULATIONS, COMPLETED,
+   * FAILED, TIMED_OUT, CANCELLED, CANCELLING, ENDING_SIMULATIONS)
    */
   status?:
     | 'PENDING'
     | 'QUEUED'
     | 'CREATING_SNAPSHOTS'
     | 'CREATING_SIMULATIONS'
+    | 'PREPARING_CAPACITY'
     | 'RUNNING_SIMULATIONS'
     | 'COMPLETED'
     | 'FAILED'
