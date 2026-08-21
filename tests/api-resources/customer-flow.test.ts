@@ -10,7 +10,6 @@ const client = new Roark({
 describe('resource customerFlow', () => {
   test('create: only required params', async () => {
     const responsePromise = client.customerFlow.create({
-      agentIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
       graph: [{ type: 'CUSTOMER_FIRST_MESSAGE' }],
       title: 'Reschedule an appointment',
       type: 'SCRIPTED',
@@ -26,7 +25,6 @@ describe('resource customerFlow', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.customerFlow.create({
-      agentIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
       graph: [
         {
           type: 'CUSTOMER_FIRST_MESSAGE',
@@ -40,6 +38,7 @@ describe('resource customerFlow', () => {
       title: 'Reschedule an appointment',
       type: 'SCRIPTED',
       agentExpectations: [{ prompt: 'The agent confirmed the new appointment time back to the customer' }],
+      agentIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
       branchingMode: 'DETERMINISTIC',
       description: 'description',
     });
