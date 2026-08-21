@@ -16,7 +16,6 @@ export class CustomerFlow extends APIResource {
    * @example
    * ```ts
    * const customerFlow = await client.customerFlow.create({
-   *   agentIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
    *   graph: [{ type: 'CUSTOMER_FIRST_MESSAGE' }],
    *   title: 'Reschedule an appointment',
    *   type: 'SCRIPTED',
@@ -11491,11 +11490,6 @@ export type CustomerFlowCreateParams =
 export declare namespace CustomerFlowCreateParams {
   export interface CreateScriptedCustomerFlowInput {
     /**
-     * Agents this flow exercises. At least one is required.
-     */
-    agentIds: Array<string>;
-
-    /**
      * The conversation, as a graph of steps. At most 100 steps across at most 25
      * paths. The variants come from the graph: one per path, so they are not sent
      * here.
@@ -11507,6 +11501,11 @@ export declare namespace CustomerFlowCreateParams {
     type: 'SCRIPTED';
 
     agentExpectations?: Array<CreateScriptedCustomerFlowInput.AgentExpectation>;
+
+    /**
+     * Agents this flow exercises. Optional for scripted flows.
+     */
+    agentIds?: Array<string>;
 
     /**
      * DETERMINISTIC (the default) runs one variant per path through the graph;
@@ -11528,7 +11527,7 @@ export declare namespace CustomerFlowCreateParams {
 
   export interface CreateImprovCustomerFlowInput {
     /**
-     * Agents this flow exercises. At least one is required.
+     * Agents this flow exercises. At least one is required for improv flows.
      */
     agentIds: Array<string>;
 
@@ -11610,7 +11609,8 @@ export interface CustomerFlowUpdateParams {
   agentExpectations?: Array<CustomerFlowUpdateParams.AgentExpectation>;
 
   /**
-   * Replaces the linked agents. Omit to leave them unchanged.
+   * Replaces the linked agents. Omit to leave them unchanged. An improv flow must
+   * keep at least one; a scripted flow can be left with none.
    */
   agentIds?: Array<string>;
 
