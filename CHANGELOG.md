@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.33.1 (2026-08-24)
+
+Full Changelog: [v2.33.0...v2.33.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.33.0...v2.33.1)
+
+### Chores
+
+* **cli:** start the CLI at 0.1.0 rather than mirroring the SDK ([1543654](https://github.com/roarkhq/sdk-roark-analytics-node/commit/1543654fec601b6598f06312b3fd0740e247e5e3))
+
 ## 2.33.0 (2026-08-24)
 
 Full Changelog: [v2.32.0...v2.33.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.32.0...v2.33.0)
