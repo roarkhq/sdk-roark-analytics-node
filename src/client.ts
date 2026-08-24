@@ -377,6 +377,9 @@ export class Roark {
     return buildHeaders([{ Authorization: `Bearer ${this.bearerToken}` }]);
   }
 
+  /**
+   * Basic re-implementation of `qs.stringify` for primitive types.
+   */
   protected stringifyQuery(query: object | Record<string, unknown>): string {
     return stringifyQuery(query);
   }

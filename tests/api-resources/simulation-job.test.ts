@@ -20,7 +20,7 @@ describe('resource simulationJob', () => {
   });
 
   test('lookup: only required params', async () => {
-    const responsePromise = client.simulationJob.lookup({ roarkPhoneNumber: {} });
+    const responsePromise = client.simulationJob.lookup({ roarkPhoneNumber: 'roarkPhoneNumber' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -32,8 +32,8 @@ describe('resource simulationJob', () => {
 
   test('lookup: required and optional params', async () => {
     const response = await client.simulationJob.lookup({
-      roarkPhoneNumber: {},
-      callReceivedAt: {},
+      roarkPhoneNumber: 'roarkPhoneNumber',
+      callReceivedAt: '2019-12-27T18:11:19.117Z',
     });
   });
 });

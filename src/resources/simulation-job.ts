@@ -17,7 +17,7 @@ export class SimulationJob extends APIResource {
    * );
    * ```
    */
-  getByID(jobID: unknown, options?: RequestOptions): APIPromise<SimulationJobGetByIDResponse> {
+  getByID(jobID: string, options?: RequestOptions): APIPromise<SimulationJobGetByIDResponse> {
     return this._client.get(path`/v1/simulation/job/${jobID}`, options);
   }
 
@@ -28,7 +28,7 @@ export class SimulationJob extends APIResource {
    * @example
    * ```ts
    * const response = await client.simulationJob.lookup({
-   *   roarkPhoneNumber: {},
+   *   roarkPhoneNumber: 'roarkPhoneNumber',
    * });
    * ```
    */
@@ -720,14 +720,14 @@ export interface SimulationJobLookupParams {
    * case of an inbound simulation, this is the number that calls your agent; in the
    * case of an outbound simulation, this is the number you call from your agent.
    */
-  roarkPhoneNumber: unknown;
+  roarkPhoneNumber: string;
 
   /**
    * ISO 8601 timestamp of when the call was received. Alternatively, any time
    * between the start and end of the call is valid. Defaults to the current time,
    * which fetches any jobs that are currently ongoing.
    */
-  callReceivedAt?: unknown;
+  callReceivedAt?: string;
 }
 
 export declare namespace SimulationJob {

@@ -34,7 +34,7 @@ export class SimulationRunPlanJob extends APIResource {
    * );
    * ```
    */
-  getByID(jobID: unknown, options?: RequestOptions): APIPromise<SimulationRunPlanJobGetByIDResponse> {
+  getByID(jobID: string, options?: RequestOptions): APIPromise<SimulationRunPlanJobGetByIDResponse> {
     return this._client.get(path`/v1/simulation/plan/job/${jobID}`, options);
   }
 
@@ -49,7 +49,7 @@ export class SimulationRunPlanJob extends APIResource {
    * @deprecated
    */
   start(
-    planID: unknown,
+    planID: string,
     body: SimulationRunPlanJobStartParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<SimulationRunPlanJobStartResponse> {
