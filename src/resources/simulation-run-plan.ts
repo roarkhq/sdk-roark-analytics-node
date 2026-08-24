@@ -7,8 +7,11 @@ import { path } from '../internal/utils/path';
 
 export class SimulationRunPlan extends APIResource {
   /**
-   * Creates a new simulation run plan. Optionally triggers a job immediately if
-   * autoRun is true.
+   * Creates a new simulation run plan.
+   *
+   * To run a simulation, use POST /v1/simulation/run instead: it starts a run from a
+   * plan or from an inline configuration, and takes runtime variables. Create a plan
+   * here when you want a reusable, named one to run later.
    *
    * @example
    * ```ts
@@ -19,16 +22,8 @@ export class SimulationRunPlan extends APIResource {
    *     ],
    *     direction: 'INBOUND',
    *     maxSimulationDurationSeconds: 300,
-   *     metrics: [
-   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-   *     ],
+   *     metrics: [{}],
    *     name: 'My Run Plan',
-   *     personas: [
-   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-   *     ],
-   *     scenarios: [
-   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-   *     ],
    *   });
    * ```
    */
@@ -175,6 +170,11 @@ export namespace SimulationRunPlanCreateResponse {
       executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
       /**
+       * Customer flows included in this run plan
+       */
+      flows: Array<RunPlan.Flow>;
+
+      /**
        * Number of iterations to run for each test case
        */
       iterationCount: number;
@@ -200,12 +200,13 @@ export namespace SimulationRunPlanCreateResponse {
       name: string;
 
       /**
-       * Personas included in this run plan
+       * Personas included in this run plan. Only meaningful alongside `scenarios`.
        */
       personas: Array<RunPlan.Persona>;
 
       /**
-       * Scenarios included in this run plan
+       * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
+       * plan.
        */
       scenarios: Array<RunPlan.Scenario>;
 
@@ -237,6 +238,61 @@ export namespace SimulationRunPlanCreateResponse {
 
       export interface Evaluator {
         id: string;
+      }
+
+      /**
+       * One customer flow attached to a run plan, and which of its ways of running you
+       * cover.
+       *
+       * Attaching the same flow more than once with different overrides is how you fan
+       * it out across personas or values.
+       */
+      export interface Flow {
+        /**
+         * The customer flow to run.
+         */
+        id: string;
+
+        /**
+         * `"ALL"` runs every edge case the flow has when the run starts, so one added
+         * later is covered. An array runs only the ones you name, each able to carry its
+         * own persona override and values.
+         */
+        edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+
+        /**
+         * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+         */
+        happyPath?: boolean;
+
+        /**
+         * Runs everything this attachment resolves as that persona instead of its own.
+         */
+        personaOverrideId?: string | null;
+
+        /**
+         * Values for everything it resolves.
+         */
+        variables?: { [key: string]: string };
+      }
+
+      export namespace Flow {
+        export interface UnionMember1 {
+          /**
+           * The edge case to run.
+           */
+          id: string;
+
+          /**
+           * Run this one as that persona instead of its own.
+           */
+          personaOverrideId?: string | null;
+
+          /**
+           * Values for this one only.
+           */
+          variables?: { [key: string]: string };
+        }
       }
 
       export interface Metric {
@@ -285,6 +341,7 @@ export namespace SimulationRunPlanCreateResponse {
         | 'QUEUED'
         | 'CREATING_SNAPSHOTS'
         | 'CREATING_SIMULATIONS'
+        | 'PREPARING_CAPACITY'
         | 'RUNNING_SIMULATIONS'
         | 'COMPLETED'
         | 'FAILED'
@@ -350,6 +407,11 @@ export namespace SimulationRunPlanUpdateResponse {
     executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
     /**
+     * Customer flows included in this run plan
+     */
+    flows: Array<Data.Flow>;
+
+    /**
      * Number of iterations to run for each test case
      */
     iterationCount: number;
@@ -375,12 +437,13 @@ export namespace SimulationRunPlanUpdateResponse {
     name: string;
 
     /**
-     * Personas included in this run plan
+     * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
 
     /**
-     * Scenarios included in this run plan
+     * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
+     * plan.
      */
     scenarios: Array<Data.Scenario>;
 
@@ -412,6 +475,61 @@ export namespace SimulationRunPlanUpdateResponse {
 
     export interface Evaluator {
       id: string;
+    }
+
+    /**
+     * One customer flow attached to a run plan, and which of its ways of running you
+     * cover.
+     *
+     * Attaching the same flow more than once with different overrides is how you fan
+     * it out across personas or values.
+     */
+    export interface Flow {
+      /**
+       * The customer flow to run.
+       */
+      id: string;
+
+      /**
+       * `"ALL"` runs every edge case the flow has when the run starts, so one added
+       * later is covered. An array runs only the ones you name, each able to carry its
+       * own persona override and values.
+       */
+      edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+
+      /**
+       * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+       */
+      happyPath?: boolean;
+
+      /**
+       * Runs everything this attachment resolves as that persona instead of its own.
+       */
+      personaOverrideId?: string | null;
+
+      /**
+       * Values for everything it resolves.
+       */
+      variables?: { [key: string]: string };
+    }
+
+    export namespace Flow {
+      export interface UnionMember1 {
+        /**
+         * The edge case to run.
+         */
+        id: string;
+
+        /**
+         * Run this one as that persona instead of its own.
+         */
+        personaOverrideId?: string | null;
+
+        /**
+         * Values for this one only.
+         */
+        variables?: { [key: string]: string };
+      }
     }
 
     export interface Metric {
@@ -490,6 +608,11 @@ export namespace SimulationRunPlanListResponse {
     executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
     /**
+     * Customer flows included in this run plan
+     */
+    flows: Array<Data.Flow>;
+
+    /**
      * Number of iterations to run for each test case
      */
     iterationCount: number;
@@ -515,12 +638,13 @@ export namespace SimulationRunPlanListResponse {
     name: string;
 
     /**
-     * Personas included in this run plan
+     * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
 
     /**
-     * Scenarios included in this run plan
+     * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
+     * plan.
      */
     scenarios: Array<Data.Scenario>;
 
@@ -552,6 +676,61 @@ export namespace SimulationRunPlanListResponse {
 
     export interface Evaluator {
       id: string;
+    }
+
+    /**
+     * One customer flow attached to a run plan, and which of its ways of running you
+     * cover.
+     *
+     * Attaching the same flow more than once with different overrides is how you fan
+     * it out across personas or values.
+     */
+    export interface Flow {
+      /**
+       * The customer flow to run.
+       */
+      id: string;
+
+      /**
+       * `"ALL"` runs every edge case the flow has when the run starts, so one added
+       * later is covered. An array runs only the ones you name, each able to carry its
+       * own persona override and values.
+       */
+      edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+
+      /**
+       * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+       */
+      happyPath?: boolean;
+
+      /**
+       * Runs everything this attachment resolves as that persona instead of its own.
+       */
+      personaOverrideId?: string | null;
+
+      /**
+       * Values for everything it resolves.
+       */
+      variables?: { [key: string]: string };
+    }
+
+    export namespace Flow {
+      export interface UnionMember1 {
+        /**
+         * The edge case to run.
+         */
+        id: string;
+
+        /**
+         * Run this one as that persona instead of its own.
+         */
+        personaOverrideId?: string | null;
+
+        /**
+         * Values for this one only.
+         */
+        variables?: { [key: string]: string };
+      }
     }
 
     export interface Metric {
@@ -658,6 +837,11 @@ export namespace SimulationRunPlanGetByIDResponse {
     executionMode: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
     /**
+     * Customer flows included in this run plan
+     */
+    flows: Array<Data.Flow>;
+
+    /**
      * Number of iterations to run for each test case
      */
     iterationCount: number;
@@ -683,12 +867,13 @@ export namespace SimulationRunPlanGetByIDResponse {
     name: string;
 
     /**
-     * Personas included in this run plan
+     * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
 
     /**
-     * Scenarios included in this run plan
+     * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
+     * plan.
      */
     scenarios: Array<Data.Scenario>;
 
@@ -720,6 +905,61 @@ export namespace SimulationRunPlanGetByIDResponse {
 
     export interface Evaluator {
       id: string;
+    }
+
+    /**
+     * One customer flow attached to a run plan, and which of its ways of running you
+     * cover.
+     *
+     * Attaching the same flow more than once with different overrides is how you fan
+     * it out across personas or values.
+     */
+    export interface Flow {
+      /**
+       * The customer flow to run.
+       */
+      id: string;
+
+      /**
+       * `"ALL"` runs every edge case the flow has when the run starts, so one added
+       * later is covered. An array runs only the ones you name, each able to carry its
+       * own persona override and values.
+       */
+      edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+
+      /**
+       * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+       */
+      happyPath?: boolean;
+
+      /**
+       * Runs everything this attachment resolves as that persona instead of its own.
+       */
+      personaOverrideId?: string | null;
+
+      /**
+       * Values for everything it resolves.
+       */
+      variables?: { [key: string]: string };
+    }
+
+    export namespace Flow {
+      export interface UnionMember1 {
+        /**
+         * The edge case to run.
+         */
+        id: string;
+
+        /**
+         * Run this one as that persona instead of its own.
+         */
+        personaOverrideId?: string | null;
+
+        /**
+         * Values for this one only.
+         */
+        variables?: { [key: string]: string };
+      }
     }
 
     export interface Metric {
@@ -759,7 +999,8 @@ export interface SimulationRunPlanCreateParams {
   maxSimulationDurationSeconds: number;
 
   /**
-   * Metric definitions to include in this run plan
+   * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
+   * `slug`.
    */
   metrics: Array<SimulationRunPlanCreateParams.Metric>;
 
@@ -769,18 +1010,9 @@ export interface SimulationRunPlanCreateParams {
   name: string;
 
   /**
-   * Personas to include in this run plan
-   */
-  personas: Array<SimulationRunPlanCreateParams.Persona>;
-
-  /**
-   * Scenarios to include in this run plan. The same scenario ID can appear multiple
-   * times with different variables.
-   */
-  scenarios: Array<SimulationRunPlanCreateParams.Scenario>;
-
-  /**
-   * Whether to automatically trigger a job after creating the run plan
+   * @deprecated Deprecated: use POST /v1/simulation/run, which starts a run and
+   * accepts runtime `variables` as well. This flag runs the plan with only the
+   * values pinned on it.
    */
   autoRun?: boolean;
 
@@ -806,8 +1038,13 @@ export interface SimulationRunPlanCreateParams {
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
   /**
-   * Number of iterations to run for each test case. Must be 1 for OUTBOUND
-   * direction.
+   * Customer flows to include in this run plan. The same flow can appear more than
+   * once with a different persona override or different variables.
+   */
+  flows?: Array<SimulationRunPlanCreateParams.Flow>;
+
+  /**
+   * Number of iterations to run for each test case (1-10000)
    */
   iterationCount?: number;
 
@@ -815,6 +1052,18 @@ export interface SimulationRunPlanCreateParams {
    * Maximum number of concurrent simulation jobs
    */
   maxConcurrentJobs?: number;
+
+  /**
+   * Personas to include in this run plan. Required with `scenarios`; ignored with
+   * `flows`, where each variant carries its own persona.
+   */
+  personas?: Array<SimulationRunPlanCreateParams.Persona>;
+
+  /**
+   * @deprecated Deprecated: use `flows` instead. Scenarios to include in this run
+   * plan. The same scenario ID can appear multiple times with different variables.
+   */
+  scenarios?: Array<SimulationRunPlanCreateParams.Scenario>;
 
   /**
    * Timeout in seconds for silence detection
@@ -828,7 +1077,77 @@ export namespace SimulationRunPlanCreateParams {
   }
 
   export interface Metric {
+    /**
+     * Metric definition UUID. Provide either this or `slug`, not both.
+     */
+    id?: string;
+
+    /**
+     * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+     * integrations.
+     */
+    metricId?: string;
+
+    /**
+     * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+     * not both.
+     */
+    slug?: string;
+  }
+
+  /**
+   * One customer flow attached to a run plan, and which of its ways of running you
+   * cover.
+   *
+   * Attaching the same flow more than once with different overrides is how you fan
+   * it out across personas or values.
+   */
+  export interface Flow {
+    /**
+     * The customer flow to run.
+     */
     id: string;
+
+    /**
+     * `"ALL"` runs every edge case the flow has when the run starts, so one added
+     * later is covered. An array runs only the ones you name, each able to carry its
+     * own persona override and values.
+     */
+    edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+
+    /**
+     * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+     */
+    happyPath?: boolean;
+
+    /**
+     * Runs everything this attachment resolves as that persona instead of its own.
+     */
+    personaOverrideId?: string | null;
+
+    /**
+     * Values for everything it resolves.
+     */
+    variables?: { [key: string]: string };
+  }
+
+  export namespace Flow {
+    export interface UnionMember1 {
+      /**
+       * The edge case to run.
+       */
+      id: string;
+
+      /**
+       * Run this one as that persona instead of its own.
+       */
+      personaOverrideId?: string | null;
+
+      /**
+       * Values for this one only.
+       */
+      variables?: { [key: string]: string };
+    }
   }
 
   export interface Persona {
@@ -882,8 +1201,22 @@ export interface SimulationRunPlanUpdateParams {
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
   /**
-   * Number of iterations to run for each test case. Must be 1 for OUTBOUND
-   * direction.
+   * Replaces the customer flows attached to this run plan. Omit to leave them
+   * unchanged; send an empty array to detach them all.
+   */
+  flows?: Array<SimulationRunPlanUpdateParams.Flow>;
+
+  /**
+   * Whether this plan is hidden from GET /v1/simulation/plan.
+   *
+   * A run started without `saveAsPlan` creates a hidden plan to carry it. Send
+   * `{ "name": "...", "isHidden": false }` to keep that configuration as a reusable
+   * plan, which is what the app does when you save a one-off run.
+   */
+  isHidden?: boolean;
+
+  /**
+   * Number of iterations to run for each test case (1-10000)
    */
   iterationCount?: number;
 
@@ -898,7 +1231,8 @@ export interface SimulationRunPlanUpdateParams {
   maxSimulationDurationSeconds?: number;
 
   /**
-   * Metric definitions to include in this run plan
+   * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
+   * `slug`.
    */
   metrics?: Array<SimulationRunPlanUpdateParams.Metric>;
 
@@ -913,8 +1247,9 @@ export interface SimulationRunPlanUpdateParams {
   personas?: Array<SimulationRunPlanUpdateParams.Persona>;
 
   /**
-   * Scenarios to include in this run plan. The same scenario ID can appear multiple
-   * times with different variables.
+   * @deprecated Deprecated: use `flows` instead. Replaces the scenarios on this run
+   * plan. Omit to leave them unchanged; send an empty array to detach them all,
+   * which is how a scenario-based plan is moved over to flows.
    */
   scenarios?: Array<SimulationRunPlanUpdateParams.Scenario>;
 
@@ -929,8 +1264,78 @@ export namespace SimulationRunPlanUpdateParams {
     id: string;
   }
 
-  export interface Metric {
+  /**
+   * One customer flow attached to a run plan, and which of its ways of running you
+   * cover.
+   *
+   * Attaching the same flow more than once with different overrides is how you fan
+   * it out across personas or values.
+   */
+  export interface Flow {
+    /**
+     * The customer flow to run.
+     */
     id: string;
+
+    /**
+     * `"ALL"` runs every edge case the flow has when the run starts, so one added
+     * later is covered. An array runs only the ones you name, each able to carry its
+     * own persona override and values.
+     */
+    edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+
+    /**
+     * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+     */
+    happyPath?: boolean;
+
+    /**
+     * Runs everything this attachment resolves as that persona instead of its own.
+     */
+    personaOverrideId?: string | null;
+
+    /**
+     * Values for everything it resolves.
+     */
+    variables?: { [key: string]: string };
+  }
+
+  export namespace Flow {
+    export interface UnionMember1 {
+      /**
+       * The edge case to run.
+       */
+      id: string;
+
+      /**
+       * Run this one as that persona instead of its own.
+       */
+      personaOverrideId?: string | null;
+
+      /**
+       * Values for this one only.
+       */
+      variables?: { [key: string]: string };
+    }
+  }
+
+  export interface Metric {
+    /**
+     * Metric definition UUID. Provide either this or `slug`, not both.
+     */
+    id?: string;
+
+    /**
+     * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+     * integrations.
+     */
+    metricId?: string;
+
+    /**
+     * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+     * not both.
+     */
+    slug?: string;
   }
 
   export interface Persona {

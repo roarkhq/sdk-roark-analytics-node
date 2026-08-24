@@ -45,6 +45,8 @@ describe('resource call', () => {
       customer: { phoneNumberE164: 'phoneNumberE164', label: 'label' },
       customers: [{ phoneNumberE164: 'phoneNumberE164', label: 'label' }],
       endedStatus: 'PARTICIPANTS_DID_NOT_SPEAK',
+      externalId: 'externalId',
+      livekitRoomId: 'livekitRoomId',
       properties: { foo: 'bar' },
       stereoRecordingUrl: 'https://example.com',
       toolInvocations: [
@@ -69,11 +71,13 @@ describe('resource call', () => {
           endOffsetMs: 0,
           role: 'AGENT',
           startOffsetMs: 0,
-          text: 'x',
+          text: 'text',
           agent: { customId: 'customId', roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
           languageCode: 'languageCode',
+          payload: { foo: 'bar' },
         },
       ],
+      vapiCallId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
 
@@ -140,17 +144,6 @@ describe('resource call', () => {
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
-  test('listEvaluationRuns', async () => {
-    const responsePromise = client.call.listEvaluationRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
   test('listMetrics', async () => {
     const responsePromise = client.call.listMetrics('callId');
     const rawResponse = await responsePromise.asResponse();
@@ -165,7 +158,11 @@ describe('resource call', () => {
   test('listMetrics: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.call.listMetrics('callId', { flatten: 'flatten' }, { path: '/_stainless_unknown_path' }),
+      client.call.listMetrics(
+        'callId',
+        { flatten: 'flatten', status: 'success' },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(Roark.NotFoundError);
   });
 

@@ -13,10 +13,8 @@ describe('resource simulationRunPlan', () => {
       agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       direction: 'INBOUND',
       maxSimulationDurationSeconds: 300,
-      metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+      metrics: [{}],
       name: 'My Run Plan',
-      personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-      scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -32,8 +30,36 @@ describe('resource simulationRunPlan', () => {
       agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       direction: 'INBOUND',
       maxSimulationDurationSeconds: 300,
-      metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+      metrics: [
+        {
+          id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          metricId: 'x',
+          slug: 'x',
+        },
+      ],
       name: 'My Run Plan',
+      autoRun: false,
+      description: 'A run plan for testing inbound calls',
+      endCallPhrases: ['goodbye'],
+      endCallReasons: ['Order has been confirmed by the agent'],
+      executionMode: 'PARALLEL',
+      flows: [
+        {
+          id: '550e8400-e29b-41d4-a716-446655440000',
+          edgeCases: [
+            {
+              id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+              personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              variables: { tier: 'premium' },
+            },
+          ],
+          happyPath: true,
+          personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          variables: { foo: 'string' },
+        },
+      ],
+      iterationCount: 1,
+      maxConcurrentJobs: 5,
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       scenarios: [
         {
@@ -41,13 +67,6 @@ describe('resource simulationRunPlan', () => {
           variables: { customerName: 'John Doe', appointmentDate: '2024-02-15' },
         },
       ],
-      autoRun: false,
-      description: 'A run plan for testing inbound calls',
-      endCallPhrases: ['goodbye'],
-      endCallReasons: ['Order has been confirmed by the agent'],
-      executionMode: 'PARALLEL',
-      iterationCount: 1,
-      maxConcurrentJobs: 5,
       silenceTimeoutSeconds: 30,
     });
   });
@@ -75,10 +94,32 @@ describe('resource simulationRunPlan', () => {
           endCallPhrases: ['string'],
           endCallReasons: ['string'],
           executionMode: 'PARALLEL',
+          flows: [
+            {
+              id: '550e8400-e29b-41d4-a716-446655440000',
+              edgeCases: [
+                {
+                  id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+                  personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                  variables: { tier: 'premium' },
+                },
+              ],
+              happyPath: true,
+              personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              variables: { foo: 'string' },
+            },
+          ],
+          isHidden: true,
           iterationCount: 1,
           maxConcurrentJobs: 1,
           maxSimulationDurationSeconds: 1,
-          metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+          metrics: [
+            {
+              id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              metricId: 'x',
+              slug: 'x',
+            },
+          ],
           name: 'x',
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
           scenarios: [

@@ -16,7 +16,6 @@ Types:
 - <code><a href="./src/resources/call.ts">CallListResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetByIDResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetTranscriptResponse</a></code>
-- <code><a href="./src/resources/call.ts">CallListEvaluationRunsResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListMetricsResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListSentimentRunsResponse</a></code>
 
@@ -26,7 +25,6 @@ Methods:
 - <code title="get /v1/call">client.call.<a href="./src/resources/call.ts">list</a>({ ...params }) -> CallListResponse</code>
 - <code title="get /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">getByID</a>(callID) -> CallGetByIDResponse</code>
 - <code title="get /v1/call/{callId}/transcript">client.call.<a href="./src/resources/call.ts">getTranscript</a>(callID, { ...params }) -> CallGetTranscriptResponse</code>
-- <code title="get /v1/call/{callId}/evaluation-run">client.call.<a href="./src/resources/call.ts">listEvaluationRuns</a>(callID) -> CallListEvaluationRunsResponse</code>
 - <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">listMetrics</a>(callID, { ...params }) -> CallListMetricsResponse</code>
 - <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">listSentimentRuns</a>(callID) -> CallListSentimentRunsResponse</code>
 
@@ -74,6 +72,16 @@ Methods:
 - <code title="get /v1/metric/collection-jobs">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">list</a>({ ...params }) -> MetricCollectionJobListResponse</code>
 - <code title="get /v1/metric/collection-jobs/{jobId}">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">getByID</a>(jobID) -> MetricCollectionJobGetByIDResponse</code>
 
+# Simulation
+
+Types:
+
+- <code><a href="./src/resources/simulation.ts">SimulationRunResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/simulation/run">client.simulation.<a href="./src/resources/simulation.ts">run</a>({ ...params }) -> SimulationRunResponse</code>
+
 # SimulationJob
 
 Types:
@@ -118,24 +126,6 @@ Methods:
 - <code title="get /v1/simulation/plan/job/{jobId}">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">getByID</a>(jobID) -> SimulationRunPlanJobGetByIDResponse</code>
 - <code title="post /v1/simulation/plan/{planId}/job">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">start</a>(planID, { ...params }) -> SimulationRunPlanJobStartResponse</code>
 
-# SimulationScenario
-
-Types:
-
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioCreateResponse</a></code>
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioUpdateResponse</a></code>
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioListResponse</a></code>
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioDeleteResponse</a></code>
-- <code><a href="./src/resources/simulation-scenario.ts">SimulationScenarioGetByIDResponse</a></code>
-
-Methods:
-
-- <code title="post /v1/simulation/scenario">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">create</a>({ ...params }) -> SimulationScenarioCreateResponse</code>
-- <code title="put /v1/simulation/scenario/{scenarioId}">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">update</a>(scenarioID, { ...params }) -> SimulationScenarioUpdateResponse</code>
-- <code title="get /v1/simulation/scenario">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">list</a>({ ...params }) -> SimulationScenarioListResponse</code>
-- <code title="delete /v1/simulation/scenario/{scenarioId}">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">delete</a>(scenarioID) -> SimulationScenarioDeleteResponse</code>
-- <code title="get /v1/simulation/scenario/{scenarioId}">client.simulationScenario.<a href="./src/resources/simulation-scenario.ts">getByID</a>(scenarioID) -> SimulationScenarioGetByIDResponse</code>
-
 # SimulationPersona
 
 Types:
@@ -151,6 +141,57 @@ Methods:
 - <code title="put /v1/persona/{personaId}">client.simulationPersona.<a href="./src/resources/simulation-persona.ts">update</a>(personaID, { ...params }) -> SimulationPersonaUpdateResponse</code>
 - <code title="get /v1/persona">client.simulationPersona.<a href="./src/resources/simulation-persona.ts">list</a>({ ...params }) -> SimulationPersonaListResponse</code>
 - <code title="get /v1/persona/{personaId}">client.simulationPersona.<a href="./src/resources/simulation-persona.ts">getByID</a>(personaID) -> SimulationPersonaGetByIDResponse</code>
+
+# SimulationEnvironment
+
+Types:
+
+- <code><a href="./src/resources/simulation-environment.ts">SimulationEnvironmentListResponse</a></code>
+- <code><a href="./src/resources/simulation-environment.ts">SimulationEnvironmentGetByIDResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/simulation/environment">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">list</a>({ ...params }) -> SimulationEnvironmentListResponse</code>
+- <code title="get /v1/simulation/environment/{environmentId}">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">getByID</a>(environmentID) -> SimulationEnvironmentGetByIDResponse</code>
+
+# CustomerFlow
+
+Types:
+
+- <code><a href="./src/resources/customer-flow.ts">FlowStep</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowCreateResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowUpdateResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowListResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowDeleteResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowGetByIDResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowReplaceGraphResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowUpdateHappyPathResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/customer-flow">client.customerFlow.<a href="./src/resources/customer-flow.ts">create</a>({ ...params }) -> CustomerFlowCreateResponse</code>
+- <code title="put /v1/customer-flow/{flowId}">client.customerFlow.<a href="./src/resources/customer-flow.ts">update</a>(flowID, { ...params }) -> CustomerFlowUpdateResponse</code>
+- <code title="get /v1/customer-flow">client.customerFlow.<a href="./src/resources/customer-flow.ts">list</a>({ ...params }) -> CustomerFlowListResponse</code>
+- <code title="delete /v1/customer-flow/{flowId}">client.customerFlow.<a href="./src/resources/customer-flow.ts">delete</a>(flowID) -> CustomerFlowDeleteResponse</code>
+- <code title="get /v1/customer-flow/{flowId}">client.customerFlow.<a href="./src/resources/customer-flow.ts">getByID</a>(flowID) -> CustomerFlowGetByIDResponse</code>
+- <code title="put /v1/customer-flow/{flowId}/graph">client.customerFlow.<a href="./src/resources/customer-flow.ts">replaceGraph</a>(flowID, { ...params }) -> CustomerFlowReplaceGraphResponse</code>
+- <code title="put /v1/customer-flow/{flowId}/happy-path">client.customerFlow.<a href="./src/resources/customer-flow.ts">updateHappyPath</a>(flowID, { ...params }) -> CustomerFlowUpdateHappyPathResponse</code>
+
+# CustomerFlowEdgeCase
+
+Types:
+
+- <code><a href="./src/resources/customer-flow-edge-case.ts">CustomerFlowEdgeCaseUpdateResponse</a></code>
+- <code><a href="./src/resources/customer-flow-edge-case.ts">CustomerFlowEdgeCaseAddResponse</a></code>
+- <code><a href="./src/resources/customer-flow-edge-case.ts">CustomerFlowEdgeCasePromoteResponse</a></code>
+- <code><a href="./src/resources/customer-flow-edge-case.ts">CustomerFlowEdgeCaseRemoveResponse</a></code>
+
+Methods:
+
+- <code title="put /v1/customer-flow/{flowId}/edge-case/{edgeCaseId}">client.customerFlowEdgeCase.<a href="./src/resources/customer-flow-edge-case.ts">update</a>(edgeCaseID, { ...params }) -> CustomerFlowEdgeCaseUpdateResponse</code>
+- <code title="post /v1/customer-flow/{flowId}/edge-case">client.customerFlowEdgeCase.<a href="./src/resources/customer-flow-edge-case.ts">add</a>(flowID, { ...params }) -> CustomerFlowEdgeCaseAddResponse</code>
+- <code title="post /v1/customer-flow/{flowId}/edge-case/{edgeCaseId}/promote">client.customerFlowEdgeCase.<a href="./src/resources/customer-flow-edge-case.ts">promote</a>(edgeCaseID, { ...params }) -> CustomerFlowEdgeCasePromoteResponse</code>
+- <code title="delete /v1/customer-flow/{flowId}/edge-case/{edgeCaseId}">client.customerFlowEdgeCase.<a href="./src/resources/customer-flow-edge-case.ts">remove</a>(edgeCaseID, { ...params }) -> CustomerFlowEdgeCaseRemoveResponse</code>
 
 # Agent
 

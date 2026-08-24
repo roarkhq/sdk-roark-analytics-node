@@ -278,17 +278,19 @@ export namespace MetricCollectionJobGetByIDResponse {
 
 export interface MetricCollectionJobCreateParams {
   /**
-   * Metric definitions to collect
+   * Metric definitions to collect. Max 20 per request.
    */
   metrics: Array<MetricCollectionJobCreateParams.Metric>;
 
   /**
-   * Call IDs to collect metrics for. Mutually exclusive with chatIds.
+   * Call IDs to collect metrics for. Mutually exclusive with chatIds. Max 500 per
+   * request.
    */
   callIds?: Array<string>;
 
   /**
-   * Chat IDs to collect metrics for. Mutually exclusive with callIds.
+   * Chat IDs to collect metrics for. Mutually exclusive with callIds. Max 500 per
+   * request.
    */
   chatIds?: Array<string>;
 }

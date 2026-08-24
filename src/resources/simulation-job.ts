@@ -69,6 +69,8 @@ export namespace SimulationJobGetByIDResponse {
      */
     processingStatus: string;
 
+    runPlan: Data.RunPlan;
+
     /**
      * Scenario used in a simulation
      */
@@ -130,7 +132,15 @@ export namespace SimulationJobGetByIDResponse {
       /**
        * Agent endpoint type
        */
-      type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
+      type:
+        | 'PHONE'
+        | 'WEBSOCKET'
+        | 'LIVEKIT'
+        | 'SMALL_WEBRTC'
+        | 'ELEVENLABS_WS'
+        | 'KORE'
+        | 'GOOGLE_CES'
+        | 'DAILY';
     }
 
     export interface Persona {
@@ -165,7 +175,8 @@ export namespace SimulationJobGetByIDResponse {
         | 'MY'
         | 'HK'
         | 'TR'
-        | 'PT';
+        | 'PT'
+        | 'IL';
 
       /**
        * Background noise setting
@@ -216,9 +227,10 @@ export namespace SimulationJobGetByIDResponse {
       idleMessageResetCountOnUserSpeechEnabled: boolean;
 
       /**
-       * Messages the persona will say when the agent goes silent during a call
+       * Messages the persona will say when the agent goes silent during a call. null =
+       * "Automatic": language-appropriate defaults are used at call time.
        */
-      idleMessages: Array<string>;
+      idleMessages: Array<string> | null;
 
       /**
        * Seconds of silence before the persona sends an idle message
@@ -250,7 +262,8 @@ export namespace SimulationJobGetByIDResponse {
         | 'MS'
         | 'ZH'
         | 'TR'
-        | 'PT';
+        | 'PT'
+        | 'HE';
 
       /**
        * How reliable the persona's memory is
@@ -284,6 +297,31 @@ export namespace SimulationJobGetByIDResponse {
       speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
 
       /**
+       * Languages the persona can understand. Multilingual combinations are limited by
+       * multilingual speech recognition support.
+       */
+      understoodLanguages: Array<
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE'
+      >;
+
+      /**
        * Last update timestamp
        */
       updatedAt: string;
@@ -302,6 +340,24 @@ export namespace SimulationJobGetByIDResponse {
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
+    }
+
+    export interface RunPlan {
+      /**
+       * Run plan ID
+       */
+      id: string;
+
+      /**
+       * Run plan name
+       */
+      name: string;
+
+      /**
+       * Run-plan-level variables resolved for this job, keyed by variable name. Values
+       * are stringified by their declared type.
+       */
+      variables: { [key: string]: string };
     }
 
     /**
@@ -350,6 +406,8 @@ export namespace SimulationJobLookupResponse {
      */
     processingStatus: string;
 
+    runPlan: Data.RunPlan;
+
     /**
      * Scenario used in a simulation
      */
@@ -411,7 +469,15 @@ export namespace SimulationJobLookupResponse {
       /**
        * Agent endpoint type
        */
-      type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
+      type:
+        | 'PHONE'
+        | 'WEBSOCKET'
+        | 'LIVEKIT'
+        | 'SMALL_WEBRTC'
+        | 'ELEVENLABS_WS'
+        | 'KORE'
+        | 'GOOGLE_CES'
+        | 'DAILY';
     }
 
     export interface Persona {
@@ -446,7 +512,8 @@ export namespace SimulationJobLookupResponse {
         | 'MY'
         | 'HK'
         | 'TR'
-        | 'PT';
+        | 'PT'
+        | 'IL';
 
       /**
        * Background noise setting
@@ -497,9 +564,10 @@ export namespace SimulationJobLookupResponse {
       idleMessageResetCountOnUserSpeechEnabled: boolean;
 
       /**
-       * Messages the persona will say when the agent goes silent during a call
+       * Messages the persona will say when the agent goes silent during a call. null =
+       * "Automatic": language-appropriate defaults are used at call time.
        */
-      idleMessages: Array<string>;
+      idleMessages: Array<string> | null;
 
       /**
        * Seconds of silence before the persona sends an idle message
@@ -531,7 +599,8 @@ export namespace SimulationJobLookupResponse {
         | 'MS'
         | 'ZH'
         | 'TR'
-        | 'PT';
+        | 'PT'
+        | 'HE';
 
       /**
        * How reliable the persona's memory is
@@ -565,6 +634,31 @@ export namespace SimulationJobLookupResponse {
       speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
 
       /**
+       * Languages the persona can understand. Multilingual combinations are limited by
+       * multilingual speech recognition support.
+       */
+      understoodLanguages: Array<
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE'
+      >;
+
+      /**
        * Last update timestamp
        */
       updatedAt: string;
@@ -583,6 +677,24 @@ export namespace SimulationJobLookupResponse {
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
+    }
+
+    export interface RunPlan {
+      /**
+       * Run plan ID
+       */
+      id: string;
+
+      /**
+       * Run plan name
+       */
+      name: string;
+
+      /**
+       * Run-plan-level variables resolved for this job, keyed by variable name. Values
+       * are stringified by their declared type.
+       */
+      variables: { [key: string]: string };
     }
 
     /**

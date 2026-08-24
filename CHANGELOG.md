@@ -1,5 +1,40 @@
 # Changelog
 
+## 2.32.0 (2026-08-24)
+
+Full Changelog: [v2.31.0...v2.32.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.31.0...v2.32.0)
+
+### Features
+
+* **api:** api update ([4d65815](https://github.com/roarkhq/sdk-roark-analytics-node/commit/4d65815a37e975394e6b06207feb99d018fd5ebb))
+* **api:** api update ([13f4dbc](https://github.com/roarkhq/sdk-roark-analytics-node/commit/13f4dbc1f5360c5f0a945e51da3bc6a3056da255))
+* **api:** api update ([0fcaedd](https://github.com/roarkhq/sdk-roark-analytics-node/commit/0fcaedd5a0a9cc1a7b7997a5eb2480aa7dd9c0d3))
+* **api:** api update ([316c48a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/316c48a6c3416bda4b67ef3084e48b41ca3ee11f))
+* **api:** api update ([355be37](https://github.com/roarkhq/sdk-roark-analytics-node/commit/355be3758e00980c3f2f0167fce64ff840795408))
+* **api:** api update ([d96e1d2](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d96e1d2d75047dfa0caf2efb6ab33911b9b37ac8))
+* **api:** api update ([dddb407](https://github.com/roarkhq/sdk-roark-analytics-node/commit/dddb407765785379c838041444a4b08965667e27))
+* **api:** api update ([924d296](https://github.com/roarkhq/sdk-roark-analytics-node/commit/924d296a2c6dccff2d2bcdf2a9288bd4b3cf3a4f))
+* **api:** api update ([4d6ced2](https://github.com/roarkhq/sdk-roark-analytics-node/commit/4d6ced281e761c64c9a91a5a5d905f392230702e))
+* **api:** api update ([4cca58e](https://github.com/roarkhq/sdk-roark-analytics-node/commit/4cca58ed8975cd0f4adf0d06c2cf726a7f30151b))
+* **api:** api update ([7db1fb1](https://github.com/roarkhq/sdk-roark-analytics-node/commit/7db1fb185352ffdb9932d88d2effc9f64f817a35))
+* **api:** api update ([d5a81e3](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d5a81e3c5eb679a334fc7e86812f295949ac094a))
+* **api:** api update ([c32df22](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c32df2212f21bd2b890bec35cfdadfa386ffd4da))
+* **api:** api update ([b8723cd](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b8723cd26e8a0790ef7ef2a17f79203e75a77bfa))
+* **api:** api update ([c370ee7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c370ee72d758a6b7137df79d2e201f185a1c01f7))
+* **api:** api update ([f098de2](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f098de2f835df3833fba7a5ceb794de4524f0880))
+* **api:** api update ([f5aa60c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/f5aa60ced2ba1e578f4cdaca9e626b4841a95b7c))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([9df8cb7](https://github.com/roarkhq/sdk-roark-analytics-node/commit/9df8cb76d8da1c4ba6859d092003b078bad9f00c))
+
+
+### Bug Fixes
+
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([4fa03e0](https://github.com/roarkhq/sdk-roark-analytics-node/commit/4fa03e0e073a8dc5cb5c3acaec322cfd9b7499a7))
+
+
+### Chores
+
+* **internal:** allow the mock server port to be set with STAINLESS_MOCK_PORT ([a002b55](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a002b55d539d196dab399cb69cf3065bd4446795))
+
 ## 2.31.0 (2026-04-28)
 
 Full Changelog: [v2.30.0...v2.31.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.30.0...v2.31.0)

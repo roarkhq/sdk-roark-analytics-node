@@ -26,7 +26,6 @@ export {
   type CallListResponse,
   type CallGetByIDResponse,
   type CallGetTranscriptResponse,
-  type CallListEvaluationRunsResponse,
   type CallListMetricsResponse,
   type CallListSentimentRunsResponse,
   type CallCreateParams,
@@ -34,6 +33,33 @@ export {
   type CallGetTranscriptParams,
   type CallListMetricsParams,
 } from './call';
+export {
+  CustomerFlow,
+  type FlowStep,
+  type CustomerFlowCreateResponse,
+  type CustomerFlowUpdateResponse,
+  type CustomerFlowListResponse,
+  type CustomerFlowDeleteResponse,
+  type CustomerFlowGetByIDResponse,
+  type CustomerFlowReplaceGraphResponse,
+  type CustomerFlowUpdateHappyPathResponse,
+  type CustomerFlowCreateParams,
+  type CustomerFlowUpdateParams,
+  type CustomerFlowListParams,
+  type CustomerFlowReplaceGraphParams,
+  type CustomerFlowUpdateHappyPathParams,
+} from './customer-flow';
+export {
+  CustomerFlowEdgeCase,
+  type CustomerFlowEdgeCaseUpdateResponse,
+  type CustomerFlowEdgeCaseAddResponse,
+  type CustomerFlowEdgeCasePromoteResponse,
+  type CustomerFlowEdgeCaseRemoveResponse,
+  type CustomerFlowEdgeCaseUpdateParams,
+  type CustomerFlowEdgeCaseAddParams,
+  type CustomerFlowEdgeCasePromoteParams,
+  type CustomerFlowEdgeCaseRemoveParams,
+} from './customer-flow-edge-case';
 export {
   HTTPRequestDefinition,
   type HTTPRequestDefinitionCreateResponse,
@@ -70,6 +96,13 @@ export {
   type MetricPolicyUpdateParams,
   type MetricPolicyListParams,
 } from './metric-policy';
+export { Simulation, type SimulationRunResponse, type SimulationRunParams } from './simulation';
+export {
+  SimulationEnvironment,
+  type SimulationEnvironmentListResponse,
+  type SimulationEnvironmentGetByIDResponse,
+  type SimulationEnvironmentListParams,
+} from './simulation-environment';
 export {
   SimulationJob,
   type SimulationJobGetByIDResponse,
@@ -105,17 +138,6 @@ export {
   type SimulationRunPlanJobListParams,
   type SimulationRunPlanJobStartParams,
 } from './simulation-run-plan-job';
-export {
-  SimulationScenario,
-  type SimulationScenarioCreateResponse,
-  type SimulationScenarioUpdateResponse,
-  type SimulationScenarioListResponse,
-  type SimulationScenarioDeleteResponse,
-  type SimulationScenarioGetByIDResponse,
-  type SimulationScenarioCreateParams,
-  type SimulationScenarioUpdateParams,
-  type SimulationScenarioListParams,
-} from './simulation-scenario';
 export {
   Webhook,
   type WebhookCreateResponse,

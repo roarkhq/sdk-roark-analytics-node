@@ -44,13 +44,39 @@ import {
   CallGetByIDResponse,
   CallGetTranscriptParams,
   CallGetTranscriptResponse,
-  CallListEvaluationRunsResponse,
   CallListMetricsParams,
   CallListMetricsResponse,
   CallListParams,
   CallListResponse,
   CallListSentimentRunsResponse,
 } from './resources/call';
+import {
+  CustomerFlow,
+  CustomerFlowCreateParams,
+  CustomerFlowCreateResponse,
+  CustomerFlowDeleteResponse,
+  CustomerFlowGetByIDResponse,
+  CustomerFlowListParams,
+  CustomerFlowListResponse,
+  CustomerFlowReplaceGraphParams,
+  CustomerFlowReplaceGraphResponse,
+  CustomerFlowUpdateHappyPathParams,
+  CustomerFlowUpdateHappyPathResponse,
+  CustomerFlowUpdateParams,
+  CustomerFlowUpdateResponse,
+  FlowStep,
+} from './resources/customer-flow';
+import {
+  CustomerFlowEdgeCase,
+  CustomerFlowEdgeCaseAddParams,
+  CustomerFlowEdgeCaseAddResponse,
+  CustomerFlowEdgeCasePromoteParams,
+  CustomerFlowEdgeCasePromoteResponse,
+  CustomerFlowEdgeCaseRemoveParams,
+  CustomerFlowEdgeCaseRemoveResponse,
+  CustomerFlowEdgeCaseUpdateParams,
+  CustomerFlowEdgeCaseUpdateResponse,
+} from './resources/customer-flow-edge-case';
 import { Health, HealthGetResponse } from './resources/health';
 import {
   HTTPRequestDefinition,
@@ -87,6 +113,13 @@ import {
   MetricPolicyUpdateParams,
   MetricPolicyUpdateResponse,
 } from './resources/metric-policy';
+import { Simulation, SimulationRunParams, SimulationRunResponse } from './resources/simulation';
+import {
+  SimulationEnvironment,
+  SimulationEnvironmentGetByIDResponse,
+  SimulationEnvironmentListParams,
+  SimulationEnvironmentListResponse,
+} from './resources/simulation-environment';
 import {
   SimulationJob,
   SimulationJobGetByIDResponse,
@@ -122,17 +155,6 @@ import {
   SimulationRunPlanJobStartParams,
   SimulationRunPlanJobStartResponse,
 } from './resources/simulation-run-plan-job';
-import {
-  SimulationScenario,
-  SimulationScenarioCreateParams,
-  SimulationScenarioCreateResponse,
-  SimulationScenarioDeleteResponse,
-  SimulationScenarioGetByIDResponse,
-  SimulationScenarioListParams,
-  SimulationScenarioListResponse,
-  SimulationScenarioUpdateParams,
-  SimulationScenarioUpdateResponse,
-} from './resources/simulation-scenario';
 import {
   Webhook,
   WebhookCreateParams,
@@ -291,6 +313,18 @@ export class Roark {
     this.maxRetries = options.maxRetries ?? 2;
     this.fetch = options.fetch ?? Shims.getDefaultFetch();
     this.#encoder = Opts.FallbackEncoder;
+
+    const customHeadersEnv = readEnv('ROARK_CUSTOM_HEADERS');
+    if (customHeadersEnv) {
+      const parsed: Record<string, string> = {};
+      for (const line of customHeadersEnv.split('\n')) {
+        const colon = line.indexOf(':');
+        if (colon >= 0) {
+          parsed[line.substring(0, colon).trim()] = line.substring(colon + 1).trim();
+        }
+      }
+      options.defaultHeaders = { ...parsed, ...options.defaultHeaders };
+    }
 
     this._options = options;
 
@@ -775,11 +809,19 @@ export class Roark {
     return () => controller.abort();
   }
 
-  private buildBody({ options: { body, headers: rawHeaders } }: { options: FinalRequestOptions }): {
+  private buildBody({ options }: { options: FinalRequestOptions }): {
     bodyHeaders: HeadersLike;
     body: BodyInit | undefined;
   } {
+    const { body, headers: rawHeaders } = options;
     if (!body) {
+      // A resource method always passes a `body` key when its operation defines a
+      // request body, even if the caller omitted an optional body param. Keep the
+      // content-type for those, and only elide it for operations with no body at
+      // all (e.g. GET/DELETE).
+      if (body == null && 'body' in options) {
+        return this.#encoder({ body, headers: buildHeaders([rawHeaders]) });
+      }
       return { bodyHeaders: undefined, body: undefined };
     }
     const headers = buildHeaders([rawHeaders]);
@@ -844,11 +886,14 @@ export class Roark {
   metric: API.Metric = new API.Metric(this);
   metricPolicy: API.MetricPolicy = new API.MetricPolicy(this);
   metricCollectionJob: API.MetricCollectionJob = new API.MetricCollectionJob(this);
+  simulation: API.Simulation = new API.Simulation(this);
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
-  simulationScenario: API.SimulationScenario = new API.SimulationScenario(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
+  simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
+  customerFlow: API.CustomerFlow = new API.CustomerFlow(this);
+  customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
   agent: API.Agent = new API.Agent(this);
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
@@ -860,11 +905,14 @@ Roark.Call = Call;
 Roark.Metric = Metric;
 Roark.MetricPolicy = MetricPolicy;
 Roark.MetricCollectionJob = MetricCollectionJob;
+Roark.Simulation = Simulation;
 Roark.SimulationJob = SimulationJob;
 Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
-Roark.SimulationScenario = SimulationScenario;
 Roark.SimulationPersona = SimulationPersona;
+Roark.SimulationEnvironment = SimulationEnvironment;
+Roark.CustomerFlow = CustomerFlow;
+Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
 Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
@@ -881,7 +929,6 @@ export declare namespace Roark {
     type CallListResponse as CallListResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
     type CallGetTranscriptResponse as CallGetTranscriptResponse,
-    type CallListEvaluationRunsResponse as CallListEvaluationRunsResponse,
     type CallListMetricsResponse as CallListMetricsResponse,
     type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
     type CallCreateParams as CallCreateParams,
@@ -919,6 +966,12 @@ export declare namespace Roark {
   };
 
   export {
+    Simulation as Simulation,
+    type SimulationRunResponse as SimulationRunResponse,
+    type SimulationRunParams as SimulationRunParams,
+  };
+
+  export {
     SimulationJob as SimulationJob,
     type SimulationJobGetByIDResponse as SimulationJobGetByIDResponse,
     type SimulationJobLookupResponse as SimulationJobLookupResponse,
@@ -947,18 +1000,6 @@ export declare namespace Roark {
   };
 
   export {
-    SimulationScenario as SimulationScenario,
-    type SimulationScenarioCreateResponse as SimulationScenarioCreateResponse,
-    type SimulationScenarioUpdateResponse as SimulationScenarioUpdateResponse,
-    type SimulationScenarioListResponse as SimulationScenarioListResponse,
-    type SimulationScenarioDeleteResponse as SimulationScenarioDeleteResponse,
-    type SimulationScenarioGetByIDResponse as SimulationScenarioGetByIDResponse,
-    type SimulationScenarioCreateParams as SimulationScenarioCreateParams,
-    type SimulationScenarioUpdateParams as SimulationScenarioUpdateParams,
-    type SimulationScenarioListParams as SimulationScenarioListParams,
-  };
-
-  export {
     SimulationPersona as SimulationPersona,
     type SimulationPersonaCreateResponse as SimulationPersonaCreateResponse,
     type SimulationPersonaUpdateResponse as SimulationPersonaUpdateResponse,
@@ -967,6 +1008,42 @@ export declare namespace Roark {
     type SimulationPersonaCreateParams as SimulationPersonaCreateParams,
     type SimulationPersonaUpdateParams as SimulationPersonaUpdateParams,
     type SimulationPersonaListParams as SimulationPersonaListParams,
+  };
+
+  export {
+    SimulationEnvironment as SimulationEnvironment,
+    type SimulationEnvironmentListResponse as SimulationEnvironmentListResponse,
+    type SimulationEnvironmentGetByIDResponse as SimulationEnvironmentGetByIDResponse,
+    type SimulationEnvironmentListParams as SimulationEnvironmentListParams,
+  };
+
+  export {
+    CustomerFlow as CustomerFlow,
+    type FlowStep as FlowStep,
+    type CustomerFlowCreateResponse as CustomerFlowCreateResponse,
+    type CustomerFlowUpdateResponse as CustomerFlowUpdateResponse,
+    type CustomerFlowListResponse as CustomerFlowListResponse,
+    type CustomerFlowDeleteResponse as CustomerFlowDeleteResponse,
+    type CustomerFlowGetByIDResponse as CustomerFlowGetByIDResponse,
+    type CustomerFlowReplaceGraphResponse as CustomerFlowReplaceGraphResponse,
+    type CustomerFlowUpdateHappyPathResponse as CustomerFlowUpdateHappyPathResponse,
+    type CustomerFlowCreateParams as CustomerFlowCreateParams,
+    type CustomerFlowUpdateParams as CustomerFlowUpdateParams,
+    type CustomerFlowListParams as CustomerFlowListParams,
+    type CustomerFlowReplaceGraphParams as CustomerFlowReplaceGraphParams,
+    type CustomerFlowUpdateHappyPathParams as CustomerFlowUpdateHappyPathParams,
+  };
+
+  export {
+    CustomerFlowEdgeCase as CustomerFlowEdgeCase,
+    type CustomerFlowEdgeCaseUpdateResponse as CustomerFlowEdgeCaseUpdateResponse,
+    type CustomerFlowEdgeCaseAddResponse as CustomerFlowEdgeCaseAddResponse,
+    type CustomerFlowEdgeCasePromoteResponse as CustomerFlowEdgeCasePromoteResponse,
+    type CustomerFlowEdgeCaseRemoveResponse as CustomerFlowEdgeCaseRemoveResponse,
+    type CustomerFlowEdgeCaseUpdateParams as CustomerFlowEdgeCaseUpdateParams,
+    type CustomerFlowEdgeCaseAddParams as CustomerFlowEdgeCaseAddParams,
+    type CustomerFlowEdgeCasePromoteParams as CustomerFlowEdgeCasePromoteParams,
+    type CustomerFlowEdgeCaseRemoveParams as CustomerFlowEdgeCaseRemoveParams,
   };
 
   export {

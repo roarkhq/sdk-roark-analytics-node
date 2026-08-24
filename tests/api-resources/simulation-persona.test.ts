@@ -51,6 +51,7 @@ describe('resource simulationPersona', () => {
       secondaryLanguage: 'EN',
       speechClarity: 'CLEAR',
       speechPace: 'SUPER_SLOW',
+      understoodLanguages: ['EN'],
     });
   });
 
@@ -96,6 +97,7 @@ describe('resource simulationPersona', () => {
           secondaryLanguage: 'EN',
           speechClarity: 'CLEAR',
           speechPace: 'SUPER_SLOW',
+          understoodLanguages: ['EN'],
         },
         { path: '/_stainless_unknown_path' },
       ),

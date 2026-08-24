@@ -39,15 +39,14 @@ export class SimulationRunPlanJob extends APIResource {
   }
 
   /**
-   * Create and execute a job for an existing simulation run plan. Optionally provide
-   * runtime variables to override plan-defined variables.
+   * Deprecated: use POST /v1/simulation/run, which does the same thing and can also
+   * take the plan configuration inline, so a one-off run does not have to create a
+   * plan first.
    *
-   * @example
-   * ```ts
-   * const response = await client.simulationRunPlanJob.start(
-   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
-   * );
-   * ```
+   * Creates and executes a job for an existing simulation run plan. Optionally
+   * provide runtime variables to override plan-defined variables.
+   *
+   * @deprecated
    */
   start(
     planID: unknown,
@@ -92,6 +91,7 @@ export namespace SimulationRunPlanJobListResponse {
       | 'QUEUED'
       | 'CREATING_SNAPSHOTS'
       | 'CREATING_SIMULATIONS'
+      | 'PREPARING_CAPACITY'
       | 'RUNNING_SIMULATIONS'
       | 'COMPLETED'
       | 'FAILED'
@@ -102,9 +102,11 @@ export namespace SimulationRunPlanJobListResponse {
 
     /**
      * How the job was triggered (SCHEDULED, USER_TRIGGERED_FROM_UI,
-     * TRIGGERED_FROM_API, or RE_RUN)
+     * TRIGGERED_FROM_API, RE_RUN, or SYSTEM). SYSTEM is used when the job was started
+     * by an internal admin acting on behalf of the project (the original user identity
+     * is not exposed).
      */
-    triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API';
+    triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API' | 'SYSTEM';
 
     /**
      * When the job ended
@@ -175,6 +177,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       | 'QUEUED'
       | 'CREATING_SNAPSHOTS'
       | 'CREATING_SIMULATIONS'
+      | 'PREPARING_CAPACITY'
       | 'RUNNING_SIMULATIONS'
       | 'COMPLETED'
       | 'FAILED'
@@ -209,14 +212,16 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       persona: SimulationJob.Persona;
 
       /**
-       * Processing status
+       * Processing status. PENDING until the job starts connecting.
        */
       processingStatus:
+        | 'PENDING'
         | 'CONNECTING'
         | 'WAITING_FOR_OUTBOUND_CALL'
         | 'SIMULATING'
         | 'ENDING'
         | 'ANALYZING'
+        | 'WAITING_FOR_LIVE_CONVERSATION'
         | 'EVALUATING'
         | 'COLLECTING_METRICS'
         | 'COMPLETED';
@@ -290,7 +295,15 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         /**
          * Agent endpoint type
          */
-        type: 'PHONE' | 'WEBSOCKET' | 'LIVEKIT' | 'SMALL_WEBRTC' | 'ELEVENLABS_WS' | 'KORE' | 'GOOGLE_CES';
+        type:
+          | 'PHONE'
+          | 'WEBSOCKET'
+          | 'LIVEKIT'
+          | 'SMALL_WEBRTC'
+          | 'ELEVENLABS_WS'
+          | 'KORE'
+          | 'GOOGLE_CES'
+          | 'DAILY';
       }
 
       export interface Persona {
@@ -325,7 +338,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'MY'
           | 'HK'
           | 'TR'
-          | 'PT';
+          | 'PT'
+          | 'IL';
 
         /**
          * Background noise setting
@@ -383,9 +397,10 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         idleMessageResetCountOnUserSpeechEnabled: boolean;
 
         /**
-         * Messages the persona will say when the agent goes silent during a call
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
          */
-        idleMessages: Array<string>;
+        idleMessages: Array<string> | null;
 
         /**
          * Seconds of silence before the persona sends an idle message
@@ -417,7 +432,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'MS'
           | 'ZH'
           | 'TR'
-          | 'PT';
+          | 'PT'
+          | 'HE';
 
         /**
          * How reliable the persona's memory is
@@ -449,6 +465,31 @@ export namespace SimulationRunPlanJobGetByIDResponse {
          * Speech pace of the persona
          */
         speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
 
         /**
          * Last update timestamp
@@ -524,6 +565,7 @@ export namespace SimulationRunPlanJobStartResponse {
       | 'QUEUED'
       | 'CREATING_SNAPSHOTS'
       | 'CREATING_SIMULATIONS'
+      | 'PREPARING_CAPACITY'
       | 'RUNNING_SIMULATIONS'
       | 'COMPLETED'
       | 'FAILED'
@@ -562,15 +604,16 @@ export interface SimulationRunPlanJobListParams {
   simulationRunPlanId?: string;
 
   /**
-   * Filter by plan job status (PENDING, CREATING_SNAPSHOTS, CREATING_SIMULATIONS,
-   * RUNNING_SIMULATIONS, ENDING_SIMULATIONS, COMPLETED, FAILED, TIMED_OUT,
-   * CANCELLED, CANCELLING)
+   * Filter by plan job status (PENDING, QUEUED, CREATING_SNAPSHOTS,
+   * CREATING_SIMULATIONS, PREPARING_CAPACITY, RUNNING_SIMULATIONS, COMPLETED,
+   * FAILED, TIMED_OUT, CANCELLED, CANCELLING, ENDING_SIMULATIONS)
    */
   status?:
     | 'PENDING'
     | 'QUEUED'
     | 'CREATING_SNAPSHOTS'
     | 'CREATING_SIMULATIONS'
+    | 'PREPARING_CAPACITY'
     | 'RUNNING_SIMULATIONS'
     | 'COMPLETED'
     | 'FAILED'
@@ -582,21 +625,60 @@ export interface SimulationRunPlanJobListParams {
 
 export interface SimulationRunPlanJobStartParams {
   /**
-   * Runtime variables that override plan-defined scenario variables. Accepts one of
-   * two formats:
+   * Values for the {{variables}} the run resolves, overriding whatever the plan has
+   * pinned.
    *
-   * Option 1 — Global (flat key-value object, applies to ALL scenarios): {
-   * "orderNumber": "12345", "environment": "staging" }
+   * An object applies them to the whole run:
    *
-   * Option 2 — Per-scenario (array of objects with scenarioId + variables): [ {
-   * "scenarioId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
-   * "scenarioId": "7a3d2e1f-...", "variables": { "orderNumber": "67890" } } ]
+   * { "orderNumber": "12345", "tier": "gold" }
+   *
+   * An array applies them per flow, or to just its happy path or one of its edge
+   * cases, when a single set will not do. Each entry carries what it applies to:
+   *
+   * [ { "flowId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
+   * "flowId": "550e8400-...", "happyPath": true, "variables": { "orderNumber":
+   * "55555" } }, { "flowId": "550e8400-...", "edgeCaseId": "7a3d2e1f-...",
+   * "variables": { "orderNumber": "67890" } } ]
+   *
+   * An entry that narrows to neither covers everything that flow resolves. A flow
+   * this plan does not attach, or an edge case that does not belong to the flow, is
+   * rejected rather than ignored.
+   *
+   * A plan built on scenarios rather than customer flows targets them the same way,
+   * with `scenarioId` in place of `flowId`. That form is deprecated alongside
+   * scenarios themselves, and still accepted so runs against those plans keep
+   * working.
    */
-  variables?: { [key: string]: string } | Array<SimulationRunPlanJobStartParams.UnionMember1>;
+  variables?:
+    | { [key: string]: string }
+    | Array<SimulationRunPlanJobStartParams.UnionMember1>
+    | Array<SimulationRunPlanJobStartParams.UnionMember2>;
 }
 
 export namespace SimulationRunPlanJobStartParams {
   export interface UnionMember1 {
+    /**
+     * A customer flow this plan runs.
+     */
+    flowId: string;
+
+    /**
+     * The values to apply.
+     */
+    variables: { [key: string]: string };
+
+    /**
+     * Narrow to one edge case of that flow.
+     */
+    edgeCaseId?: string;
+
+    /**
+     * Narrow to the flow's happy path.
+     */
+    happyPath?: true;
+  }
+
+  export interface UnionMember2 {
     /**
      * ID of the scenario to apply variables to
      */

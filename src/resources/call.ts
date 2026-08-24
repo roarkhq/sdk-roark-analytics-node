@@ -43,15 +43,13 @@ export class Call extends APIResource {
   }
 
   /**
-   * Fetch all evaluation run results for a specific call.
-   */
-  listEvaluationRuns(callID: string, options?: RequestOptions): APIPromise<CallListEvaluationRunsResponse> {
-    return this._client.get(path`/v1/call/${callID}/evaluation-run`, options);
-  }
-
-  /**
    * Fetch all call-level metrics for a specific call, including both
-   * system-generated and custom metrics. Only returns successfully computed metrics.
+   * system-generated and custom metrics. Only returns rows from the **latest**
+   * metric-collection job per metric — if the same metric has been recomputed, prior
+   * runs are excluded and remain in the metric history. By default returns only
+   * successfully computed metrics; pass `?status=all` to also include rows that
+   * resolved as NOT_APPLICABLE / DATA_MISSING / ERROR (the `value` field is omitted
+   * on those entries — check `captureStatus`).
    */
   listMetrics(
     callID: string,
@@ -97,6 +95,8 @@ export namespace CallCreateResponse {
     createdAt: string | null;
 
     customers: Array<Data.Customer> | null;
+
+    externalId: string | null;
 
     /**
      * ID of the project this call belongs to
@@ -163,6 +163,14 @@ export namespace CallListResponse {
     projectId: string;
 
     /**
+     * Indicates the status of `recordingUrl`. `AVAILABLE`: signed URL returned.
+     * `NOT_AVAILABLE`: no recording on file yet (e.g. still processing). `RESTRICTED`:
+     * the calling API key does not have the `recording:read` permission and the URL
+     * has been withheld.
+     */
+    recordingUrlAccess: 'AVAILABLE' | 'NOT_AVAILABLE' | 'RESTRICTED';
+
+    /**
      * Timestamp when the call started
      */
     startedAt: string;
@@ -216,6 +224,12 @@ export namespace CallListResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * Caller-supplied correlation ID echoed back from the create request, if any was
+     * provided
+     */
+    externalId?: string | null;
 
     /**
      * IDs of metric policies that have been applied to this call
@@ -333,6 +347,14 @@ export namespace CallGetByIDResponse {
     projectId: string;
 
     /**
+     * Indicates the status of `recordingUrl`. `AVAILABLE`: signed URL returned.
+     * `NOT_AVAILABLE`: no recording on file yet (e.g. still processing). `RESTRICTED`:
+     * the calling API key does not have the `recording:read` permission and the URL
+     * has been withheld.
+     */
+    recordingUrlAccess: 'AVAILABLE' | 'NOT_AVAILABLE' | 'RESTRICTED';
+
+    /**
      * Timestamp when the call started
      */
     startedAt: string;
@@ -386,6 +408,12 @@ export namespace CallGetByIDResponse {
       | 'MAX_DURATION_REACHED'
       | 'UNKNOWN'
       | null;
+
+    /**
+     * Caller-supplied correlation ID echoed back from the create request, if any was
+     * provided
+     */
+    externalId?: string | null;
 
     /**
      * IDs of metric policies that have been applied to this call
@@ -584,194 +612,6 @@ export namespace CallGetTranscriptResponse {
   }
 }
 
-export interface CallListEvaluationRunsResponse {
-  /**
-   * Evaluation run response payload
-   */
-  data: Array<CallListEvaluationRunsResponse.Data>;
-}
-
-export namespace CallListEvaluationRunsResponse {
-  export interface Data {
-    /**
-     * All block runs for this evaluator, including skipped ones
-     */
-    blockRuns: Array<Data.BlockRun>;
-
-    evaluator: Data.Evaluator;
-
-    evidence: Array<Data.Evidence>;
-
-    metrics: Array<Data.Metric>;
-
-    /**
-     * Status of the evaluator run
-     */
-    status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
-
-    /**
-     * ID of the evaluator run
-     */
-    id?: string;
-
-    /**
-     * When the evaluator run completed
-     */
-    completedAt?: string | null;
-
-    /**
-     * Result of the evaluator run based on score threshold (IRRELEVANT is mapped to
-     * SKIPPED)
-     */
-    result?: 'SUCCESS' | 'FAILURE' | 'SKIPPED' | null;
-
-    /**
-     * Score of the evaluation run (0-1)
-     */
-    score?: number | null;
-
-    /**
-     * When the evaluator run started
-     */
-    startedAt?: string | null;
-
-    /**
-     * Summary of the evaluation run
-     */
-    summary?: string | null;
-  }
-
-  export namespace Data {
-    export interface BlockRun {
-      /**
-       * ID of the block definition
-       */
-      blockDefinitionId: string;
-
-      /**
-       * Name of the evaluation block
-       */
-      blockName: string;
-
-      /**
-       * ID of the block run instance
-       */
-      blockRunId: string;
-
-      /**
-       * When the block run was created
-       */
-      createdAt: string;
-
-      /**
-       * Reason for the outcome (pass/fail explanation or skip reason)
-       */
-      reason: string | null;
-
-      /**
-       * Result of the block run
-       */
-      result: 'PASSED' | 'FAILED' | 'SKIPPED' | null;
-
-      /**
-       * Score of the block run (0-1)
-       */
-      score: number | null;
-
-      /**
-       * Status of the block run
-       */
-      status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED';
-    }
-
-    export interface Evaluator {
-      /**
-       * ID of the evaluator
-       */
-      id: string;
-
-      /**
-       * Name of the evaluator
-       */
-      name: string;
-
-      /**
-       * Weight of the evaluator
-       */
-      weight?: number;
-    }
-
-    export interface Evidence {
-      /**
-       * Comment text of the evidence
-       */
-      commentText: string | null;
-
-      /**
-       * Created at of the evidence
-       */
-      createdAt: string;
-
-      /**
-       * Is positive of the evidence
-       */
-      isPositive: boolean;
-
-      /**
-       * Snippet text of the evidence
-       */
-      snippetText: string;
-    }
-
-    export interface Metric {
-      /**
-       * Boolean value of the metric
-       */
-      booleanValue: boolean | null;
-
-      /**
-       * Confidence level of the metric (0-1)
-       */
-      confidence: number | null;
-
-      /**
-       * Created at of the metric
-       */
-      createdAt: string;
-
-      /**
-       * Name of the metric
-       */
-      name: string;
-
-      /**
-       * Numeric value of the metric
-       */
-      numericValue: number | null;
-
-      /**
-       * Reasoning of the metric
-       */
-      reasoning: string | null;
-
-      /**
-       * Role of the metric
-       */
-      role: string;
-
-      /**
-       * Text value of the metric
-       */
-      textValue: string | null;
-
-      /**
-       * Value type of the metric
-       */
-      valueType: string;
-    }
-  }
-}
-
 export interface CallListMetricsResponse {
   /**
    * Conversation metrics response payload grouped by metric definition
@@ -795,7 +635,7 @@ export namespace CallListMetricsResponse {
     metricDefinitionId: string;
 
     /**
-     * Stable metric identifier
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
      */
     metricId: string;
 
@@ -810,6 +650,11 @@ export namespace CallListMetricsResponse {
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
 
     /**
+     * Stable metric slug
+     */
+    slug: string;
+
+    /**
      * Type of value this metric produces
      */
     type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
@@ -818,7 +663,7 @@ export namespace CallListMetricsResponse {
      * Array of metric values (multiple for PER_PARTICIPANT metrics, or multiple
      * segments/turns)
      */
-    values: Array<Data.Value>;
+    values: Array<Data.StandardMetricValue | Data.PropertyVerificationMetricValue>;
 
     /**
      * Unit information if applicable
@@ -827,17 +672,21 @@ export namespace CallListMetricsResponse {
   }
 
   export namespace Data {
-    export interface Value {
+    /**
+     * A metric value entry. Applies to every metric.
+     */
+    export interface StandardMetricValue {
+      /**
+       * Result state of this metric computation. SUCCESS carries a real `value`;
+       * NOT_APPLICABLE / DATA_MISSING / ERROR do not (the `value` field is omitted).
+       * Non-SUCCESS rows only appear when the request includes ?status=all.
+       */
+      captureStatus: 'SUCCESS' | 'NOT_APPLICABLE' | 'DATA_MISSING' | 'ERROR';
+
       /**
        * ISO 8601 timestamp when the metric was computed
        */
       computedAt: string;
-
-      /**
-       * Confidence score (0-1) for the computed value. Defaults to 1.0 for deterministic
-       * metrics.
-       */
-      confidence: number;
 
       /**
        * Context level: CALL (entire conversation), SEGMENT (single segment),
@@ -846,14 +695,33 @@ export namespace CallListMetricsResponse {
       context: 'CALL' | 'SEGMENT' | 'SEGMENT_RANGE';
 
       /**
-       * The metric value (type depends on outputType)
+       * ID of the call this value was computed on. Only set when the response spans
+       * multiple conversations (e.g. job-scoped metric values).
        */
-      value: number | boolean | string;
+      callId?: string;
+
+      /**
+       * ID of the chat this value was computed on. Only set when the response spans
+       * multiple conversations (e.g. job-scoped metric values).
+       */
+      chatId?: string;
+
+      /**
+       * Confidence score (0-1) for the computed value. Defaults to 1.0 for deterministic
+       * metrics. Omitted on non-SUCCESS rows.
+       */
+      confidence?: number;
+
+      /**
+       * Error detail when captureStatus is ERROR — e.g. provider down, LLM timeout.
+       * Undefined for other statuses.
+       */
+      errorMessage?: string;
 
       /**
        * Starting segment information (for SEGMENT_RANGE context metrics)
        */
-      fromSegment?: Value.FromSegment;
+      fromSegment?: StandardMetricValue.FromSegment;
 
       /**
        * Role of participant (only for PER_PARTICIPANT metrics)
@@ -868,12 +736,18 @@ export namespace CallListMetricsResponse {
       /**
        * Segment information (for SEGMENT context metrics)
        */
-      segment?: Value.Segment;
+      segment?: StandardMetricValue.Segment;
 
       /**
        * Ending segment information (for SEGMENT_RANGE context metrics)
        */
-      toSegment?: Value.ToSegment;
+      toSegment?: StandardMetricValue.ToSegment;
+
+      /**
+       * The metric value (type depends on outputType). Present only on SUCCESS rows;
+       * omitted for NOT_APPLICABLE / DATA_MISSING / ERROR.
+       */
+      value?: number | boolean | string;
 
       /**
        * Explanation for the metric value (especially useful for AI-computed metrics)
@@ -881,7 +755,7 @@ export namespace CallListMetricsResponse {
       valueReasoning?: string;
     }
 
-    export namespace Value {
+    export namespace StandardMetricValue {
       /**
        * Starting segment information (for SEGMENT_RANGE context metrics)
        */
@@ -905,6 +779,237 @@ export namespace CallListMetricsResponse {
          * Segment text content
          */
         text: string;
+      }
+
+      /**
+       * Segment information (for SEGMENT context metrics)
+       */
+      export interface Segment {
+        /**
+         * Segment ID
+         */
+        id: string;
+
+        /**
+         * End time offset in milliseconds
+         */
+        endOffsetMs: number;
+
+        /**
+         * Start time offset in milliseconds
+         */
+        startOffsetMs: number;
+
+        /**
+         * Segment text content
+         */
+        text: string;
+      }
+
+      /**
+       * Ending segment information (for SEGMENT_RANGE context metrics)
+       */
+      export interface ToSegment {
+        /**
+         * Segment ID
+         */
+        id: string;
+
+        /**
+         * End time offset in milliseconds
+         */
+        endOffsetMs: number;
+
+        /**
+         * Start time offset in milliseconds
+         */
+        startOffsetMs: number;
+
+        /**
+         * Segment text content
+         */
+        text: string;
+      }
+    }
+
+    /**
+     * Returned for the Property Mismatch metric (`property_transcript_mismatch`): the
+     * standard entry plus the per-property verdict breakdown.
+     */
+    export interface PropertyVerificationMetricValue {
+      /**
+       * Result state of this metric computation. SUCCESS carries a real `value`;
+       * NOT_APPLICABLE / DATA_MISSING / ERROR do not (the `value` field is omitted).
+       * Non-SUCCESS rows only appear when the request includes ?status=all.
+       */
+      captureStatus: 'SUCCESS' | 'NOT_APPLICABLE' | 'DATA_MISSING' | 'ERROR';
+
+      /**
+       * ISO 8601 timestamp when the metric was computed
+       */
+      computedAt: string;
+
+      /**
+       * Context level: CALL (entire conversation), SEGMENT (single segment),
+       * SEGMENT_RANGE (between/across segments)
+       */
+      context: 'CALL' | 'SEGMENT' | 'SEGMENT_RANGE';
+
+      /**
+       * ID of the call this value was computed on. Only set when the response spans
+       * multiple conversations (e.g. job-scoped metric values).
+       */
+      callId?: string;
+
+      /**
+       * ID of the chat this value was computed on. Only set when the response spans
+       * multiple conversations (e.g. job-scoped metric values).
+       */
+      chatId?: string;
+
+      /**
+       * Confidence score (0-1) for the computed value. Defaults to 1.0 for deterministic
+       * metrics. Omitted on non-SUCCESS rows.
+       */
+      confidence?: number;
+
+      /**
+       * Error detail when captureStatus is ERROR — e.g. provider down, LLM timeout.
+       * Undefined for other statuses.
+       */
+      errorMessage?: string;
+
+      /**
+       * Starting segment information (for SEGMENT_RANGE context metrics)
+       */
+      fromSegment?: PropertyVerificationMetricValue.FromSegment;
+
+      /**
+       * Role of participant (only for PER_PARTICIPANT metrics)
+       */
+      participantRole?: 'agent' | 'customer';
+
+      /**
+       * IDs of metric policies that triggered this metric computation
+       */
+      policyIds?: Array<string>;
+
+      /**
+       * Per-property verdicts for the Property Mismatch metric, in the order the
+       * properties were checked. Omitted for every other metric.
+       */
+      propertyVerdicts?: Array<PropertyVerificationMetricValue.PropertyVerdict>;
+
+      /**
+       * Segment information (for SEGMENT context metrics)
+       */
+      segment?: PropertyVerificationMetricValue.Segment;
+
+      /**
+       * Ending segment information (for SEGMENT_RANGE context metrics)
+       */
+      toSegment?: PropertyVerificationMetricValue.ToSegment;
+
+      /**
+       * The metric value (type depends on outputType). Present only on SUCCESS rows;
+       * omitted for NOT_APPLICABLE / DATA_MISSING / ERROR.
+       */
+      value?: number | boolean | string;
+
+      /**
+       * Explanation for the metric value (especially useful for AI-computed metrics)
+       */
+      valueReasoning?: string;
+    }
+
+    export namespace PropertyVerificationMetricValue {
+      /**
+       * Starting segment information (for SEGMENT_RANGE context metrics)
+       */
+      export interface FromSegment {
+        /**
+         * Segment ID
+         */
+        id: string;
+
+        /**
+         * End time offset in milliseconds
+         */
+        endOffsetMs: number;
+
+        /**
+         * Start time offset in milliseconds
+         */
+        startOffsetMs: number;
+
+        /**
+         * Segment text content
+         */
+        text: string;
+      }
+
+      export interface PropertyVerdict {
+        /**
+         * The value supplied at ingest, frozen at scoring time
+         */
+        expectedValue: string;
+
+        /**
+         * The call property checked, as sent at ingest
+         */
+        propertyName: string;
+
+        /**
+         * How this property resolved against the transcript. NOT_MENTIONED means the
+         * subject never came up and is not a mismatch.
+         */
+        verdict: 'MATCH' | 'MISMATCH' | 'NOT_MENTIONED';
+
+        /**
+         * What the transcript said instead. Only present when verdict is MISMATCH.
+         */
+        observedValue?: string;
+
+        /**
+         * Judge reasoning for this verdict
+         */
+        reasoning?: string;
+
+        /**
+         * The transcript segment this property was referred to in: the conflicting value
+         * for MISMATCH, the confirming reference for MATCH. Omitted for NOT_MENTIONED and
+         * when the verdict could not be anchored.
+         */
+        segment?: PropertyVerdict.Segment;
+      }
+
+      export namespace PropertyVerdict {
+        /**
+         * The transcript segment this property was referred to in: the conflicting value
+         * for MISMATCH, the confirming reference for MATCH. Omitted for NOT_MENTIONED and
+         * when the verdict could not be anchored.
+         */
+        export interface Segment {
+          /**
+           * Segment ID
+           */
+          id: string;
+
+          /**
+           * End time offset in milliseconds
+           */
+          endOffsetMs: number;
+
+          /**
+           * Start time offset in milliseconds
+           */
+          startOffsetMs: number;
+
+          /**
+           * Segment text content
+           */
+          text: string;
+        }
       }
 
       /**
@@ -1086,6 +1191,20 @@ export interface CallCreateParams {
     | 'UNKNOWN';
 
   /**
+   * A stable identifier from your own system (e.g. session ID, conversation ID) used
+   * to correlate this call with OpenTelemetry traces. Set the same value as a
+   * `roark.external_id` span or resource attribute on your traces and the matching
+   * trace will be linked automatically. Must be unique within a project.
+   */
+  externalId?: string;
+
+  /**
+   * The LiveKit Cloud room ID to link this call with OpenTelemetry trace data from
+   * LiveKit. Used for matching calls with OTEL traces.
+   */
+  livekitRoomId?: string;
+
+  /**
    * Custom properties to include with the call. These can be used for filtering and
    * will show in the call details page
    */
@@ -1106,6 +1225,12 @@ export interface CallCreateParams {
    * List of transcript entries made during the call
    */
   transcript?: Array<CallCreateParams.TranscriptEntryAgent | CallCreateParams.TranscriptEntryCustomer>;
+
+  /**
+   * The Vapi call ID (UUID) to link this call with OpenTelemetry trace data from
+   * Vapi. Used for matching calls with OTEL traces.
+   */
+  vapiCallId?: string;
 }
 
 export namespace CallCreateParams {
@@ -1567,8 +1692,14 @@ export namespace CallCreateParams {
      * the agents array this tool invocation belongs to
      */
     export interface Agent {
+      /**
+       * The custom ID set on the agent
+       */
       customId?: string;
 
+      /**
+       * The Roark ID of the agent
+       */
       roarkId?: string;
     }
   }
@@ -1582,15 +1713,31 @@ export namespace CallCreateParams {
 
     text: string;
 
+    /**
+     * Metadata about the agent that spoke this turn - used to match which agent from
+     * the `agents` array this transcript entry belongs to
+     */
     agent?: TranscriptEntryAgent.Agent;
 
     languageCode?: string;
+
+    payload?: { [key: string]: unknown } | null;
   }
 
   export namespace TranscriptEntryAgent {
+    /**
+     * Metadata about the agent that spoke this turn - used to match which agent from
+     * the `agents` array this transcript entry belongs to
+     */
     export interface Agent {
+      /**
+       * The custom ID set on the agent
+       */
       customId?: string;
 
+      /**
+       * The Roark ID of the agent
+       */
       roarkId?: string;
     }
   }
@@ -1611,6 +1758,8 @@ export namespace CallCreateParams {
     customer?: TranscriptEntryCustomer.Customer;
 
     languageCode?: string;
+
+    payload?: { [key: string]: unknown } | null;
   }
 
   export namespace TranscriptEntryCustomer {
@@ -1686,6 +1835,15 @@ export interface CallListMetricsParams {
    * false)
    */
   flatten?: string;
+
+  /**
+   * Filter metrics by capture status. `success` (default) returns only successfully
+   * computed metrics — backwards-compatible with the historical behavior. `all` also
+   * returns NOT_APPLICABLE / DATA_MISSING / ERROR rows (with `value` omitted), so
+   * clients can distinguish "still computing" from "computed but no value" and exit
+   * retry loops correctly.
+   */
+  status?: 'success' | 'all';
 }
 
 export declare namespace Call {
@@ -1694,7 +1852,6 @@ export declare namespace Call {
     type CallListResponse as CallListResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
     type CallGetTranscriptResponse as CallGetTranscriptResponse,
-    type CallListEvaluationRunsResponse as CallListEvaluationRunsResponse,
     type CallListMetricsResponse as CallListMetricsResponse,
     type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
     type CallCreateParams as CallCreateParams,

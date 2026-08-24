@@ -112,7 +112,8 @@ export namespace SimulationPersonaCreateResponse {
       | 'MY'
       | 'HK'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'IL';
 
     /**
      * Background noise setting
@@ -163,9 +164,10 @@ export namespace SimulationPersonaCreateResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -197,7 +199,8 @@ export namespace SimulationPersonaCreateResponse {
       | 'MS'
       | 'ZH'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'HE';
 
     /**
      * How reliable the persona's memory is
@@ -229,6 +232,31 @@ export namespace SimulationPersonaCreateResponse {
      * Speech pace of the persona
      */
     speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+    /**
+     * Languages the persona can understand. Multilingual combinations are limited by
+     * multilingual speech recognition support.
+     */
+    understoodLanguages: Array<
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT'
+      | 'HE'
+    >;
 
     /**
      * Last update timestamp
@@ -289,7 +317,8 @@ export namespace SimulationPersonaUpdateResponse {
       | 'MY'
       | 'HK'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'IL';
 
     /**
      * Background noise setting
@@ -340,9 +369,10 @@ export namespace SimulationPersonaUpdateResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -374,7 +404,8 @@ export namespace SimulationPersonaUpdateResponse {
       | 'MS'
       | 'ZH'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'HE';
 
     /**
      * How reliable the persona's memory is
@@ -406,6 +437,31 @@ export namespace SimulationPersonaUpdateResponse {
      * Speech pace of the persona
      */
     speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+    /**
+     * Languages the persona can understand. Multilingual combinations are limited by
+     * multilingual speech recognition support.
+     */
+    understoodLanguages: Array<
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT'
+      | 'HE'
+    >;
 
     /**
      * Last update timestamp
@@ -468,7 +524,8 @@ export namespace SimulationPersonaListResponse {
       | 'MY'
       | 'HK'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'IL';
 
     /**
      * Background noise setting
@@ -519,9 +576,10 @@ export namespace SimulationPersonaListResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -553,7 +611,8 @@ export namespace SimulationPersonaListResponse {
       | 'MS'
       | 'ZH'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'HE';
 
     /**
      * How reliable the persona's memory is
@@ -585,6 +644,31 @@ export namespace SimulationPersonaListResponse {
      * Speech pace of the persona
      */
     speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+    /**
+     * Languages the persona can understand. Multilingual combinations are limited by
+     * multilingual speech recognition support.
+     */
+    understoodLanguages: Array<
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT'
+      | 'HE'
+    >;
 
     /**
      * Last update timestamp
@@ -662,7 +746,8 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'MY'
       | 'HK'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'IL';
 
     /**
      * Background noise setting
@@ -713,9 +798,10 @@ export namespace SimulationPersonaGetByIDResponse {
     idleMessageResetCountOnUserSpeechEnabled: boolean;
 
     /**
-     * Messages the persona will say when the agent goes silent during a call
+     * Messages the persona will say when the agent goes silent during a call. null =
+     * "Automatic": language-appropriate defaults are used at call time.
      */
-    idleMessages: Array<string>;
+    idleMessages: Array<string> | null;
 
     /**
      * Seconds of silence before the persona sends an idle message
@@ -747,7 +833,8 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'MS'
       | 'ZH'
       | 'TR'
-      | 'PT';
+      | 'PT'
+      | 'HE';
 
     /**
      * How reliable the persona's memory is
@@ -779,6 +866,31 @@ export namespace SimulationPersonaGetByIDResponse {
      * Speech pace of the persona
      */
     speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+    /**
+     * Languages the persona can understand. Multilingual combinations are limited by
+     * multilingual speech recognition support.
+     */
+    understoodLanguages: Array<
+      | 'EN'
+      | 'ES'
+      | 'DE'
+      | 'HI'
+      | 'FR'
+      | 'NL'
+      | 'AR'
+      | 'EL'
+      | 'IT'
+      | 'ID'
+      | 'TH'
+      | 'JA'
+      | 'TL'
+      | 'MS'
+      | 'ZH'
+      | 'TR'
+      | 'PT'
+      | 'HE'
+    >;
 
     /**
      * Last update timestamp
@@ -829,7 +941,8 @@ export interface SimulationPersonaCreateParams {
     | 'MY'
     | 'HK'
     | 'TR'
-    | 'PT';
+    | 'PT'
+    | 'IL';
 
   /**
    * Gender of the persona
@@ -856,7 +969,8 @@ export interface SimulationPersonaCreateParams {
     | 'MS'
     | 'ZH'
     | 'TR'
-    | 'PT';
+    | 'PT'
+    | 'HE';
 
   /**
    * The name the agent will identify as during conversations
@@ -912,9 +1026,10 @@ export interface SimulationPersonaCreateParams {
   idleMessageResetCountOnUserSpeechEnabled?: boolean;
 
   /**
-   * Messages the persona will say when the agent goes silent during a call
+   * Messages the persona will say when the agent goes silent during a call. Defaults
+   * to language-appropriate phrases when omitted or sent as null.
    */
-  idleMessages?: Array<string>;
+  idleMessages?: Array<string> | null;
 
   /**
    * Seconds of silence before the persona sends an idle message
@@ -956,6 +1071,31 @@ export interface SimulationPersonaCreateParams {
    * Speech pace of the persona
    */
   speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+  /**
+   * Languages the persona can understand. Defaults to the languages the persona
+   * speaks.
+   */
+  understoodLanguages?: Array<
+    | 'EN'
+    | 'ES'
+    | 'DE'
+    | 'HI'
+    | 'FR'
+    | 'NL'
+    | 'AR'
+    | 'EL'
+    | 'IT'
+    | 'ID'
+    | 'TH'
+    | 'JA'
+    | 'TL'
+    | 'MS'
+    | 'ZH'
+    | 'TR'
+    | 'PT'
+    | 'HE'
+  >;
 }
 
 export interface SimulationPersonaUpdateParams {
@@ -985,7 +1125,8 @@ export interface SimulationPersonaUpdateParams {
     | 'MY'
     | 'HK'
     | 'TR'
-    | 'PT';
+    | 'PT'
+    | 'IL';
 
   /**
    * Background noise setting
@@ -1041,9 +1182,10 @@ export interface SimulationPersonaUpdateParams {
   idleMessageResetCountOnUserSpeechEnabled?: boolean;
 
   /**
-   * Messages the persona will say when the agent goes silent during a call
+   * Messages the persona will say when the agent goes silent during a call. null =
+   * "Automatic": language-appropriate defaults are used at call time.
    */
-  idleMessages?: Array<string>;
+  idleMessages?: Array<string> | null;
 
   /**
    * Seconds of silence before the persona sends an idle message
@@ -1075,7 +1217,8 @@ export interface SimulationPersonaUpdateParams {
     | 'MS'
     | 'ZH'
     | 'TR'
-    | 'PT';
+    | 'PT'
+    | 'HE';
 
   /**
    * How reliable the persona's memory is
@@ -1112,6 +1255,31 @@ export interface SimulationPersonaUpdateParams {
    * Speech pace of the persona
    */
   speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+  /**
+   * Languages the persona can understand. Multilingual combinations are limited by
+   * multilingual speech recognition support.
+   */
+  understoodLanguages?: Array<
+    | 'EN'
+    | 'ES'
+    | 'DE'
+    | 'HI'
+    | 'FR'
+    | 'NL'
+    | 'AR'
+    | 'EL'
+    | 'IT'
+    | 'ID'
+    | 'TH'
+    | 'JA'
+    | 'TL'
+    | 'MS'
+    | 'ZH'
+    | 'TR'
+    | 'PT'
+    | 'HE'
+  >;
 }
 
 export interface SimulationPersonaListParams {

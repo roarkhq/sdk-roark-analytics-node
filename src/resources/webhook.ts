@@ -87,6 +87,8 @@ export namespace WebhookCreateResponse {
       | 'METRIC_COLLECTION_JOB_FAILED'
       | 'CHAT_ANALYSIS_COMPLETED'
       | 'CHAT_ANALYSIS_FAILED'
+      | 'ISSUE_OPENED'
+      | 'ISSUE_RESOLVED'
     >;
 
     /**
@@ -158,6 +160,8 @@ export namespace WebhookListResponse {
       | 'METRIC_COLLECTION_JOB_FAILED'
       | 'CHAT_ANALYSIS_COMPLETED'
       | 'CHAT_ANALYSIS_FAILED'
+      | 'ISSUE_OPENED'
+      | 'ISSUE_RESOLVED'
     >;
 
     /**
@@ -255,6 +259,8 @@ export namespace WebhookGetByIDResponse {
       | 'METRIC_COLLECTION_JOB_FAILED'
       | 'CHAT_ANALYSIS_COMPLETED'
       | 'CHAT_ANALYSIS_FAILED'
+      | 'ISSUE_OPENED'
+      | 'ISSUE_RESOLVED'
     >;
 
     /**
@@ -296,6 +302,8 @@ export interface WebhookCreateParams {
     | 'METRIC_COLLECTION_JOB_FAILED'
     | 'CHAT_ANALYSIS_COMPLETED'
     | 'CHAT_ANALYSIS_FAILED'
+    | 'ISSUE_OPENED'
+    | 'ISSUE_RESOLVED'
   >;
 
   /**
