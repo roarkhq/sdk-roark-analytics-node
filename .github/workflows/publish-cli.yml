@@ -55,6 +55,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # A publish is immutable, so the suite runs here as well as in ci-cli.yml:
+      # this workflow can be dispatched from any ref, including one that never
+      # went through a pull request.
+      - name: Test
+        run: pnpm --filter @roarkanalytics/cli test
+
       # `dist/` is what gets published, so every check below reads from there
       # rather than from the source package.json. The two differ: the build
       # rewrites the bin path and replaces the `workspace:*` dependency with the
