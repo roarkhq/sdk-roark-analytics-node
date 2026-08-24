@@ -1,0 +1,109 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-CUSTOMER\-FLOW\-HAPPY\-PATH\-UPDATE" "1" "" "roark-customer-flow-happy-path-update" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-customer\-flow\-happy\-path\-update \- Update a flow's happy path
+.SH "SYNOPSIS"
+.B roark customer\-flow happy\-path update
+\fIflow\-id\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Updates the happy path's title, persona, environment, brief or expectations. Omitted fields are left alone; `additionalExpectations` replaces the set wholesale rather than appending. Its persona and environment are what the edge cases inherit, so changing them here changes every edge case that does not name its own.
+.SH "API"
+PUT /v1/customer\-flow/{flowId}/happy\-path
+.SH "ARGUMENTS"
+.TP
+\fIflow\-id\fR
+The flow\-id.
+.SH "OPTIONS"
+.TP
+\fB\-\-title\fR \fI<value>\fR
+Optional.
+.TP
+\fB\-\-environment\-id\fR \fI<value>\fR
+Optional.
+.TP
+\fB\-\-prompt\fR \fI<value>\fR
+Optional.
+.TP
+\fB\-\-preceded\-by\-customer\-flow\-id\fR \fI<value>\fR
+Optional.
+.TP
+\fB\-\-preceded\-by\-customer\-flow\-variant\-id\fR \fI<value>\fR
+Optional.
+.TP
+\fB\-\-persona\-override\-id\fR \fI<value>\fR
+The persona this runs as. Null on an edge case inherits the happy path's. Optional.
+.TP
+\fB\-\-additional\-expectations\fR \fI<value>\fR
+Replaces the expectations that apply to this variant on top of the flow's. Omit to leave them alone, send [] to clear. Improv flows only: a scripted variant's expectations come from the agent turns on its path and are rewritten on the next graph edit. Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark customer\-flow happy\-path update <flow\-id>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

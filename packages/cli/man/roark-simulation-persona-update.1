@@ -1,0 +1,154 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-SIMULATION\-PERSONA\-UPDATE" "1" "" "roark-simulation-persona-update" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-simulation\-persona\-update \- Update a persona
+.SH "SYNOPSIS"
+.B roark simulation persona update
+\fIpersona\-id\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Updates an existing persona by its ID.
+.SH "API"
+PUT /v1/persona/{personaId}
+.SH "ARGUMENTS"
+.TP
+\fIpersona\-id\fR
+The ID of the persona to update
+.SH "OPTIONS"
+.TP
+\fB\-\-name\fR \fI<value>\fR
+The name the agent will identify as during conversations Optional.
+.TP
+\fB\-\-description\fR \fI<value>\fR
+Human\-readable description of the persona Optional.
+.TP
+\fB\-\-language\fR \fI<value>\fR
+Primary language ISO 639\-1 code for the persona One of: EN, ES, DE, HI, FR, NL, AR, EL, IT, ID, TH, JA, TL, MS, ZH, TR, PT, HE. Optional.
+.TP
+\fB\-\-secondary\-language\fR \fI<value>\fR
+Secondary language ISO 639\-1 code for code\-switching (e.g., Hinglish, Spanglish) One of: EN. Optional.
+.TP
+\fB\-\-understood\-languages\fR \fI<value>\fR
+Languages the persona can understand. Multilingual combinations are limited by multilingual speech recognition support. One of: EN, ES, DE, HI, FR, NL, AR, EL, IT, ID, TH, JA, TL, MS, ZH, TR, PT, HE. Repeatable. Optional.
+.TP
+\fB\-\-accent\fR \fI<value>\fR
+Accent of the persona, defined using ISO 3166\-1 alpha\-2 country codes with optional variants One of: US, US_X_SOUTH, GB, ES, DE, IN, FR, NL, SA, GR, AU, IT, ID, TH, JP, NZ, PH, SG, MY, HK, TR, PT, IL. Optional.
+.TP
+\fB\-\-gender\fR \fI<value>\fR
+Gender of the persona One of: MALE, FEMALE. Optional.
+.TP
+\fB\-\-background\-noise\fR \fI<value>\fR
+Background noise setting One of: NONE, AIRPORT, CHILDREN_PLAYING, CITY, COFFEE_SHOP, DRIVING, OFFICE, THUNDERSTORM. Optional.
+.TP
+\fB\-\-speech\-pace\fR \fI<value>\fR
+Speech pace of the persona One of: SUPER_SLOW, SLOW, NORMAL, FAST, SUPER_FAST. Optional.
+.TP
+\fB\-\-speech\-clarity\fR \fI<value>\fR
+Speech clarity of the persona One of: CLEAR, VAGUE, RAMBLING. Optional.
+.TP
+\fB\-\-has\-disfluencies\fR
+Whether the persona uses filler words like "um" and "uh" Optional.
+.TP
+\fB\-\-base\-emotion\fR \fI<value>\fR
+Base emotional state of the persona One of: NEUTRAL, CHEERFUL, CONFUSED, FRUSTRATED, SKEPTICAL, RUSHED, DISTRACTED. Optional.
+.TP
+\fB\-\-intent\-clarity\fR \fI<value>\fR
+How clearly the persona expresses their intentions One of: CLEAR, INDIRECT, VAGUE. Optional.
+.TP
+\fB\-\-confirmation\-style\fR \fI<value>\fR
+How the persona confirms information One of: EXPLICIT, VAGUE. Optional.
+.TP
+\fB\-\-memory\-reliability\fR \fI<value>\fR
+How reliable the persona's memory is One of: HIGH, LOW. Optional.
+.TP
+\fB\-\-response\-timing\fR \fI<value>\fR
+Controls how quickly the persona responds to pauses in conversation (QUICK, NORMAL, RELAXED) One of: RELAXED, NORMAL, QUICK. Optional.
+.TP
+\fB\-\-backstory\-prompt\fR \fI<value>\fR
+Background story and behavioral patterns for the persona Optional.
+.TP
+\fB\-\-idle\-messages\fR \fI<value>\fR
+Messages the persona will say when the agent goes silent during a call. null = "Automatic": language\-appropriate defaults are used at call time. Repeatable. Optional.
+.TP
+\fB\-\-idle\-timeout\-seconds\fR \fI<value>\fR
+Seconds of silence before the persona sends an idle message Optional.
+.TP
+\fB\-\-idle\-message\-max\-spoken\-count\fR \fI<value>\fR
+Maximum number of idle messages the persona will send before giving up Optional.
+.TP
+\fB\-\-idle\-message\-reset\-count\-on\-user\-speech\-enabled\fR
+Whether the idle message counter resets when the agent speaks Optional.
+.TP
+\fB\-\-properties\fR \fI<value>\fR
+Additional custom properties about the persona Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark simulation persona update <persona\-id>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

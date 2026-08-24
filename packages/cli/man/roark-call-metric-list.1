@@ -1,0 +1,94 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-CALL\-METRIC\-LIST" "1" "" "roark-call-metric-list" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-call\-metric\-list \- List call metrics
+.SH "SYNOPSIS"
+.B roark call metric list
+\fIcall\-id\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Fetch all call\-level metrics for a specific call, including both system\-generated and custom metrics. Only returns rows from the **latest** metric\-collection job per metric — if the same metric has been recomputed, prior runs are excluded and remain in the metric history. By default returns only successfully computed metrics; pass `?status=all` to also include rows that resolved as NOT_APPLICABLE / DATA_MISSING / ERROR (the `value` field is omitted on those entries — check `captureStatus`).
+.SH "API"
+GET /v1/call/{callId}/metrics
+.SH "ARGUMENTS"
+.TP
+\fIcall\-id\fR
+The call\-id.
+.SH "OPTIONS"
+.TP
+\fB\-\-flatten\fR \fI<value>\fR
+Whether to return a flat list instead of grouped by metric definition (default: false) Optional.
+.TP
+\fB\-\-status\fR \fI<value>\fR
+Filter metrics by capture status. `success` (default) returns only successfully computed metrics — backwards\-compatible with the historical behavior. `all` also returns NOT_APPLICABLE / DATA_MISSING / ERROR rows (with `value` omitted), so clients can distinguish "still computing" from "computed but no value" and exit retry loops correctly. One of: success, all. Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark call metric list <call\-id>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

@@ -1,0 +1,99 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-CUSTOMER\-FLOW\-LIST" "1" "" "roark-customer-flow-list" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-customer\-flow\-list \- List customer flows
+.SH "SYNOPSIS"
+.B roark customer\-flow list
+[\fIoptions\fR]
+.SH "DESCRIPTION"
+Returns a paginated list of customer flows with their agents, expectations, happy path and edge cases. The step graph is the one field omitted: reading it walks the project's whole step graph, so it comes back from the single\-flow endpoint instead. Customer flows are how a project describes what to test; they replace the older simulation scenarios.
+.SH "API"
+GET /v1/customer\-flow
+.SH "OPTIONS"
+.TP
+\fB\-\-limit\fR \fI<value>\fR
+Optional.
+.TP
+\fB\-\-after\fR \fI<value>\fR
+Optional.
+.TP
+\fB\-\-search\-text\fR \fI<value>\fR
+Optional.
+.TP
+\fB\-\-type\fR \fI<value>\fR
+One of: SCRIPTED, IMPROV, VOICEMAIL. Optional.
+.TP
+\fB\-\-include\-system\fR \fI<value>\fR
+One of: true, false. Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark customer\-flow list
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

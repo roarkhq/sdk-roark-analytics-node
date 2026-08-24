@@ -1,0 +1,91 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-CUSTOMER\-FLOW\-CREATE" "1" "" "roark-customer-flow-create" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-customer\-flow\-create \- Create a customer flow
+.SH "SYNOPSIS"
+.B roark customer\-flow create
+[\fIoptions\fR]
+.SH "DESCRIPTION"
+Creates a customer flow. A SCRIPTED flow carries a step graph and gets one way of running it per path through the graph; an IMPROV flow carries the briefs you send. Customer flows replace the older simulation scenarios, so build a flow for anything new.
+.SH "API"
+POST /v1/customer\-flow
+.SH "REQUEST BODY"
+This endpoint accepts one of several request shapes, so the body is supplied as JSON through \e\-\e\-data or on standard input rather than as individual flags.
+.TP
+\fBCreateScriptedCustomerFlowInput\fR
+Requires type, title, graph.
+.TP
+\fBCreateImprovCustomerFlowInput\fR
+Requires type, title, agentIds, happyPath.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark customer\-flow create \-\-data '{ ... }'
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

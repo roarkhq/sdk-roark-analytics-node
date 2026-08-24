@@ -1,0 +1,281 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK" "1" "" "roark" "Roark Analytics API Manual"
+.SH "NAME"
+roark \- command line interface for the Roark Analytics API
+.SH "SYNOPSIS"
+.B roark
+\fIresource\fR [\fIsub\-resource\fR...] \fIverb\fR [\fIarguments\fR] [\fIoptions\fR]
+.SH "DESCRIPTION"
+roark calls the Roark Analytics API from the command line. Commands are grouped by resource and read noun before verb, so the resource is what you type first and the verb is always one of list, get, create, update or delete unless the operation is genuinely something else.
+.PP
+Output is JSON on standard output: indented and coloured when it is going to a terminal, compact when it is being piped. Errors go to standard error, so redirecting standard output captures only real output.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.SH "COMMANDS"
+.TP
+\fBroark auth\fR
+Store, remove and inspect the credential.
+.TP
+\fBroark config\fR
+Read and write CLI settings.
+.TP
+\fBroark api\fR
+Call any endpoint directly, including ones without a generated command.
+.TP
+\fBroark completion\fR
+Print a shell completion script.
+.TP
+\fBroark agent create\fR
+Create a new agent See roark\-agent\-create(1).
+.TP
+\fBroark agent endpoint create\fR
+Create a new agent endpoint See roark\-agent\-endpoint\-create(1).
+.TP
+\fBroark agent endpoint get\fR
+Get agent endpoint by ID See roark\-agent\-endpoint\-get(1).
+.TP
+\fBroark agent endpoint list\fR
+List agent endpoints See roark\-agent\-endpoint\-list(1).
+.TP
+\fBroark agent endpoint update\fR
+Update an agent endpoint See roark\-agent\-endpoint\-update(1).
+.TP
+\fBroark agent get\fR
+Get agent by ID See roark\-agent\-get(1).
+.TP
+\fBroark agent list\fR
+List agents See roark\-agent\-list(1).
+.TP
+\fBroark agent update\fR
+Update an agent See roark\-agent\-update(1).
+.TP
+\fBroark call create\fR
+Create a call See roark\-call\-create(1).
+.TP
+\fBroark call get\fR
+Get a call by ID See roark\-call\-get(1).
+.TP
+\fBroark call list\fR
+List calls See roark\-call\-list(1).
+.TP
+\fBroark call metric list\fR
+List call metrics See roark\-call\-metric\-list(1).
+.TP
+\fBroark call sentiment\-run list\fR
+List call sentiment runs See roark\-call\-sentiment\-run\-list(1).
+.TP
+\fBroark call transcript get\fR
+Get call transcript See roark\-call\-transcript\-get(1).
+.TP
+\fBroark config apply\fR
+Apply a config bundle See roark\-config\-apply(1).
+.TP
+\fBroark config diff\fR
+Diff a config bundle See roark\-config\-diff(1).
+.TP
+\fBroark customer\-flow create\fR
+Create a customer flow See roark\-customer\-flow\-create(1).
+.TP
+\fBroark customer\-flow delete\fR
+Delete a customer flow See roark\-customer\-flow\-delete(1).
+.TP
+\fBroark customer\-flow edge\-case create\fR
+Add an edge case See roark\-customer\-flow\-edge\-case\-create(1).
+.TP
+\fBroark customer\-flow edge\-case delete\fR
+Remove an edge case See roark\-customer\-flow\-edge\-case\-delete(1).
+.TP
+\fBroark customer\-flow edge\-case promote\fR
+Promote an edge case to the happy path See roark\-customer\-flow\-edge\-case\-promote(1).
+.TP
+\fBroark customer\-flow edge\-case update\fR
+Update an edge case See roark\-customer\-flow\-edge\-case\-update(1).
+.TP
+\fBroark customer\-flow get\fR
+Get customer flow by ID See roark\-customer\-flow\-get(1).
+.TP
+\fBroark customer\-flow graph replace\fR
+Replace a scripted flow's steps See roark\-customer\-flow\-graph\-replace(1).
+.TP
+\fBroark customer\-flow happy\-path update\fR
+Update a flow's happy path See roark\-customer\-flow\-happy\-path\-update(1).
+.TP
+\fBroark customer\-flow list\fR
+List customer flows See roark\-customer\-flow\-list(1).
+.TP
+\fBroark customer\-flow update\fR
+Update a customer flow See roark\-customer\-flow\-update(1).
+.TP
+\fBroark health\fR
+Get API health status See roark\-health(1).
+.TP
+\fBroark http\-request\-definition create\fR
+Create HTTP request definition See roark\-http\-request\-definition\-create(1).
+.TP
+\fBroark http\-request\-definition get\fR
+Get HTTP request definition by ID See roark\-http\-request\-definition\-get(1).
+.TP
+\fBroark http\-request\-definition list\fR
+List HTTP request definitions See roark\-http\-request\-definition\-list(1).
+.TP
+\fBroark http\-request\-definition update\fR
+Update HTTP request definition See roark\-http\-request\-definition\-update(1).
+.TP
+\fBroark metric collection\-job create\fR
+Create and run a metric collection job See roark\-metric\-collection\-job\-create(1).
+.TP
+\fBroark metric collection\-job get\fR
+Get metric collection job by ID See roark\-metric\-collection\-job\-get(1).
+.TP
+\fBroark metric collection\-job list\fR
+List metric collection jobs See roark\-metric\-collection\-job\-list(1).
+.TP
+\fBroark metric definition create\fR
+Create custom metric definition See roark\-metric\-definition\-create(1).
+.TP
+\fBroark metric definition list\fR
+List metric definitions See roark\-metric\-definition\-list(1).
+.TP
+\fBroark metric policy create\fR
+Create a metric policy See roark\-metric\-policy\-create(1).
+.TP
+\fBroark metric policy delete\fR
+Delete a metric policy See roark\-metric\-policy\-delete(1).
+.TP
+\fBroark metric policy get\fR
+Get metric policy by ID See roark\-metric\-policy\-get(1).
+.TP
+\fBroark metric policy list\fR
+List metric policies See roark\-metric\-policy\-list(1).
+.TP
+\fBroark metric policy update\fR
+Update a metric policy See roark\-metric\-policy\-update(1).
+.TP
+\fBroark simulation environment get\fR
+Get environment by ID See roark\-simulation\-environment\-get(1).
+.TP
+\fBroark simulation environment list\fR
+List environments See roark\-simulation\-environment\-list(1).
+.TP
+\fBroark simulation job get\fR
+Get simulation by ID See roark\-simulation\-job\-get(1).
+.TP
+\fBroark simulation job lookup\fR
+Lookup by phone number See roark\-simulation\-job\-lookup(1).
+.TP
+\fBroark simulation persona create\fR
+Create a new persona See roark\-simulation\-persona\-create(1).
+.TP
+\fBroark simulation persona get\fR
+Get persona by ID See roark\-simulation\-persona\-get(1).
+.TP
+\fBroark simulation persona list\fR
+List personas See roark\-simulation\-persona\-list(1).
+.TP
+\fBroark simulation persona update\fR
+Update a persona See roark\-simulation\-persona\-update(1).
+.TP
+\fBroark simulation plan create\fR
+Create a run plan See roark\-simulation\-plan\-create(1).
+.TP
+\fBroark simulation plan delete\fR
+Delete a run plan See roark\-simulation\-plan\-delete(1).
+.TP
+\fBroark simulation plan get\fR
+Get run plan by ID See roark\-simulation\-plan\-get(1).
+.TP
+\fBroark simulation plan job get\fR
+Get simulation plan job See roark\-simulation\-plan\-job\-get(1).
+.TP
+\fBroark simulation plan job list\fR
+List simulation plan jobs See roark\-simulation\-plan\-job\-list(1).
+.TP
+\fBroark simulation plan job start\fR
+Run a simulation plan See roark\-simulation\-plan\-job\-start(1).
+.TP
+\fBroark simulation plan list\fR
+List run plans See roark\-simulation\-plan\-list(1).
+.TP
+\fBroark simulation plan update\fR
+Update a run plan See roark\-simulation\-plan\-update(1).
+.TP
+\fBroark simulation run\fR
+Run a simulation See roark\-simulation\-run(1).
+.TP
+\fBroark webhook create\fR
+Create webhook See roark\-webhook\-create(1).
+.TP
+\fBroark webhook delete\fR
+Delete webhook See roark\-webhook\-delete(1).
+.TP
+\fBroark webhook get\fR
+Get webhook by ID See roark\-webhook\-get(1).
+.TP
+\fBroark webhook list\fR
+List webhooks See roark\-webhook\-list(1).
+.SH "CONFIGURATION"
+Settings are resolved highest precedence first: command line flag, environment variable, project .roark.json found by walking up from the working directory, then the user config file. The stored credential is written with mode 0600.
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBXDG_CONFIG_HOME\fR
+Overrides the location of the user config file.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.

@@ -1,0 +1,144 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-CALL\-CREATE" "1" "" "roark-call-create" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-call\-create \- Create a call
+.SH "SYNOPSIS"
+.B roark call create
+[\fIoptions\fR]
+.SH "DESCRIPTION"
+Create a new call with recording, transcript, agents, and customers
+.SH "API"
+POST /v1/call
+.SH "OPTIONS"
+.TP
+\fB\-\-recording\-url\fR \fI<value>\fR
+URL of source recording (must be an accessible WAV, MP3, MP4, or OGG file). Can be a signed URL. Required.
+.TP
+\fB\-\-stereo\-recording\-url\fR \fI<value>\fR
+URL of source stereo recording. Must be accessible. Can be a signed URL. Supported formats: WAV, MP3, MP4, OGG. Optional.
+.TP
+\fB\-\-started\-at\fR \fI<value>\fR
+When the call started (ISO 8601 format) Required.
+.TP
+\fB\-\-interface\-type\fR \fI<value>\fR
+Interface type of the call (PHONE or WEB) One of: PHONE, WEB. Required.
+.TP
+\fB\-\-call\-direction\fR \fI<value>\fR
+Direction of the call (INBOUND or OUTBOUND) One of: INBOUND, OUTBOUND. Required.
+.TP
+\fB\-\-ended\-status\fR \fI<value>\fR
+High\-level call end status, indicating how the call terminated One of: PARTICIPANTS_DID_NOT_SPEAK, AGENT_DID_NOT_ANSWER, AGENT_DID_NOT_SPEAK, AGENT_STOPPED_SPEAKING, AGENT_ENDED_CALL, AGENT_TRANSFERRED_CALL, AGENT_BUSY, AGENT_ERROR, CUSTOMER_ENDED_CALL, VOICE_MAIL_REACHED, SILENCE_TIME_OUT, PHONE_CALL_PROVIDER_CONNECTION_ERROR, CUSTOMER_DID_NOT_ANSWER, CUSTOMER_DID_NOT_SPEAK, CUSTOMER_STOPPED_SPEAKING, CUSTOMER_BUSY, DIAL_ERROR, MAX_DURATION_REACHED, UNKNOWN. Optional.
+.TP
+\fB\-\-transcript\fR \fI<value>\fR
+List of transcript entries made during the call Optional.
+.TP
+\fB\-\-tool\-invocations\fR \fI<value>\fR
+List of tool invocations made during the call Optional.
+.TP
+\fB\-\-properties\fR \fI<value>\fR
+Custom properties to include with the call. These can be used for filtering and will show in the call details page Optional.
+.TP
+\fB\-\-vapi\-call\-id\fR \fI<value>\fR
+The Vapi call ID (UUID) to link this call with OpenTelemetry trace data from Vapi. Used for matching calls with OTEL traces. Optional.
+.TP
+\fB\-\-livekit\-room\-id\fR \fI<value>\fR
+The LiveKit Cloud room ID to link this call with OpenTelemetry trace data from LiveKit. Used for matching calls with OTEL traces. Optional.
+.TP
+\fB\-\-external\-id\fR \fI<value>\fR
+A stable identifier from your own system (e.g. session ID, conversation ID) used to correlate this call with OpenTelemetry traces. Set the same value as a `roark.external_id` span or resource attribute on your traces and the matching trace will be linked automatically. Must be unique within a project. Optional.
+.TP
+\fB\-\-agent\fR \fI<value>\fR
+Single agent participating in the call. Use this for simpler API when you have only one agent. Optional.
+.TP
+\fB\-\-agent.endpoint\fR \fI<value>\fR
+Endpoint configuration for this agent (optional) Optional.
+.TP
+\fB\-\-agent.prompt\fR \fI<value>\fR
+Agent's prompt configuration (optional) Optional.
+.TP
+\fB\-\-agents\fR \fI<value>\fR
+Agents participating in the call. Each agent requires identification and prompt information. Optional.
+.TP
+\fB\-\-customer\fR \fI<value>\fR
+Single customer participating in the call. Use this for simpler API when you have only one customer. Optional.
+.TP
+\fB\-\-customer.label\fR \fI<value>\fR
+Label to identify this customer in the transcript (e.g., "speaker\-01", "speaker\-02") Optional.
+.TP
+\fB\-\-customer.phone\-number\-e164\fR \fI<value>\fR
+Customer phone number in E.164 format (e.g., +14155551234) Required.
+.TP
+\fB\-\-customers\fR \fI<value>\fR
+Customers participating in the call. Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark call create \-\-recording\-url <value> \-\-started\-at <value> \-\-interface\-type <value> \-\-call\-direction <value> \-\-customer.phone\-number\-e164 <value>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)
