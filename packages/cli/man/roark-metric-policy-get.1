@@ -47,6 +47,9 @@ Disable colour.
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
 Suppress non\-essential output.
+.TP
+\fB\-\-allow\-project\-base\-url\fR
+Send the stored credential to a base URL set by a project .roark.json. Refused by default.
 .SH "EXAMPLES"
 .PP
 .RS 4
@@ -61,6 +64,9 @@ Bearer token used when \-\-token is not given.
 .TP
 \fBROARK_BASE_URL\fR
 API base URL.
+.TP
+\fBROARK_ALLOW_PROJECT_BASE_URL\fR
+Trusts a base URL set by a project .roark.json, like \-\-allow\-project\-base\-url.
 .TP
 \fBNO_COLOR\fR
 Disables colour when set to any value.

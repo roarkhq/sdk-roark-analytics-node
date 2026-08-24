@@ -35,6 +35,9 @@ Disable colour.
 \fB\-q\fR, \fB\-\-quiet\fR
 Suppress non\-essential output.
 .TP
+\fB\-\-allow\-project\-base\-url\fR
+Send the stored credential to a base URL set by a project .roark.json. Refused by default.
+.TP
 \fB\-\-data\fR \fI<json>\fR
 Request body as JSON, or @file to read one (@\- for stdin).
 .TP
@@ -257,6 +260,9 @@ API base URL.
 .TP
 \fBXDG_CONFIG_HOME\fR
 Overrides the location of the user config file.
+.TP
+\fBROARK_ALLOW_PROJECT_BASE_URL\fR
+Trusts a base URL set by a project .roark.json, like \-\-allow\-project\-base\-url.
 .TP
 \fBNO_COLOR\fR
 Disables colour when set to any value.

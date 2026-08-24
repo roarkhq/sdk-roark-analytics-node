@@ -34,6 +34,12 @@ Settings resolve highest precedence first: flag, environment variable, project
 `.roark.json` found by walking up from the working directory, then the user config
 file (`roark config path` prints where that is).
 
+One exception, because a `.roark.json` arrives with a clone rather than being
+something you wrote: if a project file sets `baseURL`, `roark` refuses to send
+a stored or environment credential to it. Pass `--allow-project-base-url` (or set
+`ROARK_ALLOW_PROJECT_BASE_URL`) once you have read the file, or `--token` to send a
+different credential.
+
 ## Usage
 
 Commands read noun before verb, and the verb is one of `list`, `get`, `create`,

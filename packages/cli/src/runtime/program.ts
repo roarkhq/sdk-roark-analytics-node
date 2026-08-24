@@ -13,8 +13,16 @@ import { registerAuthCommands } from './commands/auth';
 import { registerConfigCommands } from './commands/config';
 import { registerCompletionCommand } from './commands/completion';
 import { confirm } from './confirm';
-import { loadConfig, type CliConfig } from './config';
-import { AuthRequiredError, EXIT, exitCodeFor, reportError } from './errors';
+import {
+  allowProjectBaseUrlFromEnvironment,
+  PROJECT_FILE,
+  resolveConfig,
+  unsafeBaseUrlRedirect,
+  userConfigPath,
+  type CliConfig,
+  type ResolvedConfig,
+} from './config';
+import { AuthRequiredError, EXIT, exitCodeFor, reportError, UsageError } from './errors';
 import { buildArgs, readData, readStdin, stdinIsPiped } from './input';
 import { OUTPUT_FORMATS, paint, render, supportsColor, write, type OutputFormat } from './output';
 import type { CliCommand, CliFlag } from './types';
@@ -47,6 +55,7 @@ interface GlobalOptions {
   input?: boolean;
   quiet?: boolean;
   data?: string;
+  allowProjectBaseUrl?: boolean;
 }
 
 interface ExtraOptions {
@@ -74,7 +83,8 @@ const addGlobalOptions = (command: Command, extra: ExtraOptions): Command => {
     .addOption(new Option('--format <format>', 'output format').choices(OUTPUT_FORMATS).default('auto'))
     .option('--json', 'shorthand for --format json')
     .option('--no-color', 'disable colour')
-    .option('-q, --quiet', 'suppress non-essential output');
+    .option('-q, --quiet', 'suppress non-essential output')
+    .option('--allow-project-base-url', `send your credential to a base URL set by a ${PROJECT_FILE}`);
 
   if (extra.body) {
     command.option('--data <json>', 'request body as JSON, or @file to read one (@- for stdin)');
@@ -89,6 +99,31 @@ const addGlobalOptions = (command: Command, extra: ExtraOptions): Command => {
   return command;
 };
 
+/**
+ * Refuses the one combination that would post a secret to a host the caller did
+ * not choose. Nothing is sent first: this throws before the client exists.
+ */
+export const assertBaseUrlIsTrusted = (options: GlobalOptions, resolved: ResolvedConfig): void => {
+  if (options.allowProjectBaseUrl === true || allowProjectBaseUrlFromEnvironment()) return;
+
+  const redirect = unsafeBaseUrlRedirect(resolved);
+  if (redirect === undefined) return;
+
+  const origin = redirect.credentialFrom === 'environment' ? 'ROARK_API_BEARER_TOKEN' : userConfigPath();
+
+  throw new UsageError(
+    [
+      `Refusing to send your credential to ${redirect.baseURL}.`,
+      '',
+      `${redirect.projectFile} sets baseURL, and a ${PROJECT_FILE} is not necessarily yours: it`,
+      `arrives with a clone. The credential that would be sent came from ${origin}.`,
+      '',
+      'Pass --allow-project-base-url if you trust that file, or --token to send a',
+      'different credential.',
+    ].join('\n'),
+  );
+};
+
 const clientFor = (options: GlobalOptions, requiresAuth = true): Roark => {
   const overrides: CliConfig = {
     ...(options.token === undefined ? {} : { bearerToken: options.token }),
@@ -97,7 +132,9 @@ const clientFor = (options: GlobalOptions, requiresAuth = true): Roark => {
     ...(options.maxRetries === undefined ? {} : { maxRetries: Number(options.maxRetries) }),
   };
 
-  const config = loadConfig(overrides);
+  const resolved = resolveConfig(overrides);
+  assertBaseUrlIsTrusted(options, resolved);
+  const config = resolved.config;
 
   if (config.bearerToken === undefined && requiresAuth) {
     throw new AuthRequiredError(
@@ -306,6 +343,7 @@ export const createProgram = (options: ProgramOptions): Command => {
       'Environment:',
       '  ROARK_API_BEARER_TOKEN   bearer token used when --token is not given',
       '  ROARK_BASE_URL           API base URL',
+      `  ROARK_ALLOW_PROJECT_BASE_URL   trust a base URL set by a ${PROJECT_FILE}`,
       '  NO_COLOR                 disable colour',
       '',
       `Run \`${options.binaryName} <command> --help\` for the flags of a single command.`,
