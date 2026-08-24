@@ -3,6 +3,10 @@ set -exuo pipefail
 
 rm -rf dist
 
+# `src/version.ts` is not rewritten by release-please, so it is the one thing
+# that can silently disagree with package.json. Sync before compiling.
+node scripts/sync-version.cjs
+
 # Plain tsc: this package is a bin, not a library, so it needs neither the dual
 # CJS/ESM output nor the export-map rewriting the SDK and MCP server go through.
 ./node_modules/.bin/tsc -p tsconfig.build.json
