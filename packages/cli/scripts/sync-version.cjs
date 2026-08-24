@@ -15,6 +15,12 @@ const main = () => {
   if (typeof version !== 'string' || !version) {
     throw new Error(`packages/cli/package.json has no usable version; got ${typeof version}`);
   }
+  // Whatever is here is compiled in and answers `roark --version`, so a typo
+  // reaches the registry as the package's identity. `v0.1.1` and `0.1` both
+  // install fine and both read as wrong forever, npm versions being immutable.
+  if (!/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$/.test(version)) {
+    throw new Error(`packages/cli/package.json version is not semver: ${version}`);
+  }
 
   const versionFile = path.resolve(__dirname, '..', 'src', 'version.ts');
   const contents = fs.readFileSync(versionFile, 'utf8');
