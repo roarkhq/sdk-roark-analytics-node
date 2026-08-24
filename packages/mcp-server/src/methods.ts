@@ -376,6 +376,12 @@ export const sdkMethods: SdkMethod[] = [
     httpMethod: 'get',
     httpPath: '/v1/webhook/{webhookId}',
   },
+  {
+    clientCallName: 'client.config.apply',
+    fullyQualifiedName: 'config.apply',
+    httpMethod: 'post',
+    httpPath: '/v1/config/apply',
+  },
 ];
 
 function allowedMethodsForCodeTool(options: McpOptions | undefined): SdkMethod[] | undefined {
