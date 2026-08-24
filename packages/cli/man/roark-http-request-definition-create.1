@@ -1,0 +1,102 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-HTTP\-REQUEST\-DEFINITION\-CREATE" "1" "" "roark-http-request-definition-create" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-http\-request\-definition\-create \- Create HTTP request definition
+.SH "SYNOPSIS"
+.B roark http\-request\-definition create
+[\fIoptions\fR]
+.SH "DESCRIPTION"
+Creates a new HTTP request definition. The signing secret is only returned in this response and cannot be retrieved later.
+.SH "API"
+POST /v1/http\-request\-definition
+.SH "OPTIONS"
+.TP
+\fB\-\-scope\fR \fI<value>\fR
+Scope: AGENT_OUTBOUND_DIAL One of: AGENT_OUTBOUND_DIAL. Required.
+.TP
+\fB\-\-url\fR \fI<value>\fR
+URL for the HTTP request Required.
+.TP
+\fB\-\-description\fR \fI<value>\fR
+Description of the HTTP request definition Optional.
+.TP
+\fB\-\-method\fR \fI<value>\fR
+HTTP method (default: POST) One of: POST, PUT, PATCH, GET. Optional.
+.TP
+\fB\-\-body\fR \fI<value>\fR
+Request body template. Accepts a JSON object or a string with placeholders like {{phoneNumberToDial}}. Objects are serialized to JSON for storage. Optional.
+.TP
+\fB\-\-headers\fR \fI<value>\fR
+Request headers as key\-value pairs Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark http\-request\-definition create \-\-scope <value> \-\-url <value>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

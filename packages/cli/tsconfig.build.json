@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts"],
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declaration": true,
+    // Maps are off because the package is published from dist/ without src/, so
+    // a map's `../src/bin.ts` would point outside the tarball. The SDK avoids
+    // that by compiling from a copy of src inside dist; a bin does not need the
+    // indirection.
+    "declarationMap": false,
+    "sourceMap": false
+  }
+}

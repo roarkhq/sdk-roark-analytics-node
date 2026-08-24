@@ -1,0 +1,102 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-AGENT\-ENDPOINT\-CREATE" "1" "" "roark-agent-endpoint-create" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-agent\-endpoint\-create \- Create a new agent endpoint
+.SH "SYNOPSIS"
+.B roark agent endpoint create
+[\fIoptions\fR]
+.SH "DESCRIPTION"
+Creates a new agent endpoint for the authenticated project.
+.SH "API"
+POST /v1/agent/endpoint
+.SH "OPTIONS"
+.TP
+\fB\-\-agent\-id\fR \fI<value>\fR
+Agent ID to associate this endpoint with Required.
+.TP
+\fB\-\-value\fR \fI<value>\fR
+Phone number in E.164 format (e.g., +12345678900) Required.
+.TP
+\fB\-\-environment\fR \fI<value>\fR
+Environment name (default: production) Optional.
+.TP
+\fB\-\-direction\fR \fI<value>\fR
+Call direction: INCOMING, OUTGOING, or INCOMING_AND_OUTGOING One of: INCOMING, OUTGOING, INCOMING_AND_OUTGOING. Required.
+.TP
+\fB\-\-outbound\-dial\-type\fR \fI<value>\fR
+Outbound dial type: NONE or HTTP_REQUEST (default: NONE) One of: NONE, HTTP_REQUEST. Optional.
+.TP
+\fB\-\-outbound\-dial\-http\-request\-definition\-id\fR \fI<value>\fR
+ID of the HTTP request definition for outbound dialing (required when outboundDialType is HTTP_REQUEST) Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark agent endpoint create \-\-agent\-id <value> \-\-value <value> \-\-direction <value>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

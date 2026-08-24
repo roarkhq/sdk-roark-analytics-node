@@ -1,0 +1,91 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-SIMULATION\-PLAN\-JOB\-START" "1" "" "roark-simulation-plan-job-start" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-simulation\-plan\-job\-start \- Run a simulation plan
+.SH "SYNOPSIS"
+.B roark simulation plan job start
+\fIplan\-id\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Deprecated: use POST /v1/simulation/run, which does the same thing and can also take the plan configuration inline, so a one\-off run does not have to create a plan first. Creates and executes a job for an existing simulation run plan. Optionally provide runtime variables to override plan\-defined variables.
+.SH "API"
+POST /v1/simulation/plan/{planId}/job
+.SH "ARGUMENTS"
+.TP
+\fIplan\-id\fR
+Simulation run plan ID
+.SH "OPTIONS"
+.TP
+\fB\-\-variables\fR \fI<value>\fR
+Values for the {{variables}} the run resolves, overriding whatever the plan has pinned. An object applies them to the whole run: { "orderNumber": "12345", "tier": "gold" } An array applies them per flow, or to just its happy path or one of its edge cases, when a single set will not do. Each entry carries what it applies to: [ { "flowId": "550e8400\-...", "variables": { "orderNumber": "12345" } }, { "flowId": "550e8400\-...", "happyPath": true, "variables": { "orderNumber": "55555" } }, { "flowId": "550e8400\-...", "edgeCaseId": "7a3d2e1f\-...", "variables": { "orderNumber": "67890" } } ] An entry that narrows to neither covers everything that flow resolves. A flow this plan does not attach, or an edge case that does not belong to the flow, is rejected rather than ignored. A plan built on scenarios rather than customer flows targets them the same way, with `scenarioId` in place of `flowId`. That form is deprecated alongside scenarios themselves, and still accepted so runs against those plans keep working. Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark simulation plan job start <plan\-id>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

@@ -1,0 +1,97 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-AGENT\-ENDPOINT\-UPDATE" "1" "" "roark-agent-endpoint-update" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-agent\-endpoint\-update \- Update an agent endpoint
+.SH "SYNOPSIS"
+.B roark agent endpoint update
+\fIendpoint\-id\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Updates an existing agent endpoint by its ID. Only environment and outboundDialType can be modified.
+.SH "API"
+PUT /v1/agent/endpoint/{endpointId}
+.SH "ARGUMENTS"
+.TP
+\fIendpoint\-id\fR
+The ID of the agent endpoint to update
+.SH "OPTIONS"
+.TP
+\fB\-\-environment\fR \fI<value>\fR
+Environment name Optional.
+.TP
+\fB\-\-outbound\-dial\-type\fR \fI<value>\fR
+Outbound dial type: NONE or HTTP_REQUEST One of: NONE, HTTP_REQUEST. Optional.
+.TP
+\fB\-\-outbound\-dial\-http\-request\-definition\-id\fR \fI<value>\fR
+ID of the HTTP request definition for outbound dialing Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark agent endpoint update <endpoint\-id>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

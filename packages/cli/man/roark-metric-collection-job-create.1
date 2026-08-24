@@ -1,0 +1,93 @@
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.TH "ROARK\-METRIC\-COLLECTION\-JOB\-CREATE" "1" "" "roark-metric-collection-job-create" "Roark Analytics API Manual"
+.SH "NAME"
+roark\-metric\-collection\-job\-create \- Create and run a metric collection job
+.SH "SYNOPSIS"
+.B roark metric collection\-job create
+[\fIoptions\fR]
+.SH "DESCRIPTION"
+Creates a metric collection job for the specified calls or chats and metrics, then triggers processing. Provide exactly one of callIds or chatIds.
+.SH "API"
+POST /v1/metric/collection\-jobs
+.SH "OPTIONS"
+.TP
+\fB\-\-call\-ids\fR \fI<value>\fR
+Call IDs to collect metrics for. Mutually exclusive with chatIds. Max 500 per request. Repeatable. Optional.
+.TP
+\fB\-\-chat\-ids\fR \fI<value>\fR
+Chat IDs to collect metrics for. Mutually exclusive with callIds. Max 500 per request. Repeatable. Optional.
+.TP
+\fB\-\-metrics\fR \fI<value>\fR
+Metric definitions to collect. Max 20 per request. Required.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
+.TP
+\fB\-y\fR, \fB\-\-yes\fR
+Skip confirmation prompts.
+.TP
+\fB\-\-no\-input\fR
+Never prompt; fail instead.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+API base URL.
+.TP
+\fB\-\-token\fR \fI<token>\fR
+Bearer token. Prefer ROARK_API_BEARER_TOKEN or the stored credential.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, plain.
+.TP
+\fB\-\-json\fR
+Shorthand for \-\-format json.
+.TP
+\fB\-\-no\-color\fR
+Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+roark metric collection\-job create \-\-metrics <value>
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBROARK_API_BEARER_TOKEN\fR
+Bearer token used when \-\-token is not given.
+.TP
+\fBROARK_BASE_URL\fR
+API base URL.
+.TP
+\fBNO_COLOR\fR
+Disables colour when set to any value.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command succeeded.
+.TP
+\fB1\fR
+The API rejected the request.
+.TP
+\fB2\fR
+The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
+.SH "SEE ALSO"
+.BR roark (1)

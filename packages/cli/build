@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -exuo pipefail
+
+rm -rf dist
+
+# Plain tsc: this package is a bin, not a library, so it needs neither the dual
+# CJS/ESM output nor the export-map rewriting the SDK and MCP server go through.
+./node_modules/.bin/tsc -p tsconfig.build.json
+
+chmod +x dist/bin.js
+
+# The package is published from dist/, the same as the SDK and the MCP server, so
+# everything the tarball needs has to be copied in. `man` paths in package.json
+# are already dist-relative; make-dist-package-json rewrites the `bin` path.
+cp -rp README.md man dist
+for file in LICENSE CHANGELOG.md; do
+  if [ -e "${file}" ]; then cp "${file}" dist; fi
+done
+
+PKG_JSON_PATH=../../packages/cli/package.json node ../../scripts/utils/make-dist-package-json.cjs > dist/package.json
+
+# `@roarkanalytics/sdk` is a `workspace:*` dependency here, and dist/ is outside
+# the workspace, so pnpm has nothing to rewrite it from at publish time. Name the
+# published version explicitly instead.
+node scripts/postprocess-dist-package-json.cjs
