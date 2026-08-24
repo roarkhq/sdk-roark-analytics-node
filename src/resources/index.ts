@@ -33,6 +33,7 @@ export {
   type CallGetTranscriptParams,
   type CallListMetricsParams,
 } from './call';
+export { Config, type Bundle, type ConfigApplyResponse, type ConfigApplyParams } from './config';
 export {
   CustomerFlow,
   type FlowStep,
