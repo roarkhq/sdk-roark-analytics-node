@@ -1,4 +1,8 @@
-import { buildArgs, coerceFlag, optionKey, setPath } from './input';
+import { closeSync, mkdtempSync, openSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+import { buildArgs, coerceFlag, optionKey, setPath, stdinIsPiped } from './input';
 import { UsageError } from './errors';
 import type { CliCommand, CliFlag } from './types';
 
@@ -208,5 +212,64 @@ describe('buildArgs', () => {
     expect(buildArgs({ command: definition, positionals: [], options: { personaName: 'Ada' } })).toEqual([
       { persona: { name: 'Ada' } },
     ]);
+  });
+});
+
+/**
+ * Real descriptors rather than a stubbed `fstatSync`: the whole point of this
+ * function is what the operating system says about fd 0, and a stub would assert
+ * the branch rather than the question.
+ */
+describe('stdinIsPiped', () => {
+  let saved: PropertyDescriptor | undefined;
+  let opened: number[];
+
+  beforeEach(() => {
+    saved = Object.getOwnPropertyDescriptor(process.stdin, 'isTTY');
+    opened = [];
+  });
+
+  afterEach(() => {
+    for (const fd of opened) {
+      try {
+        closeSync(fd);
+      } catch {
+        // already closed by the test
+      }
+    }
+    if (saved) Object.defineProperty(process.stdin, 'isTTY', saved);
+    else delete (process.stdin as { isTTY?: boolean }).isTTY;
+  });
+
+  const open = (path: string): number => {
+    const fd = openSync(path, 'r');
+    opened.push(fd);
+    return fd;
+  };
+
+  it('is false for a terminal, where reading would hang', () => {
+    Object.defineProperty(process.stdin, 'isTTY', { value: true, configurable: true });
+    expect(stdinIsPiped()).toBe(false);
+  });
+
+  it('is true for a redirect from a file', () => {
+    const path = join(mkdtempSync(join(tmpdir(), 'roark-stdin-')), 'body.json');
+    writeFileSync(path, '{}');
+    expect(stdinIsPiped(open(path))).toBe(true);
+  });
+
+  it('is false for a character device such as /dev/null', () => {
+    expect(stdinIsPiped(open('/dev/null'))).toBe(false);
+  });
+
+  /**
+   * The CI failure this exists for. fd 0 on a runner is neither a TTY nor
+   * readable, and calling that a pipe made every body-accepting command fail
+   * with "Could not read stdin" before it sent anything.
+   */
+  it('is false for a descriptor that cannot be stat-ed at all', () => {
+    const fd = open('/dev/null');
+    closeSync(fd);
+    expect(stdinIsPiped(fd)).toBe(false);
   });
 });

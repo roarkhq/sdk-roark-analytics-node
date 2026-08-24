@@ -7,7 +7,7 @@
  * payload rather than an ambiguous merge.
  */
 
-import { readFileSync } from 'node:fs';
+import { fstatSync, readFileSync } from 'node:fs';
 
 import { UsageError } from './errors';
 import type { CliCommand, CliFlag, CliValueKind } from './types';
@@ -45,8 +45,28 @@ export const readStdin = (): string => {
   }
 };
 
-/** Only consume stdin when it is a pipe: on a TTY it would hang waiting for input. */
-export const stdinIsPiped = (): boolean => process.stdin.isTTY !== true;
+/**
+ * Only consume stdin when there is actually something to read from.
+ *
+ * "Not a TTY" is not the same question. A descriptor can be closed, or opened
+ * non-blocking, or be `/dev/null`, and none of those are a TTY: reading them
+ * either fails outright or returns nothing. Under a CI runner it is the first,
+ * so `roark agent update <id> --name x` - a command with no pipe in sight -
+ * failed with "Could not read stdin".
+ *
+ * A pipe (`echo … | roark`) is a FIFO and a redirect (`roark < body.json`) is a
+ * regular file. Those two are what this is for, so those two are what it asks
+ * about, and anything it cannot stat is not a pipe.
+ */
+export const stdinIsPiped = (fd = 0): boolean => {
+  if (fd === 0 && process.stdin.isTTY === true) return false;
+  try {
+    const stats = fstatSync(fd);
+    return stats.isFIFO() || stats.isFile();
+  } catch {
+    return false;
+  }
+};
 
 const coerceScalar = (raw: string, kind: CliValueKind, flag: string): unknown => {
   switch (kind) {
