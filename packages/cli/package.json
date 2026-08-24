@@ -1,6 +1,6 @@
 {
   "name": "@roarkanalytics/cli",
-  "version": "2.31.0",
+  "version": "0.1.0",
   "description": "The official command line interface for the Roark API",
   "author": "Roark <james@roark.ai>",
   "type": "commonjs",
