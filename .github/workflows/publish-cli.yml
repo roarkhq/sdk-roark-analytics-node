@@ -1,0 +1,126 @@
+# Publishes @roarkanalytics/cli, and nothing else.
+#
+# Separate from `publish-npm.yml` on purpose. That workflow belongs to the vendor
+# release train: it fires on a GitHub release, and publishes the SDK and the MCP
+# server at whatever version release-please just cut. The CLI does not ship on
+# that train - its versions are its own, a renamed command is breaking for it and
+# invisible to the SDK - and putting it there would mean every CLI release
+# republishes two packages that did not change.
+#
+# So this is manual and single-purpose: pick a ref, rehearse it, publish it. The
+# vendor's workflow is untouched and keeps publishing exactly what it publishes
+# today.
+name: Publish CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Build and check, but do not publish'
+        type: boolean
+        default: true
+      tag:
+        description: 'npm dist-tag to publish under'
+        type: string
+        default: 'latest'
+
+concurrency:
+  group: publish-cli
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: publish
+    runs-on: ubuntu-latest
+    steps:
+      # Whichever branch or tag the run was dispatched from. Note `main` is far
+      # behind `next` in this repository, so a release is normally dispatched
+      # from `next`.
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+        with:
+          version: '10.30.1'
+
+      - run: pnpm install --frozen-lockfile
+
+      # The root build also builds every package under packages/, and the CLI
+      # cannot be built without it: `@roarkanalytics/sdk` is a `workspace:*`
+      # dependency that resolves through the root package's dist.
+      - name: Build
+        run: pnpm build
+
+      # `dist/` is what gets published, so every check below reads from there
+      # rather than from the source package.json. The two differ: the build
+      # rewrites the bin path and replaces the `workspace:*` dependency with the
+      # version of the SDK this CLI was built against.
+      - name: Check what is about to be published
+        id: check
+        working-directory: packages/cli/dist
+        run: |
+          set -euo pipefail
+
+          version=$(jq -r -e '.version' package.json)
+          sdk_range=$(jq -r -e '.dependencies["@roarkanalytics/sdk"]' package.json)
+          sdk_version="${sdk_range#^}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "publishing @roarkanalytics/cli@$version against @roarkanalytics/sdk@$sdk_range"
+
+          if [ "$sdk_range" = 'workspace:*' ]; then
+            echo '::error::the workspace dependency was not rewritten; dist/package.json would be unpublishable'
+            exit 1
+          fi
+
+          # A `workspace:*` that resolved to an unpublished SDK version installs
+          # fine here and fails for the first customer who runs `npm i -g`.
+          if ! npm view "@roarkanalytics/sdk@$sdk_version" version >/dev/null 2>&1; then
+            echo "::error::@roarkanalytics/sdk@$sdk_version is not on npm, so this CLI would not install"
+            exit 1
+          fi
+
+          # npm rejects a duplicate version anyway; failing here says why.
+          if npm view "@roarkanalytics/cli@$version" version >/dev/null 2>&1; then
+            echo "::error::@roarkanalytics/cli@$version is already published. Bump packages/cli/package.json first."
+            exit 1
+          fi
+
+      # The bin is the product. A tarball whose entry point does not start is
+      # worth catching before it is immutable on the registry rather than after.
+      - name: Smoke test the built binary
+        working-directory: packages/cli/dist
+        run: |
+          set -euo pipefail
+          node bin.js --version
+          node bin.js --help > /dev/null
+          test -f man/roark.1
+
+      - name: Publish
+        if: inputs.dry_run != true
+        working-directory: packages/cli/dist
+        run: npm publish --access public --tag '${{ inputs.tag }}'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.ROARK_NPM_TOKEN || secrets.NPM_TOKEN }}
+
+      - name: Rehearse the publish
+        if: inputs.dry_run == true
+        working-directory: packages/cli/dist
+        run: npm publish --access public --tag '${{ inputs.tag }}' --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.ROARK_NPM_TOKEN || secrets.NPM_TOKEN }}
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '### @roarkanalytics/cli ${{ steps.check.outputs.version }}'
+            if [ '${{ inputs.dry_run }}' = 'true' ]; then
+              echo 'Dry run: built, checked and packed. Nothing was published.'
+            else
+              echo 'Published to npm under the `${{ inputs.tag }}` tag.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
