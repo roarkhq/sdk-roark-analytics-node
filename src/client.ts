@@ -51,6 +51,14 @@ import {
   CallListSentimentRunsResponse,
 } from './resources/call';
 import {
+  Bundle,
+  Config,
+  ConfigApplyParams,
+  ConfigApplyResponse,
+  ConfigDiffParams,
+  ConfigDiffResponse,
+} from './resources/config';
+import {
   CustomerFlow,
   CustomerFlowCreateParams,
   CustomerFlowCreateResponse,
@@ -898,6 +906,7 @@ export class Roark {
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
   webhook: API.Webhook = new API.Webhook(this);
+  config: API.Config = new API.Config(this);
 }
 
 Roark.Health = Health;
@@ -917,6 +926,7 @@ Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
 Roark.Webhook = Webhook;
+Roark.Config = Config;
 
 export declare namespace Roark {
   export type RequestOptions = Opts.RequestOptions;
@@ -1087,5 +1097,14 @@ export declare namespace Roark {
     type WebhookGetByIDResponse as WebhookGetByIDResponse,
     type WebhookCreateParams as WebhookCreateParams,
     type WebhookListParams as WebhookListParams,
+  };
+
+  export {
+    Config as Config,
+    type Bundle as Bundle,
+    type ConfigApplyResponse as ConfigApplyResponse,
+    type ConfigDiffResponse as ConfigDiffResponse,
+    type ConfigApplyParams as ConfigApplyParams,
+    type ConfigDiffParams as ConfigDiffParams,
   };
 }

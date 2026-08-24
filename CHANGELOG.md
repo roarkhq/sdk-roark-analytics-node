@@ -1,5 +1,31 @@
 # Changelog
 
+## 2.33.0 (2026-08-24)
+
+Full Changelog: [v2.32.0...v2.33.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.32.0...v2.33.0)
+
+### Features
+
+* **api:** api update ([2d9e51b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/2d9e51b1cf610ae45dedb48159ba133af06defe1))
+* **api:** api update ([6fb878c](https://github.com/roarkhq/sdk-roark-analytics-node/commit/6fb878c301a49c3f13255a87ac0438718ea23c28))
+* **cli:** add the roark command line interface ([eff2ebd](https://github.com/roarkhq/sdk-roark-analytics-node/commit/eff2ebd45d275d2ca791d239d47ceeb84909965b))
+
+
+### Bug Fixes
+
+* **cli:** do not send a stored credential to a base URL a project file chose ([c6c0008](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c6c000865cb9b3fd8ac6d8ee65c0c45bef629a08))
+* **cli:** only read stdin when there is something to read from ([0211963](https://github.com/roarkhq/sdk-roark-analytics-node/commit/021196354ad9b275557541fd9ac9c31e1c88ed8e))
+
+
+### Chores
+
+* **cli:** drop the inert x-release-please-version marker ([2eb53f9](https://github.com/roarkhq/sdk-roark-analytics-node/commit/2eb53f97a254e764456bcd49acc8a5a8b9d218cc))
+
+
+### Styles
+
+* format claude.yml with prettier ([aafc9db](https://github.com/roarkhq/sdk-roark-analytics-node/commit/aafc9db06fe7dde355d52dd4536ec3a031f72ea0))
+
 ## 2.32.0 (2026-08-24)
 
 Full Changelog: [v2.31.0...v2.32.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.31.0...v2.32.0)

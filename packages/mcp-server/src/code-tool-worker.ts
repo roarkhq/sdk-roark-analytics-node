@@ -169,6 +169,8 @@ const fuse = new Fuse(
     'client.webhook.delete',
     'client.webhook.getByID',
     'client.webhook.list',
+    'client.config.apply',
+    'client.config.diff',
   ],
   { threshold: 1, shouldSort: true },
 );

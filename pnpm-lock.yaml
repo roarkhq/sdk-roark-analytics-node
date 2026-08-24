@@ -71,6 +71,31 @@ importers:
         specifier: 8.31.1
         version: 8.31.1(eslint@9.39.1)(typescript@5.8.3)
 
+  packages/cli:
+    dependencies:
+      '@roarkanalytics/sdk':
+        specifier: workspace:*
+        version: link:../..
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
+    devDependencies:
+      '@types/jest':
+        specifier: ^29.4.0
+        version: 29.5.11
+      '@types/node':
+        specifier: ^20.17.6
+        version: 20.19.11
+      jest:
+        specifier: ^29.4.0
+        version: 29.7.0(@types/node@20.19.11)(ts-node@10.7.0(@swc/core@1.4.16)(@types/node@20.19.11)(typescript@5.8.3))
+      ts-jest:
+        specifier: ^29.1.0
+        version: 29.4.6(@babel/core@7.28.6)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.6))(jest-util@29.7.0)(jest@29.7.0(@types/node@20.19.11)(ts-node@10.7.0(@swc/core@1.4.16)(@types/node@20.19.11)(typescript@5.8.3)))(typescript@5.8.3)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
   packages/mcp-server:
     dependencies:
       '@cloudflare/cabidela':
@@ -1842,6 +1867,13 @@ packages:
         integrity: sha512-/rFeCpNJQbhSZjGVwO9RFV3xPqbnERS8MmIQzCtD/zl6gpJuV/bMLuN92oG3F7d8oDEHHRrujSXNUr8fpjntKw==,
       }
     engines: { node: '>=18' }
+
+  commander@14.0.3:
+    resolution:
+      {
+        integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==,
+      }
+    engines: { node: '>=20' }
 
   content-disposition@1.0.0:
     resolution:
@@ -3973,14 +4005,6 @@ packages:
       }
     hasBin: true
 
-  semver@7.7.1:
-    resolution:
-      {
-        integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==,
-      }
-    engines: { node: '>=10' }
-    hasBin: true
-
   semver@7.7.3:
     resolution:
       {
@@ -5906,6 +5930,8 @@ snapshots:
 
   commander@13.1.0: {}
 
+  commander@14.0.3: {}
+
   content-disposition@1.0.0:
     dependencies:
       safe-buffer: 5.2.1
@@ -7353,8 +7379,6 @@ snapshots:
   secure-json-parse@4.1.0: {}
 
   semver@6.3.1: {}
-
-  semver@7.7.1: {}
 
   semver@7.7.3: {}
 
