@@ -50,7 +50,14 @@ import {
   CallListResponse,
   CallListSentimentRunsResponse,
 } from './resources/call';
-import { Bundle, Config, ConfigApplyParams, ConfigApplyResponse } from './resources/config';
+import {
+  Bundle,
+  Config,
+  ConfigApplyParams,
+  ConfigApplyResponse,
+  ConfigDiffParams,
+  ConfigDiffResponse,
+} from './resources/config';
 import {
   CustomerFlow,
   CustomerFlowCreateParams,
@@ -1096,6 +1103,8 @@ export declare namespace Roark {
     Config as Config,
     type Bundle as Bundle,
     type ConfigApplyResponse as ConfigApplyResponse,
+    type ConfigDiffResponse as ConfigDiffResponse,
     type ConfigApplyParams as ConfigApplyParams,
+    type ConfigDiffParams as ConfigDiffParams,
   };
 }
