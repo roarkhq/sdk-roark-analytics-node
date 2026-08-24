@@ -256,3 +256,14 @@ Methods:
 - <code title="get /v1/webhook">client.webhook.<a href="./src/resources/webhook.ts">list</a>({ ...params }) -> WebhookListResponse</code>
 - <code title="delete /v1/webhook/{webhookId}">client.webhook.<a href="./src/resources/webhook.ts">delete</a>(webhookID) -> WebhookDeleteResponse</code>
 - <code title="get /v1/webhook/{webhookId}">client.webhook.<a href="./src/resources/webhook.ts">getByID</a>(webhookID) -> WebhookGetByIDResponse</code>
+
+# Config
+
+Types:
+
+- <code><a href="./src/resources/config.ts">Bundle</a></code>
+- <code><a href="./src/resources/config.ts">ConfigApplyResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/config/apply">client.config.<a href="./src/resources/config.ts">apply</a>({ ...params }) -> ConfigApplyResponse</code>
