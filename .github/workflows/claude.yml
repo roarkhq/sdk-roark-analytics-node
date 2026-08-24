@@ -36,7 +36,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           # Codegen and release PRs are opened by the Stainless app, which the
           # action otherwise rejects as a non-human actor.
-          allowed_bots: "stainless-app"
+          allowed_bots: 'stainless-app'
           track_progress: true
           prompt: |
             REPO: ${{ github.repository }}
