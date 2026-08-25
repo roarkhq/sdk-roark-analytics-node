@@ -1,0 +1,53 @@
+# Who authors the release PR once the vendor stops.
+#
+# Today `app/stainless-app` opens `release: <version>` against `main`, and
+# merging it tags, creates the GitHub release, and fires `publish-npm.yml`. That
+# app is driven by the vendor's project config, so removing `targets.typescript`
+# from `stainless.yml` (app-roark-analytics#2919) stops it. Publishing itself is
+# safe - `publish-npm.yml` lives here and listens for `release: published` - but
+# with nothing authoring the version bump, changelog and tag, generated code
+# would land on `main` and never ship. Both `@roarkanalytics/sdk` and
+# `@roarkanalytics/sdk-mcp` would stop publishing with no failing job anywhere.
+#
+# `release-please-config.json` and `.release-please-manifest.json` already exist
+# and are unchanged: this only supplies the runner they were always missing. The
+# config already bumps `packages/mcp-server/{package.json,manifest.json}` through
+# `extra-files`, and deliberately does not list `packages/cli` - the CLI is
+# published by hand from `publish-cli.yml`.
+name: release-please
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  # A second run while the first is opening or updating the release PR would race
+  # the same branch. Queue rather than cancel: a cancelled run can leave a pushed
+  # branch with no PR opened for it.
+  group: release-please
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    # Off until the vendor has actually let go. While `stainless.yml` still
+    # declares `targets.typescript`, both this and `app/stainless-app` would open
+    # a release PR into this repository. Set the RELEASE_PLEASE_ENABLED variable
+    # to 'true' in the same change that lands app-roark-analytics#2919, not
+    # before.
+    if: vars.RELEASE_PLEASE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          target-branch: main
+          # NOT GITHUB_TOKEN. A release created with it does not raise
+          # `release: published` for other workflows, so `publish-npm.yml` would
+          # never run and this would reproduce the outage it exists to prevent -
+          # silently, since nothing fails when a publish simply never starts.
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
