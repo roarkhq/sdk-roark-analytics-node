@@ -342,6 +342,12 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:

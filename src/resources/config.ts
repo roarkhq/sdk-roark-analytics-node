@@ -117,6 +117,8 @@ export namespace Bundle {
 
     name: string;
 
+    age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
     backgroundNoise?:
       | 'NONE'
       | 'AIRPORT'
@@ -545,6 +547,8 @@ export namespace ConfigApplyParams {
 
     name: string;
 
+    age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
     backgroundNoise?:
       | 'NONE'
       | 'AIRPORT'
@@ -892,6 +896,8 @@ export namespace ConfigDiffParams {
       | 'HE';
 
     name: string;
+
+    age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
     backgroundNoise?:
       | 'NONE'

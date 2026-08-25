@@ -481,6 +481,12 @@ export namespace CustomerFlowCreateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -786,6 +792,12 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -1182,6 +1194,12 @@ export namespace CustomerFlowCreateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -1485,6 +1503,12 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -1875,6 +1899,12 @@ export namespace CustomerFlowCreateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -2173,6 +2203,12 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -2596,6 +2632,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -2901,6 +2943,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -3297,6 +3345,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -3600,6 +3654,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -3990,6 +4050,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -4288,6 +4354,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -4714,6 +4786,12 @@ export namespace CustomerFlowListResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -5019,6 +5097,12 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -5415,6 +5499,12 @@ export namespace CustomerFlowListResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -5718,6 +5808,12 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -6108,6 +6204,12 @@ export namespace CustomerFlowListResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -6406,6 +6508,12 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -6859,6 +6967,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -7164,6 +7278,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -7560,6 +7680,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -7863,6 +7989,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -8253,6 +8385,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -8551,6 +8689,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -8890,6 +9034,12 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -9195,6 +9345,12 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -9493,6 +9649,12 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -9802,6 +9964,12 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -10107,6 +10275,12 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -10405,6 +10579,12 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -10727,6 +10907,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'IL';
 
       /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
        * Background noise setting
        */
       backgroundNoise:
@@ -11025,6 +11211,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'IL';
 
       /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
        * Background noise setting
        */
       backgroundNoise:
@@ -11316,6 +11508,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'TR'
         | 'PT'
         | 'IL';
+
+      /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
       /**
        * Background noise setting

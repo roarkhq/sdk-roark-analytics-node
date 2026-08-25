@@ -30,6 +30,7 @@ describe('resource simulationPersona', () => {
       gender: 'MALE',
       language: 'EN',
       name: 'name',
+      age: 'CHILD',
       backgroundNoise: 'NONE',
       backstoryPrompt: 'A busy professional calling during lunch break',
       baseEmotion: 'NEUTRAL',
@@ -73,6 +74,7 @@ describe('resource simulationPersona', () => {
         'personaId',
         {
           accent: 'US',
+          age: 'CHILD',
           backgroundNoise: 'NONE',
           backstoryPrompt: 'A busy professional calling during lunch break',
           baseEmotion: 'NEUTRAL',
