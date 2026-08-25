@@ -66,7 +66,9 @@ export const buildBundle = async (dir: string, options: { prune?: boolean } = {}
   const root = resolve(dir);
   let entries: string[];
   try {
-    entries = (await readdir(root, { recursive: true })).filter((rel) => rel.endsWith('.yaml') || rel.endsWith('.yml'));
+    entries = (await readdir(root, { recursive: true })).filter(
+      (rel) => rel.endsWith('.yaml') || rel.endsWith('.yml'),
+    );
   } catch {
     throw new UsageError(`config directory not found: ${dir}`);
   }

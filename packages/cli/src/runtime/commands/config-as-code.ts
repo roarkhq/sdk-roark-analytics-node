@@ -24,7 +24,10 @@ import { buildBundle, type ConfigBundle } from '../config-bundle';
 const OP_MARK: Record<string, string> = { create: '+', update: '~', delete: '-', noop: ' ' };
 
 /** One-line-per-change summary for a terminal; `apply` results also carry a status. */
-const formatChanges = (data: { changes: Array<Record<string, unknown>>; summary: Record<string, number> }): string => {
+const formatChanges = (data: {
+  changes: Array<Record<string, unknown>>;
+  summary: Record<string, number>;
+}): string => {
   const lines = data.changes.map((change) => {
     const mark = OP_MARK[String(change['op'])] ?? '?';
     const status = change['status'] ? ` (${String(change['status'])})` : '';
@@ -45,7 +48,10 @@ const changeCount = (summary: Record<string, number>): number =>
   (summary['create'] ?? 0) + (summary['update'] ?? 0) + (summary['delete'] ?? 0);
 
 /** Resolve the bundle: a directory (build it) or a pre-built bundle via --data / piped stdin. */
-const resolveBundle = async (dir: string | undefined, options: Record<string, unknown>): Promise<ConfigBundle> => {
+const resolveBundle = async (
+  dir: string | undefined,
+  options: Record<string, unknown>,
+): Promise<ConfigBundle> => {
   const prune = options['prune'] === false ? false : undefined;
 
   if (dir !== undefined) {
@@ -141,7 +147,9 @@ export const registerConfigAsCodeCommands = (
 
       const result = await client.config.apply(bundle as never);
       write(
-        json ? render((result as { data: unknown }).data, output) : formatChanges((result as { data: never }).data),
+        json ?
+          render((result as { data: unknown }).data, output)
+        : formatChanges((result as { data: never }).data),
       );
     });
 

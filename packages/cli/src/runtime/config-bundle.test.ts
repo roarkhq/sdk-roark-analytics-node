@@ -21,14 +21,21 @@ describe('buildBundle', () => {
     write(root, 'notes.md', '# not a resource'); // ignored
 
     const bundle = await buildBundle(root);
-    expect(bundle.resources.map((r) => `${r['kind']}/${r['name']}`)).toEqual(['agent/frontdesk', 'collector/quality']);
+    expect(bundle.resources.map((r) => `${r['kind']}/${r['name']}`)).toEqual([
+      'agent/frontdesk',
+      'collector/quality',
+    ]);
     expect(bundle.prune).toBeUndefined();
   });
 
   it('inlines file:// references anywhere in a resource', async () => {
     const root = scratch();
     write(root, 'prompts/backstory.md', 'You are a frustrated caller.');
-    write(root, 'personas/dana.yaml', 'kind: persona\nname: dana\nbackstoryPrompt: file://prompts/backstory.md\n');
+    write(
+      root,
+      'personas/dana.yaml',
+      'kind: persona\nname: dana\nbackstoryPrompt: file://prompts/backstory.md\n',
+    );
 
     const bundle = await buildBundle(root);
     expect(bundle.resources[0]?.['backstoryPrompt']).toBe('You are a frustrated caller.');
