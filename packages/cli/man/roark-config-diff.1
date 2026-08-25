@@ -1,31 +1,27 @@
-.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
+.\" Hand-maintained: `config diff` is a hand-written command (packages/cli/src/runtime/commands/config-as-code.ts),
+.\" not generated from the table. app-agent-codegen must exclude config diff/apply so it does not overwrite this.
 .TH "ROARK\-CONFIG\-DIFF" "1" "" "roark-config-diff" "Roark Analytics API Manual"
 .SH "NAME"
-roark\-config\-diff \- Diff a config bundle
+roark\-config\-diff \- Preview config-as-code changes
 .SH "SYNOPSIS"
 .B roark config diff
 [\fIoptions\fR]
+[\fIdir\fR]
 .SH "DESCRIPTION"
-Dry run: returns the changes reconcile a config\-as\-code bundle into the project. Submit the full desired set of resources; resources already managed by config are updated, new ones created, and (unless prune is false) config\-managed resources absent from the bundle are deleted. Identity is by name — no ids in the bundle. No writes are performed.
-.SH "API"
-POST /v1/config/diff
+Build a config-as-code bundle from a directory of YAML files and show the changes it would make against the project. No writes are performed.
+.PP
+Point it at a config directory and it reads every \fB*.yaml\fR / \fB*.yml\fR under it, inlines any \fBfile://\fR references, and submits the resulting bundle to \fBPOST /v1/config/diff\fR. The server computes the diff; identity is by name (no ids in the bundle). Run this before \fBconfig apply\fR to preview.
+.SH "ARGUMENTS"
+.TP
+\fIdir\fR
+A directory of config resources (\fB*.yaml\fR). Omit it to supply a pre-built bundle with \fB\-\-data\fR or on stdin instead.
 .SH "OPTIONS"
 .TP
-\fB\-\-resources\fR \fI<value>\fR
-Required.
-.TP
-\fB\-\-prune\fR
-Optional.
-.SH "GLOBAL OPTIONS"
-.TP
 \fB\-\-data\fR \fI<json>\fR
-Request body as JSON, or @file to read one (@\- for stdin).
+Pre-built bundle as JSON, or @file (@\- for stdin); an alternative to a directory.
 .TP
-\fB\-y\fR, \fB\-\-yes\fR
-Skip confirmation prompts.
-.TP
-\fB\-\-no\-input\fR
-Never prompt; fail instead.
+\fB\-\-no\-prune\fR
+Do not delete config-managed resources that are absent from the bundle.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 API base URL.
@@ -47,17 +43,12 @@ Shorthand for \-\-format json.
 .TP
 \fB\-\-no\-color\fR
 Disable colour.
-.TP
-\fB\-q\fR, \fB\-\-quiet\fR
-Suppress non\-essential output.
-.TP
-\fB\-\-allow\-project\-base\-url\fR
-Send the stored credential to a base URL set by a project .roark.json. Refused by default.
 .SH "EXAMPLES"
 .PP
 .RS 4
 .nf
-roark config diff \-\-resources <value>
+roark config diff ./roark
+cat bundle.json | roark config diff \-\-data @\-
 .fi
 .RE
 .SH "ENVIRONMENT"
@@ -67,9 +58,6 @@ Bearer token used when \-\-token is not given.
 .TP
 \fBROARK_BASE_URL\fR
 API base URL.
-.TP
-\fBROARK_ALLOW_PROJECT_BASE_URL\fR
-Trusts a base URL set by a project .roark.json, like \-\-allow\-project\-base\-url.
 .TP
 \fBNO_COLOR\fR
 Disables colour when set to any value.
@@ -83,14 +71,6 @@ The API rejected the request.
 .TP
 \fB2\fR
 The command line was wrong.
-.TP
-\fB3\fR
-No credential, or the credential was refused.
-.TP
-\fB4\fR
-The addressed resource does not exist.
-.TP
-\fB5\fR
-The request never completed: connection, timeout, or abort.
 .SH "SEE ALSO"
-.BR roark (1)
+.BR roark (1),
+.BR roark-config-apply (1)
