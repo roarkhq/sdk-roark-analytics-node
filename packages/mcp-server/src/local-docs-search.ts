@@ -68,11 +68,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst health = await client.health.get();\n\nconsole.log(health.data);",
       },
-      python: {
-        method: 'health.get',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nhealth = client.health.get()\nprint(health.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/health \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -105,11 +100,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.call.list',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst calls = await client.call.list();\n\nconsole.log(calls.data);",
-      },
-      python: {
-        method: 'call.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncalls = client.call.list()\nprint(calls.data)',
       },
       http: {
         example:
@@ -153,11 +143,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst call = await client.call.create({\n  callDirection: 'INBOUND',\n  interfaceType: 'PHONE',\n  recordingUrl: 'https://example.com',\n  startedAt: 'startedAt',\n});\n\nconsole.log(call.data);",
       },
-      python: {
-        method: 'call.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncall = client.call.create(\n    call_direction="INBOUND",\n    interface_type="PHONE",\n    recording_url="https://example.com",\n    started_at="startedAt",\n)\nprint(call.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/call \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "callDirection": "INBOUND",\n          "interfaceType": "PHONE",\n          "recordingUrl": "https://example.com",\n          "startedAt": "startedAt"\n        }\'',
@@ -182,11 +167,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.call.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'call.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -214,11 +194,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.listSentimentRuns('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'call.list_sentiment_runs',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.list_sentiment_runs(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/call/$CALL_ID/sentiment-run \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -244,11 +219,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.call.listMetrics',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.listMetrics('callId');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'call.list_metrics',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.list_metrics(\n    call_id="callId",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -279,11 +249,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.call.getTranscript('callId');\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'call.get_transcript',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.call.get_transcript(\n    call_id="callId",\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/call/$CALL_ID/transcript \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -307,11 +272,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.metric.listDefinitions',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metric.listDefinitions();\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'metric.list_definitions',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.metric.list_definitions()\nprint(response.data)',
       },
       http: {
         example:
@@ -339,11 +299,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metric.createDefinition({\n  analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  calculationType: 'LLM_JUDGE',\n  name: 'Customer Satisfaction',\n  outputType: 'BOOLEAN',\n});\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'metric.create_definition',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.metric.create_definition(\n    analysis_package_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    calculation_type="LLM_JUDGE",\n    name="Customer Satisfaction",\n    output_type="BOOLEAN",\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/metric/definitions \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "analysisPackageId": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "calculationType": "LLM_JUDGE",\n          "name": "Customer Satisfaction",\n          "outputType": "BOOLEAN",\n          "llmPrompt": "Evaluate whether the customer expressed satisfaction with the service provided.",\n          "metricId": "customer_satisfaction",\n          "slug": "customer_satisfaction"\n        }\'',
@@ -369,11 +324,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicies = await client.metricPolicy.list();\n\nconsole.log(metricPolicies.data);",
       },
-      python: {
-        method: 'metric_policy.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_policies = client.metric_policy.list()\nprint(metric_policies.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/metric/policies \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -398,11 +348,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.metricPolicy.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metricPolicy.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'metric_policy.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.metric_policy.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -436,11 +381,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicy = await client.metricPolicy.create({\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  modality: 'call',\n  name: 'Evaluate all inbound calls',\n});\n\nconsole.log(metricPolicy.data);",
       },
-      python: {
-        method: 'metric_policy.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_policy = client.metric_policy.create(\n    metrics=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n    modality="call",\n    name="Evaluate all inbound calls",\n)\nprint(metric_policy.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/metric/policies \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "metrics": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "modality": "call",\n          "name": "Evaluate all inbound calls",\n          "status": "ACTIVE"\n        }\'',
@@ -472,11 +412,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicy = await client.metricPolicy.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(metricPolicy.data);",
       },
-      python: {
-        method: 'metric_policy.update',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_policy = client.metric_policy.update(\n    policy_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(metric_policy.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/metric/policies/$POLICY_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -500,11 +435,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.metricPolicy.delete',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricPolicy = await client.metricPolicy.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(metricPolicy.data);",
-      },
-      python: {
-        method: 'metric_policy.delete',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_policy = client.metric_policy.delete(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(metric_policy.data)',
       },
       http: {
         example:
@@ -535,11 +465,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricCollectionJobs = await client.metricCollectionJob.list();\n\nconsole.log(metricCollectionJobs.data);",
       },
-      python: {
-        method: 'metric_collection_job.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_collection_jobs = client.metric_collection_job.list()\nprint(metric_collection_jobs.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/metric/collection-jobs \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -564,11 +489,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.metricCollectionJob.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.metricCollectionJob.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'metric_collection_job.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.metric_collection_job.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -595,11 +515,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.metricCollectionJob.create',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst metricCollectionJob = await client.metricCollectionJob.create({\n  metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n});\n\nconsole.log(metricCollectionJob.data);",
-      },
-      python: {
-        method: 'metric_collection_job.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nmetric_collection_job = client.metric_collection_job.create(\n    metrics=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n)\nprint(metric_collection_job.data)',
       },
       http: {
         example:
@@ -629,11 +544,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulation.run({\n  plan: {\n    agentEndpoints: [{ id: '7c9e6679-7425-40de-944b-e07fc1f90ae7' }],\n    direction: 'OUTBOUND',\n    maxSimulationDurationSeconds: 300,\n    metrics: [{}],\n  },\n});\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'simulation.run',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation.run(\n    plan={\n        "agent_endpoints": [{\n            "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7"\n        }],\n        "direction": "OUTBOUND",\n        "max_simulation_duration_seconds": 300,\n        "metrics": [{}],\n    },\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/simulation/run \\\n    -X POST \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -658,11 +568,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.simulationJob.lookup',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationJob.lookup({ roarkPhoneNumber: 'roarkPhoneNumber' });\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'simulation_job.lookup',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_job.lookup(\n    roark_phone_number="roarkPhoneNumber",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -690,11 +595,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'simulation_job.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_job.get_by_id(\n    "7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f",\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/simulation/job/$JOB_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -721,11 +621,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlans = await client.simulationRunPlan.list();\n\nconsole.log(simulationRunPlans.data);",
       },
-      python: {
-        method: 'simulation_run_plan.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plans = client.simulation_run_plan.list()\nprint(simulation_run_plans.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/simulation/plan \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -750,11 +645,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.simulationRunPlan.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationRunPlan.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'simulation_run_plan.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_run_plan.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -799,11 +689,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlan = await client.simulationRunPlan.create({\n  agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],\n  direction: 'INBOUND',\n  maxSimulationDurationSeconds: 300,\n  metrics: [{}],\n  name: 'My Run Plan',\n});\n\nconsole.log(simulationRunPlan.data);",
       },
-      python: {
-        method: 'simulation_run_plan.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plan = client.simulation_run_plan.create(\n    agent_endpoints=[{\n        "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n    }],\n    direction="INBOUND",\n    max_simulation_duration_seconds=300,\n    metrics=[{}],\n    name="My Run Plan",\n)\nprint(simulation_run_plan.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/simulation/plan \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "agentEndpoints": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "direction": "INBOUND",\n          "maxSimulationDurationSeconds": 300,\n          "metrics": [\n            {}\n          ],\n          "name": "My Run Plan",\n          "autoRun": false,\n          "description": "A run plan for testing inbound calls",\n          "endCallPhrases": [\n            "goodbye"\n          ],\n          "endCallReasons": [\n            "Order has been confirmed by the agent"\n          ],\n          "executionMode": "PARALLEL",\n          "iterationCount": 1,\n          "maxConcurrentJobs": 5,\n          "silenceTimeoutSeconds": 30\n        }\'',
@@ -847,11 +732,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlan = await client.simulationRunPlan.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(simulationRunPlan.data);",
       },
-      python: {
-        method: 'simulation_run_plan.update',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plan = client.simulation_run_plan.update(\n    plan_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(simulation_run_plan.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -875,11 +755,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.simulationRunPlan.delete',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlan = await client.simulationRunPlan.delete(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n);\n\nconsole.log(simulationRunPlan.data);",
-      },
-      python: {
-        method: 'simulation_run_plan.delete',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plan = client.simulation_run_plan.delete(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(simulation_run_plan.data)',
       },
       http: {
         example:
@@ -914,11 +789,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationRunPlanJobs = await client.simulationRunPlanJob.list();\n\nconsole.log(simulationRunPlanJobs.data);",
       },
-      python: {
-        method: 'simulation_run_plan_job.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_run_plan_jobs = client.simulation_run_plan_job.list()\nprint(simulation_run_plan_jobs.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/simulation/plan/jobs \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -943,11 +813,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.simulationRunPlanJob.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationRunPlanJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'simulation_run_plan_job.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_run_plan_job.get_by_id(\n    "7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -978,11 +843,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationRunPlanJob.start('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'simulation_run_plan_job.start',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_run_plan_job.start(\n    plan_id="7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f",\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/simulation/plan/$PLAN_ID/job \\\n    -X POST \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1008,11 +868,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationPersonas = await client.simulationPersona.list();\n\nconsole.log(simulationPersonas.data);",
       },
-      python: {
-        method: 'simulation_persona.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_personas = client.simulation_persona.list()\nprint(simulation_personas.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/persona \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1037,11 +892,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.simulationPersona.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationPersona.getByID('personaId');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'simulation_persona.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_persona.get_by_id(\n    "personaId",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -1090,11 +940,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.simulationPersona.create',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationPersona = await client.simulationPersona.create({\n  accent: 'US',\n  gender: 'MALE',\n  language: 'EN',\n  name: 'name',\n});\n\nconsole.log(simulationPersona.data);",
-      },
-      python: {
-        method: 'simulation_persona.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_persona = client.simulation_persona.create(\n    accent="US",\n    gender="MALE",\n    language="EN",\n    name="name",\n)\nprint(simulation_persona.data)',
       },
       http: {
         example:
@@ -1145,11 +990,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationPersona = await client.simulationPersona.update('personaId');\n\nconsole.log(simulationPersona.data);",
       },
-      python: {
-        method: 'simulation_persona.update',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_persona = client.simulation_persona.update(\n    persona_id="personaId",\n)\nprint(simulation_persona.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/persona/$PERSONA_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1176,11 +1016,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst simulationEnvironments = await client.simulationEnvironment.list();\n\nconsole.log(simulationEnvironments.data);",
       },
-      python: {
-        method: 'simulation_environment.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nsimulation_environments = client.simulation_environment.list()\nprint(simulation_environments.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/simulation/environment \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1205,11 +1040,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.simulationEnvironment.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.simulationEnvironment.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'simulation_environment.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.simulation_environment.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -1243,11 +1073,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst customerFlows = await client.customerFlow.list();\n\nconsole.log(customerFlows.data);",
       },
-      python: {
-        method: 'customer_flow.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncustomer_flows = client.customer_flow.list()\nprint(customer_flows.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/customer-flow \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1274,11 +1099,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.customerFlow.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'customer_flow.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.customer_flow.get_by_id(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/customer-flow/$FLOW_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1304,11 +1124,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.customerFlow.create',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst customerFlow = await client.customerFlow.create({\n  graph: [{ type: 'CUSTOMER_FIRST_MESSAGE' }],\n  title: 'Reschedule an appointment',\n  type: 'SCRIPTED',\n});\n\nconsole.log(customerFlow.data);",
-      },
-      python: {
-        method: 'customer_flow.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncustomer_flow = client.customer_flow.create(\n    graph=[{\n        "type": "CUSTOMER_FIRST_MESSAGE"\n    }],\n    title="Reschedule an appointment",\n    type="SCRIPTED",\n)\nprint(customer_flow.data)',
       },
       http: {
         example:
@@ -1343,11 +1158,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst customerFlow = await client.customerFlow.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerFlow.data);",
       },
-      python: {
-        method: 'customer_flow.update',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncustomer_flow = client.customer_flow.update(\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_flow.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/customer-flow/$FLOW_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1372,11 +1182,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.customerFlow.delete',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst customerFlow = await client.customerFlow.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(customerFlow.data);",
-      },
-      python: {
-        method: 'customer_flow.delete',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncustomer_flow = client.customer_flow.delete(\n    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_flow.data)',
       },
       http: {
         example:
@@ -1407,11 +1212,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.customerFlow.replaceGraph',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.customerFlow.replaceGraph('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  graph: [{ type: 'AGENT_TURN' }],\n});\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'customer_flow.replace_graph',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.customer_flow.replace_graph(\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    graph=[{\n        "type": "AGENT_TURN"\n    }],\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -1448,11 +1248,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.customerFlow.updateHappyPath('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'customer_flow.update_happy_path',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.customer_flow.update_happy_path(\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/customer-flow/$FLOW_ID/happy-path \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1486,11 +1281,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.customerFlowEdgeCase.add',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.customerFlowEdgeCase.add('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  title: 'x',\n});\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'customer_flow_edge_case.add',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.customer_flow_edge_case.add(\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    title="x",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -1528,11 +1318,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst customerFlowEdgeCase = await client.customerFlowEdgeCase.update(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },\n);\n\nconsole.log(customerFlowEdgeCase.data);",
       },
-      python: {
-        method: 'customer_flow_edge_case.update',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncustomer_flow_edge_case = client.customer_flow_edge_case.update(\n    edge_case_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_flow_edge_case.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/customer-flow/$FLOW_ID/edge-case/$EDGE_CASE_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1557,11 +1342,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.customerFlowEdgeCase.remove',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst customerFlowEdgeCase = await client.customerFlowEdgeCase.remove(\n  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },\n);\n\nconsole.log(customerFlowEdgeCase.data);",
-      },
-      python: {
-        method: 'customer_flow_edge_case.remove',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\ncustomer_flow_edge_case = client.customer_flow_edge_case.remove(\n    edge_case_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(customer_flow_edge_case.data)',
       },
       http: {
         example:
@@ -1589,11 +1369,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.customerFlowEdgeCase.promote('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {\n  flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n});\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'customer_flow_edge_case.promote',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.customer_flow_edge_case.promote(\n    edge_case_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    flow_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/customer-flow/$FLOW_ID/edge-case/$EDGE_CASE_ID/promote \\\n    -X POST \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1618,11 +1393,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.agent.list',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agents = await client.agent.list();\n\nconsole.log(agents.data);",
-      },
-      python: {
-        method: 'agent.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagents = client.agent.list()\nprint(agents.data)',
       },
       http: {
         example:
@@ -1649,11 +1419,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.agent.getByID('agentId');\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'agent.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.agent.get_by_id(\n    "agentId",\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/agent/$AGENT_ID \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1678,11 +1443,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.agent.create',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agent = await client.agent.create({ name: 'x' });\n\nconsole.log(agent.data);",
-      },
-      python: {
-        method: 'agent.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent = client.agent.create(\n    name="x",\n)\nprint(agent.data)',
       },
       http: {
         example:
@@ -1709,11 +1469,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agent = await client.agent.update('agentId');\n\nconsole.log(agent.data);",
       },
-      python: {
-        method: 'agent.update',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent = client.agent.update(\n    agent_id="agentId",\n)\nprint(agent.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/agent/$AGENT_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1739,11 +1494,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agentEndpoints = await client.agentEndpoint.list();\n\nconsole.log(agentEndpoints.data);",
       },
-      python: {
-        method: 'agent_endpoint.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent_endpoints = client.agent_endpoint.list()\nprint(agent_endpoints.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/agent/endpoint \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1768,11 +1518,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.agentEndpoint.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.agentEndpoint.getByID('endpointId');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'agent_endpoint.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.agent_endpoint.get_by_id(\n    "endpointId",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -1806,11 +1551,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agentEndpoint = await client.agentEndpoint.create({\n  agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',\n  direction: 'INCOMING',\n  value: 'value',\n});\n\nconsole.log(agentEndpoint.data);",
       },
-      python: {
-        method: 'agent_endpoint.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent_endpoint = client.agent_endpoint.create(\n    agent_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n    direction="INCOMING",\n    value="value",\n)\nprint(agent_endpoint.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/agent/endpoint \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "agentId": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",\n          "direction": "INCOMING",\n          "value": "value"\n        }\'',
@@ -1842,11 +1582,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst agentEndpoint = await client.agentEndpoint.update('endpointId');\n\nconsole.log(agentEndpoint.data);",
       },
-      python: {
-        method: 'agent_endpoint.update',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nagent_endpoint = client.agent_endpoint.update(\n    endpoint_id="endpointId",\n)\nprint(agent_endpoint.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/agent/endpoint/$ENDPOINT_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1872,11 +1607,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst httpRequestDefinitions = await client.httpRequestDefinition.list();\n\nconsole.log(httpRequestDefinitions.data);",
       },
-      python: {
-        method: 'http_request_definition.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nhttp_request_definitions = client.http_request_definition.list()\nprint(http_request_definitions.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/http-request-definition \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -1901,11 +1631,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.httpRequestDefinition.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.httpRequestDefinition.getByID('definitionId');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'http_request_definition.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.http_request_definition.get_by_id(\n    "definitionId",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -1940,11 +1665,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst httpRequestDefinition = await client.httpRequestDefinition.create({\n  scope: 'AGENT_OUTBOUND_DIAL',\n  url: 'https://example.com',\n});\n\nconsole.log(httpRequestDefinition.data);",
       },
-      python: {
-        method: 'http_request_definition.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nhttp_request_definition = client.http_request_definition.create(\n    scope="AGENT_OUTBOUND_DIAL",\n    url="https://example.com",\n)\nprint(http_request_definition.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/http-request-definition \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "scope": "AGENT_OUTBOUND_DIAL",\n          "url": "https://example.com"\n        }\'',
@@ -1977,11 +1697,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst httpRequestDefinition = await client.httpRequestDefinition.update('definitionId');\n\nconsole.log(httpRequestDefinition.data);",
       },
-      python: {
-        method: 'http_request_definition.update',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nhttp_request_definition = client.http_request_definition.update(\n    definition_id="definitionId",\n)\nprint(http_request_definition.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/http-request-definition/$DEFINITION_ID \\\n    -X PUT \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -2007,11 +1722,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst webhooks = await client.webhook.list();\n\nconsole.log(webhooks.data);",
       },
-      python: {
-        method: 'webhook.list',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nwebhooks = client.webhook.list()\nprint(webhooks.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/webhook \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN"',
@@ -2036,11 +1746,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.webhook.getByID',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.webhook.getByID('webhookId');\n\nconsole.log(response.data);",
-      },
-      python: {
-        method: 'webhook.get_by_id',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.webhook.get_by_id(\n    "webhookId",\n)\nprint(response.data)',
       },
       http: {
         example:
@@ -2068,11 +1773,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst webhook = await client.webhook.create({\n  events: ['CALL_ANALYSIS_COMPLETED'],\n  url: 'https://example.com',\n});\n\nconsole.log(webhook.data);",
       },
-      python: {
-        method: 'webhook.create',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nwebhook = client.webhook.create(\n    events=["CALL_ANALYSIS_COMPLETED"],\n    url="https://example.com",\n)\nprint(webhook.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/webhook \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "events": [\n            "CALL_ANALYSIS_COMPLETED"\n          ],\n          "url": "https://example.com"\n        }\'',
@@ -2096,11 +1796,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         method: 'client.webhook.delete',
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst webhook = await client.webhook.delete('webhookId');\n\nconsole.log(webhook.data);",
-      },
-      python: {
-        method: 'webhook.delete',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nwebhook = client.webhook.delete(\n    "webhookId",\n)\nprint(webhook.data)',
       },
       http: {
         example:
@@ -2131,11 +1826,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.config.diff({ resources: [{ kind: 'agent', name: 'name' }] });\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'config.diff',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.config.diff(\n    resources=[{\n        "kind": "agent",\n        "name": "name",\n    }],\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/config/diff \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "resources": [\n            {\n              "kind": "agent",\n              "name": "name"\n            }\n          ]\n        }\'',
@@ -2165,11 +1855,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
         example:
           "import Roark from '@roarkanalytics/sdk';\n\nconst client = new Roark({\n  bearerToken: process.env['ROARK_API_BEARER_TOKEN'], // This is the default and can be omitted\n});\n\nconst response = await client.config.apply({ resources: [{ kind: 'agent', name: 'name' }] });\n\nconsole.log(response.data);",
       },
-      python: {
-        method: 'config.apply',
-        example:
-          'import os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\nresponse = client.config.apply(\n    resources=[{\n        "kind": "agent",\n        "name": "name",\n    }],\n)\nprint(response.data)',
-      },
       http: {
         example:
           'curl https://api.roark.ai/v1/config/apply \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "resources": [\n            {\n              "kind": "agent",\n              "name": "name"\n            }\n          ]\n        }\'',
@@ -2179,11 +1864,6 @@ const EMBEDDED_METHODS: MethodEntry[] = [
 ];
 
 const EMBEDDED_READMES: { language: string; content: string }[] = [
-  {
-    language: 'python',
-    content:
-      '# Roark Python API library\n\n<!-- prettier-ignore -->\n[![PyPI version](https://img.shields.io/pypi/v/roark_analytics.svg?label=pypi%20(stable))](https://pypi.org/project/roark_analytics/)\n\nThe Roark Python library provides convenient access to the Roark REST API from any Python 3.9+\napplication. The library includes type definitions for all request params and response fields,\nand offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).\n\n\n\nIt is generated with [Stainless](https://www.stainless.com/).\n\n## MCP Server\n\nUse the Roark MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.\n\n[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=%40roarkanalytics%2Fsdk-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkByb2Fya2FuYWx5dGljcy9zZGstbWNwIl0sImVudiI6eyJST0FSS19BUElfQkVBUkVSX1RPS0VOIjoiTXkgQmVhcmVyIFRva2VuIn19)\n[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22%40roarkanalytics%2Fsdk-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40roarkanalytics%2Fsdk-mcp%22%5D%2C%22env%22%3A%7B%22ROARK_API_BEARER_TOKEN%22%3A%22My%20Bearer%20Token%22%7D%7D)\n\n> Note: You may need to set environment variables in your MCP client.\n\n## Documentation\n\nThe REST API documentation can be found on [docs.roark.ai](https://docs.roark.ai). The full API of this library can be found in [api.md](api.md).\n\n## Installation\n\n```sh\n# install from PyPI\npip install roark_analytics\n```\n\n## Usage\n\nThe full API of this library can be found in [api.md](api.md).\n\n```python\nimport os\nfrom roark_analytics import Roark\n\nclient = Roark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\n\ncall = client.call.create(\n    call_direction="INBOUND",\n    interface_type="PHONE",\n    recording_url="https://example.com",\n    started_at="startedAt",\n)\nprint(call.data)\n```\n\nWhile you can provide a `bearer_token` keyword argument,\nwe recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)\nto add `ROARK_API_BEARER_TOKEN="My Bearer Token"` to your `.env` file\nso that your Bearer Token is not stored in source control.\n\n## Async usage\n\nSimply import `AsyncRoark` instead of `Roark` and use `await` with each API call:\n\n```python\nimport os\nimport asyncio\nfrom roark_analytics import AsyncRoark\n\nclient = AsyncRoark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n)\n\nasync def main() -> None:\n  call = await client.call.create(\n      call_direction="INBOUND",\n      interface_type="PHONE",\n      recording_url="https://example.com",\n      started_at="startedAt",\n  )\n  print(call.data)\n\nasyncio.run(main())\n```\n\nFunctionality between the synchronous and asynchronous clients is otherwise identical.\n\n### With aiohttp\n\nBy default, the async client uses `httpx` for HTTP requests. However, for improved concurrency performance you may also use `aiohttp` as the HTTP backend.\n\nYou can enable this by installing `aiohttp`:\n\n```sh\n# install from PyPI\npip install roark_analytics[aiohttp]\n```\n\nThen you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:\n\n```python\nimport os\nimport asyncio\nfrom roark_analytics import DefaultAioHttpClient\nfrom roark_analytics import AsyncRoark\n\nasync def main() -> None:\n  async with AsyncRoark(\n    bearer_token=os.environ.get("ROARK_API_BEARER_TOKEN"),  # This is the default and can be omitted\n    http_client=DefaultAioHttpClient(),\n) as client:\n    call = await client.call.create(\n        call_direction="INBOUND",\n        interface_type="PHONE",\n        recording_url="https://example.com",\n        started_at="startedAt",\n    )\n    print(call.data)\n\nasyncio.run(main())\n```\n\n\n\n## Using types\n\nNested request parameters are [TypedDicts](https://docs.python.org/3/library/typing.html#typing.TypedDict). Responses are [Pydantic models](https://docs.pydantic.dev) which also provide helper methods for things like:\n\n- Serializing back into JSON, `model.to_json()`\n- Converting to a dictionary, `model.to_dict()`\n\nTyped requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.\n\n\n\n## Nested params\n\nNested parameters are dictionaries, typed using `TypedDict`, for example:\n\n```python\nfrom roark_analytics import Roark\n\nclient = Roark()\n\ncall = client.call.create(\n    call_direction="INBOUND",\n    interface_type="PHONE",\n    recording_url="https://example.com",\n    started_at="startedAt",\n    customer={\n        "phone_number_e164": "phoneNumberE164"\n    },\n)\nprint(call.customer)\n```\n\n\n\n## Handling errors\n\nWhen the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `roark_analytics.APIConnectionError` is raised.\n\nWhen the API returns a non-success status code (that is, 4xx or 5xx\nresponse), a subclass of `roark_analytics.APIStatusError` is raised, containing `status_code` and `response` properties.\n\nAll errors inherit from `roark_analytics.APIError`.\n\n```python\nimport roark_analytics\nfrom roark_analytics import Roark\n\nclient = Roark()\n\ntry:\n    client.call.create(\n        call_direction="INBOUND",\n        interface_type="PHONE",\n        recording_url="https://example.com",\n        started_at="startedAt",\n    )\nexcept roark_analytics.APIConnectionError as e:\n    print("The server could not be reached")\n    print(e.__cause__) # an underlying Exception, likely raised within httpx.\nexcept roark_analytics.RateLimitError as e:\n    print("A 429 status code was received; we should back off a bit.")\nexcept roark_analytics.APIStatusError as e:\n    print("Another non-200-range status code was received")\n    print(e.status_code)\n    print(e.response)\n```\n\nError codes are as follows:\n\n| Status Code | Error Type                 |\n| ----------- | -------------------------- |\n| 400         | `BadRequestError`          |\n| 401         | `AuthenticationError`      |\n| 403         | `PermissionDeniedError`    |\n| 404         | `NotFoundError`            |\n| 422         | `UnprocessableEntityError` |\n| 429         | `RateLimitError`           |\n| >=500       | `InternalServerError`      |\n| N/A         | `APIConnectionError`       |\n\n### Retries\n\nCertain errors are automatically retried 2 times by default, with a short exponential backoff.\nConnection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,\n429 Rate Limit, and >=500 Internal errors are all retried by default.\n\nYou can use the `max_retries` option to configure or disable retry settings:\n\n```python\nfrom roark_analytics import Roark\n\n# Configure the default for all requests:\nclient = Roark(\n    # default is 2\n    max_retries=0,\n)\n\n# Or, configure per-request:\nclient.with_options(max_retries = 5).call.create(\n    call_direction="INBOUND",\n    interface_type="PHONE",\n    recording_url="https://example.com",\n    started_at="startedAt",\n)\n```\n\n### Timeouts\n\nBy default requests time out after 1 minute. You can configure this with a `timeout` option,\nwhich accepts a float or an [`httpx.Timeout`](https://www.python-httpx.org/advanced/timeouts/#fine-tuning-the-configuration) object:\n\n```python\nfrom roark_analytics import Roark\n\n# Configure the default for all requests:\nclient = Roark(\n    # 20 seconds (default is 1 minute)\n    timeout=20.0,\n)\n\n# More granular control:\nclient = Roark(\n    timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),\n)\n\n# Override per-request:\nclient.with_options(timeout = 5.0).call.create(\n    call_direction="INBOUND",\n    interface_type="PHONE",\n    recording_url="https://example.com",\n    started_at="startedAt",\n)\n```\n\nOn timeout, an `APITimeoutError` is thrown.\n\nNote that requests that time out are [retried twice by default](#retries).\n\n\n\n## Advanced\n\n### Logging\n\nWe use the standard library [`logging`](https://docs.python.org/3/library/logging.html) module.\n\nYou can enable logging by setting the environment variable `ROARK_LOG` to `info`.\n\n```shell\n$ export ROARK_LOG=info\n```\n\nOr to `debug` for more verbose logging.\n\n### How to tell whether `None` means `null` or missing\n\nIn an API response, a field may be explicitly `null`, or missing entirely; in either case, its value is `None` in this library. You can differentiate the two cases with `.model_fields_set`:\n\n```py\nif response.my_field is None:\n  if \'my_field\' not in response.model_fields_set:\n    print(\'Got json like {}, without a "my_field" key present at all.\')\n  else:\n    print(\'Got json like {"my_field": null}.\')\n```\n\n### Accessing raw response data (e.g. headers)\n\nThe "raw" Response object can be accessed by prefixing `.with_raw_response.` to any HTTP method call, e.g.,\n\n```py\nfrom roark_analytics import Roark\n\nclient = Roark()\nresponse = client.call.with_raw_response.create(\n    call_direction="INBOUND",\n    interface_type="PHONE",\n    recording_url="https://example.com",\n    started_at="startedAt",\n)\nprint(response.headers.get(\'X-My-Header\'))\n\ncall = response.parse()  # get the object that `call.create()` would have returned\nprint(call.data)\n```\n\nThese methods return an [`APIResponse`](https://github.com/roarkhq/sdk-roark-analytics-python/tree/main/src/roark_analytics/_response.py) object.\n\nThe async client returns an [`AsyncAPIResponse`](https://github.com/roarkhq/sdk-roark-analytics-python/tree/main/src/roark_analytics/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.\n\n#### `.with_streaming_response`\n\nThe above interface eagerly reads the full response body when you make the request, which may not always be what you want.\n\nTo stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.\n\n```python\nwith client.call.with_streaming_response.create(\n    call_direction="INBOUND",\n    interface_type="PHONE",\n    recording_url="https://example.com",\n    started_at="startedAt",\n) as response :\n    print(response.headers.get(\'X-My-Header\'))\n\n    for line in response.iter_lines():\n      print(line)\n```\n\nThe context manager is required so that the response will reliably be closed.\n\n### Making custom/undocumented requests\n\nThis library is typed for convenient access to the documented API.\n\nIf you need to access undocumented endpoints, params, or response properties, the library can still be used.\n\n#### Undocumented endpoints\n\nTo make requests to undocumented endpoints, you can make requests using `client.get`, `client.post`, and other\nhttp verbs. Options on the client will be respected (such as retries) when making this request.\n\n```py\nimport httpx\n\nresponse = client.post(\n    "/foo",\n    cast_to=httpx.Response,\n    body={"my_param": True},\n)\n\nprint(response.headers.get("x-foo"))\n```\n\n#### Undocumented request params\n\nIf you want to explicitly send an extra param, you can do so with the `extra_query`, `extra_body`, and `extra_headers` request\noptions.\n\n#### Undocumented response properties\n\nTo access undocumented response properties, you can access the extra fields like `response.unknown_prop`. You\ncan also get all the extra fields on the Pydantic model as a dict with\n[`response.model_extra`](https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel.model_extra).\n\n### Configuring the HTTP client\n\nYou can directly override the [httpx client](https://www.python-httpx.org/api/#client) to customize it for your use case, including:\n\n- Support for [proxies](https://www.python-httpx.org/advanced/proxies/)\n- Custom [transports](https://www.python-httpx.org/advanced/transports/)\n- Additional [advanced](https://www.python-httpx.org/advanced/clients/) functionality\n\n```python\nimport httpx\nfrom roark_analytics import Roark, DefaultHttpxClient\n\nclient = Roark(\n    # Or use the `ROARK_BASE_URL` env var\n    base_url="http://my.test.server.example.com:8083",\n    http_client=DefaultHttpxClient(proxy="http://my.test.proxy.example.com", transport=httpx.HTTPTransport(local_address="0.0.0.0")),\n)\n```\n\nYou can also customize the client on a per-request basis by using `with_options()`:\n\n```python\nclient.with_options(http_client=DefaultHttpxClient(...))\n```\n\n### Managing HTTP resources\n\nBy default the library closes underlying HTTP connections whenever the client is [garbage collected](https://docs.python.org/3/reference/datamodel.html#object.__del__). You can manually close the client using the `.close()` method if desired, or with a context manager that closes when exiting.\n\n```py\nfrom roark_analytics import Roark\n\nwith Roark() as client:\n  # make requests here\n  ...\n\n# HTTP client is now closed\n```\n\n## Versioning\n\nThis package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:\n\n1. Changes that only affect static types, without breaking runtime behavior.\n2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_\n3. Changes that we do not expect to impact the vast majority of users in practice.\n\nWe take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.\n\nWe are keen for your feedback; please open an [issue](https://www.github.com/roarkhq/sdk-roark-analytics-python/issues) with questions, bugs, or suggestions.\n\n### Determining the installed version\n\nIf you\'ve upgraded to the latest version but aren\'t seeing any new features you were expecting then your python environment is likely still using an older version.\n\nYou can determine the version that is being used at runtime with:\n\n```py\nimport roark_analytics\nprint(roark_analytics.__version__)\n```\n\n## Requirements\n\nPython 3.9 or higher.\n\n## Contributing\n\nSee [the contributing documentation](./CONTRIBUTING.md).\n',
-  },
   {
     language: 'typescript',
     content:
