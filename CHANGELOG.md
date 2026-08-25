@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.34.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.33.2...v2.34.0) (2026-08-25)
+
+
+### Features
+
+* **cli:** config diff/apply for config-as-code directories ([#1143](https://github.com/roarkhq/sdk-roark-analytics-node/issues/1143)) ([6f2afca](https://github.com/roarkhq/sdk-roark-analytics-node/commit/6f2afca68b26e251856ea712ffda7399182b8ac1))
+
 ## 2.33.2 (2026-08-25)
 
 Full Changelog: [v2.33.1...v2.33.2](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.33.1...v2.33.2)
