@@ -10,6 +10,7 @@ import Roark from '@roarkanalytics/sdk';
 
 import { registerApiCommand } from './commands/api';
 import { registerAuthCommands } from './commands/auth';
+import { registerConfigAsCodeCommands } from './commands/config-as-code';
 import { registerConfigCommands } from './commands/config';
 import { registerCompletionCommand } from './commands/completion';
 import { confirm } from './confirm';
@@ -329,9 +330,17 @@ export const createProgram = (options: ProgramOptions): Command => {
 
   addGlobalOptions(root, { body: false, confirmation: false });
 
-  for (const definition of options.commands) addApiCommand(root, options, definition);
+  // `config diff` / `config apply` are hand-written (registerConfigAsCodeCommands) so they can take
+  // a config directory and confirm before writing; skip the raw generated versions of those two.
+  const isConfigAsCode = (path: readonly string[]): boolean =>
+    path.length === 2 && path[0] === 'config' && (path[1] === 'diff' || path[1] === 'apply');
+  for (const definition of options.commands) {
+    if (isConfigAsCode(definition.commandPath)) continue;
+    addApiCommand(root, options, definition);
+  }
 
   registerAuthCommands(root, options.binaryName);
+  registerConfigAsCodeCommands(root, options.binaryName, clientFor, resolveOutput);
   registerConfigCommands(root, options.binaryName);
   registerApiCommand(root, options.binaryName, clientFor, resolveOutput);
   registerCompletionCommand(root, options.binaryName, options.completions);
