@@ -261,7 +261,13 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/config.ts">AgentConfig</a></code>
 - <code><a href="./src/resources/config.ts">Bundle</a></code>
+- <code><a href="./src/resources/config.ts">CollectorConfig</a></code>
+- <code><a href="./src/resources/config.ts">ImprovFlowConfig</a></code>
+- <code><a href="./src/resources/config.ts">MetricConfig</a></code>
+- <code><a href="./src/resources/config.ts">PersonaConfig</a></code>
+- <code><a href="./src/resources/config.ts">ScriptedFlowConfig</a></code>
 - <code><a href="./src/resources/config.ts">ConfigApplyResponse</a></code>
 - <code><a href="./src/resources/config.ts">ConfigDiffResponse</a></code>
 

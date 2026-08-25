@@ -16,364 +16,356 @@ export class Config extends APIResource {
   }
 
   /**
-   * Dry run: returns the changes reconcile a config-as-code bundle into the project.
-   * Submit the full desired set of resources; resources already managed by config
-   * are updated, new ones created, and (unless prune is false) config-managed
-   * resources absent from the bundle are deleted. Identity is by name — no ids in
-   * the bundle. No writes are performed.
+   * Dry run for a config-as-code apply: returns the projected changes (create /
+   * update / delete) for the submitted bundle without writing anything. Submit the
+   * full desired set of resources; identity is by name — no ids in the bundle. Run
+   * this before apply to preview what would change.
    */
   diff(body: ConfigDiffParams, options?: RequestOptions): APIPromise<ConfigDiffResponse> {
     return this._client.post('/v1/config/diff', { body, ...options });
   }
 }
 
+export interface AgentConfig {
+  kind: 'agent';
+
+  name: string;
+
+  customId?: string | null;
+
+  description?: string | null;
+
+  endpoints?: Array<AgentConfig.Endpoint>;
+}
+
+export namespace AgentConfig {
+  export interface Endpoint {
+    direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+    name: string;
+
+    value: string;
+
+    environment?: string;
+  }
+}
+
 export interface Bundle {
   resources: Array<
-    | Bundle.UnionMember0
-    | Bundle.UnionMember1
-    | Bundle.UnionMember2
-    | Bundle.UnionMember3
-    | Bundle.UnionMember4
-    | Bundle.UnionMember5
+    AgentConfig | PersonaConfig | ImprovFlowConfig | ScriptedFlowConfig | CollectorConfig | MetricConfig
   >;
 
   prune?: boolean;
 }
 
-export namespace Bundle {
-  export interface UnionMember0 {
-    kind: 'agent';
+export interface CollectorConfig {
+  kind: 'collector';
 
-    name: string;
+  metrics: Array<string>;
 
-    customId?: string | null;
+  modality: 'call' | 'chat';
 
-    description?: string | null;
+  name: string;
 
-    endpoints?: Array<UnionMember0.Endpoint>;
+  filters?: Array<CollectorConfig.Filter>;
+
+  status?: 'ACTIVE' | 'INACTIVE';
+}
+
+export namespace CollectorConfig {
+  export interface Filter {
+    conditions: Array<Filter.Condition>;
   }
 
-  export namespace UnionMember0 {
-    export interface Endpoint {
-      direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+  export namespace Filter {
+    export interface Condition {
+      key: string;
 
-      name: string;
+      type: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
 
-      value: string;
+      operator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'CONTAINS'
+        | 'STARTS_WITH'
+        | 'GREATER_THAN'
+        | 'LESS_THAN'
+        | 'GREATER_THAN_OR_EQUALS'
+        | 'LESS_THAN_OR_EQUALS';
 
-      environment?: string;
+      value?: string;
     }
   }
+}
 
-  export interface UnionMember1 {
-    accent:
-      | 'US'
-      | 'US_X_SOUTH'
-      | 'GB'
-      | 'ES'
-      | 'DE'
-      | 'IN'
-      | 'FR'
-      | 'NL'
-      | 'SA'
-      | 'GR'
-      | 'AU'
-      | 'IT'
-      | 'ID'
-      | 'TH'
-      | 'JP'
-      | 'NZ'
-      | 'PH'
-      | 'SG'
-      | 'MY'
-      | 'HK'
-      | 'TR'
-      | 'PT'
-      | 'IL';
+export interface ImprovFlowConfig {
+  agents: Array<string>;
 
-    gender: 'MALE' | 'FEMALE';
+  happyPath: ImprovFlowConfig.HappyPath;
 
-    kind: 'persona';
+  kind: 'flow';
 
-    language:
-      | 'EN'
-      | 'ES'
-      | 'DE'
-      | 'HI'
-      | 'FR'
-      | 'NL'
-      | 'AR'
-      | 'EL'
-      | 'IT'
-      | 'ID'
-      | 'TH'
-      | 'JA'
-      | 'TL'
-      | 'MS'
-      | 'ZH'
-      | 'TR'
-      | 'PT'
-      | 'HE';
+  name: string;
 
-    name: string;
+  type: 'improv';
 
-    age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+  description?: string | null;
 
-    backgroundNoise?:
-      | 'NONE'
-      | 'AIRPORT'
-      | 'CHILDREN_PLAYING'
-      | 'CITY'
-      | 'COFFEE_SHOP'
-      | 'DRIVING'
-      | 'OFFICE'
-      | 'THUNDERSTORM';
+  edgeCases?: Array<ImprovFlowConfig.EdgeCase>;
 
-    backstoryPrompt?: string | null;
+  expectations?: Array<string>;
 
-    baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+  title?: string;
+}
 
-    confirmationStyle?: 'EXPLICIT' | 'VAGUE';
+export namespace ImprovFlowConfig {
+  export interface HappyPath {
+    environment: string;
 
-    description?: string | null;
-
-    displayName?: string;
-
-    hasDisfluencies?: boolean;
-
-    idleMessageMaxSpokenCount?: number;
-
-    idleMessageResetCountOnUserSpeechEnabled?: boolean;
-
-    idleMessages?: Array<string> | null;
-
-    idleTimeoutSeconds?: number;
-
-    intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
-
-    memoryReliability?: 'HIGH' | 'LOW';
-
-    properties?: { [key: string]: unknown };
-
-    responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
-
-    secondaryLanguage?: 'EN' | null;
-
-    speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
-
-    speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
-
-    understoodLanguages?: Array<
-      | 'EN'
-      | 'ES'
-      | 'DE'
-      | 'HI'
-      | 'FR'
-      | 'NL'
-      | 'AR'
-      | 'EL'
-      | 'IT'
-      | 'ID'
-      | 'TH'
-      | 'JA'
-      | 'TL'
-      | 'MS'
-      | 'ZH'
-      | 'TR'
-      | 'PT'
-      | 'HE'
-    >;
-  }
-
-  export interface UnionMember2 {
-    agents: Array<string>;
-
-    happyPath: UnionMember2.HappyPath;
-
-    kind: 'flow';
-
-    name: string;
-
-    type: 'improv';
-
-    description?: string | null;
-
-    edgeCases?: Array<UnionMember2.EdgeCase>;
+    persona: string;
 
     expectations?: Array<string>;
+
+    prompt?: string;
 
     title?: string;
   }
 
-  export namespace UnionMember2 {
-    export interface HappyPath {
-      environment: string;
-
-      persona: string;
-
-      expectations?: Array<string>;
-
-      prompt?: string;
-
-      title?: string;
-    }
-
-    export interface EdgeCase {
-      name: string;
-
-      environment?: string;
-
-      expectations?: Array<string>;
-
-      persona?: string;
-
-      prompt?: string;
-
-      title?: string;
-    }
-  }
-
-  export interface UnionMember3 {
-    graph: Array<UnionMember3.Graph>;
-
-    kind: 'flow';
-
+  export interface EdgeCase {
     name: string;
 
-    type: 'scripted';
-
-    agents?: Array<string>;
-
-    branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
-
-    description?: string | null;
+    environment?: string;
 
     expectations?: Array<string>;
 
+    persona?: string;
+
+    prompt?: string;
+
     title?: string;
   }
+}
 
-  export namespace UnionMember3 {
-    export interface Graph {
-      type:
-        | 'AGENT_TURN'
-        | 'CUSTOMER_TURN'
-        | 'CUSTOMER_FIRST_MESSAGE'
-        | 'CUSTOMER_SILENCE'
-        | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL'
-        | 'SCENARIO_LINK';
+export interface MetricConfig {
+  kind: 'metric';
 
-      content?: string;
+  name: string;
 
-      dtmfDigits?: string;
+  prompt: string;
 
-      flow?: string;
+  type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
-      mergeInto?: Array<string>;
+  contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
 
-      ref?: string;
+  displayName?: string;
 
-      silenceDurationSeconds?: number;
+  falseLabel?: string;
 
-      steps?: Array<unknown>;
-    }
+  maxSelections?: number;
+
+  options?: Array<MetricConfig.Option>;
+
+  participantRole?: 'AGENT' | 'CUSTOMER';
+
+  scaleLabels?: Array<MetricConfig.ScaleLabel>;
+
+  scaleMax?: number;
+
+  scaleMin?: number;
+
+  scope?: 'GLOBAL' | 'PER_PARTICIPANT';
+
+  trueLabel?: string;
+}
+
+export namespace MetricConfig {
+  export interface Option {
+    displayOrder: number;
+
+    label: string;
+
+    description?: string;
   }
 
-  export interface UnionMember4 {
-    kind: 'collector';
+  export interface ScaleLabel {
+    displayOrder: number;
 
-    metrics: Array<string>;
+    label: string;
 
-    modality: 'call' | 'chat';
+    rangeMax: number;
 
-    name: string;
+    rangeMin: number;
 
-    filters?: Array<UnionMember4.Filter>;
+    colorHex?: string;
 
-    status?: 'ACTIVE' | 'INACTIVE';
+    description?: string;
   }
+}
 
-  export namespace UnionMember4 {
-    export interface Filter {
-      conditions: Array<Filter.Condition>;
-    }
+export interface PersonaConfig {
+  accent:
+    | 'US'
+    | 'US_X_SOUTH'
+    | 'GB'
+    | 'ES'
+    | 'DE'
+    | 'IN'
+    | 'FR'
+    | 'NL'
+    | 'SA'
+    | 'GR'
+    | 'AU'
+    | 'IT'
+    | 'ID'
+    | 'TH'
+    | 'JP'
+    | 'NZ'
+    | 'PH'
+    | 'SG'
+    | 'MY'
+    | 'HK'
+    | 'TR'
+    | 'PT'
+    | 'IL';
 
-    export namespace Filter {
-      export interface Condition {
-        key: string;
+  gender: 'MALE' | 'FEMALE';
 
-        type: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
+  kind: 'persona';
 
-        operator?:
-          | 'EQUALS'
-          | 'NOT_EQUALS'
-          | 'CONTAINS'
-          | 'STARTS_WITH'
-          | 'GREATER_THAN'
-          | 'LESS_THAN'
-          | 'GREATER_THAN_OR_EQUALS'
-          | 'LESS_THAN_OR_EQUALS';
+  language:
+    | 'EN'
+    | 'ES'
+    | 'DE'
+    | 'HI'
+    | 'FR'
+    | 'NL'
+    | 'AR'
+    | 'EL'
+    | 'IT'
+    | 'ID'
+    | 'TH'
+    | 'JA'
+    | 'TL'
+    | 'MS'
+    | 'ZH'
+    | 'TR'
+    | 'PT'
+    | 'HE';
 
-        value?: string;
-      }
-    }
-  }
+  name: string;
 
-  export interface UnionMember5 {
-    kind: 'metric';
+  age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
-    name: string;
+  backgroundNoise?:
+    | 'NONE'
+    | 'AIRPORT'
+    | 'CHILDREN_PLAYING'
+    | 'CITY'
+    | 'COFFEE_SHOP'
+    | 'DRIVING'
+    | 'OFFICE'
+    | 'THUNDERSTORM';
 
-    prompt: string;
+  backstoryPrompt?: string | null;
 
-    type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
+  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
 
-    contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+  confirmationStyle?: 'EXPLICIT' | 'VAGUE';
 
-    displayName?: string;
+  description?: string | null;
 
-    falseLabel?: string;
+  displayName?: string;
 
-    maxSelections?: number;
+  hasDisfluencies?: boolean;
 
-    options?: Array<UnionMember5.Option>;
+  idleMessageMaxSpokenCount?: number;
 
-    participantRole?: 'AGENT' | 'CUSTOMER';
+  idleMessageResetCountOnUserSpeechEnabled?: boolean;
 
-    scaleLabels?: Array<UnionMember5.ScaleLabel>;
+  idleMessages?: Array<string> | null;
 
-    scaleMax?: number;
+  idleTimeoutSeconds?: number;
 
-    scaleMin?: number;
+  intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
-    scope?: 'GLOBAL' | 'PER_PARTICIPANT';
+  memoryReliability?: 'HIGH' | 'LOW';
 
-    trueLabel?: string;
-  }
+  properties?: { [key: string]: unknown };
 
-  export namespace UnionMember5 {
-    export interface Option {
-      displayOrder: number;
+  responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
 
-      label: string;
+  secondaryLanguage?: 'EN' | null;
 
-      description?: string;
-    }
+  speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
 
-    export interface ScaleLabel {
-      displayOrder: number;
+  speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
 
-      label: string;
+  understoodLanguages?: Array<
+    | 'EN'
+    | 'ES'
+    | 'DE'
+    | 'HI'
+    | 'FR'
+    | 'NL'
+    | 'AR'
+    | 'EL'
+    | 'IT'
+    | 'ID'
+    | 'TH'
+    | 'JA'
+    | 'TL'
+    | 'MS'
+    | 'ZH'
+    | 'TR'
+    | 'PT'
+    | 'HE'
+  >;
+}
 
-      rangeMax: number;
+export interface ScriptedFlowConfig {
+  graph: Array<ScriptedFlowConfig.Graph>;
 
-      rangeMin: number;
+  kind: 'flow';
 
-      colorHex?: string;
+  name: string;
 
-      description?: string;
-    }
+  type: 'scripted';
+
+  agents?: Array<string>;
+
+  branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
+
+  description?: string | null;
+
+  expectations?: Array<string>;
+
+  title?: string;
+}
+
+export namespace ScriptedFlowConfig {
+  export interface Graph {
+    type:
+      | 'AGENT_TURN'
+      | 'CUSTOMER_TURN'
+      | 'CUSTOMER_FIRST_MESSAGE'
+      | 'CUSTOMER_SILENCE'
+      | 'CUSTOMER_DTMF'
+      | 'VOICEMAIL'
+      | 'SCENARIO_LINK';
+
+    content?: string;
+
+    dtmfDigits?: string;
+
+    flow?: string;
+
+    mergeInto?: Array<string>;
+
+    ref?: string;
+
+    silenceDurationSeconds?: number;
+
+    steps?: Array<unknown>;
   }
 }
 
@@ -459,707 +451,29 @@ export namespace ConfigDiffResponse {
 
 export interface ConfigApplyParams {
   resources: Array<
-    | ConfigApplyParams.UnionMember0
-    | ConfigApplyParams.UnionMember1
-    | ConfigApplyParams.UnionMember2
-    | ConfigApplyParams.UnionMember3
-    | ConfigApplyParams.UnionMember4
-    | ConfigApplyParams.UnionMember5
+    AgentConfig | PersonaConfig | ImprovFlowConfig | ScriptedFlowConfig | CollectorConfig | MetricConfig
   >;
 
   prune?: boolean;
-}
-
-export namespace ConfigApplyParams {
-  export interface UnionMember0 {
-    kind: 'agent';
-
-    name: string;
-
-    customId?: string | null;
-
-    description?: string | null;
-
-    endpoints?: Array<UnionMember0.Endpoint>;
-  }
-
-  export namespace UnionMember0 {
-    export interface Endpoint {
-      direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
-
-      name: string;
-
-      value: string;
-
-      environment?: string;
-    }
-  }
-
-  export interface UnionMember1 {
-    accent:
-      | 'US'
-      | 'US_X_SOUTH'
-      | 'GB'
-      | 'ES'
-      | 'DE'
-      | 'IN'
-      | 'FR'
-      | 'NL'
-      | 'SA'
-      | 'GR'
-      | 'AU'
-      | 'IT'
-      | 'ID'
-      | 'TH'
-      | 'JP'
-      | 'NZ'
-      | 'PH'
-      | 'SG'
-      | 'MY'
-      | 'HK'
-      | 'TR'
-      | 'PT'
-      | 'IL';
-
-    gender: 'MALE' | 'FEMALE';
-
-    kind: 'persona';
-
-    language:
-      | 'EN'
-      | 'ES'
-      | 'DE'
-      | 'HI'
-      | 'FR'
-      | 'NL'
-      | 'AR'
-      | 'EL'
-      | 'IT'
-      | 'ID'
-      | 'TH'
-      | 'JA'
-      | 'TL'
-      | 'MS'
-      | 'ZH'
-      | 'TR'
-      | 'PT'
-      | 'HE';
-
-    name: string;
-
-    age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
-
-    backgroundNoise?:
-      | 'NONE'
-      | 'AIRPORT'
-      | 'CHILDREN_PLAYING'
-      | 'CITY'
-      | 'COFFEE_SHOP'
-      | 'DRIVING'
-      | 'OFFICE'
-      | 'THUNDERSTORM';
-
-    backstoryPrompt?: string | null;
-
-    baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
-
-    confirmationStyle?: 'EXPLICIT' | 'VAGUE';
-
-    description?: string | null;
-
-    displayName?: string;
-
-    hasDisfluencies?: boolean;
-
-    idleMessageMaxSpokenCount?: number;
-
-    idleMessageResetCountOnUserSpeechEnabled?: boolean;
-
-    idleMessages?: Array<string> | null;
-
-    idleTimeoutSeconds?: number;
-
-    intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
-
-    memoryReliability?: 'HIGH' | 'LOW';
-
-    properties?: { [key: string]: unknown };
-
-    responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
-
-    secondaryLanguage?: 'EN' | null;
-
-    speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
-
-    speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
-
-    understoodLanguages?: Array<
-      | 'EN'
-      | 'ES'
-      | 'DE'
-      | 'HI'
-      | 'FR'
-      | 'NL'
-      | 'AR'
-      | 'EL'
-      | 'IT'
-      | 'ID'
-      | 'TH'
-      | 'JA'
-      | 'TL'
-      | 'MS'
-      | 'ZH'
-      | 'TR'
-      | 'PT'
-      | 'HE'
-    >;
-  }
-
-  export interface UnionMember2 {
-    agents: Array<string>;
-
-    happyPath: UnionMember2.HappyPath;
-
-    kind: 'flow';
-
-    name: string;
-
-    type: 'improv';
-
-    description?: string | null;
-
-    edgeCases?: Array<UnionMember2.EdgeCase>;
-
-    expectations?: Array<string>;
-
-    title?: string;
-  }
-
-  export namespace UnionMember2 {
-    export interface HappyPath {
-      environment: string;
-
-      persona: string;
-
-      expectations?: Array<string>;
-
-      prompt?: string;
-
-      title?: string;
-    }
-
-    export interface EdgeCase {
-      name: string;
-
-      environment?: string;
-
-      expectations?: Array<string>;
-
-      persona?: string;
-
-      prompt?: string;
-
-      title?: string;
-    }
-  }
-
-  export interface UnionMember3 {
-    graph: Array<UnionMember3.Graph>;
-
-    kind: 'flow';
-
-    name: string;
-
-    type: 'scripted';
-
-    agents?: Array<string>;
-
-    branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
-
-    description?: string | null;
-
-    expectations?: Array<string>;
-
-    title?: string;
-  }
-
-  export namespace UnionMember3 {
-    export interface Graph {
-      type:
-        | 'AGENT_TURN'
-        | 'CUSTOMER_TURN'
-        | 'CUSTOMER_FIRST_MESSAGE'
-        | 'CUSTOMER_SILENCE'
-        | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL'
-        | 'SCENARIO_LINK';
-
-      content?: string;
-
-      dtmfDigits?: string;
-
-      flow?: string;
-
-      mergeInto?: Array<string>;
-
-      ref?: string;
-
-      silenceDurationSeconds?: number;
-
-      steps?: Array<unknown>;
-    }
-  }
-
-  export interface UnionMember4 {
-    kind: 'collector';
-
-    metrics: Array<string>;
-
-    modality: 'call' | 'chat';
-
-    name: string;
-
-    filters?: Array<UnionMember4.Filter>;
-
-    status?: 'ACTIVE' | 'INACTIVE';
-  }
-
-  export namespace UnionMember4 {
-    export interface Filter {
-      conditions: Array<Filter.Condition>;
-    }
-
-    export namespace Filter {
-      export interface Condition {
-        key: string;
-
-        type: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
-
-        operator?:
-          | 'EQUALS'
-          | 'NOT_EQUALS'
-          | 'CONTAINS'
-          | 'STARTS_WITH'
-          | 'GREATER_THAN'
-          | 'LESS_THAN'
-          | 'GREATER_THAN_OR_EQUALS'
-          | 'LESS_THAN_OR_EQUALS';
-
-        value?: string;
-      }
-    }
-  }
-
-  export interface UnionMember5 {
-    kind: 'metric';
-
-    name: string;
-
-    prompt: string;
-
-    type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
-
-    contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
-
-    displayName?: string;
-
-    falseLabel?: string;
-
-    maxSelections?: number;
-
-    options?: Array<UnionMember5.Option>;
-
-    participantRole?: 'AGENT' | 'CUSTOMER';
-
-    scaleLabels?: Array<UnionMember5.ScaleLabel>;
-
-    scaleMax?: number;
-
-    scaleMin?: number;
-
-    scope?: 'GLOBAL' | 'PER_PARTICIPANT';
-
-    trueLabel?: string;
-  }
-
-  export namespace UnionMember5 {
-    export interface Option {
-      displayOrder: number;
-
-      label: string;
-
-      description?: string;
-    }
-
-    export interface ScaleLabel {
-      displayOrder: number;
-
-      label: string;
-
-      rangeMax: number;
-
-      rangeMin: number;
-
-      colorHex?: string;
-
-      description?: string;
-    }
-  }
 }
 
 export interface ConfigDiffParams {
   resources: Array<
-    | ConfigDiffParams.UnionMember0
-    | ConfigDiffParams.UnionMember1
-    | ConfigDiffParams.UnionMember2
-    | ConfigDiffParams.UnionMember3
-    | ConfigDiffParams.UnionMember4
-    | ConfigDiffParams.UnionMember5
+    AgentConfig | PersonaConfig | ImprovFlowConfig | ScriptedFlowConfig | CollectorConfig | MetricConfig
   >;
 
   prune?: boolean;
 }
 
-export namespace ConfigDiffParams {
-  export interface UnionMember0 {
-    kind: 'agent';
-
-    name: string;
-
-    customId?: string | null;
-
-    description?: string | null;
-
-    endpoints?: Array<UnionMember0.Endpoint>;
-  }
-
-  export namespace UnionMember0 {
-    export interface Endpoint {
-      direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
-
-      name: string;
-
-      value: string;
-
-      environment?: string;
-    }
-  }
-
-  export interface UnionMember1 {
-    accent:
-      | 'US'
-      | 'US_X_SOUTH'
-      | 'GB'
-      | 'ES'
-      | 'DE'
-      | 'IN'
-      | 'FR'
-      | 'NL'
-      | 'SA'
-      | 'GR'
-      | 'AU'
-      | 'IT'
-      | 'ID'
-      | 'TH'
-      | 'JP'
-      | 'NZ'
-      | 'PH'
-      | 'SG'
-      | 'MY'
-      | 'HK'
-      | 'TR'
-      | 'PT'
-      | 'IL';
-
-    gender: 'MALE' | 'FEMALE';
-
-    kind: 'persona';
-
-    language:
-      | 'EN'
-      | 'ES'
-      | 'DE'
-      | 'HI'
-      | 'FR'
-      | 'NL'
-      | 'AR'
-      | 'EL'
-      | 'IT'
-      | 'ID'
-      | 'TH'
-      | 'JA'
-      | 'TL'
-      | 'MS'
-      | 'ZH'
-      | 'TR'
-      | 'PT'
-      | 'HE';
-
-    name: string;
-
-    age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
-
-    backgroundNoise?:
-      | 'NONE'
-      | 'AIRPORT'
-      | 'CHILDREN_PLAYING'
-      | 'CITY'
-      | 'COFFEE_SHOP'
-      | 'DRIVING'
-      | 'OFFICE'
-      | 'THUNDERSTORM';
-
-    backstoryPrompt?: string | null;
-
-    baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
-
-    confirmationStyle?: 'EXPLICIT' | 'VAGUE';
-
-    description?: string | null;
-
-    displayName?: string;
-
-    hasDisfluencies?: boolean;
-
-    idleMessageMaxSpokenCount?: number;
-
-    idleMessageResetCountOnUserSpeechEnabled?: boolean;
-
-    idleMessages?: Array<string> | null;
-
-    idleTimeoutSeconds?: number;
-
-    intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
-
-    memoryReliability?: 'HIGH' | 'LOW';
-
-    properties?: { [key: string]: unknown };
-
-    responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
-
-    secondaryLanguage?: 'EN' | null;
-
-    speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
-
-    speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
-
-    understoodLanguages?: Array<
-      | 'EN'
-      | 'ES'
-      | 'DE'
-      | 'HI'
-      | 'FR'
-      | 'NL'
-      | 'AR'
-      | 'EL'
-      | 'IT'
-      | 'ID'
-      | 'TH'
-      | 'JA'
-      | 'TL'
-      | 'MS'
-      | 'ZH'
-      | 'TR'
-      | 'PT'
-      | 'HE'
-    >;
-  }
-
-  export interface UnionMember2 {
-    agents: Array<string>;
-
-    happyPath: UnionMember2.HappyPath;
-
-    kind: 'flow';
-
-    name: string;
-
-    type: 'improv';
-
-    description?: string | null;
-
-    edgeCases?: Array<UnionMember2.EdgeCase>;
-
-    expectations?: Array<string>;
-
-    title?: string;
-  }
-
-  export namespace UnionMember2 {
-    export interface HappyPath {
-      environment: string;
-
-      persona: string;
-
-      expectations?: Array<string>;
-
-      prompt?: string;
-
-      title?: string;
-    }
-
-    export interface EdgeCase {
-      name: string;
-
-      environment?: string;
-
-      expectations?: Array<string>;
-
-      persona?: string;
-
-      prompt?: string;
-
-      title?: string;
-    }
-  }
-
-  export interface UnionMember3 {
-    graph: Array<UnionMember3.Graph>;
-
-    kind: 'flow';
-
-    name: string;
-
-    type: 'scripted';
-
-    agents?: Array<string>;
-
-    branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
-
-    description?: string | null;
-
-    expectations?: Array<string>;
-
-    title?: string;
-  }
-
-  export namespace UnionMember3 {
-    export interface Graph {
-      type:
-        | 'AGENT_TURN'
-        | 'CUSTOMER_TURN'
-        | 'CUSTOMER_FIRST_MESSAGE'
-        | 'CUSTOMER_SILENCE'
-        | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL'
-        | 'SCENARIO_LINK';
-
-      content?: string;
-
-      dtmfDigits?: string;
-
-      flow?: string;
-
-      mergeInto?: Array<string>;
-
-      ref?: string;
-
-      silenceDurationSeconds?: number;
-
-      steps?: Array<unknown>;
-    }
-  }
-
-  export interface UnionMember4 {
-    kind: 'collector';
-
-    metrics: Array<string>;
-
-    modality: 'call' | 'chat';
-
-    name: string;
-
-    filters?: Array<UnionMember4.Filter>;
-
-    status?: 'ACTIVE' | 'INACTIVE';
-  }
-
-  export namespace UnionMember4 {
-    export interface Filter {
-      conditions: Array<Filter.Condition>;
-    }
-
-    export namespace Filter {
-      export interface Condition {
-        key: string;
-
-        type: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
-
-        operator?:
-          | 'EQUALS'
-          | 'NOT_EQUALS'
-          | 'CONTAINS'
-          | 'STARTS_WITH'
-          | 'GREATER_THAN'
-          | 'LESS_THAN'
-          | 'GREATER_THAN_OR_EQUALS'
-          | 'LESS_THAN_OR_EQUALS';
-
-        value?: string;
-      }
-    }
-  }
-
-  export interface UnionMember5 {
-    kind: 'metric';
-
-    name: string;
-
-    prompt: string;
-
-    type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
-
-    contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
-
-    displayName?: string;
-
-    falseLabel?: string;
-
-    maxSelections?: number;
-
-    options?: Array<UnionMember5.Option>;
-
-    participantRole?: 'AGENT' | 'CUSTOMER';
-
-    scaleLabels?: Array<UnionMember5.ScaleLabel>;
-
-    scaleMax?: number;
-
-    scaleMin?: number;
-
-    scope?: 'GLOBAL' | 'PER_PARTICIPANT';
-
-    trueLabel?: string;
-  }
-
-  export namespace UnionMember5 {
-    export interface Option {
-      displayOrder: number;
-
-      label: string;
-
-      description?: string;
-    }
-
-    export interface ScaleLabel {
-      displayOrder: number;
-
-      label: string;
-
-      rangeMax: number;
-
-      rangeMin: number;
-
-      colorHex?: string;
-
-      description?: string;
-    }
-  }
-}
-
 export declare namespace Config {
   export {
+    type AgentConfig as AgentConfig,
     type Bundle as Bundle,
+    type CollectorConfig as CollectorConfig,
+    type ImprovFlowConfig as ImprovFlowConfig,
+    type MetricConfig as MetricConfig,
+    type PersonaConfig as PersonaConfig,
+    type ScriptedFlowConfig as ScriptedFlowConfig,
     type ConfigApplyResponse as ConfigApplyResponse,
     type ConfigDiffResponse as ConfigDiffResponse,
     type ConfigApplyParams as ConfigApplyParams,

@@ -35,7 +35,13 @@ export {
 } from './call';
 export {
   Config,
+  type AgentConfig,
   type Bundle,
+  type CollectorConfig,
+  type ImprovFlowConfig,
+  type MetricConfig,
+  type PersonaConfig,
+  type ScriptedFlowConfig,
   type ConfigApplyResponse,
   type ConfigDiffResponse,
   type ConfigApplyParams,
