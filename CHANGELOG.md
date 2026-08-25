@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.33.2 (2026-08-25)
+
+Full Changelog: [v2.33.1...v2.33.2](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.33.1...v2.33.2)
+
 ## 2.33.1 (2026-08-24)
 
 Full Changelog: [v2.33.0...v2.33.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.33.0...v2.33.1)
