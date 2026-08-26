@@ -8,6 +8,16 @@ import { path } from '../internal/utils/path';
 export class Call extends APIResource {
   /**
    * Create a new call with recording, transcript, agents, and customers
+   *
+   * @example
+   * ```ts
+   * const call = await client.call.create({
+   *   callDirection: 'INBOUND',
+   *   interfaceType: 'PHONE',
+   *   recordingUrl: 'https://example.com',
+   *   startedAt: 'startedAt',
+   * });
+   * ```
    */
   create(body: CallCreateParams, options?: RequestOptions): APIPromise<CallCreateResponse> {
     return this._client.post('/v1/call', { body, ...options });
@@ -15,6 +25,11 @@ export class Call extends APIResource {
 
   /**
    * Returns a paginated list of calls for the authenticated project.
+   *
+   * @example
+   * ```ts
+   * const calls = await client.call.list();
+   * ```
    */
   list(
     query: CallListParams | null | undefined = {},
@@ -25,6 +40,13 @@ export class Call extends APIResource {
 
   /**
    * Retrieve an existing call by its unique identifier
+   *
+   * @example
+   * ```ts
+   * const response = await client.call.getByID(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   getByID(callID: string, options?: RequestOptions): APIPromise<CallGetByIDResponse> {
     return this._client.get(path`/v1/call/${callID}`, options);
@@ -33,6 +55,11 @@ export class Call extends APIResource {
   /**
    * Fetch the full transcript for a specific call. Optionally specify a
    * transcription source; otherwise the best available source is used automatically.
+   *
+   * @example
+   * ```ts
+   * const response = await client.call.getTranscript('callId');
+   * ```
    */
   getTranscript(
     callID: string,
@@ -50,6 +77,11 @@ export class Call extends APIResource {
    * successfully computed metrics; pass `?status=all` to also include rows that
    * resolved as NOT_APPLICABLE / DATA_MISSING / ERROR (the `value` field is omitted
    * on those entries — check `captureStatus`).
+   *
+   * @example
+   * ```ts
+   * const response = await client.call.listMetrics('callId');
+   * ```
    */
   listMetrics(
     callID: string,
@@ -62,6 +94,13 @@ export class Call extends APIResource {
   /**
    * Fetch detailed sentiment analysis results for a specific call, including
    * emotional tone, key phrases, and sentiment scores.
+   *
+   * @example
+   * ```ts
+   * const response = await client.call.listSentimentRuns(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   listSentimentRuns(callID: string, options?: RequestOptions): APIPromise<CallListSentimentRunsResponse> {
     return this._client.get(path`/v1/call/${callID}/sentiment-run`, options);
@@ -1420,211 +1459,9 @@ export namespace CallCreateParams {
     }
   }
 
-  export interface AgentIdentificationByRoarkID {
-    /**
-     * Existing Roark agent ID
-     */
-    roarkId: string;
-
-    /**
-     * Endpoint configuration for this agent (optional)
-     */
-    endpoint?:
-      | AgentIdentificationByRoarkID.AgentEndpointByID
-      | AgentIdentificationByRoarkID.AgentEndpointByValue;
-
-    /**
-     * Agent's prompt configuration (optional)
-     */
-    prompt?: AgentIdentificationByRoarkID.Prompt;
-  }
-
-  export namespace AgentIdentificationByRoarkID {
-    export interface AgentEndpointByID {
-      /**
-       * Existing Roark endpoint ID
-       */
-      id: string;
-    }
-
-    /**
-     * Lookup or create endpoint if one with these values does not exist
-     */
-    export interface AgentEndpointByValue {
-      /**
-       * Type of endpoint (phone or websocket)
-       */
-      type: string;
-
-      /**
-       * Endpoint value (phone number in E.164 format or websocket URL)
-       */
-      value: string;
-
-      /**
-       * Call direction for this endpoint
-       */
-      direction?: string;
-    }
-
-    /**
-     * Agent's prompt configuration (optional)
-     */
-    export interface Prompt {
-      /**
-       * The agent's system prompt used during this call
-       */
-      resolvedPrompt: string;
-    }
-  }
-
-  /**
-   * Find existing by customId if provided, otherwise reuse exact project name match
-   * before creating
-   */
-  export interface AgentIdentificationByName {
-    /**
-     * Agent name
-     */
-    name: string;
-
-    /**
-     * Agent custom ID
-     */
-    customId?: string;
-
-    /**
-     * Agent description
-     */
-    description?: string;
-
-    /**
-     * Endpoint configuration for this agent (optional)
-     */
-    endpoint?: AgentIdentificationByName.AgentEndpointByID | AgentIdentificationByName.AgentEndpointByValue;
-
-    /**
-     * Agent's prompt configuration (optional)
-     */
-    prompt?: AgentIdentificationByName.Prompt;
-  }
-
-  export namespace AgentIdentificationByName {
-    export interface AgentEndpointByID {
-      /**
-       * Existing Roark endpoint ID
-       */
-      id: string;
-    }
-
-    /**
-     * Lookup or create endpoint if one with these values does not exist
-     */
-    export interface AgentEndpointByValue {
-      /**
-       * Type of endpoint (phone or websocket)
-       */
-      type: string;
-
-      /**
-       * Endpoint value (phone number in E.164 format or websocket URL)
-       */
-      value: string;
-
-      /**
-       * Call direction for this endpoint
-       */
-      direction?: string;
-    }
-
-    /**
-     * Agent's prompt configuration (optional)
-     */
-    export interface Prompt {
-      /**
-       * The agent's system prompt used during this call
-       */
-      resolvedPrompt: string;
-    }
-  }
-
-  export interface AgentIdentificationByCustomID {
-    /**
-     * Existing custom ID for a Roark agent
-     */
-    customId: string;
-
-    /**
-     * Endpoint configuration for this agent (optional)
-     */
-    endpoint?:
-      | AgentIdentificationByCustomID.AgentEndpointByID
-      | AgentIdentificationByCustomID.AgentEndpointByValue;
-
-    /**
-     * Agent's prompt configuration (optional)
-     */
-    prompt?: AgentIdentificationByCustomID.Prompt;
-  }
-
-  export namespace AgentIdentificationByCustomID {
-    export interface AgentEndpointByID {
-      /**
-       * Existing Roark endpoint ID
-       */
-      id: string;
-    }
-
-    /**
-     * Lookup or create endpoint if one with these values does not exist
-     */
-    export interface AgentEndpointByValue {
-      /**
-       * Type of endpoint (phone or websocket)
-       */
-      type: string;
-
-      /**
-       * Endpoint value (phone number in E.164 format or websocket URL)
-       */
-      value: string;
-
-      /**
-       * Call direction for this endpoint
-       */
-      direction?: string;
-    }
-
-    /**
-     * Agent's prompt configuration (optional)
-     */
-    export interface Prompt {
-      /**
-       * The agent's system prompt used during this call
-       */
-      resolvedPrompt: string;
-    }
-  }
-
   /**
    * Single customer participating in the call. Use this for simpler API when you
    * have only one customer.
-   */
-  export interface Customer {
-    /**
-     * Customer phone number in E.164 format (e.g., +14155551234)
-     */
-    phoneNumberE164: string | null;
-
-    /**
-     * Label to identify this customer in the transcript (e.g., "speaker-01",
-     * "speaker-02")
-     */
-    label?: string | null;
-  }
-
-  /**
-   * Customer participating in the call
    */
   export interface Customer {
     /**

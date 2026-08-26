@@ -32,6 +32,11 @@ export class Metric extends APIResource {
   /**
    * Fetch all metric definitions available in the project, including both
    * system-generated and custom metrics.
+   *
+   * @example
+   * ```ts
+   * const response = await client.metric.listDefinitions();
+   * ```
    */
   listDefinitions(options?: RequestOptions): APIPromise<MetricListDefinitionsResponse> {
     return this._client.get('/v1/metric/definitions', options);
@@ -1216,24 +1221,6 @@ export declare namespace MetricCreateDefinitionParams {
     /**
      * Single trigger condition. Use either trigger or triggers + triggerCombinator.
      */
-    export interface Trigger {
-      operator:
-        | 'GREATER_THAN'
-        | 'GREATER_THAN_OR_EQUALS'
-        | 'LESS_THAN'
-        | 'LESS_THAN_OR_EQUALS'
-        | 'EQUALS'
-        | 'NOT_EQUALS';
-
-      sourceMetricDefinitionId: string;
-
-      thresholdValue: string;
-
-      sourceParticipantRole?: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER';
-
-      sourceVariantId?: string;
-    }
-
     export interface Trigger {
       operator:
         | 'GREATER_THAN'

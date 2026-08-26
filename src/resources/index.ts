@@ -36,6 +36,7 @@ export {
 export {
   Config,
   type Bundle,
+  type ConfigFlowStep,
   type ConfigApplyResponse,
   type ConfigDiffResponse,
   type ConfigApplyParams,

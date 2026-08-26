@@ -9,6 +9,14 @@ export class Webhook extends APIResource {
   /**
    * Creates a new webhook with event subscriptions. The signing secret is only
    * returned in this response.
+   *
+   * @example
+   * ```ts
+   * const webhook = await client.webhook.create({
+   *   events: ['CALL_ANALYSIS_COMPLETED'],
+   *   url: 'https://example.com',
+   * });
+   * ```
    */
   create(body: WebhookCreateParams, options?: RequestOptions): APIPromise<WebhookCreateResponse> {
     return this._client.post('/v1/webhook', { body, ...options });
@@ -16,6 +24,11 @@ export class Webhook extends APIResource {
 
   /**
    * Returns a paginated list of webhooks with their event subscriptions.
+   *
+   * @example
+   * ```ts
+   * const webhooks = await client.webhook.list();
+   * ```
    */
   list(
     query: WebhookListParams | null | undefined = {},
@@ -26,6 +39,11 @@ export class Webhook extends APIResource {
 
   /**
    * Deletes a webhook and all its event subscriptions.
+   *
+   * @example
+   * ```ts
+   * const webhook = await client.webhook.delete('webhookId');
+   * ```
    */
   delete(webhookID: string, options?: RequestOptions): APIPromise<WebhookDeleteResponse> {
     return this._client.delete(path`/v1/webhook/${webhookID}`, options);
@@ -33,6 +51,11 @@ export class Webhook extends APIResource {
 
   /**
    * Returns a specific webhook with its event subscriptions.
+   *
+   * @example
+   * ```ts
+   * const response = await client.webhook.getByID('webhookId');
+   * ```
    */
   getByID(webhookID: string, options?: RequestOptions): APIPromise<WebhookGetByIDResponse> {
     return this._client.get(path`/v1/webhook/${webhookID}`, options);

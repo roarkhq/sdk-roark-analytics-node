@@ -12,6 +12,15 @@ export class CustomerFlowEdgeCase extends APIResource {
    * expectations. Omitted fields are left alone; `additionalExpectations` replaces
    * the set wholesale rather than appending. Promoting it to the happy path is a
    * separate call, since that also demotes the incumbent.
+   *
+   * @example
+   * ```ts
+   * const customerFlowEdgeCase =
+   *   await client.customerFlowEdgeCase.update(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+   *   );
+   * ```
    */
   update(
     edgeCaseID: string,
@@ -30,6 +39,14 @@ export class CustomerFlowEdgeCase extends APIResource {
    * /v1/customer-flow/{flowId}/graph rather than here.
    *
    * Leave personaOverrideId or environmentId unset to inherit the happy path's.
+   *
+   * @example
+   * ```ts
+   * const response = await client.customerFlowEdgeCase.add(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { title: 'x' },
+   * );
+   * ```
    */
   add(
     flowID: string,
@@ -43,6 +60,14 @@ export class CustomerFlowEdgeCase extends APIResource {
    * Makes this edge case the flow's happy path, and the outgoing happy path an edge
    * case. Its persona and environment are baked into it first, so edge cases that
    * were inheriting keep the configuration they had.
+   *
+   * @example
+   * ```ts
+   * const response = await client.customerFlowEdgeCase.promote(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+   * );
+   * ```
    */
   promote(
     edgeCaseID: string,
@@ -57,6 +82,15 @@ export class CustomerFlowEdgeCase extends APIResource {
    * Soft-deletes a variant. On a scripted flow the path engine re-creates a variant
    * for any path still in the graph, so remove the path through PUT /graph instead
    * if that is what you meant.
+   *
+   * @example
+   * ```ts
+   * const customerFlowEdgeCase =
+   *   await client.customerFlowEdgeCase.remove(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     { flowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+   *   );
+   * ```
    */
   remove(
     edgeCaseID: string,
@@ -213,6 +247,12 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'TR'
         | 'PT'
         | 'IL';
+
+      /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
       /**
        * Background noise setting
@@ -513,6 +553,12 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'IL';
 
       /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
        * Background noise setting
        */
       backgroundNoise:
@@ -804,6 +850,12 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'TR'
         | 'PT'
         | 'IL';
+
+      /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
       /**
        * Background noise setting
@@ -1118,6 +1170,12 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'IL';
 
       /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
        * Background noise setting
        */
       backgroundNoise:
@@ -1416,6 +1474,12 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'IL';
 
       /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
        * Background noise setting
        */
       backgroundNoise:
@@ -1707,6 +1771,12 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'TR'
         | 'PT'
         | 'IL';
+
+      /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
       /**
        * Background noise setting
@@ -2021,6 +2091,12 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'IL';
 
       /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
        * Background noise setting
        */
       backgroundNoise:
@@ -2319,6 +2395,12 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'IL';
 
       /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
        * Background noise setting
        */
       backgroundNoise:
@@ -2610,6 +2692,12 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'TR'
         | 'PT'
         | 'IL';
+
+      /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
       /**
        * Background noise setting

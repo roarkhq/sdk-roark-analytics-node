@@ -10,7 +10,7 @@ const client = new Roark({
 describe('resource customerFlow', () => {
   test('create: only required params', async () => {
     const responsePromise = client.customerFlow.create({
-      graph: [{ type: 'CUSTOMER_FIRST_MESSAGE' }],
+      graph: [{ type: 'AGENT_TURN' }],
       title: 'Reschedule an appointment',
       type: 'SCRIPTED',
     });
@@ -27,18 +27,45 @@ describe('resource customerFlow', () => {
     const response = await client.customerFlow.create({
       graph: [
         {
-          type: 'CUSTOMER_FIRST_MESSAGE',
-          content: 'Hi, I need to move my appointment.',
+          type: 'AGENT_TURN',
+          content: 'content',
           mergeIntoNodeIds: ['x'],
           nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           ref: 'x',
-          steps: [],
+          steps: [
+            {
+              type: 'AGENT_TURN',
+              content: 'content',
+              mergeIntoNodeIds: ['x'],
+              nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              ref: 'x',
+              steps: [
+                {
+                  type: 'AGENT_TURN',
+                  content: 'content',
+                  mergeIntoNodeIds: ['x'],
+                  nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                  ref: 'x',
+                  steps: [
+                    {
+                      type: 'AGENT_TURN',
+                      content: 'content',
+                      mergeIntoNodeIds: [],
+                      nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                      ref: 'x',
+                      steps: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
       ],
       title: 'Reschedule an appointment',
       type: 'SCRIPTED',
       agentExpectations: [{ prompt: 'The agent confirmed the new appointment time back to the customer' }],
-      agentIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
+      agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
       branchingMode: 'DETERMINISTIC',
       description: 'description',
     });
@@ -145,7 +172,34 @@ describe('resource customerFlow', () => {
           mergeIntoNodeIds: ['x'],
           nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           ref: 'x',
-          steps: [],
+          steps: [
+            {
+              type: 'AGENT_TURN',
+              content: 'content',
+              mergeIntoNodeIds: ['x'],
+              nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              ref: 'x',
+              steps: [
+                {
+                  type: 'AGENT_TURN',
+                  content: 'content',
+                  mergeIntoNodeIds: ['x'],
+                  nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                  ref: 'x',
+                  steps: [
+                    {
+                      type: 'AGENT_TURN',
+                      content: 'content',
+                      mergeIntoNodeIds: [],
+                      nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                      ref: 'x',
+                      steps: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
       ],
       allowUnmerge: true,

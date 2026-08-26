@@ -8,6 +8,15 @@ import { path } from '../internal/utils/path';
 export class AgentEndpoint extends APIResource {
   /**
    * Creates a new agent endpoint for the authenticated project.
+   *
+   * @example
+   * ```ts
+   * const agentEndpoint = await client.agentEndpoint.create({
+   *   agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   direction: 'INCOMING',
+   *   value: 'value',
+   * });
+   * ```
    */
   create(body: AgentEndpointCreateParams, options?: RequestOptions): APIPromise<AgentEndpointCreateResponse> {
     return this._client.post('/v1/agent/endpoint', { body, ...options });
@@ -16,6 +25,12 @@ export class AgentEndpoint extends APIResource {
   /**
    * Updates an existing agent endpoint by its ID. Only environment and
    * outboundDialType can be modified.
+   *
+   * @example
+   * ```ts
+   * const agentEndpoint =
+   *   await client.agentEndpoint.update('endpointId');
+   * ```
    */
   update(
     endpointID: string,
@@ -27,6 +42,11 @@ export class AgentEndpoint extends APIResource {
 
   /**
    * Returns a paginated list of agent endpoints for the authenticated project.
+   *
+   * @example
+   * ```ts
+   * const agentEndpoints = await client.agentEndpoint.list();
+   * ```
    */
   list(
     query: AgentEndpointListParams | null | undefined = {},
@@ -37,6 +57,12 @@ export class AgentEndpoint extends APIResource {
 
   /**
    * Returns a specific agent endpoint by its ID.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.agentEndpoint.getByID('endpointId');
+   * ```
    */
   getByID(endpointID: string, options?: RequestOptions): APIPromise<AgentEndpointGetByIDResponse> {
     return this._client.get(path`/v1/agent/endpoint/${endpointID}`, options);

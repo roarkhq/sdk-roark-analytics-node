@@ -34,7 +34,7 @@ export class SimulationRunPlanJob extends APIResource {
    * );
    * ```
    */
-  getByID(jobID: unknown, options?: RequestOptions): APIPromise<SimulationRunPlanJobGetByIDResponse> {
+  getByID(jobID: string, options?: RequestOptions): APIPromise<SimulationRunPlanJobGetByIDResponse> {
     return this._client.get(path`/v1/simulation/plan/job/${jobID}`, options);
   }
 
@@ -47,9 +47,16 @@ export class SimulationRunPlanJob extends APIResource {
    * provide runtime variables to override plan-defined variables.
    *
    * @deprecated
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulationRunPlanJob.start(
+   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
+   * );
+   * ```
    */
   start(
-    planID: unknown,
+    planID: string,
     body: SimulationRunPlanJobStartParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<SimulationRunPlanJobStartResponse> {
@@ -340,6 +347,12 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting

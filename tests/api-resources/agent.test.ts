@@ -43,7 +43,10 @@ describe('resource agent', () => {
     await expect(
       client.agent.update(
         'agentId',
-        { description: 'description', name: 'x' },
+        {
+          description: 'description',
+          name: 'x',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Roark.NotFoundError);

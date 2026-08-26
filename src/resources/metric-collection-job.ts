@@ -9,6 +9,16 @@ export class MetricCollectionJob extends APIResource {
   /**
    * Creates a metric collection job for the specified calls or chats and metrics,
    * then triggers processing. Provide exactly one of callIds or chatIds.
+   *
+   * @example
+   * ```ts
+   * const metricCollectionJob =
+   *   await client.metricCollectionJob.create({
+   *     metrics: [
+   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+   *     ],
+   *   });
+   * ```
    */
   create(
     body: MetricCollectionJobCreateParams,
@@ -19,6 +29,12 @@ export class MetricCollectionJob extends APIResource {
 
   /**
    * Returns a paginated list of metric collection jobs for the project.
+   *
+   * @example
+   * ```ts
+   * const metricCollectionJobs =
+   *   await client.metricCollectionJob.list();
+   * ```
    */
   list(
     query: MetricCollectionJobListParams | null | undefined = {},
@@ -29,6 +45,13 @@ export class MetricCollectionJob extends APIResource {
 
   /**
    * Returns a specific metric collection job with progress information.
+   *
+   * @example
+   * ```ts
+   * const response = await client.metricCollectionJob.getByID(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   getByID(jobID: string, options?: RequestOptions): APIPromise<MetricCollectionJobGetByIDResponse> {
     return this._client.get(path`/v1/metric/collection-jobs/${jobID}`, options);
