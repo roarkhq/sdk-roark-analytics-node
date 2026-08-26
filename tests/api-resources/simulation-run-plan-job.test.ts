@@ -64,7 +64,7 @@ describe('resource simulationRunPlanJob', () => {
       client.simulationRunPlanJob.start(
         '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
         {
-          variables: { foo: 'string' },
+          variables: { orderNumber: '12345', environment: 'staging' },
         },
         { path: '/_stainless_unknown_path' },
       ),
