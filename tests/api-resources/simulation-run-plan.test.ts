@@ -34,8 +34,8 @@ describe('resource simulationRunPlan', () => {
       name: 'My Run Plan',
       autoRun: false,
       description: 'A run plan for testing inbound calls',
-      endCallPhrases: ['endCallPhrases'],
-      endCallReasons: ['endCallReasons'],
+      endCallPhrases: ['goodbye'],
+      endCallReasons: ['Order has been confirmed by the agent'],
       executionMode: 'PARALLEL',
       flows: [
         {
@@ -49,7 +49,12 @@ describe('resource simulationRunPlan', () => {
       iterationCount: 1,
       maxConcurrentJobs: 5,
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-      scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', variables: { foo: 'string' } }],
+      scenarios: [
+        {
+          id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          variables: { customerName: 'John Doe', appointmentDate: '2024-02-15' },
+        },
+      ],
       silenceTimeoutSeconds: 30,
     });
   });

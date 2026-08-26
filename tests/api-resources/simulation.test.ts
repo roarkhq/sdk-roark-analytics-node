@@ -34,8 +34,8 @@ describe('resource simulation', () => {
         maxSimulationDurationSeconds: 300,
         metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', metricId: 'x', slug: 'x' }],
         description: 'A run plan for testing inbound calls',
-        endCallPhrases: ['endCallPhrases'],
-        endCallReasons: ['endCallReasons'],
+        endCallPhrases: ['goodbye'],
+        endCallReasons: ['Order has been confirmed by the agent'],
         executionMode: 'PARALLEL',
         flows: [
           {
@@ -50,11 +50,16 @@ describe('resource simulation', () => {
         maxConcurrentJobs: 5,
         name: 'Billing regression',
         personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-        scenarios: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', variables: { foo: 'string' } }],
+        scenarios: [
+          {
+            id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            variables: { customerName: 'John Doe', appointmentDate: '2024-02-15' },
+          },
+        ],
         silenceTimeoutSeconds: 30,
       },
       saveAsPlan: true,
-      variables: { foo: 'string' },
+      variables: { orderNumber: '12345', environment: 'staging' },
     });
   });
 });

@@ -633,7 +633,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.roark.ai/v1/simulation/run \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "plan": {\n            "agentEndpoints": [\n              {\n                "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n              }\n            ],\n            "direction": "INBOUND",\n            "maxSimulationDurationSeconds": 300,\n            "metrics": [\n              {}\n            ],\n            "description": "A run plan for testing inbound calls",\n            "endCallPhrases": [\n              "endCallPhrases"\n            ],\n            "endCallReasons": [\n              "endCallReasons"\n            ],\n            "executionMode": "PARALLEL",\n            "iterationCount": 1,\n            "maxConcurrentJobs": 5,\n            "name": "Billing regression",\n            "silenceTimeoutSeconds": 30\n          }\n        }\'',
+          'curl https://api.roark.ai/v1/simulation/run \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "plan": {\n            "agentEndpoints": [\n              {\n                "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n              }\n            ],\n            "direction": "INBOUND",\n            "maxSimulationDurationSeconds": 300,\n            "metrics": [\n              {}\n            ],\n            "description": "A run plan for testing inbound calls",\n            "endCallPhrases": [\n              "goodbye"\n            ],\n            "endCallReasons": [\n              "Order has been confirmed by the agent"\n            ],\n            "executionMode": "PARALLEL",\n            "iterationCount": 1,\n            "maxConcurrentJobs": 5,\n            "name": "Billing regression",\n            "silenceTimeoutSeconds": 30\n          }\n        }\'',
       },
     },
   },
@@ -803,7 +803,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.roark.ai/v1/simulation/plan \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "agentEndpoints": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "direction": "INBOUND",\n          "maxSimulationDurationSeconds": 300,\n          "metrics": [\n            {}\n          ],\n          "name": "My Run Plan",\n          "autoRun": false,\n          "description": "A run plan for testing inbound calls",\n          "endCallPhrases": [\n            "endCallPhrases"\n          ],\n          "endCallReasons": [\n            "endCallReasons"\n          ],\n          "executionMode": "PARALLEL",\n          "iterationCount": 1,\n          "maxConcurrentJobs": 5,\n          "silenceTimeoutSeconds": 30\n        }\'',
+          'curl https://api.roark.ai/v1/simulation/plan \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "agentEndpoints": [\n            {\n              "id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"\n            }\n          ],\n          "direction": "INBOUND",\n          "maxSimulationDurationSeconds": 300,\n          "metrics": [\n            {}\n          ],\n          "name": "My Run Plan",\n          "autoRun": false,\n          "description": "A run plan for testing inbound calls",\n          "endCallPhrases": [\n            "goodbye"\n          ],\n          "endCallReasons": [\n            "Order has been confirmed by the agent"\n          ],\n          "executionMode": "PARALLEL",\n          "iterationCount": 1,\n          "maxConcurrentJobs": 5,\n          "silenceTimeoutSeconds": 30\n        }\'',
       },
     },
   },
@@ -1096,7 +1096,7 @@ const EMBEDDED_METHODS: MethodEntry[] = [
       },
       http: {
         example:
-          'curl https://api.roark.ai/v1/persona \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "accent": "US",\n          "gender": "MALE",\n          "language": "EN",\n          "name": "name",\n          "backstoryPrompt": "A busy professional calling during lunch break",\n          "properties": {\n            "foo": "string"\n          }\n        }\'',
+          'curl https://api.roark.ai/v1/persona \\\n    -H \'Content-Type: application/json\' \\\n    -H "Authorization: Bearer $ROARK_API_BEARER_TOKEN" \\\n    -d \'{\n          "accent": "US",\n          "gender": "MALE",\n          "language": "EN",\n          "name": "name",\n          "backstoryPrompt": "A busy professional calling during lunch break",\n          "properties": {\n            "age": 35,\n            "zipCode": "94105",\n            "occupation": "Software Engineer"\n          }\n        }\'',
       },
     },
   },
