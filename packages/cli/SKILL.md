@@ -56,8 +56,8 @@ operations (`run`, `start`, `lookup`, `promote`, `replace`). There is no `post`,
 - `roark call metric list <call-id>` - List call metrics
 - `roark call sentiment-run list <call-id>` - List call sentiment runs
 - `roark call transcript get <call-id>` - Get call transcript
-- `roark config apply --resources <value>` - Apply a config bundle
-- `roark config diff --resources <value>` - Diff a config bundle
+- `roark config apply [dir]` - Reconcile the project to a config directory (or bundle). Previews and confirms first.
+- `roark config diff [dir]` - Preview the changes a config directory (or bundle) would make. No writes.
 - `roark customer-flow create --data '{...}'` - Create a customer flow
 - `roark customer-flow delete <flow-id>` - Delete a customer flow
 - `roark customer-flow edge-case create <flow-id> --title <value>` - Add an edge case

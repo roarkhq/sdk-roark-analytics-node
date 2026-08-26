@@ -132,10 +132,10 @@ roark completion fish | source
 
 ### config
 
-| Command                                  | Description           |
-| ---------------------------------------- | --------------------- |
-| `roark config apply --resources <value>` | Apply a config bundle |
-| `roark config diff --resources <value>`  | Diff a config bundle  |
+| Command                    | Description                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------- |
+| `roark config apply [dir]` | Reconcile the project to a config directory (or bundle). Previews and confirms first. |
+| `roark config diff [dir]`  | Preview the changes a config directory (or bundle) would make. No writes.             |
 
 ### customer-flow
 
