@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v3.1.0...v3.1.1) (2026-08-26)
+
+
+### Bug Fixes
+
+* **cli:** assert --version before publishing, not just print it ([c2f41c1](https://github.com/roarkhq/sdk-roark-analytics-node/commit/c2f41c162bc17d7bca2de25b7c1783029f27fffc))
+* **cli:** assert --version before publishing, not just print it ([df59862](https://github.com/roarkhq/sdk-roark-analytics-node/commit/df598621b2c588a0d0e566ae996ff68ea0a782bd))
+
 ## [3.1.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v3.0.0...v3.1.0) (2026-08-26)
 
 
