@@ -10,6 +10,9 @@ echo "==> Running prettier --check"
 echo "==> Running eslint"
 ./node_modules/.bin/eslint .
 
+echo "==> Checking version strings"
+node scripts/utils/check-versions.cjs
+
 echo "==> Building"
 ./scripts/build
 
