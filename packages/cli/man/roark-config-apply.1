@@ -1,30 +1,28 @@
-.\" Hand-maintained: `config apply` is a hand-written command (packages/cli/src/runtime/commands/config-as-code.ts),
-.\" not generated from the table. app-agent-codegen must exclude config diff/apply so it does not overwrite this.
+.\" File generated from our OpenAPI spec by app-agent-codegen. Do not edit.
 .TH "ROARK\-CONFIG\-APPLY" "1" "" "roark-config-apply" "Roark Analytics API Manual"
 .SH "NAME"
-roark\-config\-apply \- Reconcile the project to a config-as-code directory
+roark\-config\-apply \- Apply a config bundle
 .SH "SYNOPSIS"
 .B roark config apply
 [\fIoptions\fR]
-[\fIdir\fR]
 .SH "DESCRIPTION"
-Build a config-as-code bundle from a directory of YAML files and reconcile the project to it: resources already managed by config are updated, new ones created, and (unless \fB\-\-no\-prune\fR) config-managed resources absent from the bundle are deleted. Identity is by name (no ids in the bundle).
-.PP
-It first previews the diff and asks to confirm before writing, so a prune-driven delete is never a surprise. Pass \fB\-\-yes\fR to skip the prompt (e.g. in CI). Point it at a config directory (reads \fB*.yaml\fR / \fB*.yml\fR, inlines \fBfile://\fR references), or supply a pre-built bundle with \fB\-\-data\fR / stdin.
-.SH "ARGUMENTS"
-.TP
-\fIdir\fR
-A directory of config resources (\fB*.yaml\fR). Omit it to supply a pre-built bundle with \fB\-\-data\fR or on stdin instead.
+Reconcile a config\-as\-code bundle into the project. Submit the full desired set of resources; resources already managed by config are updated, new ones created, and (unless prune is false) config\-managed resources absent from the bundle are deleted. Identity is by name — no ids in the bundle.
+.SH "API"
+POST /v1/config/apply
 .SH "OPTIONS"
 .TP
-\fB\-\-data\fR \fI<json>\fR
-Pre-built bundle as JSON, or @file (@\- for stdin); an alternative to a directory.
+\fB\-\-resources\fR \fI<value>\fR
+Required.
 .TP
-\fB\-\-no\-prune\fR
-Do not delete config-managed resources that are absent from the bundle.
+\fB\-\-prune\fR
+Optional.
+.SH "GLOBAL OPTIONS"
+.TP
+\fB\-\-data\fR \fI<json>\fR
+Request body as JSON, or @file to read one (@\- for stdin).
 .TP
 \fB\-y\fR, \fB\-\-yes\fR
-Skip the confirmation prompt.
+Skip confirmation prompts.
 .TP
 \fB\-\-no\-input\fR
 Never prompt; fail instead.
@@ -49,12 +47,17 @@ Shorthand for \-\-format json.
 .TP
 \fB\-\-no\-color\fR
 Disable colour.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Suppress non\-essential output.
+.TP
+\fB\-\-allow\-project\-base\-url\fR
+Send the stored credential to a base URL set by a project .roark.json. Refused by default.
 .SH "EXAMPLES"
 .PP
 .RS 4
 .nf
-roark config apply ./roark
-roark config apply ./roark \-\-yes \-\-no\-prune
+roark config apply \-\-resources <value>
 .fi
 .RE
 .SH "ENVIRONMENT"
@@ -64,6 +67,9 @@ Bearer token used when \-\-token is not given.
 .TP
 \fBROARK_BASE_URL\fR
 API base URL.
+.TP
+\fBROARK_ALLOW_PROJECT_BASE_URL\fR
+Trusts a base URL set by a project .roark.json, like \-\-allow\-project\-base\-url.
 .TP
 \fBNO_COLOR\fR
 Disables colour when set to any value.
@@ -77,6 +83,14 @@ The API rejected the request.
 .TP
 \fB2\fR
 The command line was wrong.
+.TP
+\fB3\fR
+No credential, or the credential was refused.
+.TP
+\fB4\fR
+The addressed resource does not exist.
+.TP
+\fB5\fR
+The request never completed: connection, timeout, or abort.
 .SH "SEE ALSO"
-.BR roark (1),
-.BR roark-config-diff (1)
+.BR roark (1)
