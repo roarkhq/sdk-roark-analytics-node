@@ -1,5 +1,36 @@
 # Changelog
 
+## [3.0.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.34.0...v3.0.0) (2026-08-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** removes methods or types from the public surface.
+
+### Features
+
+* **api:** api update ([434d696](https://github.com/roarkhq/sdk-roark-analytics-node/commit/434d696417e79f6c565d802d2fa1a779949f3563))
+* **cli:** cli update ([e167576](https://github.com/roarkhq/sdk-roark-analytics-node/commit/e16757654224a8bb3207fb8220d0a881b1facac3))
+* **cli:** cli update ([783b963](https://github.com/roarkhq/sdk-roark-analytics-node/commit/783b9634118608df2457e48c60c0057ba70839aa))
+* **cli:** cli update ([da49963](https://github.com/roarkhq/sdk-roark-analytics-node/commit/da499634a15c5686858b165db2b59abf9bd8b5cd))
+
+
+### Bug Fixes
+
+* **mcp-server:** bump the server's own version with every release ([4bfc37d](https://github.com/roarkhq/sdk-roark-analytics-node/commit/4bfc37ded0bbfc21249991a0f9937cad35e0b6dc))
+* **mcp-server:** bump the server's own version with every release ([db16903](https://github.com/roarkhq/sdk-roark-analytics-node/commit/db16903a60e906d5886f9124d13568f38dcbdf4a))
+
+
+### Chores
+
+* fold next into main ([ad516f5](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ad516f54bc238ec91472421b56842825e6923784))
+
+
+### Documentation
+
+* **cli:** restore the hand-written config diff/apply man pages ([fa61d95](https://github.com/roarkhq/sdk-roark-analytics-node/commit/fa61d9573ff4f72fb1b59e578ab287dba1bd80e5))
+* **cli:** restore the hand-written config diff/apply man pages ([6659979](https://github.com/roarkhq/sdk-roark-analytics-node/commit/66599790b8c7e994031f1d0558a1728de60a8af0))
+
 ## 2.34.0 (2026-08-25)
 
 Full Changelog: [v2.33.2...v2.34.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.33.2...v2.34.0)
