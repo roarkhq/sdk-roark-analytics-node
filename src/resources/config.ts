@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as ConfigAPI from './config';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
@@ -10,17 +11,30 @@ export class Config extends APIResource {
    * of resources; resources already managed by config are updated, new ones created,
    * and (unless prune is false) config-managed resources absent from the bundle are
    * deleted. Identity is by name — no ids in the bundle.
+   *
+   * @example
+   * ```ts
+   * const response = await client.config.apply({
+   *   resources: [{ kind: 'agent', name: 'x' }],
+   * });
+   * ```
    */
   apply(body: ConfigApplyParams, options?: RequestOptions): APIPromise<ConfigApplyResponse> {
     return this._client.post('/v1/config/apply', { body, ...options });
   }
 
   /**
-   * Dry run: returns the changes reconcile a config-as-code bundle into the project.
-   * Submit the full desired set of resources; resources already managed by config
-   * are updated, new ones created, and (unless prune is false) config-managed
-   * resources absent from the bundle are deleted. Identity is by name — no ids in
-   * the bundle. No writes are performed.
+   * Dry run for a config-as-code apply: returns the projected changes (create /
+   * update / delete) for the submitted bundle without writing anything. Submit the
+   * full desired set of resources; identity is by name — no ids in the bundle. Run
+   * this before apply to preview what would change.
+   *
+   * @example
+   * ```ts
+   * const response = await client.config.diff({
+   *   resources: [{ kind: 'agent', name: 'x' }],
+   * });
+   * ```
    */
   diff(body: ConfigDiffParams, options?: RequestOptions): APIPromise<ConfigDiffResponse> {
     return this._client.post('/v1/config/diff', { body, ...options });
@@ -29,19 +43,19 @@ export class Config extends APIResource {
 
 export interface Bundle {
   resources: Array<
-    | Bundle.UnionMember0
-    | Bundle.UnionMember1
-    | Bundle.UnionMember2
-    | Bundle.UnionMember3
-    | Bundle.UnionMember4
-    | Bundle.UnionMember5
+    | Bundle.AgentConfig
+    | Bundle.PersonaConfig
+    | Bundle.ImprovFlowConfig
+    | Bundle.ScriptedFlowConfig
+    | Bundle.CollectorConfig
+    | Bundle.MetricConfig
   >;
 
   prune?: boolean;
 }
 
 export namespace Bundle {
-  export interface UnionMember0 {
+  export interface AgentConfig {
     kind: 'agent';
 
     name: string;
@@ -50,10 +64,10 @@ export namespace Bundle {
 
     description?: string | null;
 
-    endpoints?: Array<UnionMember0.Endpoint>;
+    endpoints?: Array<AgentConfig.Endpoint>;
   }
 
-  export namespace UnionMember0 {
+  export namespace AgentConfig {
     export interface Endpoint {
       direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
@@ -65,7 +79,7 @@ export namespace Bundle {
     }
   }
 
-  export interface UnionMember1 {
+  export interface PersonaConfig {
     accent:
       | 'US'
       | 'US_X_SOUTH'
@@ -117,6 +131,8 @@ export namespace Bundle {
 
     name: string;
 
+    age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
     backgroundNoise?:
       | 'NONE'
       | 'AIRPORT'
@@ -155,7 +171,7 @@ export namespace Bundle {
 
     responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
 
-    secondaryLanguage?: 'EN' | null;
+    secondaryLanguage?: 'EN';
 
     speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
 
@@ -183,10 +199,10 @@ export namespace Bundle {
     >;
   }
 
-  export interface UnionMember2 {
+  export interface ImprovFlowConfig {
     agents: Array<string>;
 
-    happyPath: UnionMember2.HappyPath;
+    happyPath: ImprovFlowConfig.HappyPath;
 
     kind: 'flow';
 
@@ -196,14 +212,14 @@ export namespace Bundle {
 
     description?: string | null;
 
-    edgeCases?: Array<UnionMember2.EdgeCase>;
+    edgeCases?: Array<ImprovFlowConfig.EdgeCase>;
 
     expectations?: Array<string>;
 
     title?: string;
   }
 
-  export namespace UnionMember2 {
+  export namespace ImprovFlowConfig {
     export interface HappyPath {
       environment: string;
 
@@ -231,8 +247,8 @@ export namespace Bundle {
     }
   }
 
-  export interface UnionMember3 {
-    graph: Array<UnionMember3.Graph>;
+  export interface ScriptedFlowConfig {
+    graph: Array<ConfigAPI.ConfigFlowStep>;
 
     kind: 'flow';
 
@@ -251,34 +267,7 @@ export namespace Bundle {
     title?: string;
   }
 
-  export namespace UnionMember3 {
-    export interface Graph {
-      type:
-        | 'AGENT_TURN'
-        | 'CUSTOMER_TURN'
-        | 'CUSTOMER_FIRST_MESSAGE'
-        | 'CUSTOMER_SILENCE'
-        | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL'
-        | 'SCENARIO_LINK';
-
-      content?: string;
-
-      dtmfDigits?: string;
-
-      flow?: string;
-
-      mergeInto?: Array<string>;
-
-      ref?: string;
-
-      silenceDurationSeconds?: number;
-
-      steps?: Array<unknown>;
-    }
-  }
-
-  export interface UnionMember4 {
+  export interface CollectorConfig {
     kind: 'collector';
 
     metrics: Array<string>;
@@ -287,12 +276,12 @@ export namespace Bundle {
 
     name: string;
 
-    filters?: Array<UnionMember4.Filter>;
+    filters?: Array<CollectorConfig.Filter>;
 
     status?: 'ACTIVE' | 'INACTIVE';
   }
 
-  export namespace UnionMember4 {
+  export namespace CollectorConfig {
     export interface Filter {
       conditions: Array<Filter.Condition>;
     }
@@ -318,7 +307,7 @@ export namespace Bundle {
     }
   }
 
-  export interface UnionMember5 {
+  export interface MetricConfig {
     kind: 'metric';
 
     name: string;
@@ -335,11 +324,11 @@ export namespace Bundle {
 
     maxSelections?: number;
 
-    options?: Array<UnionMember5.Option>;
+    options?: Array<MetricConfig.Option>;
 
     participantRole?: 'AGENT' | 'CUSTOMER';
 
-    scaleLabels?: Array<UnionMember5.ScaleLabel>;
+    scaleLabels?: Array<MetricConfig.ScaleLabel>;
 
     scaleMax?: number;
 
@@ -350,7 +339,7 @@ export namespace Bundle {
     trueLabel?: string;
   }
 
-  export namespace UnionMember5 {
+  export namespace MetricConfig {
     export interface Option {
       displayOrder: number;
 
@@ -373,6 +362,31 @@ export namespace Bundle {
       description?: string;
     }
   }
+}
+
+export interface ConfigFlowStep {
+  type:
+    | 'AGENT_TURN'
+    | 'CUSTOMER_TURN'
+    | 'CUSTOMER_FIRST_MESSAGE'
+    | 'CUSTOMER_SILENCE'
+    | 'CUSTOMER_DTMF'
+    | 'VOICEMAIL'
+    | 'SCENARIO_LINK';
+
+  content?: string;
+
+  dtmfDigits?: string;
+
+  flow?: string;
+
+  mergeInto?: Array<string>;
+
+  ref?: string;
+
+  silenceDurationSeconds?: number;
+
+  steps?: Array<ConfigAPI.ConfigFlowStep>;
 }
 
 export interface ConfigApplyResponse {
@@ -457,19 +471,19 @@ export namespace ConfigDiffResponse {
 
 export interface ConfigApplyParams {
   resources: Array<
-    | ConfigApplyParams.UnionMember0
-    | ConfigApplyParams.UnionMember1
-    | ConfigApplyParams.UnionMember2
-    | ConfigApplyParams.UnionMember3
-    | ConfigApplyParams.UnionMember4
-    | ConfigApplyParams.UnionMember5
+    | ConfigApplyParams.AgentConfig
+    | ConfigApplyParams.PersonaConfig
+    | ConfigApplyParams.ImprovFlowConfig
+    | ConfigApplyParams.ScriptedFlowConfig
+    | ConfigApplyParams.CollectorConfig
+    | ConfigApplyParams.MetricConfig
   >;
 
   prune?: boolean;
 }
 
 export namespace ConfigApplyParams {
-  export interface UnionMember0 {
+  export interface AgentConfig {
     kind: 'agent';
 
     name: string;
@@ -478,10 +492,10 @@ export namespace ConfigApplyParams {
 
     description?: string | null;
 
-    endpoints?: Array<UnionMember0.Endpoint>;
+    endpoints?: Array<AgentConfig.Endpoint>;
   }
 
-  export namespace UnionMember0 {
+  export namespace AgentConfig {
     export interface Endpoint {
       direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
@@ -493,7 +507,7 @@ export namespace ConfigApplyParams {
     }
   }
 
-  export interface UnionMember1 {
+  export interface PersonaConfig {
     accent:
       | 'US'
       | 'US_X_SOUTH'
@@ -545,6 +559,8 @@ export namespace ConfigApplyParams {
 
     name: string;
 
+    age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
     backgroundNoise?:
       | 'NONE'
       | 'AIRPORT'
@@ -583,7 +599,7 @@ export namespace ConfigApplyParams {
 
     responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
 
-    secondaryLanguage?: 'EN' | null;
+    secondaryLanguage?: 'EN';
 
     speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
 
@@ -611,10 +627,10 @@ export namespace ConfigApplyParams {
     >;
   }
 
-  export interface UnionMember2 {
+  export interface ImprovFlowConfig {
     agents: Array<string>;
 
-    happyPath: UnionMember2.HappyPath;
+    happyPath: ImprovFlowConfig.HappyPath;
 
     kind: 'flow';
 
@@ -624,14 +640,14 @@ export namespace ConfigApplyParams {
 
     description?: string | null;
 
-    edgeCases?: Array<UnionMember2.EdgeCase>;
+    edgeCases?: Array<ImprovFlowConfig.EdgeCase>;
 
     expectations?: Array<string>;
 
     title?: string;
   }
 
-  export namespace UnionMember2 {
+  export namespace ImprovFlowConfig {
     export interface HappyPath {
       environment: string;
 
@@ -659,8 +675,8 @@ export namespace ConfigApplyParams {
     }
   }
 
-  export interface UnionMember3 {
-    graph: Array<UnionMember3.Graph>;
+  export interface ScriptedFlowConfig {
+    graph: Array<ConfigFlowStep>;
 
     kind: 'flow';
 
@@ -679,34 +695,7 @@ export namespace ConfigApplyParams {
     title?: string;
   }
 
-  export namespace UnionMember3 {
-    export interface Graph {
-      type:
-        | 'AGENT_TURN'
-        | 'CUSTOMER_TURN'
-        | 'CUSTOMER_FIRST_MESSAGE'
-        | 'CUSTOMER_SILENCE'
-        | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL'
-        | 'SCENARIO_LINK';
-
-      content?: string;
-
-      dtmfDigits?: string;
-
-      flow?: string;
-
-      mergeInto?: Array<string>;
-
-      ref?: string;
-
-      silenceDurationSeconds?: number;
-
-      steps?: Array<unknown>;
-    }
-  }
-
-  export interface UnionMember4 {
+  export interface CollectorConfig {
     kind: 'collector';
 
     metrics: Array<string>;
@@ -715,12 +704,12 @@ export namespace ConfigApplyParams {
 
     name: string;
 
-    filters?: Array<UnionMember4.Filter>;
+    filters?: Array<CollectorConfig.Filter>;
 
     status?: 'ACTIVE' | 'INACTIVE';
   }
 
-  export namespace UnionMember4 {
+  export namespace CollectorConfig {
     export interface Filter {
       conditions: Array<Filter.Condition>;
     }
@@ -746,7 +735,7 @@ export namespace ConfigApplyParams {
     }
   }
 
-  export interface UnionMember5 {
+  export interface MetricConfig {
     kind: 'metric';
 
     name: string;
@@ -763,11 +752,11 @@ export namespace ConfigApplyParams {
 
     maxSelections?: number;
 
-    options?: Array<UnionMember5.Option>;
+    options?: Array<MetricConfig.Option>;
 
     participantRole?: 'AGENT' | 'CUSTOMER';
 
-    scaleLabels?: Array<UnionMember5.ScaleLabel>;
+    scaleLabels?: Array<MetricConfig.ScaleLabel>;
 
     scaleMax?: number;
 
@@ -778,7 +767,7 @@ export namespace ConfigApplyParams {
     trueLabel?: string;
   }
 
-  export namespace UnionMember5 {
+  export namespace MetricConfig {
     export interface Option {
       displayOrder: number;
 
@@ -805,19 +794,19 @@ export namespace ConfigApplyParams {
 
 export interface ConfigDiffParams {
   resources: Array<
-    | ConfigDiffParams.UnionMember0
-    | ConfigDiffParams.UnionMember1
-    | ConfigDiffParams.UnionMember2
-    | ConfigDiffParams.UnionMember3
-    | ConfigDiffParams.UnionMember4
-    | ConfigDiffParams.UnionMember5
+    | ConfigDiffParams.AgentConfig
+    | ConfigDiffParams.PersonaConfig
+    | ConfigDiffParams.ImprovFlowConfig
+    | ConfigDiffParams.ScriptedFlowConfig
+    | ConfigDiffParams.CollectorConfig
+    | ConfigDiffParams.MetricConfig
   >;
 
   prune?: boolean;
 }
 
 export namespace ConfigDiffParams {
-  export interface UnionMember0 {
+  export interface AgentConfig {
     kind: 'agent';
 
     name: string;
@@ -826,10 +815,10 @@ export namespace ConfigDiffParams {
 
     description?: string | null;
 
-    endpoints?: Array<UnionMember0.Endpoint>;
+    endpoints?: Array<AgentConfig.Endpoint>;
   }
 
-  export namespace UnionMember0 {
+  export namespace AgentConfig {
     export interface Endpoint {
       direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
@@ -841,7 +830,7 @@ export namespace ConfigDiffParams {
     }
   }
 
-  export interface UnionMember1 {
+  export interface PersonaConfig {
     accent:
       | 'US'
       | 'US_X_SOUTH'
@@ -893,6 +882,8 @@ export namespace ConfigDiffParams {
 
     name: string;
 
+    age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
     backgroundNoise?:
       | 'NONE'
       | 'AIRPORT'
@@ -931,7 +922,7 @@ export namespace ConfigDiffParams {
 
     responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
 
-    secondaryLanguage?: 'EN' | null;
+    secondaryLanguage?: 'EN';
 
     speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
 
@@ -959,10 +950,10 @@ export namespace ConfigDiffParams {
     >;
   }
 
-  export interface UnionMember2 {
+  export interface ImprovFlowConfig {
     agents: Array<string>;
 
-    happyPath: UnionMember2.HappyPath;
+    happyPath: ImprovFlowConfig.HappyPath;
 
     kind: 'flow';
 
@@ -972,14 +963,14 @@ export namespace ConfigDiffParams {
 
     description?: string | null;
 
-    edgeCases?: Array<UnionMember2.EdgeCase>;
+    edgeCases?: Array<ImprovFlowConfig.EdgeCase>;
 
     expectations?: Array<string>;
 
     title?: string;
   }
 
-  export namespace UnionMember2 {
+  export namespace ImprovFlowConfig {
     export interface HappyPath {
       environment: string;
 
@@ -1007,8 +998,8 @@ export namespace ConfigDiffParams {
     }
   }
 
-  export interface UnionMember3 {
-    graph: Array<UnionMember3.Graph>;
+  export interface ScriptedFlowConfig {
+    graph: Array<ConfigFlowStep>;
 
     kind: 'flow';
 
@@ -1027,34 +1018,7 @@ export namespace ConfigDiffParams {
     title?: string;
   }
 
-  export namespace UnionMember3 {
-    export interface Graph {
-      type:
-        | 'AGENT_TURN'
-        | 'CUSTOMER_TURN'
-        | 'CUSTOMER_FIRST_MESSAGE'
-        | 'CUSTOMER_SILENCE'
-        | 'CUSTOMER_DTMF'
-        | 'VOICEMAIL'
-        | 'SCENARIO_LINK';
-
-      content?: string;
-
-      dtmfDigits?: string;
-
-      flow?: string;
-
-      mergeInto?: Array<string>;
-
-      ref?: string;
-
-      silenceDurationSeconds?: number;
-
-      steps?: Array<unknown>;
-    }
-  }
-
-  export interface UnionMember4 {
+  export interface CollectorConfig {
     kind: 'collector';
 
     metrics: Array<string>;
@@ -1063,12 +1027,12 @@ export namespace ConfigDiffParams {
 
     name: string;
 
-    filters?: Array<UnionMember4.Filter>;
+    filters?: Array<CollectorConfig.Filter>;
 
     status?: 'ACTIVE' | 'INACTIVE';
   }
 
-  export namespace UnionMember4 {
+  export namespace CollectorConfig {
     export interface Filter {
       conditions: Array<Filter.Condition>;
     }
@@ -1094,7 +1058,7 @@ export namespace ConfigDiffParams {
     }
   }
 
-  export interface UnionMember5 {
+  export interface MetricConfig {
     kind: 'metric';
 
     name: string;
@@ -1111,11 +1075,11 @@ export namespace ConfigDiffParams {
 
     maxSelections?: number;
 
-    options?: Array<UnionMember5.Option>;
+    options?: Array<MetricConfig.Option>;
 
     participantRole?: 'AGENT' | 'CUSTOMER';
 
-    scaleLabels?: Array<UnionMember5.ScaleLabel>;
+    scaleLabels?: Array<MetricConfig.ScaleLabel>;
 
     scaleMax?: number;
 
@@ -1126,7 +1090,7 @@ export namespace ConfigDiffParams {
     trueLabel?: string;
   }
 
-  export namespace UnionMember5 {
+  export namespace MetricConfig {
     export interface Option {
       displayOrder: number;
 
@@ -1154,6 +1118,7 @@ export namespace ConfigDiffParams {
 export declare namespace Config {
   export {
     type Bundle as Bundle,
+    type ConfigFlowStep as ConfigFlowStep,
     type ConfigApplyResponse as ConfigApplyResponse,
     type ConfigDiffResponse as ConfigDiffResponse,
     type ConfigApplyParams as ConfigApplyParams,

@@ -17,9 +17,9 @@ export class Simulation extends APIResource {
    * const response = await client.simulation.run({
    *   plan: {
    *     agentEndpoints: [
-   *       { id: '7c9e6679-7425-40de-944b-e07fc1f90ae7' },
+   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
    *     ],
-   *     direction: 'OUTBOUND',
+   *     direction: 'INBOUND',
    *     maxSimulationDurationSeconds: 300,
    *     metrics: [{}],
    *   },

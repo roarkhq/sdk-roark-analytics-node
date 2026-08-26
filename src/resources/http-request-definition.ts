@@ -9,6 +9,15 @@ export class HTTPRequestDefinition extends APIResource {
   /**
    * Creates a new HTTP request definition. The signing secret is only returned in
    * this response and cannot be retrieved later.
+   *
+   * @example
+   * ```ts
+   * const httpRequestDefinition =
+   *   await client.httpRequestDefinition.create({
+   *     scope: 'AGENT_OUTBOUND_DIAL',
+   *     url: 'https://example.com',
+   *   });
+   * ```
    */
   create(
     body: HTTPRequestDefinitionCreateParams,
@@ -19,6 +28,12 @@ export class HTTPRequestDefinition extends APIResource {
 
   /**
    * Updates an existing HTTP request definition.
+   *
+   * @example
+   * ```ts
+   * const httpRequestDefinition =
+   *   await client.httpRequestDefinition.update('definitionId');
+   * ```
    */
   update(
     definitionID: string,
@@ -31,6 +46,12 @@ export class HTTPRequestDefinition extends APIResource {
   /**
    * Returns a paginated list of HTTP request definitions for the authenticated
    * project.
+   *
+   * @example
+   * ```ts
+   * const httpRequestDefinitions =
+   *   await client.httpRequestDefinition.list();
+   * ```
    */
   list(
     query: HTTPRequestDefinitionListParams | null | undefined = {},
@@ -41,6 +62,14 @@ export class HTTPRequestDefinition extends APIResource {
 
   /**
    * Returns a specific HTTP request definition by its ID.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.httpRequestDefinition.getByID(
+   *     'definitionId',
+   *   );
+   * ```
    */
   getByID(definitionID: string, options?: RequestOptions): APIPromise<HTTPRequestDefinitionGetByIDResponse> {
     return this._client.get(path`/v1/http-request-definition/${definitionID}`, options);

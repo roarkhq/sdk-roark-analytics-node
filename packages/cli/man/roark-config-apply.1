@@ -1,5 +1,8 @@
-.\" Hand-maintained: `config apply` is a hand-written command (packages/cli/src/runtime/commands/config-as-code.ts),
-.\" not generated from the table. app-agent-codegen must exclude config diff/apply so it does not overwrite this.
+.\" Hand-maintained. `config apply` is a hand-written command
+.\" (packages/cli/src/runtime/commands/config-as-code.ts): `program.ts` filters the
+.\" generated one out, so this page documents the runtime, not the endpoint.
+.\" sdk.yml lists it under targets.cli.hand_maintained_commands, which is what stops
+.\" app-agent-codegen regenerating this file. Removing that entry silently clobbers it.
 .TH "ROARK\-CONFIG\-APPLY" "1" "" "roark-config-apply" "Roark Analytics API Manual"
 .SH "NAME"
 roark\-config\-apply \- Reconcile the project to a config-as-code directory

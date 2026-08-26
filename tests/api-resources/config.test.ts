@@ -9,7 +9,7 @@ const client = new Roark({
 
 describe('resource config', () => {
   test('apply: only required params', async () => {
-    const responsePromise = client.config.apply({ resources: [{ kind: 'agent', name: 'name' }] });
+    const responsePromise = client.config.apply({ resources: [{ kind: 'agent', name: 'x' }] });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -24,17 +24,10 @@ describe('resource config', () => {
       resources: [
         {
           kind: 'agent',
-          name: 'name',
+          name: 'x',
           customId: 'customId',
           description: 'description',
-          endpoints: [
-            {
-              direction: 'INCOMING',
-              name: 'name',
-              value: 'x',
-              environment: 'environment',
-            },
-          ],
+          endpoints: [{ direction: 'INCOMING', name: 'x', value: 'x', environment: 'environment' }],
         },
       ],
       prune: true,
@@ -42,7 +35,7 @@ describe('resource config', () => {
   });
 
   test('diff: only required params', async () => {
-    const responsePromise = client.config.diff({ resources: [{ kind: 'agent', name: 'name' }] });
+    const responsePromise = client.config.diff({ resources: [{ kind: 'agent', name: 'x' }] });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -57,17 +50,10 @@ describe('resource config', () => {
       resources: [
         {
           kind: 'agent',
-          name: 'name',
+          name: 'x',
           customId: 'customId',
           description: 'description',
-          endpoints: [
-            {
-              direction: 'INCOMING',
-              name: 'name',
-              value: 'x',
-              environment: 'environment',
-            },
-          ],
+          endpoints: [{ direction: 'INCOMING', name: 'x', value: 'x', environment: 'environment' }],
         },
       ],
       prune: true,
