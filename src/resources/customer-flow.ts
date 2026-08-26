@@ -16,7 +16,7 @@ export class CustomerFlow extends APIResource {
    * @example
    * ```ts
    * const customerFlow = await client.customerFlow.create({
-   *   graph: [{ type: 'CUSTOMER_FIRST_MESSAGE' }],
+   *   graph: [{ type: 'AGENT_TURN' }],
    *   title: 'Reschedule an appointment',
    *   type: 'SCRIPTED',
    * });
@@ -29,6 +29,13 @@ export class CustomerFlow extends APIResource {
   /**
    * Updates a flow's title, description, branching mode, linked agents or flow-level
    * expectations. The step graph is replaced through PUT /graph.
+   *
+   * @example
+   * ```ts
+   * const customerFlow = await client.customerFlow.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   update(
     flowID: string,
@@ -44,6 +51,11 @@ export class CustomerFlow extends APIResource {
    * walks the project's whole step graph, so it comes back from the single-flow
    * endpoint instead. Customer flows are how a project describes what to test; they
    * replace the older simulation scenarios.
+   *
+   * @example
+   * ```ts
+   * const customerFlows = await client.customerFlow.list();
+   * ```
    */
   list(
     query: CustomerFlowListParams | null | undefined = {},
@@ -56,6 +68,13 @@ export class CustomerFlow extends APIResource {
    * Soft-deletes a customer flow along with its edge cases, expectations and (for
    * scripted flows) its step graph. Run plans that linked it drop it from their test
    * cases.
+   *
+   * @example
+   * ```ts
+   * const customerFlow = await client.customerFlow.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(flowID: string, options?: RequestOptions): APIPromise<CustomerFlowDeleteResponse> {
     return this._client.delete(path`/v1/customer-flow/${flowID}`, options);
@@ -64,6 +83,13 @@ export class CustomerFlow extends APIResource {
   /**
    * Returns a customer flow with its happy path, edge cases, expectations and linked
    * agents. Scripted flows also carry their step graph.
+   *
+   * @example
+   * ```ts
+   * const response = await client.customerFlow.getByID(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   getByID(flowID: string, options?: RequestOptions): APIPromise<CustomerFlowGetByIDResponse> {
     return this._client.get(path`/v1/customer-flow/${flowID}`, options);
@@ -81,6 +107,14 @@ export class CustomerFlow extends APIResource {
    * A change to the set of paths re-seeds how the flow runs, which the response
    * reports as `variantsReshaped` along with the resulting happy path and edge
    * cases.
+   *
+   * @example
+   * ```ts
+   * const response = await client.customerFlow.replaceGraph(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { graph: [{ type: 'AGENT_TURN' }] },
+   * );
+   * ```
    */
   replaceGraph(
     flowID: string,
@@ -97,6 +131,13 @@ export class CustomerFlow extends APIResource {
    *
    * Its persona and environment are what the edge cases inherit, so changing them
    * here changes every edge case that does not name its own.
+   *
+   * @example
+   * ```ts
+   * const response = await client.customerFlow.updateHappyPath(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   updateHappyPath(
     flowID: string,
@@ -481,6 +522,12 @@ export namespace CustomerFlowCreateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -786,6 +833,12 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -1182,6 +1235,12 @@ export namespace CustomerFlowCreateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -1485,6 +1544,12 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -1875,6 +1940,12 @@ export namespace CustomerFlowCreateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -2173,6 +2244,12 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -2596,6 +2673,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -2901,6 +2984,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -3297,6 +3386,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -3600,6 +3695,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -3990,6 +4091,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -4288,6 +4395,12 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -4714,6 +4827,12 @@ export namespace CustomerFlowListResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -5019,6 +5138,12 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -5415,6 +5540,12 @@ export namespace CustomerFlowListResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -5718,6 +5849,12 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -6108,6 +6245,12 @@ export namespace CustomerFlowListResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -6406,6 +6549,12 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -6859,6 +7008,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -7164,6 +7319,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -7560,6 +7721,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -7863,6 +8030,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -8253,6 +8426,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -8551,6 +8730,12 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -8890,916 +9075,10 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'IL';
 
         /**
-         * Background noise setting
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
          */
-        backgroundNoise:
-          | 'NONE'
-          | 'AIRPORT'
-          | 'CHILDREN_PLAYING'
-          | 'CITY'
-          | 'COFFEE_SHOP'
-          | 'DRIVING'
-          | 'OFFICE'
-          | 'THUNDERSTORM';
-
-        /**
-         * Base emotional state of the persona
-         */
-        baseEmotion:
-          | 'NEUTRAL'
-          | 'CHEERFUL'
-          | 'CONFUSED'
-          | 'FRUSTRATED'
-          | 'SKEPTICAL'
-          | 'RUSHED'
-          | 'DISTRACTED';
-
-        /**
-         * How the persona confirms information
-         */
-        confirmationStyle: 'EXPLICIT' | 'VAGUE';
-
-        /**
-         * Creation timestamp
-         */
-        createdAt: string;
-
-        /**
-         * Gender of the persona
-         */
-        gender: 'MALE' | 'FEMALE';
-
-        /**
-         * Whether the persona uses filler words like "um" and "uh"
-         */
-        hasDisfluencies: boolean;
-
-        /**
-         * Maximum number of idle messages the persona will send before giving up
-         */
-        idleMessageMaxSpokenCount: number;
-
-        /**
-         * Whether the idle message counter resets when the agent speaks
-         */
-        idleMessageResetCountOnUserSpeechEnabled: boolean;
-
-        /**
-         * Messages the persona will say when the agent goes silent during a call. null =
-         * "Automatic": language-appropriate defaults are used at call time.
-         */
-        idleMessages: Array<string> | null;
-
-        /**
-         * Seconds of silence before the persona sends an idle message
-         */
-        idleTimeoutSeconds: number;
-
-        /**
-         * How clearly the persona expresses their intentions
-         */
-        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
-
-        /**
-         * Primary language ISO 639-1 code for the persona
-         */
-        language:
-          | 'EN'
-          | 'ES'
-          | 'DE'
-          | 'HI'
-          | 'FR'
-          | 'NL'
-          | 'AR'
-          | 'EL'
-          | 'IT'
-          | 'ID'
-          | 'TH'
-          | 'JA'
-          | 'TL'
-          | 'MS'
-          | 'ZH'
-          | 'TR'
-          | 'PT'
-          | 'HE';
-
-        /**
-         * How reliable the persona's memory is
-         */
-        memoryReliability: 'HIGH' | 'LOW';
-
-        /**
-         * The name the agent will identify as during conversations
-         */
-        name: string;
-
-        /**
-         * Additional custom properties about the persona
-         */
-        properties: { [key: string]: unknown };
-
-        /**
-         * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
-         */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
-
-        /**
-         * Speech clarity of the persona
-         */
-        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
-
-        /**
-         * Speech pace of the persona
-         */
-        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
-
-        /**
-         * Languages the persona can understand. Multilingual combinations are limited by
-         * multilingual speech recognition support.
-         */
-        understoodLanguages: Array<
-          | 'EN'
-          | 'ES'
-          | 'DE'
-          | 'HI'
-          | 'FR'
-          | 'NL'
-          | 'AR'
-          | 'EL'
-          | 'IT'
-          | 'ID'
-          | 'TH'
-          | 'JA'
-          | 'TL'
-          | 'MS'
-          | 'ZH'
-          | 'TR'
-          | 'PT'
-          | 'HE'
-        >;
-
-        /**
-         * Last update timestamp
-         */
-        updatedAt: string;
-
-        /**
-         * Background story and behavioral patterns for the persona
-         */
-        backstoryPrompt?: string | null;
-
-        /**
-         * Human-readable description of the persona
-         */
-        description?: string | null;
-
-        /**
-         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
-         */
-        secondaryLanguage?: 'EN' | null;
-      }
-    }
-
-    /**
-     * One brief to run an improv flow with.
-     */
-    export interface ImprovFlowVariant {
-      id: string;
-
-      /**
-       * Graded on top of the flow's own expectations, for this variant only.
-       */
-      additionalExpectations: Array<ImprovFlowVariant.AdditionalExpectation>;
-
-      /**
-       * Creation timestamp in ISO 8601 format
-       */
-      createdAt: string;
-
-      /**
-       * A simulation environment: the ambient conditions a customer flow variant runs
-       * under. The list includes both your own and the ones Roark curates for every
-       * project.
-       */
-      environment: ImprovFlowVariant.Environment | null;
-
-      isGenerated: boolean;
-
-      /**
-       * The persona this runs as instead of the happy path's. Null means it inherits.
-       */
-      personaOverride: ImprovFlowVariant.PersonaOverride | null;
-
-      precededByCustomerFlowId: string | null;
-
-      precededByCustomerFlowVariantId: string | null;
-
-      title: string;
-
-      type: 'IMPROV';
-
-      /**
-       * Last update timestamp in ISO 8601 format
-       */
-      updatedAt: string;
-
-      /**
-       * The brief the simulated customer improvises from.
-       */
-      prompt?: string | null;
-    }
-
-    export namespace ImprovFlowVariant {
-      /**
-       * One thing the agent under test is graded against.
-       */
-      export interface AdditionalExpectation {
-        id: string;
-
-        /**
-         * What the agent under test is graded against.
-         */
-        prompt: string;
-      }
-
-      /**
-       * A simulation environment: the ambient conditions a customer flow variant runs
-       * under. The list includes both your own and the ones Roark curates for every
-       * project.
-       */
-      export interface Environment {
-        id: string;
-
-        backgroundNoise:
-          | 'NONE'
-          | 'AIRPORT'
-          | 'CHILDREN_PLAYING'
-          | 'CITY'
-          | 'COFFEE_SHOP'
-          | 'DRIVING'
-          | 'OFFICE'
-          | 'THUNDERSTORM';
-
-        /**
-         * Creation timestamp in ISO 8601 format
-         */
-        createdAt: string;
-
-        name: string;
-
-        /**
-         * Last update timestamp in ISO 8601 format
-         */
-        updatedAt: string;
-
-        description?: string | null;
-      }
-
-      /**
-       * The persona this runs as instead of the happy path's. Null means it inherits.
-       */
-      export interface PersonaOverride {
-        /**
-         * Unique identifier of the persona
-         */
-        id: string;
-
-        /**
-         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
-         * optional variants
-         */
-        accent:
-          | 'US'
-          | 'US_X_SOUTH'
-          | 'GB'
-          | 'ES'
-          | 'DE'
-          | 'IN'
-          | 'FR'
-          | 'NL'
-          | 'SA'
-          | 'GR'
-          | 'AU'
-          | 'IT'
-          | 'ID'
-          | 'TH'
-          | 'JP'
-          | 'NZ'
-          | 'PH'
-          | 'SG'
-          | 'MY'
-          | 'HK'
-          | 'TR'
-          | 'PT'
-          | 'IL';
-
-        /**
-         * Background noise setting
-         */
-        backgroundNoise:
-          | 'NONE'
-          | 'AIRPORT'
-          | 'CHILDREN_PLAYING'
-          | 'CITY'
-          | 'COFFEE_SHOP'
-          | 'DRIVING'
-          | 'OFFICE'
-          | 'THUNDERSTORM';
-
-        /**
-         * Base emotional state of the persona
-         */
-        baseEmotion:
-          | 'NEUTRAL'
-          | 'CHEERFUL'
-          | 'CONFUSED'
-          | 'FRUSTRATED'
-          | 'SKEPTICAL'
-          | 'RUSHED'
-          | 'DISTRACTED';
-
-        /**
-         * How the persona confirms information
-         */
-        confirmationStyle: 'EXPLICIT' | 'VAGUE';
-
-        /**
-         * Creation timestamp
-         */
-        createdAt: string;
-
-        /**
-         * Gender of the persona
-         */
-        gender: 'MALE' | 'FEMALE';
-
-        /**
-         * Whether the persona uses filler words like "um" and "uh"
-         */
-        hasDisfluencies: boolean;
-
-        /**
-         * Maximum number of idle messages the persona will send before giving up
-         */
-        idleMessageMaxSpokenCount: number;
-
-        /**
-         * Whether the idle message counter resets when the agent speaks
-         */
-        idleMessageResetCountOnUserSpeechEnabled: boolean;
-
-        /**
-         * Messages the persona will say when the agent goes silent during a call. null =
-         * "Automatic": language-appropriate defaults are used at call time.
-         */
-        idleMessages: Array<string> | null;
-
-        /**
-         * Seconds of silence before the persona sends an idle message
-         */
-        idleTimeoutSeconds: number;
-
-        /**
-         * How clearly the persona expresses their intentions
-         */
-        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
-
-        /**
-         * Primary language ISO 639-1 code for the persona
-         */
-        language:
-          | 'EN'
-          | 'ES'
-          | 'DE'
-          | 'HI'
-          | 'FR'
-          | 'NL'
-          | 'AR'
-          | 'EL'
-          | 'IT'
-          | 'ID'
-          | 'TH'
-          | 'JA'
-          | 'TL'
-          | 'MS'
-          | 'ZH'
-          | 'TR'
-          | 'PT'
-          | 'HE';
-
-        /**
-         * How reliable the persona's memory is
-         */
-        memoryReliability: 'HIGH' | 'LOW';
-
-        /**
-         * The name the agent will identify as during conversations
-         */
-        name: string;
-
-        /**
-         * Additional custom properties about the persona
-         */
-        properties: { [key: string]: unknown };
-
-        /**
-         * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
-         */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
-
-        /**
-         * Speech clarity of the persona
-         */
-        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
-
-        /**
-         * Speech pace of the persona
-         */
-        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
-
-        /**
-         * Languages the persona can understand. Multilingual combinations are limited by
-         * multilingual speech recognition support.
-         */
-        understoodLanguages: Array<
-          | 'EN'
-          | 'ES'
-          | 'DE'
-          | 'HI'
-          | 'FR'
-          | 'NL'
-          | 'AR'
-          | 'EL'
-          | 'IT'
-          | 'ID'
-          | 'TH'
-          | 'JA'
-          | 'TL'
-          | 'MS'
-          | 'ZH'
-          | 'TR'
-          | 'PT'
-          | 'HE'
-        >;
-
-        /**
-         * Last update timestamp
-         */
-        updatedAt: string;
-
-        /**
-         * Background story and behavioral patterns for the persona
-         */
-        backstoryPrompt?: string | null;
-
-        /**
-         * Human-readable description of the persona
-         */
-        description?: string | null;
-
-        /**
-         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
-         */
-        secondaryLanguage?: 'EN' | null;
-      }
-    }
-
-    /**
-     * One voicemail greeting.
-     */
-    export interface VoicemailFlowVariant {
-      id: string;
-
-      /**
-       * Graded on top of the flow's own expectations, for this variant only.
-       */
-      additionalExpectations: Array<VoicemailFlowVariant.AdditionalExpectation>;
-
-      /**
-       * Creation timestamp in ISO 8601 format
-       */
-      createdAt: string;
-
-      /**
-       * A simulation environment: the ambient conditions a customer flow variant runs
-       * under. The list includes both your own and the ones Roark curates for every
-       * project.
-       */
-      environment: VoicemailFlowVariant.Environment | null;
-
-      isGenerated: boolean;
-
-      /**
-       * The persona this runs as instead of the happy path's. Null means it inherits.
-       */
-      personaOverride: VoicemailFlowVariant.PersonaOverride | null;
-
-      precededByCustomerFlowId: string | null;
-
-      precededByCustomerFlowVariantId: string | null;
-
-      title: string;
-
-      type: 'VOICEMAIL';
-
-      /**
-       * Last update timestamp in ISO 8601 format
-       */
-      updatedAt: string;
-    }
-
-    export namespace VoicemailFlowVariant {
-      /**
-       * One thing the agent under test is graded against.
-       */
-      export interface AdditionalExpectation {
-        id: string;
-
-        /**
-         * What the agent under test is graded against.
-         */
-        prompt: string;
-      }
-
-      /**
-       * A simulation environment: the ambient conditions a customer flow variant runs
-       * under. The list includes both your own and the ones Roark curates for every
-       * project.
-       */
-      export interface Environment {
-        id: string;
-
-        backgroundNoise:
-          | 'NONE'
-          | 'AIRPORT'
-          | 'CHILDREN_PLAYING'
-          | 'CITY'
-          | 'COFFEE_SHOP'
-          | 'DRIVING'
-          | 'OFFICE'
-          | 'THUNDERSTORM';
-
-        /**
-         * Creation timestamp in ISO 8601 format
-         */
-        createdAt: string;
-
-        name: string;
-
-        /**
-         * Last update timestamp in ISO 8601 format
-         */
-        updatedAt: string;
-
-        description?: string | null;
-      }
-
-      /**
-       * The persona this runs as instead of the happy path's. Null means it inherits.
-       */
-      export interface PersonaOverride {
-        /**
-         * Unique identifier of the persona
-         */
-        id: string;
-
-        /**
-         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
-         * optional variants
-         */
-        accent:
-          | 'US'
-          | 'US_X_SOUTH'
-          | 'GB'
-          | 'ES'
-          | 'DE'
-          | 'IN'
-          | 'FR'
-          | 'NL'
-          | 'SA'
-          | 'GR'
-          | 'AU'
-          | 'IT'
-          | 'ID'
-          | 'TH'
-          | 'JP'
-          | 'NZ'
-          | 'PH'
-          | 'SG'
-          | 'MY'
-          | 'HK'
-          | 'TR'
-          | 'PT'
-          | 'IL';
-
-        /**
-         * Background noise setting
-         */
-        backgroundNoise:
-          | 'NONE'
-          | 'AIRPORT'
-          | 'CHILDREN_PLAYING'
-          | 'CITY'
-          | 'COFFEE_SHOP'
-          | 'DRIVING'
-          | 'OFFICE'
-          | 'THUNDERSTORM';
-
-        /**
-         * Base emotional state of the persona
-         */
-        baseEmotion:
-          | 'NEUTRAL'
-          | 'CHEERFUL'
-          | 'CONFUSED'
-          | 'FRUSTRATED'
-          | 'SKEPTICAL'
-          | 'RUSHED'
-          | 'DISTRACTED';
-
-        /**
-         * How the persona confirms information
-         */
-        confirmationStyle: 'EXPLICIT' | 'VAGUE';
-
-        /**
-         * Creation timestamp
-         */
-        createdAt: string;
-
-        /**
-         * Gender of the persona
-         */
-        gender: 'MALE' | 'FEMALE';
-
-        /**
-         * Whether the persona uses filler words like "um" and "uh"
-         */
-        hasDisfluencies: boolean;
-
-        /**
-         * Maximum number of idle messages the persona will send before giving up
-         */
-        idleMessageMaxSpokenCount: number;
-
-        /**
-         * Whether the idle message counter resets when the agent speaks
-         */
-        idleMessageResetCountOnUserSpeechEnabled: boolean;
-
-        /**
-         * Messages the persona will say when the agent goes silent during a call. null =
-         * "Automatic": language-appropriate defaults are used at call time.
-         */
-        idleMessages: Array<string> | null;
-
-        /**
-         * Seconds of silence before the persona sends an idle message
-         */
-        idleTimeoutSeconds: number;
-
-        /**
-         * How clearly the persona expresses their intentions
-         */
-        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
-
-        /**
-         * Primary language ISO 639-1 code for the persona
-         */
-        language:
-          | 'EN'
-          | 'ES'
-          | 'DE'
-          | 'HI'
-          | 'FR'
-          | 'NL'
-          | 'AR'
-          | 'EL'
-          | 'IT'
-          | 'ID'
-          | 'TH'
-          | 'JA'
-          | 'TL'
-          | 'MS'
-          | 'ZH'
-          | 'TR'
-          | 'PT'
-          | 'HE';
-
-        /**
-         * How reliable the persona's memory is
-         */
-        memoryReliability: 'HIGH' | 'LOW';
-
-        /**
-         * The name the agent will identify as during conversations
-         */
-        name: string;
-
-        /**
-         * Additional custom properties about the persona
-         */
-        properties: { [key: string]: unknown };
-
-        /**
-         * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
-         */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
-
-        /**
-         * Speech clarity of the persona
-         */
-        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
-
-        /**
-         * Speech pace of the persona
-         */
-        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
-
-        /**
-         * Languages the persona can understand. Multilingual combinations are limited by
-         * multilingual speech recognition support.
-         */
-        understoodLanguages: Array<
-          | 'EN'
-          | 'ES'
-          | 'DE'
-          | 'HI'
-          | 'FR'
-          | 'NL'
-          | 'AR'
-          | 'EL'
-          | 'IT'
-          | 'ID'
-          | 'TH'
-          | 'JA'
-          | 'TL'
-          | 'MS'
-          | 'ZH'
-          | 'TR'
-          | 'PT'
-          | 'HE'
-        >;
-
-        /**
-         * Last update timestamp
-         */
-        updatedAt: string;
-
-        /**
-         * Background story and behavioral patterns for the persona
-         */
-        backstoryPrompt?: string | null;
-
-        /**
-         * Human-readable description of the persona
-         */
-        description?: string | null;
-
-        /**
-         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
-         */
-        secondaryLanguage?: 'EN' | null;
-      }
-    }
-
-    /**
-     * One path through a scripted flow. The path engine owns which paths exist, so
-     * editing the graph is what creates and removes these.
-     */
-    export interface ScriptedFlowVariant {
-      id: string;
-
-      /**
-       * Graded on top of the flow's own expectations, for this variant only.
-       */
-      additionalExpectations: Array<ScriptedFlowVariant.AdditionalExpectation>;
-
-      /**
-       * Creation timestamp in ISO 8601 format
-       */
-      createdAt: string;
-
-      /**
-       * A simulation environment: the ambient conditions a customer flow variant runs
-       * under. The list includes both your own and the ones Roark curates for every
-       * project.
-       */
-      environment: ScriptedFlowVariant.Environment | null;
-
-      isGenerated: boolean;
-
-      /**
-       * The persona this runs as instead of the happy path's. Null means it inherits.
-       */
-      personaOverride: ScriptedFlowVariant.PersonaOverride | null;
-
-      precededByCustomerFlowId: string | null;
-
-      precededByCustomerFlowVariantId: string | null;
-
-      /**
-       * The one path through the graph this variant runs, in order. Linear by
-       * construction, so these steps never nest.
-       */
-      steps: Array<CustomerFlowAPI.FlowStep>;
-
-      title: string;
-
-      type: 'SCRIPTED';
-
-      /**
-       * Last update timestamp in ISO 8601 format
-       */
-      updatedAt: string;
-    }
-
-    export namespace ScriptedFlowVariant {
-      /**
-       * One thing the agent under test is graded against.
-       */
-      export interface AdditionalExpectation {
-        id: string;
-
-        /**
-         * What the agent under test is graded against.
-         */
-        prompt: string;
-      }
-
-      /**
-       * A simulation environment: the ambient conditions a customer flow variant runs
-       * under. The list includes both your own and the ones Roark curates for every
-       * project.
-       */
-      export interface Environment {
-        id: string;
-
-        backgroundNoise:
-          | 'NONE'
-          | 'AIRPORT'
-          | 'CHILDREN_PLAYING'
-          | 'CITY'
-          | 'COFFEE_SHOP'
-          | 'DRIVING'
-          | 'OFFICE'
-          | 'THUNDERSTORM';
-
-        /**
-         * Creation timestamp in ISO 8601 format
-         */
-        createdAt: string;
-
-        name: string;
-
-        /**
-         * Last update timestamp in ISO 8601 format
-         */
-        updatedAt: string;
-
-        description?: string | null;
-      }
-
-      /**
-       * The persona this runs as instead of the happy path's. Null means it inherits.
-       */
-      export interface PersonaOverride {
-        /**
-         * Unique identifier of the persona
-         */
-        id: string;
-
-        /**
-         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
-         * optional variants
-         */
-        accent:
-          | 'US'
-          | 'US_X_SOUTH'
-          | 'GB'
-          | 'ES'
-          | 'DE'
-          | 'IN'
-          | 'FR'
-          | 'NL'
-          | 'SA'
-          | 'GR'
-          | 'AU'
-          | 'IT'
-          | 'ID'
-          | 'TH'
-          | 'JP'
-          | 'NZ'
-          | 'PH'
-          | 'SG'
-          | 'MY'
-          | 'HK'
-          | 'TR'
-          | 'PT'
-          | 'IL';
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -10107,6 +9386,12 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'IL';
 
         /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
          * Background noise setting
          */
         backgroundNoise:
@@ -10405,6 +9690,12 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'TR'
           | 'PT'
           | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
         /**
          * Background noise setting
@@ -10727,6 +10018,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'IL';
 
       /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
        * Background noise setting
        */
       backgroundNoise:
@@ -11025,6 +10322,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'IL';
 
       /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
        * Background noise setting
        */
       backgroundNoise:
@@ -11316,6 +10619,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'TR'
         | 'PT'
         | 'IL';
+
+      /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
 
       /**
        * Background noise setting

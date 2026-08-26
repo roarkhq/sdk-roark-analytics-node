@@ -8,6 +8,11 @@ import { path } from '../internal/utils/path';
 export class Agent extends APIResource {
   /**
    * Creates a new agent for the authenticated project.
+   *
+   * @example
+   * ```ts
+   * const agent = await client.agent.create({ name: 'x' });
+   * ```
    */
   create(body: AgentCreateParams, options?: RequestOptions): APIPromise<AgentCreateResponse> {
     return this._client.post('/v1/agent', { body, ...options });
@@ -15,6 +20,11 @@ export class Agent extends APIResource {
 
   /**
    * Updates an existing agent by its ID.
+   *
+   * @example
+   * ```ts
+   * const agent = await client.agent.update('agentId');
+   * ```
    */
   update(
     agentID: string,
@@ -26,6 +36,11 @@ export class Agent extends APIResource {
 
   /**
    * Returns a paginated list of agents for the authenticated project.
+   *
+   * @example
+   * ```ts
+   * const agents = await client.agent.list();
+   * ```
    */
   list(
     query: AgentListParams | null | undefined = {},
@@ -36,6 +51,11 @@ export class Agent extends APIResource {
 
   /**
    * Returns a specific agent by its ID.
+   *
+   * @example
+   * ```ts
+   * const response = await client.agent.getByID('agentId');
+   * ```
    */
   getByID(agentID: string, options?: RequestOptions): APIPromise<AgentGetByIDResponse> {
     return this._client.get(path`/v1/agent/${agentID}`, options);

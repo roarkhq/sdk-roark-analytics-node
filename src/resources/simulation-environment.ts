@@ -10,6 +10,12 @@ export class SimulationEnvironment extends APIResource {
    * Returns a paginated list of environments: the project's own plus the
    * environments Roark curates and shares across every project. Reference one by id
    * when setting a customer flow variant's environment.
+   *
+   * @example
+   * ```ts
+   * const simulationEnvironments =
+   *   await client.simulationEnvironment.list();
+   * ```
    */
   list(
     query: SimulationEnvironmentListParams | null | undefined = {},
@@ -20,6 +26,13 @@ export class SimulationEnvironment extends APIResource {
 
   /**
    * Returns a single environment by its ID.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulationEnvironment.getByID(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   getByID(environmentID: string, options?: RequestOptions): APIPromise<SimulationEnvironmentGetByIDResponse> {
     return this._client.get(path`/v1/simulation/environment/${environmentID}`, options);

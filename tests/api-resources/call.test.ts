@@ -47,18 +47,12 @@ describe('resource call', () => {
       endedStatus: 'PARTICIPANTS_DID_NOT_SPEAK',
       externalId: 'externalId',
       livekitRoomId: 'livekitRoomId',
-      properties: { foo: 'bar' },
+      properties: { foo: 'string' },
       stereoRecordingUrl: 'https://example.com',
       toolInvocations: [
         {
           name: 'name',
-          parameters: {
-            foo: {
-              description: 'description',
-              type: 'string',
-              value: {},
-            },
-          },
+          parameters: { foo: 'string' },
           result: 'string',
           startOffsetMs: 0,
           agent: { customId: 'customId', roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
@@ -74,7 +68,7 @@ describe('resource call', () => {
           text: 'text',
           agent: { customId: 'customId', roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
           languageCode: 'languageCode',
-          payload: { foo: 'bar' },
+          payload: { foo: 'string' },
         },
       ],
       vapiCallId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -138,7 +132,9 @@ describe('resource call', () => {
     await expect(
       client.call.getTranscript(
         'callId',
-        { source: 'ROARK_POST_CALL' },
+        {
+          source: 'ROARK_POST_CALL',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Roark.NotFoundError);
@@ -160,7 +156,10 @@ describe('resource call', () => {
     await expect(
       client.call.listMetrics(
         'callId',
-        { flatten: 'flatten', status: 'success' },
+        {
+          flatten: 'flatten',
+          status: 'success',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Roark.NotFoundError);

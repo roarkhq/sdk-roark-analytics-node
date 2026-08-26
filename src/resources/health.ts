@@ -7,6 +7,11 @@ import { RequestOptions } from '../internal/request-options';
 export class Health extends APIResource {
   /**
    * Returns the health status of the API and its dependencies
+   *
+   * @example
+   * ```ts
+   * const health = await client.health.get();
+   * ```
    */
   get(options?: RequestOptions): APIPromise<HealthGetResponse> {
     return this._client.get('/health', options);

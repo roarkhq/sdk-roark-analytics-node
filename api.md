@@ -262,6 +262,7 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/config.ts">Bundle</a></code>
+- <code><a href="./src/resources/config.ts">ConfigFlowStep</a></code>
 - <code><a href="./src/resources/config.ts">ConfigApplyResponse</a></code>
 - <code><a href="./src/resources/config.ts">ConfigDiffResponse</a></code>
 

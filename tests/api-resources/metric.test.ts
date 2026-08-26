@@ -32,13 +32,7 @@ describe('resource metric', () => {
       outputType: 'BOOLEAN',
       booleanFalseLabel: 'booleanFalseLabel',
       booleanTrueLabel: 'booleanTrueLabel',
-      classificationOptions: [
-        {
-          description: 'description',
-          displayOrder: 0,
-          label: 'label',
-        },
-      ],
+      classificationOptions: [{ description: 'description', displayOrder: 0, label: 'label' }],
       llmPrompt: 'Evaluate whether the customer expressed satisfaction with the service provided.',
       maxClassifications: 1,
       metricId: 'customer_satisfaction',

@@ -57,6 +57,7 @@ import {
   ConfigApplyResponse,
   ConfigDiffParams,
   ConfigDiffResponse,
+  ConfigFlowStep,
 } from './resources/config';
 import {
   CustomerFlow,
@@ -1102,6 +1103,7 @@ export declare namespace Roark {
   export {
     Config as Config,
     type Bundle as Bundle,
+    type ConfigFlowStep as ConfigFlowStep,
     type ConfigApplyResponse as ConfigApplyResponse,
     type ConfigDiffResponse as ConfigDiffResponse,
     type ConfigApplyParams as ConfigApplyParams,
