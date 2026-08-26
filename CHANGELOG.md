@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.0 (2026-08-26)
+
+Full Changelog: [v2.34.0...v3.0.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.34.0...v3.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **api:** removes methods or types from the public surface.
+
+### Features
+
+* **api:** api update ([434d696](https://github.com/roarkhq/sdk-roark-analytics-node/commit/434d696417e79f6c565d802d2fa1a779949f3563))
+
 ## 2.34.0 (2026-08-25)
 
 Full Changelog: [v2.33.2...v2.34.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v2.33.2...v2.34.0)
