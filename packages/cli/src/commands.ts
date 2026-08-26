@@ -872,7 +872,7 @@ export const COMMANDS: readonly CliCommand[] = [
     httpPath: '/v1/config/diff',
     summary: 'Diff a config bundle',
     description:
-      'Dry run: returns the changes reconcile a config-as-code bundle into the project. Submit the full desired set of resources; resources already managed by config are updated, new ones created, and (unless prune is false) config-managed resources absent from the bundle are deleted. Identity is by name — no ids in the bundle. No writes are performed.',
+      'Dry run for a config-as-code apply: returns the projected changes (create / update / delete) for the submitted bundle without writing anything. Submit the full desired set of resources; identity is by name — no ids in the bundle. Run this before apply to preview what would change.',
     positionals: [],
     flags: [
       {
@@ -2301,6 +2301,17 @@ export const COMMANDS: readonly CliCommand[] = [
         repeatable: false,
       },
       {
+        name: 'age',
+        path: ['age'],
+        location: 'body',
+        required: false,
+        description:
+          "How old the caller sounds and behaves. Only ages the persona's accent has a voice for are accepted; defaults to ADULT, which every accent supports.",
+        valueKind: 'string',
+        enumValues: ['CHILD', 'TEENAGER', 'ADULT', 'ELDERLY'],
+        repeatable: false,
+      },
+      {
         name: 'gender',
         path: ['gender'],
         location: 'body',
@@ -2673,6 +2684,17 @@ export const COMMANDS: readonly CliCommand[] = [
           'PT',
           'IL',
         ],
+        repeatable: false,
+      },
+      {
+        name: 'age',
+        path: ['age'],
+        location: 'body',
+        required: false,
+        description:
+          "How old the caller sounds and behaves. Only ages the persona's accent has a voice for are accepted; defaults to ADULT, which every accent supports.",
+        valueKind: 'string',
+        enumValues: ['CHILD', 'TEENAGER', 'ADULT', 'ELDERLY'],
         repeatable: false,
       },
       {
