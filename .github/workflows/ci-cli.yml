@@ -54,3 +54,66 @@ jobs:
 
       - name: Run tests
         run: pnpm --filter @roarkanalytics/cli test
+
+  # `install.sh` is served to customers from https://roark.ai/install.sh, so its
+  # only real test is running it the way they do. It installs the *published*
+  # CLI rather than this checkout, which means this job proves the installer
+  # works, not that the code in this PR does - that is what `test` above is for.
+  #
+  # Both shells matter: macOS `/bin/sh` is bash in POSIX mode and Debian's is
+  # dash, and they disagree often enough to be worth two runs. Piping the script
+  # in rather than passing a path matters just as much, because that is the
+  # `curl | sh` case - a shell reading its own script from stdin, where anything
+  # that touches stdin truncates the script and the install silently does
+  # nothing at all.
+  installer:
+    name: installer (${{ matrix.os }})
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '20'
+
+      - name: Lint
+        run: shellcheck --shell=sh packages/cli/install.sh
+
+      - name: Install, piped into sh
+        run: |
+          set -eu
+          cat packages/cli/install.sh | sh
+          "$HOME/.local/bin/roark" --version
+
+      - name: Install, piped into dash with a pinned version
+        if: runner.os == 'Linux'
+        run: |
+          set -eu
+          sudo apt-get install -y --no-install-recommends dash
+          version=$(npm view @roarkanalytics/cli version)
+          cat packages/cli/install.sh | dash -s -- --version "$version"
+          test "$("$HOME/.local/bin/roark" --version)" = "$version"
+
+      # A second run over an existing install has to converge rather than
+      # half-replace it, because that is what upgrading is. Exit code 3 is "no
+      # credential": reaching it proves the CLI parsed the command and got as far
+      # as resolving one, which a merely-present-but-broken install would not.
+      - name: Re-run over the existing install
+        run: |
+          set -eu
+          sh packages/cli/install.sh
+          status=0
+          "$HOME/.local/bin/roark" call list --limit 1 >/dev/null 2>&1 || status=$?
+          test "$status" -eq 3
+
+      - name: Uninstall
+        run: |
+          set -eu
+          sh packages/cli/install.sh --uninstall
+          test ! -e "$HOME/.roark"
+          test ! -e "$HOME/.local/bin/roark"
