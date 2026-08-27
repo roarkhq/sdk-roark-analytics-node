@@ -81,7 +81,10 @@ jobs:
         with:
           node-version: '20'
 
+      # Linux only: shellcheck is preinstalled there and not on the macOS image,
+      # and its verdict does not vary by host anyway.
       - name: Lint
+        if: runner.os == 'Linux'
         run: shellcheck --shell=sh packages/cli/install.sh
 
       - name: Install, piped into sh
