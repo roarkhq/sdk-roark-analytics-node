@@ -27,3 +27,34 @@ PKG_JSON_PATH=../../packages/cli/package.json node ../../scripts/utils/make-dist
 # the workspace, so pnpm has nothing to rewrite it from at publish time. Name the
 # published version explicitly instead.
 node scripts/postprocess-dist-package-json.cjs
+
+# Ship a lockfile, so that installing a given CLI version resolves the same
+# dependency tree today and in six months. Without one, `commander@^14.0.3` and
+# friends are re-resolved on every install, and the only thing checked against a
+# published hash is the entry package.
+#
+# It has to be `npm-shrinkwrap.json` and not `package-lock.json`: npm never
+# publishes the latter - it is on npm-packlist's permanent exclude list - so a
+# package-lock generated here would be silently dropped from the tarball and the
+# problem would look solved without being solved.
+#
+# After the rewrite above, not before: a shrinkwrap taken from the source
+# manifest would pin `workspace:*`, which resolves to nothing outside this
+# repository.
+(
+  cd dist
+
+  # The one build step that needs the network, and the one that needs the SDK
+  # version named in dist/package.json to already be published. That is also the
+  # first thing publish-cli.yml checks - just later than this, so say it here.
+  if ! npm install --package-lock-only --omit=dev --ignore-scripts --no-audit --no-fund --loglevel=error; then
+    sdk_range=$(node -p "require('./package.json').dependencies['@roarkanalytics/sdk']")
+    echo "error: could not resolve the dependency tree for the shrinkwrap." >&2
+    echo "       The usual cause is that @roarkanalytics/sdk@${sdk_range} is not on npm yet;" >&2
+    echo "       the SDK publishes on its own release train and the CLI builds against it." >&2
+    exit 1
+  fi
+
+  # Renames package-lock.json to npm-shrinkwrap.json, which is the whole point.
+  npm shrinkwrap --loglevel=error
+)

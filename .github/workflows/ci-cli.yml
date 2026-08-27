@@ -120,3 +120,102 @@ jobs:
           sh packages/cli/install.sh --uninstall
           test ! -e "$HOME/.roark"
           test ! -e "$HOME/.local/bin/roark"
+
+      # Everything above installs the *published* CLI, and no published version
+      # ships an npm-shrinkwrap.json yet - so every run above takes the `npm
+      # install` fallback and the `npm ci` branch never executes. That branch is
+      # the one that goes live the moment a shrinkwrapped version publishes,
+      # which is a bad time to find out about it.
+      #
+      # So: build the artifact the next release will produce, serve it from a
+      # local registry (install.sh takes ROARK_REGISTRY), and check the installed
+      # tree against the pin. The manifest range is widened to ^14.0.0 while the
+      # lockfile pins 14.0.1, so honouring the lockfile and ignoring it produce
+      # different, distinguishable answers - 14.0.1 against 14.0.3. Asserting
+      # only that the install *succeeded* would pass either way, which is what
+      # made the earlier local version of this test worthless.
+      - name: Install from a shrinkwrapped tarball, and check the pin is honoured
+        run: |
+          set -eu
+          work=$(mktemp -d)
+          reg="$work/registry"
+          mkdir -p "$reg/tarballs" "$reg/@roarkanalytics/cli"
+
+          # Start from the published tarball rather than a hand-written fixture,
+          # so the thing under test is the real package layout.
+          version=$(npm view @roarkanalytics/cli version)
+          npm pack "@roarkanalytics/cli@$version" --pack-destination "$work" --loglevel=error >/dev/null
+          mkdir -p "$work/pkg"
+          tar -xzf "$work"/*.tgz -C "$work/pkg" --strip-components=1
+          rm -f "$work"/*.tgz
+
+          cd "$work/pkg"
+          node -e '
+            const fs = require("node:fs")
+            const p = JSON.parse(fs.readFileSync("package.json", "utf8"))
+            p.dependencies.commander = "^14.0.0"
+            fs.writeFileSync("package.json", JSON.stringify(p, null, 2))
+          '
+          npm install --package-lock-only --omit=dev --ignore-scripts --no-audit --no-fund --loglevel=error >/dev/null
+          npm shrinkwrap --loglevel=error >/dev/null
+          node -e '
+            const fs = require("node:fs")
+            fetch("https://registry.npmjs.org/commander/14.0.1")
+              .then((r) => r.json())
+              .then((m) => {
+                const d = JSON.parse(fs.readFileSync("npm-shrinkwrap.json", "utf8"))
+                const e = d.packages["node_modules/commander"]
+                e.version = "14.0.1"
+                e.resolved = m.dist.tarball
+                e.integrity = m.dist.integrity
+                fs.writeFileSync("npm-shrinkwrap.json", JSON.stringify(d, null, 2))
+              })
+          '
+          npm pack --pack-destination "$reg/tarballs" --loglevel=error >/dev/null
+          mv "$reg"/tarballs/*.tgz "$reg/tarballs/cli.tgz"
+
+          # The metadata document install.sh reads: it needs the version, the
+          # tarball URL and the integrity hash the script verifies against.
+          node -e '
+            const c = require("node:crypto")
+            const fs = require("node:fs")
+            const [reg, version] = process.argv.slice(1)
+            const tgz = fs.readFileSync(`${reg}/tarballs/cli.tgz`)
+            fs.writeFileSync(
+              `${reg}/@roarkanalytics/cli/latest`,
+              JSON.stringify({
+                name: "@roarkanalytics/cli",
+                version,
+                dist: {
+                  tarball: "http://127.0.0.1:8787/tarballs/cli.tgz",
+                  integrity: "sha512-" + c.createHash("sha512").update(tgz).digest("base64"),
+                },
+              })
+            )
+          ' "$reg" "$version"
+
+          # `exec` so $! is the server itself rather than the subshell wrapping
+          # it, and a trap so it dies with the step. A stray server holding the
+          # step's pipe open outlives the work and hangs the job on nothing.
+          ( cd "$reg" && exec python3 -m http.server 8787 --bind 127.0.0.1 >/dev/null 2>&1 ) &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+
+          # Wait for the port rather than sleeping at it.
+          for _ in $(seq 1 50); do
+            curl -fsS "http://127.0.0.1:8787/@roarkanalytics%2fcli/latest" >/dev/null 2>&1 && break
+            sleep 0.2
+          done
+
+          cd "$GITHUB_WORKSPACE"
+          ROARK_REGISTRY=http://127.0.0.1:8787 sh packages/cli/install.sh
+
+          installed=$(node -p "require('$HOME/.roark/current/node_modules/commander/package.json').version")
+          if [ "$installed" != '14.0.1' ]; then
+            echo "::error::the shrinkwrap pinned commander 14.0.1 but $installed was installed, \
+          so install.sh is not honouring the lockfile the package ships"
+            exit 1
+          fi
+          echo "commander $installed installed, matching the pin rather than the range"
+
+          sh packages/cli/install.sh --uninstall

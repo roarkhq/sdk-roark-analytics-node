@@ -280,12 +280,28 @@ tar -xzf "$TMP/package.tgz" -C "$TMP/stage" --strip-components=1 ||
   die 'the downloaded package has no bin.js' 'It is not a Roark CLI tarball.'
 
 step 'Installing dependencies'
-detail 'npm, writing only inside the install directory'
+
+# The package ships an `npm-shrinkwrap.json` pinning its whole transitive tree,
+# so install exactly that: `npm ci` installs the lockfile verbatim and refuses
+# if the manifest and the lockfile disagree, which is the difference between
+# probably-pinned and provably-pinned. Every entry in that file carries its own
+# integrity hash, so the checksum check above extends past the entry package to
+# everything underneath it.
+#
+# Versions published before the shrinkwrap existed do not have one, and `npm ci`
+# requires a lockfile, so those fall back to resolving ranges. Say which one is
+# happening rather than leaving the reader to infer it from a version number.
+if [ -f "$TMP/stage/npm-shrinkwrap.json" ]; then
+  NPM_SUBCOMMAND='ci'
+  detail 'npm ci, from the lockfile this version pins'
+else
+  NPM_SUBCOMMAND='install'
+  detail 'npm install: this version ships no lockfile, so ranges resolve fresh'
+fi
+
 # --omit=dev: the tarball declares none, but a future one might.
 # --ignore-scripts: nothing in this tree needs to run code at install time, and
 #   a curl-to-shell installer is the wrong place to start.
-# --no-package-lock: there is no lockfile in the tarball, and letting npm write
-#   one into a directory we are about to freeze serves no purpose.
 #
 # stdin is redirected for this command alone, and for the same reason it is not
 # redirected for the script as a whole: under `curl | sh` the shell is reading
@@ -294,8 +310,8 @@ detail 'npm, writing only inside the install directory'
 # answer.
 (
   cd "$TMP/stage" &&
-    npm_config_update_notifier=false npm install \
-      --omit=dev --ignore-scripts --no-audit --no-fund --no-package-lock --no-progress --loglevel=error \
+    npm_config_update_notifier=false npm "$NPM_SUBCOMMAND" \
+      --omit=dev --ignore-scripts --no-audit --no-fund --no-progress --loglevel=error \
       </dev/null
 ) || die \
   'could not install the CLI dependencies' \
