@@ -2,7 +2,16 @@
   "packages": {
     ".": {}
   },
-  "$schema": "https://raw.githubusercontent.com/stainless-api/release-please/main/schemas/config.json",
+  "exclude-paths": [
+    "packages/cli",
+    ".github",
+    "tests",
+    "scripts",
+    "examples",
+    ".stats.yml",
+    "pnpm-lock.yaml"
+  ],
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "include-v-in-tag": true,
   "include-component-in-tag": false,
   "versioning": "prerelease",
