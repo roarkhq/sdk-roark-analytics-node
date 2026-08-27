@@ -99,9 +99,16 @@ jobs:
           # A publish missing it still works, which is exactly why it needs
           # asserting: nothing downstream fails, installs just quietly go back to
           # floating on `^` ranges.
+          #
+          # `packages/cli/build` only warns when it cannot generate one, because
+          # it runs inside the repo-wide root build and must not fail it. This is
+          # the other half of that arrangement: warn there, refuse here. The SDK
+          # check above runs first, so the commonest cause already has its own
+          # message by the time this one can fire.
           if [ ! -f npm-shrinkwrap.json ]; then
-            echo '::error::dist/npm-shrinkwrap.json is missing. `packages/cli/build` generates it; \
-          without it every install re-resolves the dependency tree and two installs of this version can differ.'
+            echo '::error::dist/npm-shrinkwrap.json is missing, so every install of this version would \
+          re-resolve the dependency tree and two installs could differ. `packages/cli/build` generates it and \
+          warns rather than fails when it cannot - check the build log for that warning, then rebuild.'
             exit 1
           fi
 

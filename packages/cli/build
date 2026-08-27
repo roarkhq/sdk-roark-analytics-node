@@ -41,20 +41,40 @@ node scripts/postprocess-dist-package-json.cjs
 # After the rewrite above, not before: a shrinkwrap taken from the source
 # manifest would pin `workspace:*`, which resolves to nothing outside this
 # repository.
+#
+# This is the one build step that needs the network, and it is deliberately not
+# allowed to fail the build. `scripts/build` at the root loops over every
+# packages/* directory unconditionally, and that root build is what ci.yml's
+# `build` job runs on every push and pull request in the repository - so a hard
+# failure here is not scoped to the CLI, it is a red build for everyone.
+#
+# It would go red for a routine reason, too. dist/package.json names the SDK
+# version from the root manifest, and on a release-please bump - or any change
+# that bumps the SDK and touches packages/cli together - that version is not on
+# npm yet by construction. Gating all of CI on "the SDK has already published"
+# inverts the order those two things actually happen in.
+#
+# So: warn and carry on. The shrinkwrap is a property of a *published* artifact,
+# and publish-cli.yml is where its absence is fatal - it refuses to publish a
+# tarball without one, after first checking the SDK version is on npm, so the
+# publish path still cannot skip it silently.
 (
   cd dist
 
-  # The one build step that needs the network, and the one that needs the SDK
-  # version named in dist/package.json to already be published. That is also the
-  # first thing publish-cli.yml checks - just later than this, so say it here.
-  if ! npm install --package-lock-only --omit=dev --ignore-scripts --no-audit --no-fund --loglevel=error; then
+  if npm install --package-lock-only --omit=dev --ignore-scripts --no-audit --no-fund --loglevel=error; then
+    # Renames package-lock.json to npm-shrinkwrap.json, which is the whole point:
+    # npm never publishes a package-lock.
+    npm shrinkwrap --loglevel=error
+  else
     sdk_range=$(node -p "require('./package.json').dependencies['@roarkanalytics/sdk']")
-    echo "error: could not resolve the dependency tree for the shrinkwrap." >&2
-    echo "       The usual cause is that @roarkanalytics/sdk@${sdk_range} is not on npm yet;" >&2
-    echo "       the SDK publishes on its own release train and the CLI builds against it." >&2
-    exit 1
+    # A failed resolve can still leave a partial lockfile behind, and a
+    # package-lock in dist/ is worse than nothing: it is not published, so it
+    # would sit there looking like the shrinkwrap that is not there.
+    rm -f package-lock.json
+    echo "warning: could not resolve the dependency tree, so this build has no shrinkwrap." >&2
+    echo "         The usual cause is that @roarkanalytics/sdk@${sdk_range} is not on npm yet;" >&2
+    echo "         the SDK publishes on its own release train and the CLI builds against it." >&2
+    echo "         Harmless for a local or CI build. publish-cli.yml refuses to publish" >&2
+    echo "         without one, so a release cannot pick this up by accident." >&2
   fi
-
-  # Renames package-lock.json to npm-shrinkwrap.json, which is the whole point.
-  npm shrinkwrap --loglevel=error
 )
