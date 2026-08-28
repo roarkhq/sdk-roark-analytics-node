@@ -1798,15 +1798,15 @@ export const COMMANDS: readonly CliCommand[] = [
     bodyVariants: [
       {
         name: 'PromptMetricInput',
-        required: ['calculationType', 'name', 'outputType', 'analysisPackageId'],
+        required: ['calculationType', 'name', 'outputType'],
       },
       {
         name: 'FormulaMetricInput',
-        required: ['calculationType', 'name', 'outputType', 'formula', 'sources', 'analysisPackageId'],
+        required: ['calculationType', 'name', 'outputType', 'formula', 'sources'],
       },
       {
         name: 'PatternMetricInput',
-        required: ['calculationType', 'name', 'operation', 'outcome', 'analysisPackageId'],
+        required: ['calculationType', 'name', 'operation', 'outcome'],
       },
     ],
     acceptsBody: true,
