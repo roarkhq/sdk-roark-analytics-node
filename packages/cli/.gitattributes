@@ -1,0 +1,18 @@
+# `install.sh` is served from https://roark.ai/install.sh and piped into a shell.
+# A copy committed with CRLF line endings still looks entirely correct - it opens
+# fine in a browser, starts with `#!/bin/sh`, has the right length - and does not
+# run at all: `sh` reads the `\r` as part of each command and dies on `set -eu`
+# with `set: -: invalid option`. One contributor with `core.autocrlf=true` is all
+# it takes, and the result is an installer broken for everyone.
+#
+# The marketing site refuses to serve a script with CRs, so this would surface as
+# a red build in another repository. Pinning the line endings here is what stops
+# it being committed in the first place.
+#
+# Scoped to packages/cli rather than the repository root on purpose: the root is
+# vendor codegen territory, and a file there is liable to be overwritten. This
+# directory is ours.
+*.sh text eol=lf
+
+# The build script is shell too, it just has no extension.
+build text eol=lf
