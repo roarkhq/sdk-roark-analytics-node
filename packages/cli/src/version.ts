@@ -5,4 +5,4 @@
 // It exists at all because the CLI is not in release-please-config.json's
 // `extra-files` - it ships from publish-cli.yml rather than the vendor's
 // release train - so nothing else keeps this in step.
-export const version = '0.1.1';
+export const version = '0.2.0';
