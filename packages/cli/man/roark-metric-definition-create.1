@@ -13,13 +13,13 @@ POST /v1/metric/definitions
 This endpoint accepts one of several request shapes, so the body is supplied as JSON through \e\-\e\-data or on standard input rather than as individual flags.
 .TP
 \fBPromptMetricInput\fR
-Requires calculationType, name, outputType, analysisPackageId.
+Requires calculationType, name, outputType.
 .TP
 \fBFormulaMetricInput\fR
-Requires calculationType, name, outputType, formula, sources, analysisPackageId.
+Requires calculationType, name, outputType, formula, sources.
 .TP
 \fBPatternMetricInput\fR
-Requires calculationType, name, operation, outcome, analysisPackageId.
+Requires calculationType, name, operation, outcome.
 .SH "GLOBAL OPTIONS"
 .TP
 \fB\-\-data\fR \fI<json>\fR
