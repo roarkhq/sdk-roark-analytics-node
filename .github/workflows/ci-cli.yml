@@ -26,6 +26,15 @@ concurrency:
   group: ci-cli-${{ github.ref }}
   cancel-in-progress: true
 
+# Neither job writes anything back: they check out, install, and run. Without
+# this the default token is whatever the repository's default happens to be,
+# which is write on a push event - a workflow that runs `pnpm install` on every
+# CLI change and holds a token that can push to the repository is a wider blast
+# radius than it needs, and CodeQL's actions/missing-workflow-permissions flags
+# it for that reason.
+permissions:
+  contents: read
+
 jobs:
   test:
     name: test

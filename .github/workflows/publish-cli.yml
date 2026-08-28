@@ -28,6 +28,13 @@ concurrency:
   group: publish-cli
   cancel-in-progress: false
 
+# The publish authenticates to npm with NODE_AUTH_TOKEN, not with the GitHub
+# token, so read is all this needs: check out the ref, build it, push the tarball
+# to a registry that is not GitHub. Unlike `publish-npm.yml`, nothing here
+# uploads a release asset.
+permissions:
+  contents: read
+
 jobs:
   publish:
     name: publish
