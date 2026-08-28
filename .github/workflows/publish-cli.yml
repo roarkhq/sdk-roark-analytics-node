@@ -178,10 +178,22 @@ jobs:
           # tarball npm actually builds rather than against the directory.
           npm pack --loglevel=error >/dev/null
           tarball=$(ls -- *.tgz)
+          # Listed once into a file, and grepped from the file rather than from a
+          # pipe. `tar -tzf | grep -q` looks equivalent and is not: `grep -q`
+          # exits at the first match, which closes the pipe, and GNU tar is still
+          # writing - it dies with `tar: stdout: write error` and a non-zero
+          # status. Under the `set -o pipefail` at the top of this step that
+          # status becomes the pipeline's, so the test reports the entry as
+          # MISSING precisely when it is PRESENT. The 0.2.0 dry run failed that
+          # way on `package/npm-shrinkwrap.json`, which was in the tarball all
+          # along. It is a race, so it does not reproduce on every tar or every
+          # tarball size - macOS bsdtar exits 0 on the same input.
+          entries="$RUNNER_TEMP/cli-tarball-entries.txt"
+          tar -tzf "$tarball" > "$entries"
           # `entry`, not `path`: this step runs under bash, but the snippet gets
           # pasted into a terminal to debug it, and in zsh `path` is tied to PATH.
           for entry in package/npm-shrinkwrap.json package/man/roark.1 package/bin.js; do
-            if ! tar -tzf "$tarball" | grep -qxF "$entry"; then
+            if ! grep -qxF "$entry" "$entries"; then
               echo "::error::$entry is missing from the tarball npm packed"
               exit 1
             fi
