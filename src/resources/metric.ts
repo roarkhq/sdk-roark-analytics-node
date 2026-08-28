@@ -15,7 +15,6 @@ export class Metric extends APIResource {
    * @example
    * ```ts
    * const response = await client.metric.createDefinition({
-   *   analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    *   calculationType: 'LLM_JUDGE',
    *   name: 'Customer Satisfaction',
    *   outputType: 'BOOLEAN',
@@ -932,11 +931,6 @@ export type MetricCreateDefinitionParams =
 export declare namespace MetricCreateDefinitionParams {
   export interface PromptMetricInput {
     /**
-     * ID of the analysis package to add this metric to
-     */
-    analysisPackageId: string;
-
-    /**
      * LLM-evaluated metric.
      */
     calculationType: 'LLM_JUDGE';
@@ -950,6 +944,13 @@ export declare namespace MetricCreateDefinitionParams {
      * Type of value this metric produces
      */
     outputType: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * ID of the analysis package to add this metric to. Optional: when omitted, the
+     * metric is added to a default "Custom Metrics" package for your project (created
+     * automatically the first time).
+     */
+    analysisPackageId?: string;
 
     /**
      * Label for the false case (only for BOOLEAN type)
@@ -1067,11 +1068,6 @@ export declare namespace MetricCreateDefinitionParams {
 
   export interface FormulaMetricInput {
     /**
-     * ID of the analysis package to add this metric to
-     */
-    analysisPackageId: string;
-
-    /**
      * Metric computed by evaluating a mathematical expression over other metrics.
      */
     calculationType: 'FORMULA';
@@ -1098,6 +1094,13 @@ export declare namespace MetricCreateDefinitionParams {
      * Source metrics referenced by the formula. Minimum 2.
      */
     sources: Array<FormulaMetricInput.Source>;
+
+    /**
+     * ID of the analysis package to add this metric to. Optional: when omitted, the
+     * metric is added to a default "Custom Metrics" package for your project (created
+     * automatically the first time).
+     */
+    analysisPackageId?: string;
 
     /**
      * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
@@ -1127,11 +1130,6 @@ export declare namespace MetricCreateDefinitionParams {
 
   export interface PatternMetricInput {
     /**
-     * ID of the analysis package to add this metric to
-     */
-    analysisPackageId: string;
-
-    /**
      * Metric detecting temporal patterns: a trigger condition followed by an outcome
      * within a window.
      */
@@ -1152,6 +1150,13 @@ export declare namespace MetricCreateDefinitionParams {
      * Outcome condition evaluated within the window relative to the trigger.
      */
     outcome: PatternMetricInput.Outcome;
+
+    /**
+     * ID of the analysis package to add this metric to. Optional: when omitted, the
+     * metric is added to a default "Custom Metrics" package for your project (created
+     * automatically the first time).
+     */
+    analysisPackageId?: string;
 
     /**
      * Alias of `slug` accepted for backwards compatibility. Use `slug` for new

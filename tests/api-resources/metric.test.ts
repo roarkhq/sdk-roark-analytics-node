@@ -10,7 +10,6 @@ const client = new Roark({
 describe('resource metric', () => {
   test('createDefinition: only required params', async () => {
     const responsePromise = client.metric.createDefinition({
-      analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       calculationType: 'LLM_JUDGE',
       name: 'Customer Satisfaction',
       outputType: 'BOOLEAN',
@@ -26,10 +25,10 @@ describe('resource metric', () => {
 
   test('createDefinition: required and optional params', async () => {
     const response = await client.metric.createDefinition({
-      analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       calculationType: 'LLM_JUDGE',
       name: 'Customer Satisfaction',
       outputType: 'BOOLEAN',
+      analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       booleanFalseLabel: 'booleanFalseLabel',
       booleanTrueLabel: 'booleanTrueLabel',
       classificationOptions: [{ description: 'description', displayOrder: 0, label: 'label' }],
