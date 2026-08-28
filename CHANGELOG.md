@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.2.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v3.1.0...v3.2.0) (2026-08-28)
+
+
+### Features
+
+* **api:** api update ([af05500](https://github.com/roarkhq/sdk-roark-analytics-node/commit/af055009eee6c96740548c8fb7f377e813f3acc9))
+* **api:** api update ([2881300](https://github.com/roarkhq/sdk-roark-analytics-node/commit/28813009c24a4fbadca24c844ed7890fd9f1e85d))
+
+
+### Chores
+
+* exclude the rest of what the SDK does not publish ([12e3726](https://github.com/roarkhq/sdk-roark-analytics-node/commit/12e37264cdb8ba9c566ccd57c1992c696bd1de32))
+* fold next into main ([b8e3a90](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b8e3a90fb901962e494771575c7a1b2ca87f87e3))
+* keep CLI-only and CI-only commits off the SDK release train ([7747a2b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/7747a2b69283f49045fa4c95362569c6d5098e25))
+* keep CLI-only and CI-only commits off the SDK release train ([4fe0540](https://github.com/roarkhq/sdk-roark-analytics-node/commit/4fe0540360619daec290a2e28e88f2aee88d5c62))
+* sync next with main ([b9e2de2](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b9e2de2daf0c5a7137d2afda1485fe011ff96fb0))
+
 ## [3.1.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v3.0.0...v3.1.0) (2026-08-26)
 
 
