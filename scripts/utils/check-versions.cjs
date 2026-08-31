@@ -17,9 +17,10 @@
 //   2. No source file carries a version string that nothing is tracking - the
 //      half that finds the next `server.ts` before a release does.
 //
-// `packages/cli` is exempt. It is deliberately not on the release train (see
-// `publish-cli.yml`): its versions are its own, and asserting it matches would
-// be asserting something we do not want to be true.
+// Everything under `src` and `packages` is in scope. `packages/cli` used to be
+// exempt - its versions were its own and asserting they matched this manifest
+// would have asserted something we did not want to be true - and that exemption
+// left with the package.
 
 const { readFileSync, readdirSync, statSync } = require('node:fs');
 const { join, relative } = require('node:path');
@@ -29,7 +30,6 @@ const read = (path) => readFileSync(join(root, path), 'utf8');
 const json = (path) => JSON.parse(read(path));
 
 const MARKER = 'x-release-please-version';
-const EXEMPT = ['packages/cli'];
 
 const expected = json('.release-please-manifest.json')['.'];
 if (!expected) {
@@ -78,7 +78,6 @@ const SEMVER = /(?:\bversion\s*:\s*|\bVERSION\s*=\s*)['"](\d+\.\d+\.\d+[^'"]*)['
 const walk = (directory) => {
   for (const name of readdirSync(join(root, directory))) {
     const path = `${directory}/${name}`;
-    if (EXEMPT.some((prefix) => path.startsWith(prefix))) continue;
     if (name === 'node_modules' || name === 'dist' || name.startsWith('.')) continue;
     if (statSync(join(root, path)).isDirectory()) {
       walk(path);
