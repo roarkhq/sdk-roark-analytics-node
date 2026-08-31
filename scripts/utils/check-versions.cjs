@@ -1,15 +1,19 @@
 #!/usr/bin/env node
 // Every version string in this repository agrees with the release manifest.
 //
-// The version lives in six places and release-please only bumps the ones named
-// in `release-please-config.json`'s `extra-files`. That list is maintained by
-// hand, so a new hardcoded version is one edit away from being missed - which is
-// exactly what happened to the MCP server's `server.ts` when it lived here: the
-// vendor bumped it in the same commit as every other version file for eight
-// consecutive releases, and the first release-please-authored PR left it behind,
-// because nothing but a careful reading of a JSON array would have said
-// otherwise. A 3.0.0 MCP server that introduces itself to clients as 2.34.0 is a
-// real, user-visible lie, and no test would have failed.
+// The version lives in three places - `package.json`, `src/version.ts` and
+// `README.md` - and release-please only bumps the ones named in
+// `release-please-config.json`'s `extra-files`. It was six until the MCP server
+// left, taking its own `package.json`, `manifest.json` and `server.ts` with it.
+//
+// That list is maintained by hand, so a new hardcoded version is one edit away
+// from being missed - which is exactly what happened to the MCP server's
+// `server.ts` when it lived here: the vendor bumped it in the same commit as
+// every other version file for eight consecutive releases, and the first
+// release-please-authored PR left it behind, because nothing but a careful
+// reading of a JSON array would have said otherwise. A 3.0.0 MCP server that
+// introduces itself to clients as 2.34.0 is a real, user-visible lie, and no
+// test would have failed.
 //
 // So this checks both halves:
 //
