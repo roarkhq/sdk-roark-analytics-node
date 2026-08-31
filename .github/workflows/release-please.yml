@@ -12,8 +12,8 @@
 # `release-please-config.json` and `.release-please-manifest.json` already exist
 # and are unchanged: this only supplies the runner they were always missing. The
 # config already bumps `packages/mcp-server/{package.json,manifest.json}` through
-# `extra-files`, and deliberately does not list `packages/cli` - the CLI is
-# published by hand from `publish-cli.yml`.
+# `extra-files`. The CLI is not here at all: it ships from
+# roarkhq/cli-roark-analytics, on its own version line and by hand.
 name: release-please
 
 on:
