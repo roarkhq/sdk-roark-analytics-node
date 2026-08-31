@@ -6,14 +6,14 @@
 # from `stainless.yml` (app-roark-analytics#2919) stops it. Publishing itself is
 # safe - `publish-npm.yml` lives here and listens for `release: published` - but
 # with nothing authoring the version bump, changelog and tag, generated code
-# would land on `main` and never ship. Both `@roarkanalytics/sdk` and
-# `@roarkanalytics/sdk-mcp` would stop publishing with no failing job anywhere.
+# would land on `main` and never ship: `@roarkanalytics/sdk` would stop
+# publishing with no failing job anywhere.
 #
 # `release-please-config.json` and `.release-please-manifest.json` already exist
-# and are unchanged: this only supplies the runner they were always missing. The
-# config already bumps `packages/mcp-server/{package.json,manifest.json}` through
-# `extra-files`. The CLI is not here at all: it ships from
-# roarkhq/cli-roark-analytics, on its own version line and by hand.
+# and are unchanged: this only supplies the runner they were always missing. It
+# releases one package. The CLI and the MCP server are not here at all: they ship
+# from roarkhq/cli-roark-analytics and roarkhq/mcp-roark-analytics, each on its
+# own version line and by hand.
 name: release-please
 
 on:

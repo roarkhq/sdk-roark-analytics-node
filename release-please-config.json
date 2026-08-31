@@ -61,19 +61,5 @@
     }
   ],
   "release-type": "node",
-  "extra-files": [
-    "src/version.ts",
-    "README.md",
-    "packages/mcp-server/src/server.ts",
-    {
-      "type": "json",
-      "path": "packages/mcp-server/package.json",
-      "jsonpath": "$.version"
-    },
-    {
-      "type": "json",
-      "path": "packages/mcp-server/manifest.json",
-      "jsonpath": "$.version"
-    }
-  ]
+  "extra-files": ["src/version.ts", "README.md"]
 }

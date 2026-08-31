@@ -1,15 +1,19 @@
 #!/usr/bin/env node
 // Every version string in this repository agrees with the release manifest.
 //
-// The version lives in six places and release-please only bumps the ones named
-// in `release-please-config.json`'s `extra-files`. That list is maintained by
-// hand, so a new hardcoded version is one edit away from being missed - which is
-// exactly what happened to `packages/mcp-server/src/server.ts`: the vendor bumped
-// it in the same commit as every other version file for eight consecutive
-// releases, and the first release-please-authored PR left it behind, because
-// nothing but a careful reading of a JSON array would have said otherwise. A
-// 3.0.0 MCP server that introduces itself to clients as 2.34.0 is a real,
-// user-visible lie, and no test would have failed.
+// The version lives in three places - `package.json`, `src/version.ts` and
+// `README.md` - and release-please only bumps the ones named in
+// `release-please-config.json`'s `extra-files`. It was six until the MCP server
+// left, taking its own `package.json`, `manifest.json` and `server.ts` with it.
+//
+// That list is maintained by hand, so a new hardcoded version is one edit away
+// from being missed - which is exactly what happened to the MCP server's
+// `server.ts` when it lived here: the vendor bumped it in the same commit as
+// every other version file for eight consecutive releases, and the first
+// release-please-authored PR left it behind, because nothing but a careful
+// reading of a JSON array would have said otherwise. A 3.0.0 MCP server that
+// introduces itself to clients as 2.34.0 is a real, user-visible lie, and no
+// test would have failed.
 //
 // So this checks both halves:
 //
@@ -17,10 +21,14 @@
 //   2. No source file carries a version string that nothing is tracking - the
 //      half that finds the next `server.ts` before a release does.
 //
-// Everything under `src` and `packages` is in scope. `packages/cli` used to be
-// exempt - its versions were its own and asserting they matched this manifest
-// would have asserted something we did not want to be true - and that exemption
-// left with the package.
+// Everything under `src` is in scope. `packages` used to be too, and the walk
+// below would now throw ENOENT on it: the directory is gone. `packages/cli` was
+// exempt from it - its versions were its own and asserting they matched this
+// manifest would have asserted something we did not want to be true - and
+// `packages/mcp-server`, the file that motivated this check in the first place,
+// is now in the same position one repository over. It carries its own version
+// line, `mcp-roark-analytics` syncs `server.ts` from its own package.json before
+// every build, and its publish workflow refuses a build where the two disagree.
 
 const { readFileSync, readdirSync, statSync } = require('node:fs');
 const { join, relative } = require('node:path');
@@ -98,7 +106,7 @@ const walk = (directory) => {
   }
 };
 
-for (const directory of ['src', 'packages']) walk(directory);
+for (const directory of ['src']) walk(directory);
 
 if (problems.length > 0) {
   console.error(`==> Version drift (manifest is ${expected}):`);
