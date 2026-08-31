@@ -1,5 +1,9 @@
-packages:
-  - 'packages/*'
+# Settings, not a workspace. The `packages: ['packages/*']` glob left with the
+# last package under it: the CLI moved to roarkhq/cli-roark-analytics and the MCP
+# server to roarkhq/mcp-roark-analytics, both because they took published ranges
+# on this SDK rather than workspace links. pnpm 10 reads its configuration from
+# this file whether or not a workspace is declared, so the two settings below are
+# unaffected and this repository is one package again.
 onlyBuiltDependencies:
   - '@swc/core'
 minimumReleaseAge: 1440

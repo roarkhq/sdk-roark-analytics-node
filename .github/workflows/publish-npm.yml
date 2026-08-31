@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       path:
-        description: The path to run the release in, e.g. '.' or 'packages/mcp-server'
+        description: The path to run the release in. There is only one package here now, so '.'
         required: true
 
   release:
@@ -34,21 +34,19 @@ jobs:
         run: |
           pnpm install
 
+      # Only `@roarkanalytics/sdk`. This used to publish `packages/mcp-server`
+      # in the same run and attach its `.mcpb` bundle to the release; the MCP
+      # server ships from roarkhq/mcp-roark-analytics now, on its own version
+      # line, from a workflow a human dispatches. Leaving the path here would
+      # fail every release on a directory that is not there.
       - name: Publish to NPM
         run: |
           if [ -n "$INPUT_PATH" ]; then
             PATHS_RELEASED="[\"$INPUT_PATH\"]"
           else
-            PATHS_RELEASED='[\".\", \"packages/mcp-server\"]'
+            PATHS_RELEASED='[\".\"]'
           fi
           pnpm tsn scripts/publish-packages.ts "{ \"paths_released\": \"$PATHS_RELEASED\" }"
         env:
           INPUT_PATH: ${{ github.event.inputs.path }}
           NPM_TOKEN: ${{ secrets.ROARK_NPM_TOKEN || secrets.NPM_TOKEN }}
-
-      - name: Upload MCP Server DXT GitHub release asset
-        run: |
-          gh release upload ${{ github.event.release.tag_name }} \
-            packages/mcp-server/roarkanalytics_sdk_api.mcpb
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
