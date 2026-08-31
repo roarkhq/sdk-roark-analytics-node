@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.2.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v3.2.0...v3.2.1) (2026-08-31)
+
+
+### Chores
+
+* bring next back in step with main ([8ec09aa](https://github.com/roarkhq/sdk-roark-analytics-node/commit/8ec09aa9cf95ac8eee5d70100a383c1cdbd39793))
+* **cli:** 0.2.0 ([715fa80](https://github.com/roarkhq/sdk-roark-analytics-node/commit/715fa8045bb93c395fabf956e899919fbae7c9cf))
+* **cli:** 0.2.0 ([a7054a5](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a7054a5f30a54751c22f9189fc39ba698c7e4b66))
+* **cli:** remove packages/cli, now that it has its own repository ([1c98355](https://github.com/roarkhq/sdk-roark-analytics-node/commit/1c9835503abd541db0198db519d51d63a73f80b2))
+* **cli:** remove packages/cli, now that it has its own repository ([20b3231](https://github.com/roarkhq/sdk-roark-analytics-node/commit/20b3231a2513d26015b6e2bcf56e568e06c0ffcf))
+* fold next into main ([49f2261](https://github.com/roarkhq/sdk-roark-analytics-node/commit/49f22617f3b1269084d6c93fa0e8332dd09626d5))
+* **mcp:** remove packages/mcp-server, now that it has its own repository ([d767c06](https://github.com/roarkhq/sdk-roark-analytics-node/commit/d767c060e5f77a913f5926206456ffaa1f4f3194))
+* **mcp:** remove packages/mcp-server, now that it has its own repository ([ea25a5a](https://github.com/roarkhq/sdk-roark-analytics-node/commit/ea25a5aa5e10bfda2fc34e9fa60a01a563f55757))
+
 ## [3.2.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v3.1.0...v3.2.0) (2026-08-28)
 
 
