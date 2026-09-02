@@ -28,6 +28,10 @@ concurrency:
   group: release-please
   cancel-in-progress: false
 
+env:
+  # #alarms-prod, defined once here rather than repeated in every alert step.
+  SLACK_ALARMS_CHANNEL: 'C064B836PL2'
+
 jobs:
   release-please:
     # Off until the vendor has actually let go. While `stainless.yml` still
@@ -51,3 +55,24 @@ jobs:
           # never run and this would reproduce the outage it exists to prevent -
           # silently, since nothing fails when a publish simply never starts.
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+
+      # A failure here stalls the release train silently: no release PR, so no
+      # publish. Alert #alarms-prod. No-op until SLACK_BOT_TOKEN is set.
+      - name: Slack notify - release-please failed
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "${SLACK_BOT_TOKEN:-}" ] || { echo 'SLACK_BOT_TOKEN unset; skipping'; exit 0; }
+          text="🚨 release-please failed for \`@roarkanalytics/sdk\` - ${RUN_URL}"
+          resp=$(curl -sS --max-time 15 -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H 'Content-type: application/json; charset=utf-8' \
+            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')") \
+            || { echo '::warning::Slack request failed (transport or timeout); alert not delivered'; exit 0; }
+          # Best-effort, but not silent: a rejected token or channel surfaces as a
+          # warning in the run log rather than vanishing under `|| true`.
+          if [ "$(printf '%s' "$resp" | jq -r '.ok' 2>/dev/null || true)" != 'true' ]; then
+            echo "::warning::Slack did not accept the alert: $(printf '%s' "$resp" | jq -r '.error // "unknown"' 2>/dev/null || echo unparseable)"
+          fi

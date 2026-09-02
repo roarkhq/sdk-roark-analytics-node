@@ -12,6 +12,10 @@ on:
   release:
     types: [published]
 
+env:
+  # #alarms-prod, defined once here rather than repeated in every alert step.
+  SLACK_ALARMS_CHANNEL: 'C064B836PL2'
+
 jobs:
   publish:
     name: publish
@@ -50,3 +54,43 @@ jobs:
         env:
           INPUT_PATH: ${{ github.event.inputs.path }}
           NPM_TOKEN: ${{ secrets.ROARK_NPM_TOKEN || secrets.NPM_TOKEN }}
+
+      # Post the outcome to #alarms-prod. No-op until the SLACK_BOT_TOKEN org
+      # secret is set; jq builds the payload so message text cannot break it.
+      - name: Slack notify - published
+        if: success()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          [ -n "${SLACK_BOT_TOKEN:-}" ] || { echo 'SLACK_BOT_TOKEN unset; skipping'; exit 0; }
+          text="📦 \`@roarkanalytics/sdk\` ${VERSION:-(new version)} published to npm"
+          resp=$(curl -sS --max-time 15 -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H 'Content-type: application/json; charset=utf-8' \
+            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')") \
+            || { echo '::warning::Slack request failed (transport or timeout); alert not delivered'; exit 0; }
+          # Best-effort, but not silent: a rejected token or channel surfaces as a
+          # warning in the run log rather than vanishing under `|| true`.
+          if [ "$(printf '%s' "$resp" | jq -r '.ok' 2>/dev/null || true)" != 'true' ]; then
+            echo "::warning::Slack did not accept the alert: $(printf '%s' "$resp" | jq -r '.error // "unknown"' 2>/dev/null || echo unparseable)"
+          fi
+
+      - name: Slack notify - publish failed
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "${SLACK_BOT_TOKEN:-}" ] || { echo 'SLACK_BOT_TOKEN unset; skipping'; exit 0; }
+          text="🚨 \`@roarkanalytics/sdk\` publish FAILED - ${RUN_URL}"
+          resp=$(curl -sS --max-time 15 -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H 'Content-type: application/json; charset=utf-8' \
+            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')") \
+            || { echo '::warning::Slack request failed (transport or timeout); alert not delivered'; exit 0; }
+          # Best-effort, but not silent: a rejected token or channel surfaces as a
+          # warning in the run log rather than vanishing under `|| true`.
+          if [ "$(printf '%s' "$resp" | jq -r '.ok' 2>/dev/null || true)" != 'true' ]; then
+            echo "::warning::Slack did not accept the alert: $(printf '%s' "$resp" | jq -r '.error // "unknown"' 2>/dev/null || echo unparseable)"
+          fi

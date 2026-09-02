@@ -20,6 +20,10 @@ concurrency:
   group: fold-next-into-main
   cancel-in-progress: false
 
+env:
+  # #alarms-prod, defined once here rather than repeated in every alert step.
+  SLACK_ALARMS_CHANNEL: 'C064B836PL2'
+
 jobs:
   fold:
     if: vars.FOLD_ENABLED == 'true'
@@ -68,3 +72,24 @@ jobs:
           # human - a safe degradation, not a failure.
           gh pr merge --auto --merge "$number" \
             || echo 'Auto-merge unavailable; leaving the fold PR for manual merge.'
+
+      # A failed fold stalls the train: next never reaches main, so no release.
+      # Alert #alarms-prod. No-op until SLACK_BOT_TOKEN is set.
+      - name: Slack notify - fold failed
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "${SLACK_BOT_TOKEN:-}" ] || { echo 'SLACK_BOT_TOKEN unset; skipping'; exit 0; }
+          text="🚨 next->main fold failed for \`@roarkanalytics/sdk\` - ${RUN_URL}"
+          resp=$(curl -sS --max-time 15 -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H 'Content-type: application/json; charset=utf-8' \
+            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')") \
+            || { echo '::warning::Slack request failed (transport or timeout); alert not delivered'; exit 0; }
+          # Best-effort, but not silent: a rejected token or channel surfaces as a
+          # warning in the run log rather than vanishing under `|| true`.
+          if [ "$(printf '%s' "$resp" | jq -r '.ok' 2>/dev/null || true)" != 'true' ]; then
+            echo "::warning::Slack did not accept the alert: $(printf '%s' "$resp" | jq -r '.error // "unknown"' 2>/dev/null || echo unparseable)"
+          fi
