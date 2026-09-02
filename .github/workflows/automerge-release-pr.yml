@@ -1,0 +1,52 @@
+# Enables native auto-merge on release-please's own PR, so a release lands
+# without a human clicking merge.
+#
+# release-please opens `release: <version>` PRs from a `release-please--*` branch
+# (with RELEASE_PLEASE_TOKEN, so `on: pull_request` workflows do fire for it).
+# This turns on auto-merge for exactly those PRs; GitHub merges them once the
+# required checks pass. Nothing else is touched - the head-branch guard means a
+# normal PR never auto-merges.
+#
+# The head-branch guard is the primary gate; a fork PR runs with a read-only
+# token and cannot merge anyway, so the only actor it excludes is an internal
+# contributor who already has write access, and branch protection still governs
+# the merge itself. For defense-in-depth, set the optional `RELEASE_PLEASE_ACTOR`
+# repository variable to the login that authors these PRs (the owner of
+# RELEASE_PLEASE_TOKEN): when set, the PR author must match it too; left unset,
+# the branch-name guard alone applies. It is a variable rather than a hardcoded
+# login because the PAT is user-owned, so the author is whoever holds the token.
+#
+# Inert until the `AUTOMERGE_RELEASE_ENABLED` repository variable is 'true'.
+name: automerge-release-pr
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+concurrency:
+  group: automerge-release-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  automerge:
+    if: >-
+      vars.AUTOMERGE_RELEASE_ENABLED == 'true' &&
+      startsWith(github.head_ref, 'release-please--') &&
+      (vars.RELEASE_PLEASE_ACTOR == '' || github.event.pull_request.user.login == vars.RELEASE_PLEASE_ACTOR)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # `synchronize` re-runs this on every push to the release branch, so the
+      # call has to be idempotent: enabling auto-merge on a PR that already has it
+      # (or that GitHub reports as momentarily unstable) can error rather than
+      # no-op, and an unguarded failure would leave a persistent red check on the
+      # release PR. Swallow it - the worst case is auto-merge is simply not on,
+      # and a human merges. Same degradation as the fold workflow.
+      - name: Enable auto-merge on the release PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge --auto --squash "${{ github.event.pull_request.number }}" -R "${{ github.repository }}" \
+            || echo 'Auto-merge unavailable or already enabled; leaving the release PR as is.'
