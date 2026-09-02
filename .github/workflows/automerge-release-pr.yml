@@ -7,6 +7,15 @@
 # required checks pass. Nothing else is touched - the head-branch guard means a
 # normal PR never auto-merges.
 #
+# The head-branch guard is the primary gate; a fork PR runs with a read-only
+# token and cannot merge anyway, so the only actor it excludes is an internal
+# contributor who already has write access, and branch protection still governs
+# the merge itself. For defense-in-depth, set the optional `RELEASE_PLEASE_ACTOR`
+# repository variable to the login that authors these PRs (the owner of
+# RELEASE_PLEASE_TOKEN): when set, the PR author must match it too; left unset,
+# the branch-name guard alone applies. It is a variable rather than a hardcoded
+# login because the PAT is user-owned, so the author is whoever holds the token.
+#
 # Inert until the `AUTOMERGE_RELEASE_ENABLED` repository variable is 'true'.
 name: automerge-release-pr
 
@@ -22,7 +31,8 @@ jobs:
   automerge:
     if: >-
       vars.AUTOMERGE_RELEASE_ENABLED == 'true' &&
-      startsWith(github.head_ref, 'release-please--')
+      startsWith(github.head_ref, 'release-please--') &&
+      (vars.RELEASE_PLEASE_ACTOR == '' || github.event.pull_request.user.login == vars.RELEASE_PLEASE_ACTOR)
     runs-on: ubuntu-latest
     permissions:
       contents: write
