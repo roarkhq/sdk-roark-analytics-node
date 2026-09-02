@@ -34,6 +34,11 @@ jobs:
       startsWith(github.head_ref, 'release-please--') &&
       (vars.RELEASE_PLEASE_ACTOR == '' || github.event.pull_request.user.login == vars.RELEASE_PLEASE_ACTOR)
     runs-on: ubuntu-latest
+    # A bound so a hung gh call cannot hold the (no-cancel) concurrency group
+    # open indefinitely. The step is a single gh call; five minutes is ample.
+    timeout-minutes: 5
+    # Write here, unlike the fold job: this step enables auto-merge with the
+    # workflow's own GITHUB_TOKEN.
     permissions:
       contents: write
       pull-requests: write

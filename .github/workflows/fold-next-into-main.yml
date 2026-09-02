@@ -24,9 +24,14 @@ jobs:
   fold:
     if: vars.FOLD_ENABLED == 'true'
     runs-on: ubuntu-latest
+    # A bound so a hung gh call cannot hold the (no-cancel) concurrency group
+    # open indefinitely. Generous: the work is a checkout and one or two gh calls.
+    timeout-minutes: 10
+    # Read is all the job's GITHUB_TOKEN needs: only checkout uses it, and only to
+    # fetch. Every gh call below authenticates with RELEASE_PLEASE_TOKEN instead,
+    # so the write scopes granted here would go unused.
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
