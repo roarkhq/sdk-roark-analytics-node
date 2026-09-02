@@ -65,10 +65,16 @@ jobs:
         run: |
           [ -n "${SLACK_BOT_TOKEN:-}" ] || { echo 'SLACK_BOT_TOKEN unset; skipping'; exit 0; }
           text="📦 \`@roarkanalytics/sdk\` ${VERSION:-(new version)} published to npm"
-          curl -sS -X POST https://slack.com/api/chat.postMessage \
+          resp=$(curl -sS --max-time 15 -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H 'Content-type: application/json; charset=utf-8' \
-            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')" >/dev/null || true
+            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')") \
+            || { echo '::warning::Slack request failed (transport or timeout); alert not delivered'; exit 0; }
+          # Best-effort, but not silent: a rejected token or channel surfaces as a
+          # warning in the run log rather than vanishing under `|| true`.
+          if [ "$(printf '%s' "$resp" | jq -r '.ok' 2>/dev/null || true)" != 'true' ]; then
+            echo "::warning::Slack did not accept the alert: $(printf '%s' "$resp" | jq -r '.error // "unknown"' 2>/dev/null || echo unparseable)"
+          fi
 
       - name: Slack notify - publish failed
         if: failure()
@@ -78,7 +84,13 @@ jobs:
         run: |
           [ -n "${SLACK_BOT_TOKEN:-}" ] || { echo 'SLACK_BOT_TOKEN unset; skipping'; exit 0; }
           text="🚨 \`@roarkanalytics/sdk\` publish FAILED - ${RUN_URL}"
-          curl -sS -X POST https://slack.com/api/chat.postMessage \
+          resp=$(curl -sS --max-time 15 -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H 'Content-type: application/json; charset=utf-8' \
-            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')" >/dev/null || true
+            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')") \
+            || { echo '::warning::Slack request failed (transport or timeout); alert not delivered'; exit 0; }
+          # Best-effort, but not silent: a rejected token or channel surfaces as a
+          # warning in the run log rather than vanishing under `|| true`.
+          if [ "$(printf '%s' "$resp" | jq -r '.ok' 2>/dev/null || true)" != 'true' ]; then
+            echo "::warning::Slack did not accept the alert: $(printf '%s' "$resp" | jq -r '.error // "unknown"' 2>/dev/null || echo unparseable)"
+          fi
