@@ -51,3 +51,18 @@ jobs:
           # never run and this would reproduce the outage it exists to prevent -
           # silently, since nothing fails when a publish simply never starts.
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+
+      # A failure here stalls the release train silently: no release PR, so no
+      # publish. Alert #alarms-prod. No-op until SLACK_BOT_TOKEN is set.
+      - name: Slack notify - release-please failed
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "${SLACK_BOT_TOKEN:-}" ] || { echo 'SLACK_BOT_TOKEN unset; skipping'; exit 0; }
+          text="🚨 release-please failed for \`@roarkanalytics/sdk\` - ${RUN_URL}"
+          curl -sS -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H 'Content-type: application/json; charset=utf-8' \
+            --data "$(jq -n --arg t "$text" '{channel:"C064B836PL2",text:$t}')" >/dev/null || true

@@ -50,3 +50,31 @@ jobs:
         env:
           INPUT_PATH: ${{ github.event.inputs.path }}
           NPM_TOKEN: ${{ secrets.ROARK_NPM_TOKEN || secrets.NPM_TOKEN }}
+
+      # Post the outcome to #alarms-prod. No-op until the SLACK_BOT_TOKEN org
+      # secret is set; jq builds the payload so message text cannot break it.
+      - name: Slack notify - published
+        if: success()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          [ -n "${SLACK_BOT_TOKEN:-}" ] || { echo 'SLACK_BOT_TOKEN unset; skipping'; exit 0; }
+          text="📦 \`@roarkanalytics/sdk\` ${VERSION:-(new version)} published to npm"
+          curl -sS -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H 'Content-type: application/json; charset=utf-8' \
+            --data "$(jq -n --arg t "$text" '{channel:"C064B836PL2",text:$t}')" >/dev/null || true
+
+      - name: Slack notify - publish failed
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "${SLACK_BOT_TOKEN:-}" ] || { echo 'SLACK_BOT_TOKEN unset; skipping'; exit 0; }
+          text="🚨 \`@roarkanalytics/sdk\` publish FAILED - ${RUN_URL}"
+          curl -sS -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H 'Content-type: application/json; charset=utf-8' \
+            --data "$(jq -n --arg t "$text" '{channel:"C064B836PL2",text:$t}')" >/dev/null || true
