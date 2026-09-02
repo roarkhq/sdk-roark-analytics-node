@@ -1,0 +1,34 @@
+# Enables native auto-merge on release-please's own PR, so a release lands
+# without a human clicking merge.
+#
+# release-please opens `release: <version>` PRs from a `release-please--*` branch
+# (with RELEASE_PLEASE_TOKEN, so `on: pull_request` workflows do fire for it).
+# This turns on auto-merge for exactly those PRs; GitHub merges them once the
+# required checks pass. Nothing else is touched - the head-branch guard means a
+# normal PR never auto-merges.
+#
+# Inert until the `AUTOMERGE_RELEASE_ENABLED` repository variable is 'true'.
+name: automerge-release-pr
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+concurrency:
+  group: automerge-release-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  automerge:
+    if: >-
+      vars.AUTOMERGE_RELEASE_ENABLED == 'true' &&
+      startsWith(github.head_ref, 'release-please--')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Enable auto-merge on the release PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.number }}" -R "${{ github.repository }}"

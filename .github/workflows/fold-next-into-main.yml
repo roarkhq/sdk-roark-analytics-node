@@ -1,0 +1,70 @@
+# Opens (and, once enabled, auto-merges) the PR that folds the SDK release train
+# `next` into `main`, so release-please can cut a release from `main`.
+#
+# Why this is needed: codegen opens its PRs against `next`; release-please
+# releases from `main` and googleapis/release-please-action@v4 has no
+# `changes-branch`, so it only sees what has reached `main`. Nothing carried
+# `next` onto `main`, so that fold was a manual PR every cycle. This automates
+# opening it.
+#
+# Inert until the `FOLD_ENABLED` repository variable is 'true': the whole job is
+# gated, so merging this workflow changes nothing until the variable is flipped.
+name: fold-next-into-main
+
+on:
+  push:
+    branches: [next]
+  workflow_dispatch:
+
+concurrency:
+  group: fold-next-into-main
+  cancel-in-progress: false
+
+jobs:
+  fold:
+    if: vars.FOLD_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # RELEASE_PLEASE_TOKEN, not GITHUB_TOKEN: a PR opened with GITHUB_TOKEN does
+      # not trigger `on: pull_request` workflows, so CI would never run on the
+      # fold PR and auto-merge would have no checks to wait on. The PAT already in
+      # this repo for release-please carries the contents + pull-request write
+      # this needs.
+      - name: Open or update the next -> main fold PR
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          # Nothing to fold if main already contains next.
+          if git merge-base --is-ancestor origin/next origin/main; then
+            echo 'main already contains next; nothing to fold.'
+            exit 0
+          fi
+
+          number=$(gh pr list --base main --head next --state open --json number --jq '.[0].number // empty')
+          if [ -z "$number" ]; then
+            url=$(gh pr create --base main --head next \
+              --title 'chore: fold next into main' \
+              --body 'Automated fold of the SDK release train (`next`) into `main` so release-please can cut a release. Opened by `fold-next-into-main.yml`.')
+            number=$(printf '%s' "$url" | grep -oE '[0-9]+$')
+            echo "Opened fold PR #$number."
+          else
+            echo "Fold PR #$number is already open; it tracks next automatically."
+          fi
+
+          # Enable native auto-merge so the fold lands once required checks pass.
+          # A real merge commit, not a squash: release-please reads the individual
+          # conventional commits on main, and squashing would collapse them into
+          # one and lose per-change changelog entries. If auto-merge is disabled
+          # for the repo this line is a no-op error and the PR simply waits for a
+          # human - a safe degradation, not a failure.
+          gh pr merge --auto --merge "$number" \
+            || echo 'Auto-merge unavailable; leaving the fold PR for manual merge.'
