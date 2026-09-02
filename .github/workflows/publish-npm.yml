@@ -12,6 +12,10 @@ on:
   release:
     types: [published]
 
+env:
+  # #alarms-prod, defined once here rather than repeated in every alert step.
+  SLACK_ALARMS_CHANNEL: 'C064B836PL2'
+
 jobs:
   publish:
     name: publish
@@ -64,7 +68,7 @@ jobs:
           curl -sS -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H 'Content-type: application/json; charset=utf-8' \
-            --data "$(jq -n --arg t "$text" '{channel:"C064B836PL2",text:$t}')" >/dev/null || true
+            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')" >/dev/null || true
 
       - name: Slack notify - publish failed
         if: failure()
@@ -77,4 +81,4 @@ jobs:
           curl -sS -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H 'Content-type: application/json; charset=utf-8' \
-            --data "$(jq -n --arg t "$text" '{channel:"C064B836PL2",text:$t}')" >/dev/null || true
+            --data "$(jq -n --arg t "$text" --arg c "$SLACK_ALARMS_CHANNEL" '{channel:$c,text:$t}')" >/dev/null || true
