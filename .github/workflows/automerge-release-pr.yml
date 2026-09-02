@@ -28,7 +28,15 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      # `synchronize` re-runs this on every push to the release branch, so the
+      # call has to be idempotent: enabling auto-merge on a PR that already has it
+      # (or that GitHub reports as momentarily unstable) can error rather than
+      # no-op, and an unguarded failure would leave a persistent red check on the
+      # release PR. Swallow it - the worst case is auto-merge is simply not on,
+      # and a human merges. Same degradation as the fold workflow.
       - name: Enable auto-merge on the release PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr merge --auto --squash "${{ github.event.pull_request.number }}" -R "${{ github.repository }}"
+        run: |
+          gh pr merge --auto --squash "${{ github.event.pull_request.number }}" -R "${{ github.repository }}" \
+            || echo 'Auto-merge unavailable or already enabled; leaving the release PR as is.'
