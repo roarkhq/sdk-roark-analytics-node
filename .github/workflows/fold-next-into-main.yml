@@ -89,8 +89,16 @@ jobs:
           # one and lose per-change changelog entries. If auto-merge is disabled
           # for the repo this line is a no-op error and the PR simply waits for a
           # human - a safe degradation, not a failure.
+          #
+          # `--auto` waits for required checks, but when the PR is already CLEAN
+          # (checks finished, nothing pending) GitHub refuses to *enable*
+          # auto-merge and the call errors - which is how a fold PR silently sat
+          # open. Fall back to an immediate `--merge`: it still respects branch
+          # protection, so it only lands a PR that is genuinely mergeable now; if
+          # checks are still pending it fails and the PR waits for a human.
           gh pr merge --auto --merge "$number" \
-            || echo 'Auto-merge unavailable; leaving the fold PR for manual merge.'
+            || gh pr merge --merge "$number" \
+            || echo 'Neither auto-merge nor an immediate merge was possible; leaving the fold PR for manual merge.'
 
       # A failed fold stalls the train: next never reaches main, so no release.
       # Alert #alarms-prod. No-op until SLACK_ALARMS_PROD_WEBHOOK_URL is set.
