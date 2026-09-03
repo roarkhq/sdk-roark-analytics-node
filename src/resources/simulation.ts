@@ -185,6 +185,22 @@ export declare namespace SimulationRunParams {
       endCallReasons?: Array<string>;
 
       /**
+       * Merge the customer's own recording of the real call into each simulation, so
+       * metrics can be scored against the live leg as well as the simulated one. This is
+       * the API equivalent of the dashboard's live-enrichment toggle.
+       *
+       * With this on, the run provisions a phone number and holds each call open for up
+       * to 15 minutes waiting for a matching call to be posted to POST /v1/call. A call
+       * matches on the provisioned number (`roarkPhoneNumber` on the job) with a start
+       * time inside the simulation window. If nothing arrives, the simulation still
+       * completes and any `LIVE`-sourced metric produces no value.
+       *
+       * Required by any metric whose `requiresLiveConversation` is true: without it that
+       * metric is silently skipped.
+       */
+      enrichWithLiveConversation?: boolean;
+
+      /**
        * Execution mode (PARALLEL or SEQUENTIAL)
        */
       executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
@@ -239,6 +255,18 @@ export declare namespace SimulationRunParams {
          * Metric definition UUID. Provide either this or `slug`, not both.
          */
         id?: string;
+
+        /**
+         * Which side of an enriched run this metric is scored on. Only meaningful with
+         * `enrichWithLiveConversation: true`, where a run has both a simulated
+         * conversation and the customer's own live recording of it.
+         *
+         * Defaults to `SIMULATED`. Use `LIVE` for a metric that must be measured against
+         * the real recording (audio quality, provider latency) rather than the simulated
+         * leg. `null` means the same as omitting it, so a plan read back from GET can be
+         * sent straight to PUT.
+         */
+        conversationSource?: 'SIMULATED' | 'LIVE' | null;
 
         /**
          * Alias of `slug` accepted for backwards compatibility. Use `slug` for new

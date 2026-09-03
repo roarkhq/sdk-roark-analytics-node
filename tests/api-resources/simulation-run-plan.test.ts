@@ -30,12 +30,20 @@ describe('resource simulationRunPlan', () => {
       agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       direction: 'INBOUND',
       maxSimulationDurationSeconds: 300,
-      metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', metricId: 'x', slug: 'x' }],
+      metrics: [
+        {
+          conversationSource: 'SIMULATED',
+          id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          metricId: 'x',
+          slug: 'x',
+        },
+      ],
       name: 'My Run Plan',
       autoRun: false,
       description: 'A run plan for testing inbound calls',
       endCallPhrases: ['goodbye'],
       endCallReasons: ['Order has been confirmed by the agent'],
+      enrichWithLiveConversation: false,
       executionMode: 'PARALLEL',
       flows: [
         {
@@ -81,6 +89,7 @@ describe('resource simulationRunPlan', () => {
           direction: 'INBOUND',
           endCallPhrases: ['endCallPhrases'],
           endCallReasons: ['endCallReasons'],
+          enrichWithLiveConversation: true,
           executionMode: 'PARALLEL',
           flows: [
             {
@@ -95,7 +104,14 @@ describe('resource simulationRunPlan', () => {
           iterationCount: 1,
           maxConcurrentJobs: 1,
           maxSimulationDurationSeconds: 1,
-          metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', metricId: 'x', slug: 'x' }],
+          metrics: [
+            {
+              conversationSource: 'SIMULATED',
+              id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              metricId: 'x',
+              slug: 'x',
+            },
+          ],
           name: 'x',
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
           scenarios: [
