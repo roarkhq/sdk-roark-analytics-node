@@ -7,12 +7,25 @@
 # `next` onto `main`, so that fold was a manual PR every cycle. This automates
 # opening it.
 #
+# Trigger: this fires on `workflow_run` when the `CI` workflow finishes on
+# `next` (i.e. after a codegen push lands there). It CANNOT use `on: push:
+# [next]`: a push-triggered workflow runs the copy of the file on the PUSHED
+# branch, and this workflow lives only on `main` (the train folds `next` into
+# `main` and never back, so `next` never receives main-only files). A
+# `workflow_run` trigger, by contrast, always runs the file from the
+# repository's DEFAULT branch (`main`), so it fires correctly even though the
+# file is absent from `next`. That mismatch is what stalled the train silently:
+# the push trigger never matched, so no fold PR opened and no release was cut,
+# and since the workflow never started, its failure-only Slack alert never ran.
+#
 # Inert until the `FOLD_ENABLED` repository variable is 'true': the whole job is
 # gated, so merging this workflow changes nothing until the variable is flipped.
 name: fold-next-into-main
 
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [next]
   workflow_dispatch:
 
@@ -22,7 +35,12 @@ concurrency:
 
 jobs:
   fold:
-    if: vars.FOLD_ENABLED == 'true'
+    # On workflow_run, only fold when CI actually passed on `next`; a manual
+    # workflow_dispatch has no workflow_run context, so allow it unconditionally.
+    if: >-
+      vars.FOLD_ENABLED == 'true' &&
+      (github.event_name == 'workflow_dispatch' ||
+       github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     permissions:
       contents: write
