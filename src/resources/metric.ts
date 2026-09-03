@@ -29,16 +29,20 @@ export class Metric extends APIResource {
   }
 
   /**
-   * Fetch all metric definitions available in the project, including both
-   * system-generated and custom metrics.
+   * Fetch metric definitions available in the project, including both
+   * system-generated and custom metrics. Results are ordered by immutable definition
+   * ID; pass `nextCursor` to retrieve the following page.
    *
    * @example
    * ```ts
    * const response = await client.metric.listDefinitions();
    * ```
    */
-  listDefinitions(options?: RequestOptions): APIPromise<MetricListDefinitionsResponse> {
-    return this._client.get('/v1/metric/definitions', options);
+  listDefinitions(
+    query: MetricListDefinitionsParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<MetricListDefinitionsResponse> {
+    return this._client.get('/v1/metric/definitions', { query, ...options });
   }
 }
 
@@ -384,10 +388,10 @@ export namespace MetricCreateDefinitionResponse {
   }
 }
 
+/**
+ * Cursor-paginated metric definitions available in the project
+ */
 export interface MetricListDefinitionsResponse {
-  /**
-   * Metrics response payload
-   */
   data: Array<
     | MetricListDefinitionsResponse.LlmJudgeMetricResponse
     | MetricListDefinitionsResponse.ProviderMetricResponse
@@ -395,6 +399,8 @@ export interface MetricListDefinitionsResponse {
     | MetricListDefinitionsResponse.FormulaMetricResponse
     | MetricListDefinitionsResponse.PatternMetricResponse
   >;
+
+  pagination: MetricListDefinitionsResponse.Pagination;
 }
 
 export namespace MetricListDefinitionsResponse {
@@ -921,6 +927,14 @@ export namespace MetricListDefinitionsResponse {
       symbol: string | null;
     }
   }
+
+  export interface Pagination {
+    hasMore: boolean;
+
+    limit: number;
+
+    nextCursor: string | null;
+  }
 }
 
 export type MetricCreateDefinitionParams =
@@ -1246,10 +1260,17 @@ export declare namespace MetricCreateDefinitionParams {
   }
 }
 
+export interface MetricListDefinitionsParams {
+  after?: string;
+
+  limit?: number;
+}
+
 export declare namespace Metric {
   export {
     type MetricCreateDefinitionResponse as MetricCreateDefinitionResponse,
     type MetricListDefinitionsResponse as MetricListDefinitionsResponse,
     type MetricCreateDefinitionParams as MetricCreateDefinitionParams,
+    type MetricListDefinitionsParams as MetricListDefinitionsParams,
   };
 }
