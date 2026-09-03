@@ -299,8 +299,12 @@ export namespace CustomerFlowCreateResponse {
     agents: Array<ScriptedCustomerFlow.Agent>;
 
     /**
-     * DETERMINISTIC runs one variant per path through the graph. ADAPTIVE collapses
-     * the paths into a single variant the simulated customer adapts across.
+     * How a run walks the graph. DETERMINISTIC ("Simulate every path" in the app)
+     * places one call per variant, each following its path exactly whatever the agent
+     * says. ADAPTIVE ("Adapt to your agent") collapses the paths into one call PER
+     * PERSONA, on which the simulated customer picks a branch from what the agent
+     * actually said. Both modes speak the exact authored lines, and neither changes
+     * how metrics or expectations grade.
      */
     branchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
 
@@ -2450,8 +2454,12 @@ export namespace CustomerFlowUpdateResponse {
     agents: Array<ScriptedCustomerFlow.Agent>;
 
     /**
-     * DETERMINISTIC runs one variant per path through the graph. ADAPTIVE collapses
-     * the paths into a single variant the simulated customer adapts across.
+     * How a run walks the graph. DETERMINISTIC ("Simulate every path" in the app)
+     * places one call per variant, each following its path exactly whatever the agent
+     * says. ADAPTIVE ("Adapt to your agent") collapses the paths into one call PER
+     * PERSONA, on which the simulated customer picks a branch from what the agent
+     * actually said. Both modes speak the exact authored lines, and neither changes
+     * how metrics or expectations grade.
      */
     branchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
 
@@ -4604,8 +4612,12 @@ export namespace CustomerFlowListResponse {
     agents: Array<ScriptedCustomerFlow.Agent>;
 
     /**
-     * DETERMINISTIC runs one variant per path through the graph. ADAPTIVE collapses
-     * the paths into a single variant the simulated customer adapts across.
+     * How a run walks the graph. DETERMINISTIC ("Simulate every path" in the app)
+     * places one call per variant, each following its path exactly whatever the agent
+     * says. ADAPTIVE ("Adapt to your agent") collapses the paths into one call PER
+     * PERSONA, on which the simulated customer picks a branch from what the agent
+     * actually said. Both modes speak the exact authored lines, and neither changes
+     * how metrics or expectations grade.
      */
     branchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
 
@@ -6785,8 +6797,12 @@ export namespace CustomerFlowGetByIDResponse {
     agents: Array<ScriptedCustomerFlow.Agent>;
 
     /**
-     * DETERMINISTIC runs one variant per path through the graph. ADAPTIVE collapses
-     * the paths into a single variant the simulated customer adapts across.
+     * How a run walks the graph. DETERMINISTIC ("Simulate every path" in the app)
+     * places one call per variant, each following its path exactly whatever the agent
+     * says. ADAPTIVE ("Adapt to your agent") collapses the paths into one call PER
+     * PERSONA, on which the simulated customer picks a branch from what the agent
+     * actually said. Both modes speak the exact authored lines, and neither changes
+     * how metrics or expectations grade.
      */
     branchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
 
@@ -10817,8 +10833,12 @@ export declare namespace CustomerFlowCreateParams {
     agentIds?: Array<string>;
 
     /**
-     * DETERMINISTIC (the default) runs one variant per path through the graph;
-     * ADAPTIVE collapses the paths into one call the simulated customer adapts across.
+     * How a run walks the graph. DETERMINISTIC ("Simulate every path" in the app)
+     * places one call per variant, each following its path exactly whatever the agent
+     * says. ADAPTIVE ("Adapt to your agent") collapses the paths into one call PER
+     * PERSONA, on which the simulated customer picks a branch from what the agent
+     * actually said. Both modes speak the exact authored lines, and neither changes
+     * how metrics or expectations grade. (DETERMINISTIC is the default.)
      */
     branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
 
@@ -10924,7 +10944,12 @@ export interface CustomerFlowUpdateParams {
   agentIds?: Array<string>;
 
   /**
-   * Scripted flows only.
+   * Scripted flows only. How a run walks the graph. DETERMINISTIC ("Simulate every
+   * path" in the app) places one call per variant, each following its path exactly
+   * whatever the agent says. ADAPTIVE ("Adapt to your agent") collapses the paths
+   * into one call PER PERSONA, on which the simulated customer picks a branch from
+   * what the agent actually said. Both modes speak the exact authored lines, and
+   * neither changes how metrics or expectations grade.
    */
   branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
 
