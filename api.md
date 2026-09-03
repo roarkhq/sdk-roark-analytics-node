@@ -38,7 +38,7 @@ Types:
 Methods:
 
 - <code title="post /v1/metric/definitions">client.metric.<a href="./src/resources/metric.ts">createDefinition</a>({ ...params }) -> MetricCreateDefinitionResponse</code>
-- <code title="get /v1/metric/definitions">client.metric.<a href="./src/resources/metric.ts">listDefinitions</a>() -> MetricListDefinitionsResponse</code>
+- <code title="get /v1/metric/definitions">client.metric.<a href="./src/resources/metric.ts">listDefinitions</a>({ ...params }) -> MetricListDefinitionsResponse</code>
 
 # MetricPolicy
 

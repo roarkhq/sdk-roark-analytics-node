@@ -85,6 +85,7 @@ export {
   type MetricCreateDefinitionResponse,
   type MetricListDefinitionsResponse,
   type MetricCreateDefinitionParams,
+  type MetricListDefinitionsParams,
 } from './metric';
 export {
   MetricCollectionJob,

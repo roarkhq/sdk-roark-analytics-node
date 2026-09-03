@@ -101,6 +101,7 @@ import {
   Metric,
   MetricCreateDefinitionParams,
   MetricCreateDefinitionResponse,
+  MetricListDefinitionsParams,
   MetricListDefinitionsResponse,
 } from './resources/metric';
 import {
@@ -953,6 +954,7 @@ export declare namespace Roark {
     type MetricCreateDefinitionResponse as MetricCreateDefinitionResponse,
     type MetricListDefinitionsResponse as MetricListDefinitionsResponse,
     type MetricCreateDefinitionParams as MetricCreateDefinitionParams,
+    type MetricListDefinitionsParams as MetricListDefinitionsParams,
   };
 
   export {
