@@ -32,10 +32,18 @@ describe('resource simulation', () => {
         agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
         direction: 'INBOUND',
         maxSimulationDurationSeconds: 300,
-        metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', metricId: 'x', slug: 'x' }],
+        metrics: [
+          {
+            conversationSource: 'SIMULATED',
+            id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            metricId: 'x',
+            slug: 'x',
+          },
+        ],
         description: 'A run plan for testing inbound calls',
         endCallPhrases: ['goodbye'],
         endCallReasons: ['Order has been confirmed by the agent'],
+        enrichWithLiveConversation: false,
         executionMode: 'PARALLEL',
         flows: [
           {
