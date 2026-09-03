@@ -28,7 +28,6 @@ concurrency:
   group: release-please
   cancel-in-progress: false
 
-
 jobs:
   release-please:
     # Off until the vendor has actually let go. While `stainless.yml` still

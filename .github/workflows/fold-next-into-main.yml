@@ -20,7 +20,6 @@ concurrency:
   group: fold-next-into-main
   cancel-in-progress: false
 
-
 jobs:
   fold:
     if: vars.FOLD_ENABLED == 'true'
