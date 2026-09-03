@@ -64,6 +64,18 @@ export namespace MetricCreateDefinitionResponse {
     id: string;
 
     /**
+     * For a BOOLEAN metric, what a `false` value means. Also given to the judge as its
+     * polarity rule.
+     */
+    booleanFalseLabel: string | null;
+
+    /**
+     * For a BOOLEAN metric, what a `true` value means. Also given to the judge as its
+     * polarity rule.
+     */
+    booleanTrueLabel: string | null;
+
+    /**
      * Metric evaluated by an LLM against a prompt.
      */
     calculationType: 'LLM_JUDGE';
@@ -74,6 +86,12 @@ export namespace MetricCreateDefinitionResponse {
     description: string;
 
     /**
+     * The rubric this judge applies, as stored. Read it back to confirm which criteria
+     * are live after a create or update.
+     */
+    llmPrompt: string | null;
+
+    /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
      */
     metricId: string;
@@ -82,6 +100,15 @@ export namespace MetricCreateDefinitionResponse {
      * Name of the metric
      */
     name: string;
+
+    /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
 
     /**
      * Whether metric is global or per-participant
@@ -97,6 +124,13 @@ export namespace MetricCreateDefinitionResponse {
      * Which levels this metric can produce values at
      */
     supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
      * Type of value this metric produces
@@ -171,6 +205,15 @@ export namespace MetricCreateDefinitionResponse {
     name: string;
 
     /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
      * Whether metric is global or per-participant
      */
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
@@ -184,6 +227,13 @@ export namespace MetricCreateDefinitionResponse {
      * Which levels this metric can produce values at
      */
     supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
      * Type of value this metric produces
@@ -275,6 +325,15 @@ export namespace MetricCreateDefinitionResponse {
     pattern: PatternMetricResponse.Pattern;
 
     /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
      * Whether metric is global or per-participant
      */
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
@@ -288,6 +347,13 @@ export namespace MetricCreateDefinitionResponse {
      * Which levels this metric can produce values at
      */
     supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
      * Type of value this metric produces
@@ -411,6 +477,18 @@ export namespace MetricListDefinitionsResponse {
     id: string;
 
     /**
+     * For a BOOLEAN metric, what a `false` value means. Also given to the judge as its
+     * polarity rule.
+     */
+    booleanFalseLabel: string | null;
+
+    /**
+     * For a BOOLEAN metric, what a `true` value means. Also given to the judge as its
+     * polarity rule.
+     */
+    booleanTrueLabel: string | null;
+
+    /**
      * Metric evaluated by an LLM against a prompt.
      */
     calculationType: 'LLM_JUDGE';
@@ -421,6 +499,12 @@ export namespace MetricListDefinitionsResponse {
     description: string;
 
     /**
+     * The rubric this judge applies, as stored. Read it back to confirm which criteria
+     * are live after a create or update.
+     */
+    llmPrompt: string | null;
+
+    /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
      */
     metricId: string;
@@ -429,6 +513,15 @@ export namespace MetricListDefinitionsResponse {
      * Name of the metric
      */
     name: string;
+
+    /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
 
     /**
      * Whether metric is global or per-participant
@@ -444,6 +537,13 @@ export namespace MetricListDefinitionsResponse {
      * Which levels this metric can produce values at
      */
     supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
      * Type of value this metric produces
@@ -513,6 +613,15 @@ export namespace MetricListDefinitionsResponse {
     name: string;
 
     /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
      * Whether metric is global or per-participant
      */
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
@@ -526,6 +635,13 @@ export namespace MetricListDefinitionsResponse {
      * Which levels this metric can produce values at
      */
     supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
      * Type of value this metric produces
@@ -595,6 +711,15 @@ export namespace MetricListDefinitionsResponse {
     name: string;
 
     /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
      * Whether metric is global or per-participant
      */
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
@@ -608,6 +733,13 @@ export namespace MetricListDefinitionsResponse {
      * Which levels this metric can produce values at
      */
     supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
      * Type of value this metric produces
@@ -712,6 +844,15 @@ export namespace MetricListDefinitionsResponse {
     name: string;
 
     /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
      * Whether metric is global or per-participant
      */
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
@@ -725,6 +866,13 @@ export namespace MetricListDefinitionsResponse {
      * Which levels this metric can produce values at
      */
     supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
      * Type of value this metric produces
@@ -816,6 +964,15 @@ export namespace MetricListDefinitionsResponse {
     pattern: PatternMetricResponse.Pattern;
 
     /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
      * Whether metric is global or per-participant
      */
     scope: 'GLOBAL' | 'PER_PARTICIPANT';
@@ -829,6 +986,13 @@ export namespace MetricListDefinitionsResponse {
      * Which levels this metric can produce values at
      */
     supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
      * Type of value this metric produces
