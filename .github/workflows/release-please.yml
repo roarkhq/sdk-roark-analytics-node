@@ -41,16 +41,28 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      # Mint a short-lived installation token from the org-owned release GitHub App
+      # (roark-release). Replaces the personal RELEASE_PLEASE_TOKEN PAT: the App is
+      # org-owned so it survives any one person leaving, its key is never a
+      # long-lived token in a run, and - unlike GITHUB_TOKEN - a release it creates
+      # DOES raise `release: published`, which is what publish-npm.yml waits on.
+      - name: Mint a token from the release App
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
       - uses: googleapis/release-please-action@v4
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
           target-branch: main
-          # NOT GITHUB_TOKEN. A release created with it does not raise
-          # `release: published` for other workflows, so `publish-npm.yml` would
-          # never run and this would reproduce the outage it exists to prevent -
-          # silently, since nothing fails when a publish simply never starts.
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          # The App token minted above, NOT GITHUB_TOKEN. A release created with
+          # GITHUB_TOKEN does not raise `release: published` for other workflows,
+          # so `publish-npm.yml` would never run - silently, since nothing fails
+          # when a publish simply never starts.
+          token: ${{ steps.app-token.outputs.token }}
 
       # A failure here stalls the release train silently: no release PR, so no
       # publish. Alert #alarms-prod. No-op until SLACK_ALARMS_PROD_WEBHOOK_URL is set.
