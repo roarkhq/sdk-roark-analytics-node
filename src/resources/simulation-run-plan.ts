@@ -160,6 +160,11 @@ export namespace SimulationRunPlanCreateResponse {
       endCallReasons: Array<string>;
 
       /**
+       * Whether this plan merges the customer's own live recording into each simulation.
+       */
+      enrichWithLiveConversation: boolean;
+
+      /**
        * Deprecated: Use metrics instead. Evaluators included in this run plan.
        */
       evaluators: Array<RunPlan.Evaluator>;
@@ -297,6 +302,12 @@ export namespace SimulationRunPlanCreateResponse {
 
       export interface Metric {
         id: string;
+
+        /**
+         * Which side of an enriched run this metric is scored on. `null` means the
+         * default, SIMULATED.
+         */
+        conversationSource: 'SIMULATED' | 'LIVE' | null;
       }
 
       export interface Persona {
@@ -397,6 +408,11 @@ export namespace SimulationRunPlanUpdateResponse {
     endCallReasons: Array<string>;
 
     /**
+     * Whether this plan merges the customer's own live recording into each simulation.
+     */
+    enrichWithLiveConversation: boolean;
+
+    /**
      * Deprecated: Use metrics instead. Evaluators included in this run plan.
      */
     evaluators: Array<Data.Evaluator>;
@@ -534,6 +550,12 @@ export namespace SimulationRunPlanUpdateResponse {
 
     export interface Metric {
       id: string;
+
+      /**
+       * Which side of an enriched run this metric is scored on. `null` means the
+       * default, SIMULATED.
+       */
+      conversationSource: 'SIMULATED' | 'LIVE' | null;
     }
 
     export interface Persona {
@@ -598,6 +620,11 @@ export namespace SimulationRunPlanListResponse {
     endCallReasons: Array<string>;
 
     /**
+     * Whether this plan merges the customer's own live recording into each simulation.
+     */
+    enrichWithLiveConversation: boolean;
+
+    /**
      * Deprecated: Use metrics instead. Evaluators included in this run plan.
      */
     evaluators: Array<Data.Evaluator>;
@@ -735,6 +762,12 @@ export namespace SimulationRunPlanListResponse {
 
     export interface Metric {
       id: string;
+
+      /**
+       * Which side of an enriched run this metric is scored on. `null` means the
+       * default, SIMULATED.
+       */
+      conversationSource: 'SIMULATED' | 'LIVE' | null;
     }
 
     export interface Persona {
@@ -827,6 +860,11 @@ export namespace SimulationRunPlanGetByIDResponse {
     endCallReasons: Array<string>;
 
     /**
+     * Whether this plan merges the customer's own live recording into each simulation.
+     */
+    enrichWithLiveConversation: boolean;
+
+    /**
      * Deprecated: Use metrics instead. Evaluators included in this run plan.
      */
     evaluators: Array<Data.Evaluator>;
@@ -964,6 +1002,12 @@ export namespace SimulationRunPlanGetByIDResponse {
 
     export interface Metric {
       id: string;
+
+      /**
+       * Which side of an enriched run this metric is scored on. `null` means the
+       * default, SIMULATED.
+       */
+      conversationSource: 'SIMULATED' | 'LIVE' | null;
     }
 
     export interface Persona {
@@ -1033,6 +1077,22 @@ export interface SimulationRunPlanCreateParams {
   endCallReasons?: Array<string>;
 
   /**
+   * Merge the customer's own recording of the real call into each simulation, so
+   * metrics can be scored against the live leg as well as the simulated one. This is
+   * the API equivalent of the dashboard's live-enrichment toggle.
+   *
+   * With this on, the run provisions a phone number and holds each call open for up
+   * to 15 minutes waiting for a matching call to be posted to POST /v1/call. A call
+   * matches on the provisioned number (`roarkPhoneNumber` on the job) with a start
+   * time inside the simulation window. If nothing arrives, the simulation still
+   * completes and any `LIVE`-sourced metric produces no value.
+   *
+   * Required by any metric whose `requiresLiveConversation` is true: without it that
+   * metric is silently skipped.
+   */
+  enrichWithLiveConversation?: boolean;
+
+  /**
    * Execution mode (PARALLEL or SEQUENTIAL)
    */
   executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
@@ -1081,6 +1141,18 @@ export namespace SimulationRunPlanCreateParams {
      * Metric definition UUID. Provide either this or `slug`, not both.
      */
     id?: string;
+
+    /**
+     * Which side of an enriched run this metric is scored on. Only meaningful with
+     * `enrichWithLiveConversation: true`, where a run has both a simulated
+     * conversation and the customer's own live recording of it.
+     *
+     * Defaults to `SIMULATED`. Use `LIVE` for a metric that must be measured against
+     * the real recording (audio quality, provider latency) rather than the simulated
+     * leg. `null` means the same as omitting it, so a plan read back from GET can be
+     * sent straight to PUT.
+     */
+    conversationSource?: 'SIMULATED' | 'LIVE' | null;
 
     /**
      * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
@@ -1194,6 +1266,12 @@ export interface SimulationRunPlanUpdateParams {
    * against these conditions. Empty array disables the feature.
    */
   endCallReasons?: Array<string>;
+
+  /**
+   * Whether to merge the customer's own live recording into each simulation of this
+   * plan.
+   */
+  enrichWithLiveConversation?: boolean;
 
   /**
    * Execution mode (PARALLEL or SEQUENTIAL)
@@ -1324,6 +1402,18 @@ export namespace SimulationRunPlanUpdateParams {
      * Metric definition UUID. Provide either this or `slug`, not both.
      */
     id?: string;
+
+    /**
+     * Which side of an enriched run this metric is scored on. Only meaningful with
+     * `enrichWithLiveConversation: true`, where a run has both a simulated
+     * conversation and the customer's own live recording of it.
+     *
+     * Defaults to `SIMULATED`. Use `LIVE` for a metric that must be measured against
+     * the real recording (audio quality, provider latency) rather than the simulated
+     * leg. `null` means the same as omitting it, so a plan read back from GET can be
+     * sent straight to PUT.
+     */
+    conversationSource?: 'SIMULATED' | 'LIVE' | null;
 
     /**
      * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
