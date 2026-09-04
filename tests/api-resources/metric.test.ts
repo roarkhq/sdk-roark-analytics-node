@@ -71,4 +71,66 @@ describe('resource metric', () => {
       client.metric.listDefinitions({ after: 'after', limit: 1 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Roark.NotFoundError);
   });
+
+  test('updateDefinition', async () => {
+    const responsePromise = client.metric.updateDefinition('idOrSlug');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('updateDefinition: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.metric.updateDefinition(
+        'idOrSlug',
+        {
+          analysisPackageId: 'analysisPackageId',
+          booleanFalseLabel: 'booleanFalseLabel',
+          booleanTrueLabel: 'booleanTrueLabel',
+          calcType: 'calcType',
+          changeReason: 'changeReason',
+          classificationOptions: [{ description: 'description', displayOrder: 0, label: 'label' }],
+          formula: 'x',
+          llmPrompt: 'llmPrompt',
+          maxClassifications: 1,
+          metricId: 'metricId',
+          name: 'x',
+          organizationId: 'organizationId',
+          outputType: 'outputType',
+          participantRole: 'participantRole',
+          projectId: 'projectId',
+          scaleLabels: [
+            {
+              displayOrder: 0,
+              label: 'label',
+              rangeMax: 0,
+              rangeMin: 0,
+              colorHex: 'colorHex',
+              description: 'description',
+            },
+          ],
+          scaleMax: 0,
+          scaleMin: 0,
+          scope: 'scope',
+          slug: 'slug',
+          source: 'source',
+          sources: [
+            {
+              sourceMetricDefinitionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              sourceVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            },
+          ],
+          supportedContexts: ['CALL'],
+          supportsMultipleVariants: 'supportsMultipleVariants',
+          toolDefinitionIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
 });

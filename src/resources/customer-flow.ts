@@ -164,6 +164,13 @@ export class CustomerFlow extends APIResource {
  * under the first branch that reaches it and point the others at it: a top-level
  * step is a root wired straight from the start of the flow, so a merge target
  * parked there would also be reachable directly.
+ *
+ * The two DTMF types are mirror images and both require `dtmfDigits`.
+ * `CUSTOMER_DTMF` is keys the simulated caller presses while navigating your
+ * agent. `AGENT_DTMF` is keys your agent under test is expected to press while
+ * navigating a menu the simulation is playing, so its digits are an assertion the
+ * run is graded against rather than an instruction, and it counts as an agent turn
+ * for role alternation.
  */
 export type FlowStep =
   | FlowStep.UnionMember0
@@ -172,7 +179,8 @@ export type FlowStep =
   | FlowStep.UnionMember3
   | FlowStep.UnionMember4
   | FlowStep.UnionMember5
-  | FlowStep.UnionMember6;
+  | FlowStep.UnionMember6
+  | FlowStep.UnionMember7;
 
 export namespace FlowStep {
   export interface UnionMember0 {
@@ -246,7 +254,9 @@ export namespace FlowStep {
   }
 
   export interface UnionMember5 {
-    type: 'VOICEMAIL';
+    type: 'AGENT_DTMF';
+
+    dtmfDigits?: string | null;
 
     mergeIntoNodeIds?: Array<string>;
 
@@ -258,6 +268,18 @@ export namespace FlowStep {
   }
 
   export interface UnionMember6 {
+    type: 'VOICEMAIL';
+
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export interface UnionMember7 {
     type: 'SCENARIO_LINK';
 
     linkedCustomerFlowId?: string | null;
