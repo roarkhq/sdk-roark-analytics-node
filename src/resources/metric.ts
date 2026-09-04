@@ -160,6 +160,16 @@ export namespace MetricCreateDefinitionResponse {
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
+
+    /**
      * Type of value this metric produces
      */
     type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
@@ -261,6 +271,16 @@ export namespace MetricCreateDefinitionResponse {
      * real call, and `["SIMULATED"]` one that only applies to simulations.
      */
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
 
     /**
      * Type of value this metric produces
@@ -381,6 +401,16 @@ export namespace MetricCreateDefinitionResponse {
      * real call, and `["SIMULATED"]` one that only applies to simulations.
      */
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
 
     /**
      * Type of value this metric produces
@@ -573,6 +603,16 @@ export namespace MetricListDefinitionsResponse {
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
+
+    /**
      * Type of value this metric produces
      */
     type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
@@ -671,6 +711,16 @@ export namespace MetricListDefinitionsResponse {
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
+
+    /**
      * Type of value this metric produces
      */
     type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
@@ -767,6 +817,16 @@ export namespace MetricListDefinitionsResponse {
      * real call, and `["SIMULATED"]` one that only applies to simulations.
      */
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
 
     /**
      * Type of value this metric produces
@@ -902,6 +962,16 @@ export namespace MetricListDefinitionsResponse {
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
+
+    /**
      * Type of value this metric produces
      */
     type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
@@ -1020,6 +1090,16 @@ export namespace MetricListDefinitionsResponse {
      * real call, and `["SIMULATED"]` one that only applies to simulations.
      */
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
 
     /**
      * Type of value this metric produces
@@ -1216,6 +1296,16 @@ export namespace MetricUpdateDefinitionResponse {
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
 
     /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
+
+    /**
      * Type of value this metric produces
      */
     type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
@@ -1317,6 +1407,16 @@ export namespace MetricUpdateDefinitionResponse {
      * real call, and `["SIMULATED"]` one that only applies to simulations.
      */
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
 
     /**
      * Type of value this metric produces
@@ -1437,6 +1537,16 @@ export namespace MetricUpdateDefinitionResponse {
      * real call, and `["SIMULATED"]` one that only applies to simulations.
      */
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
 
     /**
      * Type of value this metric produces
@@ -1592,6 +1702,16 @@ export namespace MetricUpdateDefinitionResponse {
      * real call, and `["SIMULATED"]` one that only applies to simulations.
      */
     supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for provider-computed
+     * metrics whose calculation lives in the collector rather than an editable prompt,
+     * and for metrics in a package that manages its own variants. Most of Roark’s own
+     * metrics are false, so read this rather than discovering it from a 403.
+     */
+    supportsVariants: boolean;
 
     /**
      * Type of value this metric produces
