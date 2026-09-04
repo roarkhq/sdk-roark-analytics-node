@@ -24,12 +24,14 @@ export {
   Call,
   type CallCreateResponse,
   type CallListResponse,
+  type CallAppendToolInvocationsResponse,
   type CallGetByIDResponse,
   type CallGetTranscriptResponse,
   type CallListMetricsResponse,
   type CallListSentimentRunsResponse,
   type CallCreateParams,
   type CallListParams,
+  type CallAppendToolInvocationsParams,
   type CallGetTranscriptParams,
   type CallListMetricsParams,
 } from './call';
@@ -84,8 +86,10 @@ export {
   Metric,
   type MetricCreateDefinitionResponse,
   type MetricListDefinitionsResponse,
+  type MetricUpdateDefinitionResponse,
   type MetricCreateDefinitionParams,
   type MetricListDefinitionsParams,
+  type MetricUpdateDefinitionParams,
 } from './metric';
 export {
   MetricCollectionJob,
@@ -106,6 +110,18 @@ export {
   type MetricPolicyUpdateParams,
   type MetricPolicyListParams,
 } from './metric-policy';
+export {
+  MetricVariant,
+  type MetricVariantCreateResponse,
+  type MetricVariantUpdateResponse,
+  type MetricVariantListResponse,
+  type MetricVariantDeleteResponse,
+  type MetricVariantGetByIDResponse,
+  type MetricVariantCreateParams,
+  type MetricVariantUpdateParams,
+  type MetricVariantDeleteParams,
+  type MetricVariantGetByIDParams,
+} from './metric-variant';
 export { Simulation, type SimulationRunResponse, type SimulationRunParams } from './simulation';
 export {
   SimulationEnvironment,

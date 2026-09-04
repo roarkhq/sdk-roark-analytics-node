@@ -105,6 +105,36 @@ describe('resource call', () => {
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
+  test('appendToolInvocations: only required params', async () => {
+    const responsePromise = client.call.appendToolInvocations('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      toolInvocations: [{ name: 'name', parameters: { foo: 'string' }, result: 'string', startOffsetMs: 0 }],
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('appendToolInvocations: required and optional params', async () => {
+    const response = await client.call.appendToolInvocations('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      toolInvocations: [
+        {
+          name: 'name',
+          parameters: { foo: 'string' },
+          result: 'string',
+          startOffsetMs: 0,
+          agent: { customId: 'customId', roarkId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
+          description: 'description',
+          endOffsetMs: 0,
+        },
+      ],
+      metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+    });
+  });
+
   test('getByID', async () => {
     const responsePromise = client.call.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();

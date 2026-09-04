@@ -39,6 +39,8 @@ import {
 } from './resources/agent-endpoint';
 import {
   Call,
+  CallAppendToolInvocationsParams,
+  CallAppendToolInvocationsResponse,
   CallCreateParams,
   CallCreateResponse,
   CallGetByIDResponse,
@@ -103,6 +105,8 @@ import {
   MetricCreateDefinitionResponse,
   MetricListDefinitionsParams,
   MetricListDefinitionsResponse,
+  MetricUpdateDefinitionParams,
+  MetricUpdateDefinitionResponse,
 } from './resources/metric';
 import {
   MetricCollectionJob,
@@ -123,6 +127,18 @@ import {
   MetricPolicyUpdateParams,
   MetricPolicyUpdateResponse,
 } from './resources/metric-policy';
+import {
+  MetricVariant,
+  MetricVariantCreateParams,
+  MetricVariantCreateResponse,
+  MetricVariantDeleteParams,
+  MetricVariantDeleteResponse,
+  MetricVariantGetByIDParams,
+  MetricVariantGetByIDResponse,
+  MetricVariantListResponse,
+  MetricVariantUpdateParams,
+  MetricVariantUpdateResponse,
+} from './resources/metric-variant';
 import { Simulation, SimulationRunParams, SimulationRunResponse } from './resources/simulation';
 import {
   SimulationEnvironment,
@@ -896,6 +912,7 @@ export class Roark {
   metric: API.Metric = new API.Metric(this);
   metricPolicy: API.MetricPolicy = new API.MetricPolicy(this);
   metricCollectionJob: API.MetricCollectionJob = new API.MetricCollectionJob(this);
+  metricVariant: API.MetricVariant = new API.MetricVariant(this);
   simulation: API.Simulation = new API.Simulation(this);
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
@@ -916,6 +933,7 @@ Roark.Call = Call;
 Roark.Metric = Metric;
 Roark.MetricPolicy = MetricPolicy;
 Roark.MetricCollectionJob = MetricCollectionJob;
+Roark.MetricVariant = MetricVariant;
 Roark.Simulation = Simulation;
 Roark.SimulationJob = SimulationJob;
 Roark.SimulationRunPlan = SimulationRunPlan;
@@ -939,12 +957,14 @@ export declare namespace Roark {
     Call as Call,
     type CallCreateResponse as CallCreateResponse,
     type CallListResponse as CallListResponse,
+    type CallAppendToolInvocationsResponse as CallAppendToolInvocationsResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
     type CallGetTranscriptResponse as CallGetTranscriptResponse,
     type CallListMetricsResponse as CallListMetricsResponse,
     type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
     type CallCreateParams as CallCreateParams,
     type CallListParams as CallListParams,
+    type CallAppendToolInvocationsParams as CallAppendToolInvocationsParams,
     type CallGetTranscriptParams as CallGetTranscriptParams,
     type CallListMetricsParams as CallListMetricsParams,
   };
@@ -953,8 +973,10 @@ export declare namespace Roark {
     Metric as Metric,
     type MetricCreateDefinitionResponse as MetricCreateDefinitionResponse,
     type MetricListDefinitionsResponse as MetricListDefinitionsResponse,
+    type MetricUpdateDefinitionResponse as MetricUpdateDefinitionResponse,
     type MetricCreateDefinitionParams as MetricCreateDefinitionParams,
     type MetricListDefinitionsParams as MetricListDefinitionsParams,
+    type MetricUpdateDefinitionParams as MetricUpdateDefinitionParams,
   };
 
   export {
@@ -976,6 +998,19 @@ export declare namespace Roark {
     type MetricCollectionJobGetByIDResponse as MetricCollectionJobGetByIDResponse,
     type MetricCollectionJobCreateParams as MetricCollectionJobCreateParams,
     type MetricCollectionJobListParams as MetricCollectionJobListParams,
+  };
+
+  export {
+    MetricVariant as MetricVariant,
+    type MetricVariantCreateResponse as MetricVariantCreateResponse,
+    type MetricVariantUpdateResponse as MetricVariantUpdateResponse,
+    type MetricVariantListResponse as MetricVariantListResponse,
+    type MetricVariantDeleteResponse as MetricVariantDeleteResponse,
+    type MetricVariantGetByIDResponse as MetricVariantGetByIDResponse,
+    type MetricVariantCreateParams as MetricVariantCreateParams,
+    type MetricVariantUpdateParams as MetricVariantUpdateParams,
+    type MetricVariantDeleteParams as MetricVariantDeleteParams,
+    type MetricVariantGetByIDParams as MetricVariantGetByIDParams,
   };
 
   export {

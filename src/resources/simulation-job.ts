@@ -62,6 +62,12 @@ export namespace SimulationJobGetByIDResponse {
      */
     createdAt: string;
 
+    /**
+     * What happened to this run's live-conversation enrichment, and what scoring fell
+     * back to when none arrived.
+     */
+    enrichment: Data.Enrichment;
+
     persona: Data.Persona;
 
     /**
@@ -141,6 +147,52 @@ export namespace SimulationJobGetByIDResponse {
         | 'KORE'
         | 'GOOGLE_CES'
         | 'DAILY';
+    }
+
+    /**
+     * What happened to this run's live-conversation enrichment, and what scoring fell
+     * back to when none arrived.
+     */
+    export interface Enrichment {
+      /**
+       * How the wait for the live conversation resolved. `WAITING` means the run is
+       * holding open for it right now. `MERGED` means it arrived and live-sourced
+       * metrics were scored against it. `TIMED_OUT` and `SKIPPED` both mean it never
+       * arrived, so scoring fell back to the simulated side: read
+       * `metricsScoredOnSimulationInstead` and `metricsNotCollected` for what that cost.
+       * `UNKNOWN` is a run that finished before Roark started recording this.
+       */
+      outcome: 'NOT_REQUESTED' | 'WAITING' | 'MERGED' | 'TIMED_OUT' | 'SKIPPED' | 'UNKNOWN';
+
+      /**
+       * Whether the run plan asked for the customer's live conversation to be merged
+       * into this run.
+       */
+      requested: boolean;
+
+      /**
+       * Metrics that only support the live side and so were not scored at all. Null on
+       * runs that predate this recording.
+       */
+      metricsNotCollected?: number | null;
+
+      /**
+       * Metrics that asked for the live side and were scored against the simulated side
+       * because no live conversation arrived. Null on runs that predate this recording.
+       */
+      metricsScoredOnSimulationInstead?: number | null;
+
+      /**
+       * When the wait ended, however it ended. Null if it never waited or is still
+       * waiting.
+       */
+      waitEndedAt?: string | null;
+
+      /**
+       * When the run began holding open for the live conversation. Null if it never
+       * waited.
+       */
+      waitStartedAt?: string | null;
     }
 
     export interface Persona {
@@ -405,6 +457,12 @@ export namespace SimulationJobLookupResponse {
      */
     createdAt: string;
 
+    /**
+     * What happened to this run's live-conversation enrichment, and what scoring fell
+     * back to when none arrived.
+     */
+    enrichment: Data.Enrichment;
+
     persona: Data.Persona;
 
     /**
@@ -484,6 +542,52 @@ export namespace SimulationJobLookupResponse {
         | 'KORE'
         | 'GOOGLE_CES'
         | 'DAILY';
+    }
+
+    /**
+     * What happened to this run's live-conversation enrichment, and what scoring fell
+     * back to when none arrived.
+     */
+    export interface Enrichment {
+      /**
+       * How the wait for the live conversation resolved. `WAITING` means the run is
+       * holding open for it right now. `MERGED` means it arrived and live-sourced
+       * metrics were scored against it. `TIMED_OUT` and `SKIPPED` both mean it never
+       * arrived, so scoring fell back to the simulated side: read
+       * `metricsScoredOnSimulationInstead` and `metricsNotCollected` for what that cost.
+       * `UNKNOWN` is a run that finished before Roark started recording this.
+       */
+      outcome: 'NOT_REQUESTED' | 'WAITING' | 'MERGED' | 'TIMED_OUT' | 'SKIPPED' | 'UNKNOWN';
+
+      /**
+       * Whether the run plan asked for the customer's live conversation to be merged
+       * into this run.
+       */
+      requested: boolean;
+
+      /**
+       * Metrics that only support the live side and so were not scored at all. Null on
+       * runs that predate this recording.
+       */
+      metricsNotCollected?: number | null;
+
+      /**
+       * Metrics that asked for the live side and were scored against the simulated side
+       * because no live conversation arrived. Null on runs that predate this recording.
+       */
+      metricsScoredOnSimulationInstead?: number | null;
+
+      /**
+       * When the wait ended, however it ended. Null if it never waited or is still
+       * waiting.
+       */
+      waitEndedAt?: string | null;
+
+      /**
+       * When the run began holding open for the live conversation. Null if it never
+       * waited.
+       */
+      waitStartedAt?: string | null;
     }
 
     export interface Persona {
