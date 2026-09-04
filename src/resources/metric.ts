@@ -3,6 +3,7 @@
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
+import { path } from '../internal/utils/path';
 
 export class Metric extends APIResource {
   /**
@@ -43,6 +44,32 @@ export class Metric extends APIResource {
     options?: RequestOptions,
   ): APIPromise<MetricListDefinitionsResponse> {
     return this._client.get('/v1/metric/definitions', { query, ...options });
+  }
+
+  /**
+   * Update the editable subset of a custom metric definition, addressed by its UUID
+   * or its stable `slug`. Only the supplied fields are changed; omitted fields are
+   * left unchanged. Every update creates a new immutable version; the response
+   * carries the advanced `versionId`. Immutable fields (scope, outputType, calcType,
+   * …) are rejected, and which fields are editable depends on the metric (e.g.
+   * derived metrics only allow `name`). Roark's own metrics are rejected here: this
+   * endpoint edits the shared definition, which every workspace sees. To change one
+   * for your workspace alone, edit its variant with PUT
+   * /v1/metric/definitions/{idOrSlug}/variants/{variantId}, which forks it for you
+   * and leaves every other workspace on the original.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.metric.updateDefinition('idOrSlug');
+   * ```
+   */
+  updateDefinition(
+    idOrSlug: string,
+    body: MetricUpdateDefinitionParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<MetricUpdateDefinitionResponse> {
+    return this._client.put(path`/v1/metric/definitions/${idOrSlug}`, { body, ...options });
   }
 }
 
@@ -1101,6 +1128,543 @@ export namespace MetricListDefinitionsResponse {
   }
 }
 
+export interface MetricUpdateDefinitionResponse {
+  /**
+   * The updated metric definition. The variant is selected by `calculationType`.
+   */
+  data:
+    | MetricUpdateDefinitionResponse.LlmJudgeMetricResponse
+    | MetricUpdateDefinitionResponse.FormulaMetricResponse
+    | MetricUpdateDefinitionResponse.PatternMetricResponse
+    | MetricUpdateDefinitionResponse.ThresholdMetricResponse;
+}
+
+export namespace MetricUpdateDefinitionResponse {
+  export interface LlmJudgeMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * For a BOOLEAN metric, what a `false` value means. Also given to the judge as its
+     * polarity rule.
+     */
+    booleanFalseLabel: string | null;
+
+    /**
+     * For a BOOLEAN metric, what a `true` value means. Also given to the judge as its
+     * polarity rule.
+     */
+    booleanTrueLabel: string | null;
+
+    /**
+     * Metric evaluated by an LLM against a prompt.
+     */
+    calculationType: 'LLM_JUDGE';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * The rubric this judge applies, as stored. Read it back to confirm which criteria
+     * are live after a create or update.
+     */
+    llmPrompt: string | null;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: LlmJudgeMetricResponse.Unit;
+  }
+
+  export namespace LlmJudgeMetricResponse {
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface FormulaMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * Metric computed by evaluating an expression over other metrics.
+     */
+    calculationType: 'FORMULA';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Formula configuration.
+     */
+    formula: FormulaMetricResponse.Formula;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: FormulaMetricResponse.Unit;
+  }
+
+  export namespace FormulaMetricResponse {
+    /**
+     * Formula configuration.
+     */
+    export interface Formula {
+      expression: string;
+
+      sources: Array<Formula.Source>;
+    }
+
+    export namespace Formula {
+      export interface Source {
+        sourceMetricDefinitionId: string;
+
+        sourceVariantId: string | null;
+      }
+    }
+
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface PatternMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * Metric detecting a trigger condition followed by an outcome within a window.
+     */
+    calculationType: 'PATTERN';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * Pattern configuration.
+     */
+    pattern: PatternMetricResponse.Pattern;
+
+    /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: PatternMetricResponse.Unit;
+  }
+
+  export namespace PatternMetricResponse {
+    /**
+     * Pattern configuration.
+     */
+    export interface Pattern {
+      operation: 'PATTERN_EXISTS' | 'PATTERN_COUNT' | 'OUTCOME_AGGREGATE';
+
+      outcome: Pattern.Outcome | null;
+
+      triggerCombinator: 'AND' | 'OR' | null;
+
+      triggers: Array<Pattern.Trigger>;
+
+      windowMode: string | null;
+    }
+
+    export namespace Pattern {
+      export interface Outcome {
+        operator:
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUALS'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUALS'
+          | 'EQUALS'
+          | 'NOT_EQUALS';
+
+        sourceMetricDefinitionId: string;
+
+        sourceParticipantRole: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER' | null;
+
+        sourceVariantId: string | null;
+
+        thresholdValue: string;
+
+        windowAfter: number | null;
+
+        windowBefore: number | null;
+      }
+
+      export interface Trigger {
+        operator:
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUALS'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUALS'
+          | 'EQUALS'
+          | 'NOT_EQUALS';
+
+        sourceMetricDefinitionId: string;
+
+        sourceParticipantRole: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER' | null;
+
+        sourceVariantId: string | null;
+
+        thresholdValue: string;
+      }
+    }
+
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
+  export interface ThresholdMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * Boolean metric derived by comparing a source metric against a threshold.
+     */
+    calculationType: 'THRESHOLD';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Threshold configuration.
+     */
+    threshold?: ThresholdMetricResponse.Threshold;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: ThresholdMetricResponse.Unit;
+  }
+
+  export namespace ThresholdMetricResponse {
+    /**
+     * Threshold configuration.
+     */
+    export interface Threshold {
+      aggregationMode: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
+
+      countThreshold: number | null;
+
+      operator:
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUALS'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUALS'
+        | 'EQUALS'
+        | 'NOT_EQUALS';
+
+      sourceMetricDefinitionId: string;
+
+      sourceParticipantRole: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER' | null;
+
+      sourceVariantId: string | null;
+
+      thresholdValue: string;
+    }
+
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+}
+
 export type MetricCreateDefinitionParams =
   | MetricCreateDefinitionParams.PromptMetricInput
   | MetricCreateDefinitionParams.FormulaMetricInput
@@ -1430,11 +1994,167 @@ export interface MetricListDefinitionsParams {
   limit?: number;
 }
 
+export interface MetricUpdateDefinitionParams {
+  analysisPackageId?: unknown;
+
+  /**
+   * New label for the false case (BOOLEAN output only)
+   */
+  booleanFalseLabel?: string;
+
+  /**
+   * New label for the true case (BOOLEAN output only)
+   */
+  booleanTrueLabel?: string;
+
+  calcType?: unknown;
+
+  /**
+   * Optional free-text audit note recorded on the new version.
+   */
+  changeReason?: string;
+
+  /**
+   * Replacement set of classification options (CLASSIFICATION output only)
+   */
+  classificationOptions?: Array<MetricUpdateDefinitionParams.ClassificationOption>;
+
+  /**
+   * New formula expression (FORMULA only). Pass `sources` alongside if the
+   * referenced metrics change.
+   */
+  formula?: string;
+
+  /**
+   * New LLM prompt (only for LLM_JUDGE metrics whose prompt is editable)
+   */
+  llmPrompt?: string;
+
+  /**
+   * New maximum number of classifications (CLASSIFICATION output only)
+   */
+  maxClassifications?: number;
+
+  metricId?: unknown;
+
+  /**
+   * New name (only for metrics whose name is editable)
+   */
+  name?: string;
+
+  organizationId?: unknown;
+
+  outputType?: unknown;
+
+  participantRole?: unknown;
+
+  projectId?: unknown;
+
+  /**
+   * Replacement set of scale-range labels (SCALE output only)
+   */
+  scaleLabels?: Array<MetricUpdateDefinitionParams.ScaleLabel>;
+
+  /**
+   * New scale maximum (SCALE output only)
+   */
+  scaleMax?: number;
+
+  /**
+   * New scale minimum (SCALE output only)
+   */
+  scaleMin?: number;
+
+  scope?: unknown;
+
+  slug?: unknown;
+
+  source?: unknown;
+
+  /**
+   * Replacement formula sources, required when `formula` changes the referenced
+   * metrics (FORMULA only).
+   */
+  sources?: Array<MetricUpdateDefinitionParams.Source>;
+
+  /**
+   * Replacement set of supported contexts. Omit to leave unchanged.
+   */
+  supportedContexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+  supportsMultipleVariants?: unknown;
+
+  /**
+   * Replacement set of scoped tool-definition ids (only for metrics whose tool
+   * scoping is editable)
+   */
+  toolDefinitionIds?: Array<string>;
+}
+
+export namespace MetricUpdateDefinitionParams {
+  /**
+   * Option for classification metrics.
+   */
+  export interface ClassificationOption {
+    description: string;
+
+    displayOrder: number;
+
+    label: string;
+  }
+
+  export interface ScaleLabel {
+    /**
+     * Display order of this label
+     */
+    displayOrder: number;
+
+    /**
+     * Label for this range
+     */
+    label: string;
+
+    /**
+     * Maximum value for this label range
+     */
+    rangeMax: number;
+
+    /**
+     * Minimum value for this label range
+     */
+    rangeMin: number;
+
+    /**
+     * Hex color code for this label (e.g. "#FF0000")
+     */
+    colorHex?: string;
+
+    /**
+     * Description of what this range means
+     */
+    description?: string;
+  }
+
+  export interface Source {
+    /**
+     * ID of a metric referenced in the formula
+     */
+    sourceMetricDefinitionId: string;
+
+    /**
+     * Variant of the source metric to use
+     */
+    sourceVariantId?: string;
+  }
+}
+
 export declare namespace Metric {
   export {
     type MetricCreateDefinitionResponse as MetricCreateDefinitionResponse,
     type MetricListDefinitionsResponse as MetricListDefinitionsResponse,
+    type MetricUpdateDefinitionResponse as MetricUpdateDefinitionResponse,
     type MetricCreateDefinitionParams as MetricCreateDefinitionParams,
     type MetricListDefinitionsParams as MetricListDefinitionsParams,
+    type MetricUpdateDefinitionParams as MetricUpdateDefinitionParams,
   };
 }

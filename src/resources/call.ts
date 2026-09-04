@@ -39,6 +39,41 @@ export class Call extends APIResource {
   }
 
   /**
+   * Attach tool invocations that fired during a call to an already-existing call,
+   * asynchronously after the call was created. Use this when the tool-call data
+   * becomes available later than the call itself (e.g. a Roark simulation, or a call
+   * submitted via POST /v1/call before its tools were ready). Writes are idempotent:
+   * re-sending an invocation already present on the call (same tool name and timing)
+   * is skipped, so retries converge instead of double-counting. Optionally pass
+   * `metrics` to (re)score metrics over the newly attached tools, which triggers a
+   * billed metric collection job and requires the `metric:create` permission.
+   *
+   * @example
+   * ```ts
+   * const response = await client.call.appendToolInvocations(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     toolInvocations: [
+   *       {
+   *         name: 'name',
+   *         parameters: { foo: 'string' },
+   *         result: 'string',
+   *         startOffsetMs: 0,
+   *       },
+   *     ],
+   *   },
+   * );
+   * ```
+   */
+  appendToolInvocations(
+    callID: string,
+    body: CallAppendToolInvocationsParams,
+    options?: RequestOptions,
+  ): APIPromise<CallAppendToolInvocationsResponse> {
+    return this._client.post(path`/v1/call/${callID}/tool-invocations`, { body, ...options });
+  }
+
+  /**
    * Retrieve an existing call by its unique identifier
    *
    * @example
@@ -355,6 +390,117 @@ export namespace CallListResponse {
      * Total number of items
      */
     total: number;
+  }
+}
+
+export interface CallAppendToolInvocationsResponse {
+  /**
+   * Result of appending tool invocations to a call.
+   */
+  data: CallAppendToolInvocationsResponse.Data;
+}
+
+export namespace CallAppendToolInvocationsResponse {
+  /**
+   * Result of appending tool invocations to a call.
+   */
+  export interface Data {
+    /**
+     * Number of tool invocations newly written
+     */
+    added: number;
+
+    /**
+     * The call the tool invocations were attached to
+     */
+    callId: string;
+
+    /**
+     * Present (non-null) only when `metrics` were requested but the collection job
+     * could not be started (e.g. insufficient credits, or an unknown metric id). The
+     * tool invocations were still attached — retry scoring via POST
+     * /v1/metric/collection-jobs, or re-send this request (attaching is idempotent).
+     * Null on success or when no metrics were requested.
+     */
+    metricCollectionError: string | null;
+
+    /**
+     * A metric collection job that processes metrics for calls or chats
+     */
+    metricCollectionJob: Data.MetricCollectionJob | null;
+
+    /**
+     * Number of tool invocations skipped because an identical one (same tool and
+     * timing) already existed on the call
+     */
+    skipped: number;
+  }
+
+  export namespace Data {
+    /**
+     * A metric collection job that processes metrics for calls or chats
+     */
+    export interface MetricCollectionJob {
+      /**
+       * Unique identifier of the metric collection job
+       */
+      id: string;
+
+      /**
+       * When the job completed
+       */
+      completedAt: string | null;
+
+      /**
+       * Number of successfully completed items
+       */
+      completedItems: number;
+
+      /**
+       * When the job was created
+       */
+      createdAt: string;
+
+      /**
+       * Error message if the job failed
+       */
+      errorMessage: string | null;
+
+      /**
+       * Number of failed items
+       */
+      failedItems: number;
+
+      /**
+       * IDs of the metric policies that triggered this job
+       */
+      policyIds: Array<string>;
+
+      /**
+       * When the job started processing
+       */
+      startedAt: string | null;
+
+      /**
+       * Current status of the job
+       */
+      status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED';
+
+      /**
+       * Total number of call-metric pairs to process
+       */
+      totalItems: number;
+
+      /**
+       * What triggered this job
+       */
+      triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION';
+
+      /**
+       * When the job was last updated
+       */
+      updatedAt: string;
+    }
   }
 }
 
@@ -1657,6 +1803,94 @@ export interface CallListParams {
   status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED';
 }
 
+export interface CallAppendToolInvocationsParams {
+  /**
+   * Tool invocations that fired during the call, to attach to it. Max 500 per
+   * request. Re-sending an invocation already present on the call (same tool name
+   * and timing) is skipped, so retries are safe.
+   */
+  toolInvocations: Array<CallAppendToolInvocationsParams.ToolInvocation>;
+
+  /**
+   * Optional. Metric definitions to (re)score on this call after the tool
+   * invocations are attached, e.g. the Tool Invocation Analysis metrics. Triggers a
+   * metric collection job (billed, credit-gated) and requires the 'metric:create'
+   * permission. Omit to attach tools without scoring. Max 20.
+   */
+  metrics?: Array<CallAppendToolInvocationsParams.Metric>;
+}
+
+export namespace CallAppendToolInvocationsParams {
+  export interface ToolInvocation {
+    /**
+     * Name of the tool that was invoked
+     */
+    name: string;
+
+    /**
+     * Parameters provided to the tool during invocation
+     */
+    parameters: { [key: string]: ToolInvocation.UnionMember0 | unknown };
+
+    /**
+     * Result returned by the tool after execution. Can be a string or a JSON object
+     */
+    result: string | { [key: string]: unknown };
+
+    /**
+     * Offset in milliseconds from the start of the call when the tool was invoked
+     */
+    startOffsetMs: number;
+
+    /**
+     * Metadata about the agent that invoked this tool - used to match which agent from
+     * the agents array this tool invocation belongs to
+     */
+    agent?: ToolInvocation.Agent;
+
+    /**
+     * Description of when the tool should be invoked
+     */
+    description?: string;
+
+    /**
+     * Offset in milliseconds from the start of the call when the tool execution
+     * completed. Used to calculate duration of the tool execution
+     */
+    endOffsetMs?: number;
+  }
+
+  export namespace ToolInvocation {
+    export interface UnionMember0 {
+      description?: string;
+
+      type?: 'string' | 'number' | 'boolean';
+
+      value?: unknown;
+    }
+
+    /**
+     * Metadata about the agent that invoked this tool - used to match which agent from
+     * the agents array this tool invocation belongs to
+     */
+    export interface Agent {
+      /**
+       * The custom ID set on the agent
+       */
+      customId?: string;
+
+      /**
+       * The Roark ID of the agent
+       */
+      roarkId?: string;
+    }
+  }
+
+  export interface Metric {
+    id: string;
+  }
+}
+
 export interface CallGetTranscriptParams {
   /**
    * Transcription source to fetch. When omitted, uses the preferred source based on
@@ -1687,12 +1921,14 @@ export declare namespace Call {
   export {
     type CallCreateResponse as CallCreateResponse,
     type CallListResponse as CallListResponse,
+    type CallAppendToolInvocationsResponse as CallAppendToolInvocationsResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
     type CallGetTranscriptResponse as CallGetTranscriptResponse,
     type CallListMetricsResponse as CallListMetricsResponse,
     type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
     type CallCreateParams as CallCreateParams,
     type CallListParams as CallListParams,
+    type CallAppendToolInvocationsParams as CallAppendToolInvocationsParams,
     type CallGetTranscriptParams as CallGetTranscriptParams,
     type CallListMetricsParams as CallListMetricsParams,
   };

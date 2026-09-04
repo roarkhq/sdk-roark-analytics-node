@@ -14,6 +14,7 @@ Types:
 
 - <code><a href="./src/resources/call.ts">CallCreateResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallAppendToolInvocationsResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetByIDResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetTranscriptResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListMetricsResponse</a></code>
@@ -23,6 +24,7 @@ Methods:
 
 - <code title="post /v1/call">client.call.<a href="./src/resources/call.ts">create</a>({ ...params }) -> CallCreateResponse</code>
 - <code title="get /v1/call">client.call.<a href="./src/resources/call.ts">list</a>({ ...params }) -> CallListResponse</code>
+- <code title="post /v1/call/{callId}/tool-invocations">client.call.<a href="./src/resources/call.ts">appendToolInvocations</a>(callID, { ...params }) -> CallAppendToolInvocationsResponse</code>
 - <code title="get /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">getByID</a>(callID) -> CallGetByIDResponse</code>
 - <code title="get /v1/call/{callId}/transcript">client.call.<a href="./src/resources/call.ts">getTranscript</a>(callID, { ...params }) -> CallGetTranscriptResponse</code>
 - <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">listMetrics</a>(callID, { ...params }) -> CallListMetricsResponse</code>
@@ -34,11 +36,13 @@ Types:
 
 - <code><a href="./src/resources/metric.ts">MetricCreateDefinitionResponse</a></code>
 - <code><a href="./src/resources/metric.ts">MetricListDefinitionsResponse</a></code>
+- <code><a href="./src/resources/metric.ts">MetricUpdateDefinitionResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/metric/definitions">client.metric.<a href="./src/resources/metric.ts">createDefinition</a>({ ...params }) -> MetricCreateDefinitionResponse</code>
 - <code title="get /v1/metric/definitions">client.metric.<a href="./src/resources/metric.ts">listDefinitions</a>({ ...params }) -> MetricListDefinitionsResponse</code>
+- <code title="put /v1/metric/definitions/{idOrSlug}">client.metric.<a href="./src/resources/metric.ts">updateDefinition</a>(idOrSlug, { ...params }) -> MetricUpdateDefinitionResponse</code>
 
 # MetricPolicy
 
@@ -71,6 +75,24 @@ Methods:
 - <code title="post /v1/metric/collection-jobs">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">create</a>({ ...params }) -> MetricCollectionJobCreateResponse</code>
 - <code title="get /v1/metric/collection-jobs">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">list</a>({ ...params }) -> MetricCollectionJobListResponse</code>
 - <code title="get /v1/metric/collection-jobs/{jobId}">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">getByID</a>(jobID) -> MetricCollectionJobGetByIDResponse</code>
+
+# MetricVariant
+
+Types:
+
+- <code><a href="./src/resources/metric-variant.ts">MetricVariantCreateResponse</a></code>
+- <code><a href="./src/resources/metric-variant.ts">MetricVariantUpdateResponse</a></code>
+- <code><a href="./src/resources/metric-variant.ts">MetricVariantListResponse</a></code>
+- <code><a href="./src/resources/metric-variant.ts">MetricVariantDeleteResponse</a></code>
+- <code><a href="./src/resources/metric-variant.ts">MetricVariantGetByIDResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/metric/definitions/{idOrSlug}/variants">client.metricVariant.<a href="./src/resources/metric-variant.ts">create</a>(idOrSlug, { ...params }) -> MetricVariantCreateResponse</code>
+- <code title="put /v1/metric/definitions/{idOrSlug}/variants/{variantId}">client.metricVariant.<a href="./src/resources/metric-variant.ts">update</a>(variantID, { ...params }) -> MetricVariantUpdateResponse</code>
+- <code title="get /v1/metric/definitions/{idOrSlug}/variants">client.metricVariant.<a href="./src/resources/metric-variant.ts">list</a>(idOrSlug) -> MetricVariantListResponse</code>
+- <code title="delete /v1/metric/definitions/{idOrSlug}/variants/{variantId}">client.metricVariant.<a href="./src/resources/metric-variant.ts">delete</a>(variantID, { ...params }) -> MetricVariantDeleteResponse</code>
+- <code title="get /v1/metric/definitions/{idOrSlug}/variants/{variantId}">client.metricVariant.<a href="./src/resources/metric-variant.ts">getByID</a>(variantID, { ...params }) -> MetricVariantGetByIDResponse</code>
 
 # Simulation
 
