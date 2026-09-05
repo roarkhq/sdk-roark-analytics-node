@@ -49,6 +49,7 @@ export interface Bundle {
     | Bundle.ScriptedFlowConfig
     | Bundle.CollectorConfig
     | Bundle.MetricConfig
+    | Bundle.AlertConfig
   >;
 
   prune?: boolean;
@@ -362,6 +363,95 @@ export namespace Bundle {
       description?: string;
     }
   }
+
+  export interface AlertConfig {
+    kind: 'alert';
+
+    name: string;
+
+    trigger:
+      | AlertConfig.AlertThresholdTrigger
+      | AlertConfig.AlertEventTrigger
+      | AlertConfig.AlertSimulationTrigger;
+
+    actions?: AlertConfig.Actions;
+
+    enabled?: boolean;
+  }
+
+  export namespace AlertConfig {
+    export interface AlertThresholdTrigger {
+      aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+
+      metric: string;
+
+      operator: 'GT' | 'GTE' | 'LT' | 'LTE';
+
+      thresholdValue: number;
+
+      type: 'threshold';
+
+      windowMinutes: number;
+
+      consecutiveOpen?: number;
+
+      consecutiveResolve?: number;
+
+      grouping?: 'NONE' | 'BY_AGENT';
+
+      metricVariant?: string;
+
+      minSampleSize?: number;
+    }
+
+    export interface AlertEventTrigger {
+      events: Array<
+        | 'CALL_ANALYSIS_COMPLETED'
+        | 'CALL_ANALYSIS_FAILED'
+        | 'CALL_ANALYSIS_CANCELLED'
+        | 'SIMULATION_RUN_PLAN_JOB_STARTED'
+        | 'SIMULATION_RUN_PLAN_JOB_COMPLETED'
+        | 'SIMULATION_RUN_PLAN_JOB_FAILED'
+        | 'SIMULATION_RUN_PLAN_JOB_CANCELLED'
+        | 'SIMULATION_JOB_STARTED'
+        | 'SIMULATION_JOB_COMPLETED'
+        | 'SIMULATION_JOB_FAILED'
+        | 'SIMULATION_JOB_CANCELLED'
+        | 'METRIC_COLLECTION_JOB_COMPLETED'
+        | 'METRIC_COLLECTION_JOB_FAILED'
+        | 'CHAT_ANALYSIS_COMPLETED'
+        | 'CHAT_ANALYSIS_FAILED'
+        | 'ISSUE_OPENED'
+        | 'ISSUE_RESOLVED'
+      >;
+
+      type: 'event';
+    }
+
+    export interface AlertSimulationTrigger {
+      conditions: Array<'SUCCESS' | 'FAILURE' | 'THRESHOLD_FAILED'>;
+
+      type: 'simulation';
+
+      deliveryFormat?: 'MESSAGE' | 'PDF';
+
+      runPlan?: string;
+    }
+
+    export interface Actions {
+      slack?: Array<Actions.Slack>;
+
+      webhooks?: Array<string>;
+    }
+
+    export namespace Actions {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
+    }
+  }
 }
 
 export interface ConfigFlowStep {
@@ -405,7 +495,7 @@ export namespace ConfigApplyResponse {
     export interface Change {
       configKey: string;
 
-      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric';
+      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric' | 'alert';
 
       name: string;
 
@@ -449,7 +539,7 @@ export namespace ConfigDiffResponse {
     export interface Change {
       configKey: string;
 
-      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric';
+      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric' | 'alert';
 
       name: string;
 
@@ -478,6 +568,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.ScriptedFlowConfig
     | ConfigApplyParams.CollectorConfig
     | ConfigApplyParams.MetricConfig
+    | ConfigApplyParams.AlertConfig
   >;
 
   prune?: boolean;
@@ -791,6 +882,95 @@ export namespace ConfigApplyParams {
       description?: string;
     }
   }
+
+  export interface AlertConfig {
+    kind: 'alert';
+
+    name: string;
+
+    trigger:
+      | AlertConfig.AlertThresholdTrigger
+      | AlertConfig.AlertEventTrigger
+      | AlertConfig.AlertSimulationTrigger;
+
+    actions?: AlertConfig.Actions;
+
+    enabled?: boolean;
+  }
+
+  export namespace AlertConfig {
+    export interface AlertThresholdTrigger {
+      aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+
+      metric: string;
+
+      operator: 'GT' | 'GTE' | 'LT' | 'LTE';
+
+      thresholdValue: number;
+
+      type: 'threshold';
+
+      windowMinutes: number;
+
+      consecutiveOpen?: number;
+
+      consecutiveResolve?: number;
+
+      grouping?: 'NONE' | 'BY_AGENT';
+
+      metricVariant?: string;
+
+      minSampleSize?: number;
+    }
+
+    export interface AlertEventTrigger {
+      events: Array<
+        | 'CALL_ANALYSIS_COMPLETED'
+        | 'CALL_ANALYSIS_FAILED'
+        | 'CALL_ANALYSIS_CANCELLED'
+        | 'SIMULATION_RUN_PLAN_JOB_STARTED'
+        | 'SIMULATION_RUN_PLAN_JOB_COMPLETED'
+        | 'SIMULATION_RUN_PLAN_JOB_FAILED'
+        | 'SIMULATION_RUN_PLAN_JOB_CANCELLED'
+        | 'SIMULATION_JOB_STARTED'
+        | 'SIMULATION_JOB_COMPLETED'
+        | 'SIMULATION_JOB_FAILED'
+        | 'SIMULATION_JOB_CANCELLED'
+        | 'METRIC_COLLECTION_JOB_COMPLETED'
+        | 'METRIC_COLLECTION_JOB_FAILED'
+        | 'CHAT_ANALYSIS_COMPLETED'
+        | 'CHAT_ANALYSIS_FAILED'
+        | 'ISSUE_OPENED'
+        | 'ISSUE_RESOLVED'
+      >;
+
+      type: 'event';
+    }
+
+    export interface AlertSimulationTrigger {
+      conditions: Array<'SUCCESS' | 'FAILURE' | 'THRESHOLD_FAILED'>;
+
+      type: 'simulation';
+
+      deliveryFormat?: 'MESSAGE' | 'PDF';
+
+      runPlan?: string;
+    }
+
+    export interface Actions {
+      slack?: Array<Actions.Slack>;
+
+      webhooks?: Array<string>;
+    }
+
+    export namespace Actions {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
+    }
+  }
 }
 
 export interface ConfigDiffParams {
@@ -801,6 +981,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.ScriptedFlowConfig
     | ConfigDiffParams.CollectorConfig
     | ConfigDiffParams.MetricConfig
+    | ConfigDiffParams.AlertConfig
   >;
 
   prune?: boolean;
@@ -1112,6 +1293,95 @@ export namespace ConfigDiffParams {
       colorHex?: string;
 
       description?: string;
+    }
+  }
+
+  export interface AlertConfig {
+    kind: 'alert';
+
+    name: string;
+
+    trigger:
+      | AlertConfig.AlertThresholdTrigger
+      | AlertConfig.AlertEventTrigger
+      | AlertConfig.AlertSimulationTrigger;
+
+    actions?: AlertConfig.Actions;
+
+    enabled?: boolean;
+  }
+
+  export namespace AlertConfig {
+    export interface AlertThresholdTrigger {
+      aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+
+      metric: string;
+
+      operator: 'GT' | 'GTE' | 'LT' | 'LTE';
+
+      thresholdValue: number;
+
+      type: 'threshold';
+
+      windowMinutes: number;
+
+      consecutiveOpen?: number;
+
+      consecutiveResolve?: number;
+
+      grouping?: 'NONE' | 'BY_AGENT';
+
+      metricVariant?: string;
+
+      minSampleSize?: number;
+    }
+
+    export interface AlertEventTrigger {
+      events: Array<
+        | 'CALL_ANALYSIS_COMPLETED'
+        | 'CALL_ANALYSIS_FAILED'
+        | 'CALL_ANALYSIS_CANCELLED'
+        | 'SIMULATION_RUN_PLAN_JOB_STARTED'
+        | 'SIMULATION_RUN_PLAN_JOB_COMPLETED'
+        | 'SIMULATION_RUN_PLAN_JOB_FAILED'
+        | 'SIMULATION_RUN_PLAN_JOB_CANCELLED'
+        | 'SIMULATION_JOB_STARTED'
+        | 'SIMULATION_JOB_COMPLETED'
+        | 'SIMULATION_JOB_FAILED'
+        | 'SIMULATION_JOB_CANCELLED'
+        | 'METRIC_COLLECTION_JOB_COMPLETED'
+        | 'METRIC_COLLECTION_JOB_FAILED'
+        | 'CHAT_ANALYSIS_COMPLETED'
+        | 'CHAT_ANALYSIS_FAILED'
+        | 'ISSUE_OPENED'
+        | 'ISSUE_RESOLVED'
+      >;
+
+      type: 'event';
+    }
+
+    export interface AlertSimulationTrigger {
+      conditions: Array<'SUCCESS' | 'FAILURE' | 'THRESHOLD_FAILED'>;
+
+      type: 'simulation';
+
+      deliveryFormat?: 'MESSAGE' | 'PDF';
+
+      runPlan?: string;
+    }
+
+    export interface Actions {
+      slack?: Array<Actions.Slack>;
+
+      webhooks?: Array<string>;
+    }
+
+    export namespace Actions {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
   }
 }
