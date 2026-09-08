@@ -181,6 +181,7 @@ import {
   SimulationRunPlanJobStartParams,
   SimulationRunPlanJobStartResponse,
 } from './resources/simulation-run-plan-job';
+import { SimulationTemplate, SimulationTemplateListResponse } from './resources/simulation-template';
 import {
   Webhook,
   WebhookCreateParams,
@@ -919,6 +920,7 @@ export class Roark {
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
   simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
+  simulationTemplate: API.SimulationTemplate = new API.SimulationTemplate(this);
   customerFlow: API.CustomerFlow = new API.CustomerFlow(this);
   customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
   agent: API.Agent = new API.Agent(this);
@@ -940,6 +942,7 @@ Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationPersona = SimulationPersona;
 Roark.SimulationEnvironment = SimulationEnvironment;
+Roark.SimulationTemplate = SimulationTemplate;
 Roark.CustomerFlow = CustomerFlow;
 Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
 Roark.Agent = Agent;
@@ -1063,6 +1066,11 @@ export declare namespace Roark {
     type SimulationEnvironmentListResponse as SimulationEnvironmentListResponse,
     type SimulationEnvironmentGetByIDResponse as SimulationEnvironmentGetByIDResponse,
     type SimulationEnvironmentListParams as SimulationEnvironmentListParams,
+  };
+
+  export {
+    SimulationTemplate as SimulationTemplate,
+    type SimulationTemplateListResponse as SimulationTemplateListResponse,
   };
 
   export {

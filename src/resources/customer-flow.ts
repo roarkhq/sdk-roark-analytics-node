@@ -461,6 +461,8 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -774,6 +776,8 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -1174,6 +1178,8 @@ export namespace CustomerFlowCreateResponse {
        * The brief the simulated customer improvises from.
        */
       prompt?: string | null;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -1485,6 +1491,8 @@ export namespace CustomerFlowCreateResponse {
        * The brief the simulated customer improvises from.
        */
       prompt?: string | null;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -1879,6 +1887,8 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -2185,6 +2195,8 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -2616,6 +2628,8 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -2929,6 +2943,8 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -3329,6 +3345,8 @@ export namespace CustomerFlowUpdateResponse {
        * The brief the simulated customer improvises from.
        */
       prompt?: string | null;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -3640,6 +3658,8 @@ export namespace CustomerFlowUpdateResponse {
        * The brief the simulated customer improvises from.
        */
       prompt?: string | null;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -4034,6 +4054,8 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -4340,6 +4362,8 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -4774,6 +4798,8 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -5087,6 +5113,8 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -5487,6 +5515,8 @@ export namespace CustomerFlowListResponse {
        * The brief the simulated customer improvises from.
        */
       prompt?: string | null;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -5798,6 +5828,8 @@ export namespace CustomerFlowListResponse {
        * The brief the simulated customer improvises from.
        */
       prompt?: string | null;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -6192,6 +6224,8 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -6498,6 +6532,8 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -6959,6 +6995,8 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -7272,6 +7310,8 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -7672,6 +7712,8 @@ export namespace CustomerFlowGetByIDResponse {
        * The brief the simulated customer improvises from.
        */
       prompt?: string | null;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -7983,6 +8025,8 @@ export namespace CustomerFlowGetByIDResponse {
        * The brief the simulated customer improvises from.
        */
       prompt?: string | null;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -8377,6 +8421,8 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace EdgeCase {
@@ -8683,6 +8729,8 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace HappyPath {
@@ -9026,6 +9074,8 @@ export namespace CustomerFlowReplaceGraphResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace ScriptedFlowVariant {
@@ -9337,6 +9387,8 @@ export namespace CustomerFlowReplaceGraphResponse {
        * The brief the simulated customer improvises from.
        */
       prompt?: string | null;
+
+      systemKey?: string | null;
     }
 
     export namespace ImprovFlowVariant {
@@ -9643,6 +9695,8 @@ export namespace CustomerFlowReplaceGraphResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      systemKey?: string | null;
     }
 
     export namespace VoicemailFlowVariant {
@@ -9969,6 +10023,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    systemKey?: string | null;
   }
 
   export namespace ScriptedFlowVariant {
@@ -10273,6 +10329,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
      * The brief the simulated customer improvises from.
      */
     prompt?: string | null;
+
+    systemKey?: string | null;
   }
 
   export namespace ImprovFlowVariant {
@@ -10572,6 +10630,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    systemKey?: string | null;
   }
 
   export namespace VoicemailFlowVariant {

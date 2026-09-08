@@ -164,6 +164,7 @@ export {
   type SimulationRunPlanJobListParams,
   type SimulationRunPlanJobStartParams,
 } from './simulation-run-plan-job';
+export { SimulationTemplate, type SimulationTemplateListResponse } from './simulation-template';
 export {
   Webhook,
   type WebhookCreateResponse,

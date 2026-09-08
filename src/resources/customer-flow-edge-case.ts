@@ -162,6 +162,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    systemKey?: string | null;
   }
 
   export namespace ScriptedFlowVariant {
@@ -466,6 +468,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      * The brief the simulated customer improvises from.
      */
     prompt?: string | null;
+
+    systemKey?: string | null;
   }
 
   export namespace ImprovFlowVariant {
@@ -765,6 +769,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    systemKey?: string | null;
   }
 
   export namespace VoicemailFlowVariant {
@@ -1083,6 +1089,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    systemKey?: string | null;
   }
 
   export namespace ScriptedFlowVariant {
@@ -1387,6 +1395,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      * The brief the simulated customer improvises from.
      */
     prompt?: string | null;
+
+    systemKey?: string | null;
   }
 
   export namespace ImprovFlowVariant {
@@ -1686,6 +1696,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    systemKey?: string | null;
   }
 
   export namespace VoicemailFlowVariant {
@@ -2004,6 +2016,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    systemKey?: string | null;
   }
 
   export namespace ScriptedFlowVariant {
@@ -2308,6 +2322,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      * The brief the simulated customer improvises from.
      */
     prompt?: string | null;
+
+    systemKey?: string | null;
   }
 
   export namespace ImprovFlowVariant {
@@ -2607,6 +2623,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    systemKey?: string | null;
   }
 
   export namespace VoicemailFlowVariant {
