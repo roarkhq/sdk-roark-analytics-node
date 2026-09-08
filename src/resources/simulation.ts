@@ -8,9 +8,16 @@ export class Simulation extends APIResource {
   /**
    * Starts a simulation and returns the run.
    *
-   * Send `plan` to describe a simulation and run it once. Add `saveAsPlan` to keep
-   * that configuration as a reusable run plan. Send `planId` instead to run a plan
-   * you already have.
+   * Send `template` to run one of the built-in templates: it supplies the metrics
+   * and checks, and for some templates the flows too, so the request only names the
+   * agent and the direction. Send `plan` to describe a simulation yourself and run
+   * it once. Send `planId` to run a plan you already have.
+   *
+   * `template` and `plan` both resolve to a run plan, returned as
+   * `simulationRunPlanId`. Add `saveAsPlan` to keep it, or read it back to see
+   * exactly what ran. A plan built from a template is a snapshot: retuning the
+   * template later never changes what that plan runs, which is what makes a saved
+   * one safe to pin in CI.
    *
    * @example
    * ```ts
@@ -92,7 +99,8 @@ export namespace SimulationRunResponse {
 
 export type SimulationRunParams =
   | SimulationRunParams.RunSimulationFromConfig
-  | SimulationRunParams.RunSimulationFromPlanID;
+  | SimulationRunParams.RunSimulationFromPlanID
+  | SimulationRunParams.RunSimulationFromTemplate;
 
 export declare namespace SimulationRunParams {
   export interface RunSimulationFromConfig {
@@ -306,7 +314,7 @@ export declare namespace SimulationRunParams {
         /**
          * The customer flow to run.
          */
-        id: string;
+        id?: string;
 
         /**
          * `"ALL"` runs every edge case the flow has when the run starts, so one added
@@ -326,6 +334,13 @@ export declare namespace SimulationRunParams {
         personaOverrideId?: string | null;
 
         /**
+         * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+         * you keep in version control: a curated flow’s id differs between deployments,
+         * its slug does not. Your own flows have no slug and are named by `id`.
+         */
+        slug?: string;
+
+        /**
          * Values for everything it resolves.
          */
         variables?: { [key: string]: string };
@@ -336,12 +351,20 @@ export declare namespace SimulationRunParams {
           /**
            * The edge case to run.
            */
-          id: string;
+          id?: string;
 
           /**
            * Run this one as that persona instead of its own.
            */
           personaOverrideId?: string | null;
+
+          /**
+           * The edge case to run, by its stable slug, matched within this flow. Use instead
+           * of `id` for a run you keep in version control: a curated edge case’s id differs
+           * between deployments and changes outright if it is renamed. Your own edge cases
+           * have no slug and are named by `id`.
+           */
+          slug?: string;
 
           /**
            * Values for this one only.
@@ -474,6 +497,207 @@ export declare namespace SimulationRunParams {
        * Key-value pairs for this scenario
        */
       variables: { [key: string]: string };
+    }
+  }
+
+  export interface RunSimulationFromTemplate {
+    /**
+     * The agent endpoints to call. No template can know these.
+     */
+    agentEndpoints: Array<RunSimulationFromTemplate.AgentEndpoint>;
+
+    /**
+     * Direction of the simulation (INBOUND or OUTBOUND)
+     */
+    direction: 'INBOUND' | 'OUTBOUND';
+
+    /**
+     * The template to run, as listed by GET /v1/simulation/template.
+     */
+    template: string;
+
+    /**
+     * Phrases that trigger end of call. Empty array disables the feature.
+     */
+    endCallPhrases?: Array<string>;
+
+    /**
+     * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+     * against these conditions. Empty array disables the feature.
+     */
+    endCallReasons?: Array<string>;
+
+    /**
+     * Merge the customer's own recording of the real call into each simulation, so
+     * metrics can be scored against the live leg as well as the simulated one. This is
+     * the API equivalent of the dashboard's live-enrichment toggle.
+     *
+     * With this on, the run provisions a phone number and holds each call open for up
+     * to 15 minutes waiting for a matching call to be posted to POST /v1/call. A call
+     * matches on the provisioned number (`roarkPhoneNumber` on the job) with a start
+     * time inside the simulation window. If nothing arrives, the simulation still
+     * completes and any `LIVE`-sourced metric produces no value.
+     *
+     * Required by any metric whose `requiresLiveConversation` is true: without it that
+     * metric is silently skipped.
+     */
+    enrichWithLiveConversation?: boolean;
+
+    /**
+     * Execution mode (PARALLEL or SEQUENTIAL)
+     */
+    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    /**
+     * The flows to run, in the same shape a run plan takes them.
+     *
+     * Required when the template lists no flows of its own: it presets what to
+     * measure, and this says what to measure it on. Optional when it does, where these
+     * REPLACE the ones it would have run, so you can narrow a suite to the cases you
+     * care about. Either way, GET /v1/simulation/template lists the flows and variant
+     * ids each template covers.
+     */
+    flows?: Array<RunSimulationFromTemplate.Flow>;
+
+    /**
+     * Number of iterations to run for each test case (1-10000)
+     */
+    iterationCount?: number;
+
+    /**
+     * Maximum number of concurrent simulation jobs
+     */
+    maxConcurrentJobs?: number;
+
+    /**
+     * Defaults to the template's `defaultMaxSimulationDurationSeconds`, as returned by
+     * GET /v1/simulation/template.
+     */
+    maxSimulationDurationSeconds?: number;
+
+    /**
+     * What to call this. Defaults to the template's name and the date, and required
+     * with `saveAsPlan`.
+     */
+    name?: string;
+
+    /**
+     * Keeps the resolved configuration as a run plan, listed by GET
+     * /v1/simulation/plan and re-runnable with `planId`. Requires `name`.
+     */
+    saveAsPlan?: boolean;
+
+    /**
+     * Timeout in seconds for silence detection
+     */
+    silenceTimeoutSeconds?: number;
+
+    /**
+     * Values for the {{variables}} the run resolves. An object applies them
+     * everywhere; an array targets a flow, its happy path, or one of its edge cases
+     * with `flowId`.
+     *
+     * The scenario-scoped form the other variants accept is not valid here: a template
+     * run is always flow-based, so there would be no scenario for it to reach.
+     */
+    variables?: { [key: string]: string } | Array<RunSimulationFromTemplate.UnionMember1>;
+  }
+
+  export namespace RunSimulationFromTemplate {
+    export interface AgentEndpoint {
+      id: string;
+    }
+
+    /**
+     * One customer flow attached to a run plan, and which of its ways of running you
+     * cover.
+     *
+     * Attaching the same flow more than once with different overrides is how you fan
+     * it out across personas or values.
+     */
+    export interface Flow {
+      /**
+       * The customer flow to run.
+       */
+      id?: string;
+
+      /**
+       * `"ALL"` runs every edge case the flow has when the run starts, so one added
+       * later is covered. An array runs only the ones you name, each able to carry its
+       * own persona override and values.
+       */
+      edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+
+      /**
+       * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+       */
+      happyPath?: boolean;
+
+      /**
+       * Runs everything this attachment resolves as that persona instead of its own.
+       */
+      personaOverrideId?: string | null;
+
+      /**
+       * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+       * you keep in version control: a curated flow’s id differs between deployments,
+       * its slug does not. Your own flows have no slug and are named by `id`.
+       */
+      slug?: string;
+
+      /**
+       * Values for everything it resolves.
+       */
+      variables?: { [key: string]: string };
+    }
+
+    export namespace Flow {
+      export interface UnionMember1 {
+        /**
+         * The edge case to run.
+         */
+        id?: string;
+
+        /**
+         * Run this one as that persona instead of its own.
+         */
+        personaOverrideId?: string | null;
+
+        /**
+         * The edge case to run, by its stable slug, matched within this flow. Use instead
+         * of `id` for a run you keep in version control: a curated edge case’s id differs
+         * between deployments and changes outright if it is renamed. Your own edge cases
+         * have no slug and are named by `id`.
+         */
+        slug?: string;
+
+        /**
+         * Values for this one only.
+         */
+        variables?: { [key: string]: string };
+      }
+    }
+
+    export interface UnionMember1 {
+      /**
+       * A customer flow this plan runs.
+       */
+      flowId: string;
+
+      /**
+       * The values to apply.
+       */
+      variables: { [key: string]: string };
+
+      /**
+       * Narrow to one edge case of that flow.
+       */
+      edgeCaseId?: string;
+
+      /**
+       * Narrow to the flow's happy path.
+       */
+      happyPath?: true;
     }
   }
 }

@@ -262,7 +262,7 @@ export namespace SimulationRunPlanCreateResponse {
         /**
          * The customer flow to run.
          */
-        id: string;
+        id?: string;
 
         /**
          * `"ALL"` runs every edge case the flow has when the run starts, so one added
@@ -282,6 +282,13 @@ export namespace SimulationRunPlanCreateResponse {
         personaOverrideId?: string | null;
 
         /**
+         * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+         * you keep in version control: a curated flow’s id differs between deployments,
+         * its slug does not. Your own flows have no slug and are named by `id`.
+         */
+        slug?: string;
+
+        /**
          * Values for everything it resolves.
          */
         variables?: { [key: string]: string };
@@ -292,12 +299,20 @@ export namespace SimulationRunPlanCreateResponse {
           /**
            * The edge case to run.
            */
-          id: string;
+          id?: string;
 
           /**
            * Run this one as that persona instead of its own.
            */
           personaOverrideId?: string | null;
+
+          /**
+           * The edge case to run, by its stable slug, matched within this flow. Use instead
+           * of `id` for a run you keep in version control: a curated edge case’s id differs
+           * between deployments and changes outright if it is renamed. Your own edge cases
+           * have no slug and are named by `id`.
+           */
+          slug?: string;
 
           /**
            * Values for this one only.
@@ -516,7 +531,7 @@ export namespace SimulationRunPlanUpdateResponse {
       /**
        * The customer flow to run.
        */
-      id: string;
+      id?: string;
 
       /**
        * `"ALL"` runs every edge case the flow has when the run starts, so one added
@@ -536,6 +551,13 @@ export namespace SimulationRunPlanUpdateResponse {
       personaOverrideId?: string | null;
 
       /**
+       * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+       * you keep in version control: a curated flow’s id differs between deployments,
+       * its slug does not. Your own flows have no slug and are named by `id`.
+       */
+      slug?: string;
+
+      /**
        * Values for everything it resolves.
        */
       variables?: { [key: string]: string };
@@ -546,12 +568,20 @@ export namespace SimulationRunPlanUpdateResponse {
         /**
          * The edge case to run.
          */
-        id: string;
+        id?: string;
 
         /**
          * Run this one as that persona instead of its own.
          */
         personaOverrideId?: string | null;
+
+        /**
+         * The edge case to run, by its stable slug, matched within this flow. Use instead
+         * of `id` for a run you keep in version control: a curated edge case’s id differs
+         * between deployments and changes outright if it is renamed. Your own edge cases
+         * have no slug and are named by `id`.
+         */
+        slug?: string;
 
         /**
          * Values for this one only.
@@ -734,7 +764,7 @@ export namespace SimulationRunPlanListResponse {
       /**
        * The customer flow to run.
        */
-      id: string;
+      id?: string;
 
       /**
        * `"ALL"` runs every edge case the flow has when the run starts, so one added
@@ -754,6 +784,13 @@ export namespace SimulationRunPlanListResponse {
       personaOverrideId?: string | null;
 
       /**
+       * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+       * you keep in version control: a curated flow’s id differs between deployments,
+       * its slug does not. Your own flows have no slug and are named by `id`.
+       */
+      slug?: string;
+
+      /**
        * Values for everything it resolves.
        */
       variables?: { [key: string]: string };
@@ -764,12 +801,20 @@ export namespace SimulationRunPlanListResponse {
         /**
          * The edge case to run.
          */
-        id: string;
+        id?: string;
 
         /**
          * Run this one as that persona instead of its own.
          */
         personaOverrideId?: string | null;
+
+        /**
+         * The edge case to run, by its stable slug, matched within this flow. Use instead
+         * of `id` for a run you keep in version control: a curated edge case’s id differs
+         * between deployments and changes outright if it is renamed. Your own edge cases
+         * have no slug and are named by `id`.
+         */
+        slug?: string;
 
         /**
          * Values for this one only.
@@ -980,7 +1025,7 @@ export namespace SimulationRunPlanGetByIDResponse {
       /**
        * The customer flow to run.
        */
-      id: string;
+      id?: string;
 
       /**
        * `"ALL"` runs every edge case the flow has when the run starts, so one added
@@ -1000,6 +1045,13 @@ export namespace SimulationRunPlanGetByIDResponse {
       personaOverrideId?: string | null;
 
       /**
+       * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+       * you keep in version control: a curated flow’s id differs between deployments,
+       * its slug does not. Your own flows have no slug and are named by `id`.
+       */
+      slug?: string;
+
+      /**
        * Values for everything it resolves.
        */
       variables?: { [key: string]: string };
@@ -1010,12 +1062,20 @@ export namespace SimulationRunPlanGetByIDResponse {
         /**
          * The edge case to run.
          */
-        id: string;
+        id?: string;
 
         /**
          * Run this one as that persona instead of its own.
          */
         personaOverrideId?: string | null;
+
+        /**
+         * The edge case to run, by its stable slug, matched within this flow. Use instead
+         * of `id` for a run you keep in version control: a curated edge case’s id differs
+         * between deployments and changes outright if it is renamed. Your own edge cases
+         * have no slug and are named by `id`.
+         */
+        slug?: string;
 
         /**
          * Values for this one only.
@@ -1216,7 +1276,7 @@ export namespace SimulationRunPlanCreateParams {
     /**
      * The customer flow to run.
      */
-    id: string;
+    id?: string;
 
     /**
      * `"ALL"` runs every edge case the flow has when the run starts, so one added
@@ -1236,6 +1296,13 @@ export namespace SimulationRunPlanCreateParams {
     personaOverrideId?: string | null;
 
     /**
+     * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+     * you keep in version control: a curated flow’s id differs between deployments,
+     * its slug does not. Your own flows have no slug and are named by `id`.
+     */
+    slug?: string;
+
+    /**
      * Values for everything it resolves.
      */
     variables?: { [key: string]: string };
@@ -1246,12 +1313,20 @@ export namespace SimulationRunPlanCreateParams {
       /**
        * The edge case to run.
        */
-      id: string;
+      id?: string;
 
       /**
        * Run this one as that persona instead of its own.
        */
       personaOverrideId?: string | null;
+
+      /**
+       * The edge case to run, by its stable slug, matched within this flow. Use instead
+       * of `id` for a run you keep in version control: a curated edge case’s id differs
+       * between deployments and changes outright if it is renamed. Your own edge cases
+       * have no slug and are named by `id`.
+       */
+      slug?: string;
 
       /**
        * Values for this one only.
@@ -1397,7 +1472,7 @@ export namespace SimulationRunPlanUpdateParams {
     /**
      * The customer flow to run.
      */
-    id: string;
+    id?: string;
 
     /**
      * `"ALL"` runs every edge case the flow has when the run starts, so one added
@@ -1417,6 +1492,13 @@ export namespace SimulationRunPlanUpdateParams {
     personaOverrideId?: string | null;
 
     /**
+     * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+     * you keep in version control: a curated flow’s id differs between deployments,
+     * its slug does not. Your own flows have no slug and are named by `id`.
+     */
+    slug?: string;
+
+    /**
      * Values for everything it resolves.
      */
     variables?: { [key: string]: string };
@@ -1427,12 +1509,20 @@ export namespace SimulationRunPlanUpdateParams {
       /**
        * The edge case to run.
        */
-      id: string;
+      id?: string;
 
       /**
        * Run this one as that persona instead of its own.
        */
       personaOverrideId?: string | null;
+
+      /**
+       * The edge case to run, by its stable slug, matched within this flow. Use instead
+       * of `id` for a run you keep in version control: a curated edge case’s id differs
+       * between deployments and changes outright if it is renamed. Your own edge cases
+       * have no slug and are named by `id`.
+       */
+      slug?: string;
 
       /**
        * Values for this one only.
