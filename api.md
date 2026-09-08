@@ -176,6 +176,16 @@ Methods:
 - <code title="get /v1/simulation/environment">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">list</a>({ ...params }) -> SimulationEnvironmentListResponse</code>
 - <code title="get /v1/simulation/environment/{environmentId}">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">getByID</a>(environmentID) -> SimulationEnvironmentGetByIDResponse</code>
 
+# SimulationTemplate
+
+Types:
+
+- <code><a href="./src/resources/simulation-template.ts">SimulationTemplateListResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/simulation/template">client.simulationTemplate.<a href="./src/resources/simulation-template.ts">list</a>() -> SimulationTemplateListResponse</code>
+
 # CustomerFlow
 
 Types:

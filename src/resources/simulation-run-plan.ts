@@ -180,6 +180,12 @@ export namespace SimulationRunPlanCreateResponse {
       flows: Array<RunPlan.Flow>;
 
       /**
+       * Whether this plan also collects each attached flow's own metrics, on top of its
+       * own list.
+       */
+      includeFlowMetrics: boolean;
+
+      /**
        * Number of iterations to run for each test case
        */
       iterationCount: number;
@@ -428,6 +434,12 @@ export namespace SimulationRunPlanUpdateResponse {
     flows: Array<Data.Flow>;
 
     /**
+     * Whether this plan also collects each attached flow's own metrics, on top of its
+     * own list.
+     */
+    includeFlowMetrics: boolean;
+
+    /**
      * Number of iterations to run for each test case
      */
     iterationCount: number;
@@ -638,6 +650,12 @@ export namespace SimulationRunPlanListResponse {
      * Customer flows included in this run plan
      */
     flows: Array<Data.Flow>;
+
+    /**
+     * Whether this plan also collects each attached flow's own metrics, on top of its
+     * own list.
+     */
+    includeFlowMetrics: boolean;
 
     /**
      * Number of iterations to run for each test case
@@ -880,6 +898,12 @@ export namespace SimulationRunPlanGetByIDResponse {
     flows: Array<Data.Flow>;
 
     /**
+     * Whether this plan also collects each attached flow's own metrics, on top of its
+     * own list.
+     */
+    includeFlowMetrics: boolean;
+
+    /**
      * Number of iterations to run for each test case
      */
     iterationCount: number;
@@ -1104,6 +1128,20 @@ export interface SimulationRunPlanCreateParams {
   flows?: Array<SimulationRunPlanCreateParams.Flow>;
 
   /**
+   * Also collect each attached flow's own metrics, on top of the `metrics` named
+   * here.
+   *
+   * Default true, which is what you want when you brought your own flows and their
+   * graders. Set false for a run whose metric list is meant to be exhaustive: a
+   * template like Load Testing or Voicemail deliberately grades a narrow set, and
+   * inheriting every flow metric on top multiplies analysis cost across the volume
+   * without adding signal.
+   *
+   * GET /v1/simulation/template returns the value each template expects.
+   */
+  includeFlowMetrics?: boolean;
+
+  /**
    * Number of iterations to run for each test case (1-10000)
    */
   iterationCount?: number;
@@ -1283,6 +1321,12 @@ export interface SimulationRunPlanUpdateParams {
    * unchanged; send an empty array to detach them all.
    */
   flows?: Array<SimulationRunPlanUpdateParams.Flow>;
+
+  /**
+   * Whether to also collect each attached flow's own metrics, on top of this plan's
+   * list.
+   */
+  includeFlowMetrics?: boolean;
 
   /**
    * Whether this plan is hidden from GET /v1/simulation/plan.

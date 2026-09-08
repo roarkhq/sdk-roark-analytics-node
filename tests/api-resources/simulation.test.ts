@@ -54,6 +54,7 @@ describe('resource simulation', () => {
             variables: { customerName: 'John Doe', appointmentDate: '2024-02-15' },
           },
         ],
+        includeFlowMetrics: true,
         iterationCount: 1,
         maxConcurrentJobs: 5,
         name: 'Billing regression',
