@@ -523,7 +523,8 @@ export declare namespace SimulationRunParams {
 
     /**
      * Semantic conditions that trigger end of call. The LLM evaluates the conversation
-     * against these conditions. Empty array disables the feature.
+     * against these conditions. Defaults to the template's `defaultEndCallReasons`, as
+     * returned by GET /v1/simulation/template. Pass an empty array to run with none.
      */
     endCallReasons?: Array<string>;
 

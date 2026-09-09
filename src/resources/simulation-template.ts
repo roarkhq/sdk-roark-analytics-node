@@ -48,6 +48,17 @@ export namespace SimulationTemplateListResponse {
     category: string;
 
     /**
+     * The end-call conditions a run from this template uses unless the request sets
+     * its own.
+     *
+     * Empty for templates whose calls end when the agent says goodbye. Non-empty where
+     * the template runs scripted flows that finish on a verdict: the simulated caller
+     * hangs up on an end-call phrase or one of these, so a run that discards them
+     * would stay on the line until the duration cap.
+     */
+    defaultEndCallReasons: Array<string>;
+
+    /**
      * The per-simulation cap a run from this template uses unless the request sets its
      * own.
      */
