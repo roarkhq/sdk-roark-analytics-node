@@ -51,12 +51,14 @@ export {
   type CustomerFlowUpdateResponse,
   type CustomerFlowListResponse,
   type CustomerFlowDeleteResponse,
+  type CustomerFlowDuplicateResponse,
   type CustomerFlowGetByIDResponse,
   type CustomerFlowReplaceGraphResponse,
   type CustomerFlowUpdateHappyPathResponse,
   type CustomerFlowCreateParams,
   type CustomerFlowUpdateParams,
   type CustomerFlowListParams,
+  type CustomerFlowDuplicateParams,
   type CustomerFlowReplaceGraphParams,
   type CustomerFlowUpdateHappyPathParams,
 } from './customer-flow';
@@ -125,8 +127,13 @@ export {
 export { Simulation, type SimulationRunResponse, type SimulationRunParams } from './simulation';
 export {
   SimulationEnvironment,
+  type SimulationEnvironmentCreateResponse,
+  type SimulationEnvironmentUpdateResponse,
   type SimulationEnvironmentListResponse,
+  type SimulationEnvironmentDeleteResponse,
   type SimulationEnvironmentGetByIDResponse,
+  type SimulationEnvironmentCreateParams,
+  type SimulationEnvironmentUpdateParams,
   type SimulationEnvironmentListParams,
 } from './simulation-environment';
 export {

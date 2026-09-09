@@ -168,12 +168,18 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/simulation-environment.ts">SimulationEnvironmentCreateResponse</a></code>
+- <code><a href="./src/resources/simulation-environment.ts">SimulationEnvironmentUpdateResponse</a></code>
 - <code><a href="./src/resources/simulation-environment.ts">SimulationEnvironmentListResponse</a></code>
+- <code><a href="./src/resources/simulation-environment.ts">SimulationEnvironmentDeleteResponse</a></code>
 - <code><a href="./src/resources/simulation-environment.ts">SimulationEnvironmentGetByIDResponse</a></code>
 
 Methods:
 
+- <code title="post /v1/simulation/environment">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">create</a>({ ...params }) -> SimulationEnvironmentCreateResponse</code>
+- <code title="put /v1/simulation/environment/{environmentId}">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">update</a>(environmentID, { ...params }) -> SimulationEnvironmentUpdateResponse</code>
 - <code title="get /v1/simulation/environment">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">list</a>({ ...params }) -> SimulationEnvironmentListResponse</code>
+- <code title="delete /v1/simulation/environment/{environmentId}">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">delete</a>(environmentID) -> SimulationEnvironmentDeleteResponse</code>
 - <code title="get /v1/simulation/environment/{environmentId}">client.simulationEnvironment.<a href="./src/resources/simulation-environment.ts">getByID</a>(environmentID) -> SimulationEnvironmentGetByIDResponse</code>
 
 # SimulationTemplate
@@ -195,6 +201,7 @@ Types:
 - <code><a href="./src/resources/customer-flow.ts">CustomerFlowUpdateResponse</a></code>
 - <code><a href="./src/resources/customer-flow.ts">CustomerFlowListResponse</a></code>
 - <code><a href="./src/resources/customer-flow.ts">CustomerFlowDeleteResponse</a></code>
+- <code><a href="./src/resources/customer-flow.ts">CustomerFlowDuplicateResponse</a></code>
 - <code><a href="./src/resources/customer-flow.ts">CustomerFlowGetByIDResponse</a></code>
 - <code><a href="./src/resources/customer-flow.ts">CustomerFlowReplaceGraphResponse</a></code>
 - <code><a href="./src/resources/customer-flow.ts">CustomerFlowUpdateHappyPathResponse</a></code>
@@ -205,6 +212,7 @@ Methods:
 - <code title="put /v1/customer-flow/{flowId}">client.customerFlow.<a href="./src/resources/customer-flow.ts">update</a>(flowID, { ...params }) -> CustomerFlowUpdateResponse</code>
 - <code title="get /v1/customer-flow">client.customerFlow.<a href="./src/resources/customer-flow.ts">list</a>({ ...params }) -> CustomerFlowListResponse</code>
 - <code title="delete /v1/customer-flow/{flowId}">client.customerFlow.<a href="./src/resources/customer-flow.ts">delete</a>(flowID) -> CustomerFlowDeleteResponse</code>
+- <code title="post /v1/customer-flow/{flowId}/duplicate">client.customerFlow.<a href="./src/resources/customer-flow.ts">duplicate</a>(flowID, { ...params }) -> CustomerFlowDuplicateResponse</code>
 - <code title="get /v1/customer-flow/{flowId}">client.customerFlow.<a href="./src/resources/customer-flow.ts">getByID</a>(flowID) -> CustomerFlowGetByIDResponse</code>
 - <code title="put /v1/customer-flow/{flowId}/graph">client.customerFlow.<a href="./src/resources/customer-flow.ts">replaceGraph</a>(flowID, { ...params }) -> CustomerFlowReplaceGraphResponse</code>
 - <code title="put /v1/customer-flow/{flowId}/happy-path">client.customerFlow.<a href="./src/resources/customer-flow.ts">updateHappyPath</a>(flowID, { ...params }) -> CustomerFlowUpdateHappyPathResponse</code>
