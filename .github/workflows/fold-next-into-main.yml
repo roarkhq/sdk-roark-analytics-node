@@ -116,3 +116,68 @@ jobs:
           # Best-effort, but not silent: a non-"ok" webhook response surfaces as a
           # warning rather than vanishing.
           [ "$resp" = ok ] || echo "::warning::Slack webhook did not accept the alert: $resp"
+
+  # The fold above alerts when it fails. It cannot alert when it never runs: the
+  # `if:` gate skips the whole job, and a skipped job runs no steps, so
+  # `failure()` is never evaluated.
+  #
+  # That is not hypothetical. The Python SDK, which runs this same workflow, went
+  # red on `next` on 2026-09-04; the gate skipped its fold on all eight pushes
+  # that followed, `main` sat unchanged for five days with no release cut, and
+  # nothing paged. It was noticed only because PyPI looked stale next to npm.
+  # This repository has the same gap and has simply been lucky enough to keep CI
+  # green.
+  #
+  # A job that is skipped cannot report on itself, so this is a separate job with
+  # the opposite gate. It is the same silent-stall failure mode the header
+  # describes, arriving through a different door: there, the trigger never
+  # matched; here, the gate never opened.
+  stalled:
+    if: >-
+      vars.FOLD_ENABLED == 'true' &&
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion != 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Red CI on `next` only matters when `next` is ahead: right after a fold
+      # lands there is nothing to strand, and alerting then would train everyone
+      # to ignore this. Counting the stranded commits also makes the alert say
+      # how long it has been going on without anyone having to open the repo.
+      - name: Count what the skipped fold stranded
+        id: stranded
+        run: |
+          set -euo pipefail
+          if git merge-base --is-ancestor origin/next origin/main; then
+            echo 'main already contains next; a red CI on next strands nothing.'
+            echo 'count=0' >> "$GITHUB_OUTPUT"
+          else
+            count=$(git rev-list --count origin/main..origin/next)
+            echo "$count commit(s) stranded on next."
+            echo "count=$count" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Alert #alarms-prod. No-op until SLACK_ALARMS_PROD_WEBHOOK_URL is set,
+      # matching the fold job's alert.
+      - name: Slack notify - train stalled
+        if: steps.stranded.outputs.count != '0'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_ALARMS_PROD_WEBHOOK_URL }}
+          CI_URL: ${{ github.event.workflow_run.html_url }}
+          COUNT: ${{ steps.stranded.outputs.count }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+        run: |
+          [ -n "${SLACK_WEBHOOK_URL:-}" ] || { echo 'SLACK_ALARMS_PROD_WEBHOOK_URL unset; skipping'; exit 0; }
+          # Names the consequence, not just the red check: "CI failed" reads as
+          # routine, "no release is being cut" is the thing worth interrupting for.
+          text="🚨 SDK release train stalled for \`@roarkanalytics/sdk\`: CI ${CONCLUSION} on \`next\`, so the next->main fold was skipped and no release can be cut. ${COUNT} commit(s) stranded. ${CI_URL}"
+          resp=$(curl -sS --max-time 15 -X POST -H 'Content-type: application/json' \
+            --data "$(jq -n --arg t "$text" '{text:$t}')" "$SLACK_WEBHOOK_URL") \
+            || { echo '::warning::Slack request failed (transport or timeout); alert not delivered'; exit 0; }
+          [ "$resp" = ok ] || echo "::warning::Slack webhook did not accept the alert: $resp"
