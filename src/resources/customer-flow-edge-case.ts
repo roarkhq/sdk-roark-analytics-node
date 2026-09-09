@@ -197,6 +197,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -503,6 +505,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -803,6 +807,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'DRIVING'
         | 'OFFICE'
         | 'THUNDERSTORM';
+
+      backgroundNoiseVolume: number;
 
       /**
        * Creation timestamp in ISO 8601 format
@@ -1124,6 +1130,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -1430,6 +1438,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -1730,6 +1740,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'DRIVING'
         | 'OFFICE'
         | 'THUNDERSTORM';
+
+      backgroundNoiseVolume: number;
 
       /**
        * Creation timestamp in ISO 8601 format
@@ -2051,6 +2063,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -2357,6 +2371,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -2657,6 +2673,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'DRIVING'
         | 'OFFICE'
         | 'THUNDERSTORM';
+
+      backgroundNoiseVolume: number;
 
       /**
        * Creation timestamp in ISO 8601 format

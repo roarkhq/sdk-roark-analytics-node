@@ -66,6 +66,8 @@ import {
   CustomerFlowCreateParams,
   CustomerFlowCreateResponse,
   CustomerFlowDeleteResponse,
+  CustomerFlowDuplicateParams,
+  CustomerFlowDuplicateResponse,
   CustomerFlowGetByIDResponse,
   CustomerFlowListParams,
   CustomerFlowListResponse,
@@ -142,9 +144,14 @@ import {
 import { Simulation, SimulationRunParams, SimulationRunResponse } from './resources/simulation';
 import {
   SimulationEnvironment,
+  SimulationEnvironmentCreateParams,
+  SimulationEnvironmentCreateResponse,
+  SimulationEnvironmentDeleteResponse,
   SimulationEnvironmentGetByIDResponse,
   SimulationEnvironmentListParams,
   SimulationEnvironmentListResponse,
+  SimulationEnvironmentUpdateParams,
+  SimulationEnvironmentUpdateResponse,
 } from './resources/simulation-environment';
 import {
   SimulationJob,
@@ -1063,8 +1070,13 @@ export declare namespace Roark {
 
   export {
     SimulationEnvironment as SimulationEnvironment,
+    type SimulationEnvironmentCreateResponse as SimulationEnvironmentCreateResponse,
+    type SimulationEnvironmentUpdateResponse as SimulationEnvironmentUpdateResponse,
     type SimulationEnvironmentListResponse as SimulationEnvironmentListResponse,
+    type SimulationEnvironmentDeleteResponse as SimulationEnvironmentDeleteResponse,
     type SimulationEnvironmentGetByIDResponse as SimulationEnvironmentGetByIDResponse,
+    type SimulationEnvironmentCreateParams as SimulationEnvironmentCreateParams,
+    type SimulationEnvironmentUpdateParams as SimulationEnvironmentUpdateParams,
     type SimulationEnvironmentListParams as SimulationEnvironmentListParams,
   };
 
@@ -1080,12 +1092,14 @@ export declare namespace Roark {
     type CustomerFlowUpdateResponse as CustomerFlowUpdateResponse,
     type CustomerFlowListResponse as CustomerFlowListResponse,
     type CustomerFlowDeleteResponse as CustomerFlowDeleteResponse,
+    type CustomerFlowDuplicateResponse as CustomerFlowDuplicateResponse,
     type CustomerFlowGetByIDResponse as CustomerFlowGetByIDResponse,
     type CustomerFlowReplaceGraphResponse as CustomerFlowReplaceGraphResponse,
     type CustomerFlowUpdateHappyPathResponse as CustomerFlowUpdateHappyPathResponse,
     type CustomerFlowCreateParams as CustomerFlowCreateParams,
     type CustomerFlowUpdateParams as CustomerFlowUpdateParams,
     type CustomerFlowListParams as CustomerFlowListParams,
+    type CustomerFlowDuplicateParams as CustomerFlowDuplicateParams,
     type CustomerFlowReplaceGraphParams as CustomerFlowReplaceGraphParams,
     type CustomerFlowUpdateHappyPathParams as CustomerFlowUpdateHappyPathParams,
   };
