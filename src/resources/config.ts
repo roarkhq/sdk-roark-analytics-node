@@ -49,6 +49,7 @@ export interface Bundle {
     | Bundle.ScriptedFlowConfig
     | Bundle.CollectorConfig
     | Bundle.MetricConfig
+    | Bundle.SimulationPlanConfig
     | Bundle.AlertConfig
   >;
 
@@ -364,6 +365,60 @@ export namespace Bundle {
     }
   }
 
+  export interface SimulationPlanConfig {
+    agentEndpoints: Array<SimulationPlanConfig.AgentEndpoint>;
+
+    direction: 'INBOUND' | 'OUTBOUND';
+
+    flows: Array<SimulationPlanConfig.Flow>;
+
+    kind: 'simulationPlan';
+
+    maxDurationSeconds: number;
+
+    metrics: Array<string>;
+
+    name: string;
+
+    description?: string | null;
+
+    endCallPhrases?: Array<string>;
+
+    endCallReasons?: Array<string>;
+
+    enrichWithLiveConversation?: boolean;
+
+    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    includeFlowMetrics?: boolean;
+
+    iterations?: number;
+
+    maxConcurrentJobs?: number;
+
+    silenceTimeoutSeconds?: number;
+  }
+
+  export namespace SimulationPlanConfig {
+    export interface AgentEndpoint {
+      agent: string;
+
+      value?: string;
+    }
+
+    export interface Flow {
+      edgeCases?: Array<string>;
+
+      flow?: string;
+
+      happyPath?: boolean;
+
+      personaOverride?: string;
+
+      system?: string;
+    }
+  }
+
   export interface AlertConfig {
     kind: 'alert';
 
@@ -435,7 +490,7 @@ export namespace Bundle {
 
       deliveryFormat?: 'MESSAGE' | 'PDF';
 
-      runPlan?: string;
+      plan?: string;
     }
 
     export interface Actions {
@@ -496,7 +551,7 @@ export namespace ConfigApplyResponse {
     export interface Change {
       configKey: string;
 
-      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric' | 'alert';
+      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric' | 'simulationPlan' | 'alert';
 
       name: string;
 
@@ -540,7 +595,7 @@ export namespace ConfigDiffResponse {
     export interface Change {
       configKey: string;
 
-      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric' | 'alert';
+      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric' | 'simulationPlan' | 'alert';
 
       name: string;
 
@@ -569,6 +624,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.ScriptedFlowConfig
     | ConfigApplyParams.CollectorConfig
     | ConfigApplyParams.MetricConfig
+    | ConfigApplyParams.SimulationPlanConfig
     | ConfigApplyParams.AlertConfig
   >;
 
@@ -884,6 +940,60 @@ export namespace ConfigApplyParams {
     }
   }
 
+  export interface SimulationPlanConfig {
+    agentEndpoints: Array<SimulationPlanConfig.AgentEndpoint>;
+
+    direction: 'INBOUND' | 'OUTBOUND';
+
+    flows: Array<SimulationPlanConfig.Flow>;
+
+    kind: 'simulationPlan';
+
+    maxDurationSeconds: number;
+
+    metrics: Array<string>;
+
+    name: string;
+
+    description?: string | null;
+
+    endCallPhrases?: Array<string>;
+
+    endCallReasons?: Array<string>;
+
+    enrichWithLiveConversation?: boolean;
+
+    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    includeFlowMetrics?: boolean;
+
+    iterations?: number;
+
+    maxConcurrentJobs?: number;
+
+    silenceTimeoutSeconds?: number;
+  }
+
+  export namespace SimulationPlanConfig {
+    export interface AgentEndpoint {
+      agent: string;
+
+      value?: string;
+    }
+
+    export interface Flow {
+      edgeCases?: Array<string>;
+
+      flow?: string;
+
+      happyPath?: boolean;
+
+      personaOverride?: string;
+
+      system?: string;
+    }
+  }
+
   export interface AlertConfig {
     kind: 'alert';
 
@@ -955,7 +1065,7 @@ export namespace ConfigApplyParams {
 
       deliveryFormat?: 'MESSAGE' | 'PDF';
 
-      runPlan?: string;
+      plan?: string;
     }
 
     export interface Actions {
@@ -982,6 +1092,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.ScriptedFlowConfig
     | ConfigDiffParams.CollectorConfig
     | ConfigDiffParams.MetricConfig
+    | ConfigDiffParams.SimulationPlanConfig
     | ConfigDiffParams.AlertConfig
   >;
 
@@ -1297,6 +1408,60 @@ export namespace ConfigDiffParams {
     }
   }
 
+  export interface SimulationPlanConfig {
+    agentEndpoints: Array<SimulationPlanConfig.AgentEndpoint>;
+
+    direction: 'INBOUND' | 'OUTBOUND';
+
+    flows: Array<SimulationPlanConfig.Flow>;
+
+    kind: 'simulationPlan';
+
+    maxDurationSeconds: number;
+
+    metrics: Array<string>;
+
+    name: string;
+
+    description?: string | null;
+
+    endCallPhrases?: Array<string>;
+
+    endCallReasons?: Array<string>;
+
+    enrichWithLiveConversation?: boolean;
+
+    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    includeFlowMetrics?: boolean;
+
+    iterations?: number;
+
+    maxConcurrentJobs?: number;
+
+    silenceTimeoutSeconds?: number;
+  }
+
+  export namespace SimulationPlanConfig {
+    export interface AgentEndpoint {
+      agent: string;
+
+      value?: string;
+    }
+
+    export interface Flow {
+      edgeCases?: Array<string>;
+
+      flow?: string;
+
+      happyPath?: boolean;
+
+      personaOverride?: string;
+
+      system?: string;
+    }
+  }
+
   export interface AlertConfig {
     kind: 'alert';
 
@@ -1368,7 +1533,7 @@ export namespace ConfigDiffParams {
 
       deliveryFormat?: 'MESSAGE' | 'PDF';
 
-      runPlan?: string;
+      plan?: string;
     }
 
     export interface Actions {
