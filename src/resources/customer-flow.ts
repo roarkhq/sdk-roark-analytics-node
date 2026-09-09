@@ -203,7 +203,8 @@ export type FlowStep =
   | FlowStep.UnionMember4
   | FlowStep.UnionMember5
   | FlowStep.UnionMember6
-  | FlowStep.UnionMember7;
+  | FlowStep.UnionMember7
+  | FlowStep.UnionMember8;
 
 export namespace FlowStep {
   export interface UnionMember0 {
@@ -249,6 +250,20 @@ export namespace FlowStep {
   }
 
   export interface UnionMember3 {
+    type: 'CUSTOMER_VERBATIM_TURN';
+
+    content?: string | null;
+
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export interface UnionMember4 {
     type: 'CUSTOMER_SILENCE';
 
     mergeIntoNodeIds?: Array<string>;
@@ -262,7 +277,7 @@ export namespace FlowStep {
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
-  export interface UnionMember4 {
+  export interface UnionMember5 {
     type: 'CUSTOMER_DTMF';
 
     dtmfDigits?: string | null;
@@ -276,7 +291,7 @@ export namespace FlowStep {
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
-  export interface UnionMember5 {
+  export interface UnionMember6 {
     type: 'AGENT_DTMF';
 
     dtmfDigits?: string | null;
@@ -290,7 +305,7 @@ export namespace FlowStep {
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
-  export interface UnionMember6 {
+  export interface UnionMember7 {
     type: 'VOICEMAIL';
 
     mergeIntoNodeIds?: Array<string>;
@@ -302,7 +317,7 @@ export namespace FlowStep {
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
-  export interface UnionMember7 {
+  export interface UnionMember8 {
     type: 'SCENARIO_LINK';
 
     linkedCustomerFlowId?: string | null;
