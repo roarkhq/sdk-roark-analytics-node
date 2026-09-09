@@ -188,6 +188,12 @@ export class CustomerFlow extends APIResource {
  * step is a root wired straight from the start of the flow, so a merge target
  * parked there would also be reachable directly.
  *
+ * A `CUSTOMER_TURN` describes what the simulated customer says and the persona
+ * phrases it; a `CUSTOMER_VERBATIM_TURN` is said word for word, and one placed as
+ * a top-level step opens the call the moment it connects, before the agent speaks.
+ * `CUSTOMER_FIRST_MESSAGE` is the retired name for that opening case: still
+ * accepted, stored and returned as `CUSTOMER_VERBATIM_TURN`.
+ *
  * The two DTMF types are mirror images and both require `dtmfDigits`.
  * `CUSTOMER_DTMF` is keys the simulated caller presses while navigating your
  * agent. `AGENT_DTMF` is keys your agent under test is expected to press while
