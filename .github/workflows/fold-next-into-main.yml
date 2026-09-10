@@ -40,7 +40,8 @@ jobs:
     if: >-
       vars.FOLD_ENABLED == 'true' &&
       (github.event_name == 'workflow_dispatch' ||
-       github.event.workflow_run.conclusion == 'success')
+       (github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.conclusion == 'success'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -132,10 +133,25 @@ jobs:
   # the opposite gate. It is the same silent-stall failure mode the header
   # describes, arriving through a different door: there, the trigger never
   # matched; here, the gate never opened.
+  #
+  # `event == 'push'` is load-bearing, and its absence is what made this job page
+  # on every healthy release. CI runs TWICE on `next` per cycle: once on the push
+  # codegen lands, and once on the `pull_request` of the fold PR opened above -
+  # whose head branch is `next`, so `branches: [next]` matches it too. Stainless
+  # guards every CI job with `if: event == 'push' || fork`, so that second run
+  # skips every job and finishes with conclusion `skipped`.
+  #
+  # `!= 'success'` then treats it as a stall. It is not: nothing ran. "Not green"
+  # is three states, not two - green, red, and blank - and only red is a stall.
+  # The train alarmed on its own fold PR, once per successful release, which is
+  # how a real red on the OTHER SDK went unread for two days behind identical
+  # noise. Filtering to the push run loses nothing: the blank run tested nothing,
+  # and every commit reaching `next` gets its own push run over the same code.
   stalled:
     if: >-
       vars.FOLD_ENABLED == 'true' &&
       github.event_name == 'workflow_run' &&
+      github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.conclusion != 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 5
