@@ -21,6 +21,12 @@ export {
   type AgentEndpointListParams,
 } from './agent-endpoint';
 export {
+  AgentPrompt,
+  type AgentPromptListResponse,
+  type AgentPromptListVersionsResponse,
+  type AgentPromptListVersionsParams,
+} from './agent-prompt';
+export {
   Call,
   type CallCreateResponse,
   type CallListResponse,
