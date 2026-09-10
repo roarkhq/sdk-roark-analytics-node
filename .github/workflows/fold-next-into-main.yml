@@ -35,8 +35,13 @@ concurrency:
 
 jobs:
   fold:
-    # On workflow_run, only fold when CI actually passed on `next`; a manual
-    # workflow_dispatch has no workflow_run context, so allow it unconditionally.
+    # On workflow_run, only fold when CI actually passed on `next`, and only on
+    # the push run. CI runs twice per cycle on `next` - the second is the fold PR
+    # this job opens, whose own `pull_request` run skips every job; `stalled`
+    # below explains that at length, since it is where getting it wrong pages
+    # somebody. Here it was merely wasteful: a second clone and token mint to
+    # discover `main already contains next`. A manual workflow_dispatch has no
+    # workflow_run context, so allow it unconditionally.
     if: >-
       vars.FOLD_ENABLED == 'true' &&
       (github.event_name == 'workflow_dispatch' ||
@@ -147,6 +152,13 @@ jobs:
   # how a real red on the OTHER SDK went unread for two days behind identical
   # noise. Filtering to the push run loses nothing: the blank run tested nothing,
   # and every commit reaching `next` gets its own push run over the same code.
+  #
+  # One case the filter also excludes, noted rather than handled: a FORK pull
+  # request whose head branch is itself named `next` would match
+  # `branches: [next]`, and Stainless's guard is `push || fork`, so its jobs
+  # would really run. `next` is an internal release branch and these
+  # repositories take no external contributions, so that run does not exist -
+  # but it is the case to revisit if that ever changes.
   stalled:
     if: >-
       vars.FOLD_ENABLED == 'true' &&
