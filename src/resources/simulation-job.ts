@@ -395,6 +395,13 @@ export namespace SimulationJobGetByIDResponse {
       description?: string | null;
 
       /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
+
+      /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
@@ -788,6 +795,13 @@ export namespace SimulationJobLookupResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)

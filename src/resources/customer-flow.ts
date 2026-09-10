@@ -767,6 +767,13 @@ export namespace CustomerFlowCreateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -1082,6 +1089,13 @@ export namespace CustomerFlowCreateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1488,6 +1502,13 @@ export namespace CustomerFlowCreateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -1801,6 +1822,13 @@ export namespace CustomerFlowCreateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -2201,6 +2229,13 @@ export namespace CustomerFlowCreateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -2509,6 +2544,13 @@ export namespace CustomerFlowCreateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -2946,6 +2988,13 @@ export namespace CustomerFlowUpdateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -3261,6 +3310,13 @@ export namespace CustomerFlowUpdateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -3667,6 +3723,13 @@ export namespace CustomerFlowUpdateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -3980,6 +4043,13 @@ export namespace CustomerFlowUpdateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -4380,6 +4450,13 @@ export namespace CustomerFlowUpdateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -4688,6 +4765,13 @@ export namespace CustomerFlowUpdateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -5128,6 +5212,13 @@ export namespace CustomerFlowListResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -5443,6 +5534,13 @@ export namespace CustomerFlowListResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -5849,6 +5947,13 @@ export namespace CustomerFlowListResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -6162,6 +6267,13 @@ export namespace CustomerFlowListResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -6562,6 +6674,13 @@ export namespace CustomerFlowListResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -6870,6 +6989,13 @@ export namespace CustomerFlowListResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -7337,6 +7463,13 @@ export namespace CustomerFlowDuplicateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -7652,6 +7785,13 @@ export namespace CustomerFlowDuplicateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -8058,6 +8198,13 @@ export namespace CustomerFlowDuplicateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -8371,6 +8518,13 @@ export namespace CustomerFlowDuplicateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -8771,6 +8925,13 @@ export namespace CustomerFlowDuplicateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -9079,6 +9240,13 @@ export namespace CustomerFlowDuplicateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -9516,6 +9684,13 @@ export namespace CustomerFlowGetByIDResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -9831,6 +10006,13 @@ export namespace CustomerFlowGetByIDResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -10237,6 +10419,13 @@ export namespace CustomerFlowGetByIDResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -10550,6 +10739,13 @@ export namespace CustomerFlowGetByIDResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -10950,6 +11146,13 @@ export namespace CustomerFlowGetByIDResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -11258,6 +11461,13 @@ export namespace CustomerFlowGetByIDResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -11607,6 +11817,13 @@ export namespace CustomerFlowReplaceGraphResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -11922,6 +12139,13 @@ export namespace CustomerFlowReplaceGraphResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -12230,6 +12454,13 @@ export namespace CustomerFlowReplaceGraphResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -12555,6 +12786,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       description?: string | null;
 
       /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
+
+      /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
@@ -12863,6 +13101,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       description?: string | null;
 
       /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
+
+      /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
@@ -13164,6 +13409,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)

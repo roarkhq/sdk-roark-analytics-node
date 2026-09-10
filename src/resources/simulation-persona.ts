@@ -279,6 +279,13 @@ export namespace SimulationPersonaCreateResponse {
     description?: string | null;
 
     /**
+     * Label shown in place of the name across the dashboard (e.g. a short descriptor
+     * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+     * or set null to display the name itself.
+     */
+    displayName?: string | null;
+
+    /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
      */
     secondaryLanguage?: 'EN' | null;
@@ -488,6 +495,13 @@ export namespace SimulationPersonaUpdateResponse {
      * Human-readable description of the persona
      */
     description?: string | null;
+
+    /**
+     * Label shown in place of the name across the dashboard (e.g. a short descriptor
+     * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+     * or set null to display the name itself.
+     */
+    displayName?: string | null;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -701,6 +715,13 @@ export namespace SimulationPersonaListResponse {
      * Human-readable description of the persona
      */
     description?: string | null;
+
+    /**
+     * Label shown in place of the name across the dashboard (e.g. a short descriptor
+     * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+     * or set null to display the name itself.
+     */
+    displayName?: string | null;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -931,6 +952,13 @@ export namespace SimulationPersonaGetByIDResponse {
     description?: string | null;
 
     /**
+     * Label shown in place of the name across the dashboard (e.g. a short descriptor
+     * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+     * or set null to display the name itself.
+     */
+    displayName?: string | null;
+
+    /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
      */
     secondaryLanguage?: 'EN' | null;
@@ -1038,6 +1066,13 @@ export interface SimulationPersonaCreateParams {
    * Human-readable description of the persona
    */
   description?: string | null;
+
+  /**
+   * Label shown in place of the name across the dashboard (e.g. a short descriptor
+   * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+   * or set null to display the name itself.
+   */
+  displayName?: string | null;
 
   /**
    * Whether the persona uses filler words like "um" and "uh"
@@ -1195,6 +1230,13 @@ export interface SimulationPersonaUpdateParams {
    * Human-readable description of the persona
    */
   description?: string | null;
+
+  /**
+   * Label shown in place of the name across the dashboard (e.g. a short descriptor
+   * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+   * or set null to display the name itself.
+   */
+  displayName?: string | null;
 
   /**
    * Gender of the persona
