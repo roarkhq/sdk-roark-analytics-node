@@ -67,6 +67,8 @@ export namespace Bundle {
     description?: string | null;
 
     endpoints?: Array<AgentConfig.Endpoint>;
+
+    prompt?: string | null;
   }
 
   export namespace AgentConfig {
@@ -646,6 +648,8 @@ export namespace ConfigApplyParams {
     description?: string | null;
 
     endpoints?: Array<AgentConfig.Endpoint>;
+
+    prompt?: string | null;
   }
 
   export namespace AgentConfig {
@@ -1118,6 +1122,8 @@ export namespace ConfigDiffParams {
     description?: string | null;
 
     endpoints?: Array<AgentConfig.Endpoint>;
+
+    prompt?: string | null;
   }
 
   export namespace AgentConfig {

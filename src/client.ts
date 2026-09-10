@@ -38,6 +38,12 @@ import {
   AgentEndpointUpdateResponse,
 } from './resources/agent-endpoint';
 import {
+  AgentPrompt,
+  AgentPromptListResponse,
+  AgentPromptListVersionsParams,
+  AgentPromptListVersionsResponse,
+} from './resources/agent-prompt';
+import {
   Call,
   CallAppendToolInvocationsParams,
   CallAppendToolInvocationsResponse,
@@ -932,6 +938,7 @@ export class Roark {
   customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
   agent: API.Agent = new API.Agent(this);
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
+  agentPrompt: API.AgentPrompt = new API.AgentPrompt(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
   webhook: API.Webhook = new API.Webhook(this);
   config: API.Config = new API.Config(this);
@@ -954,6 +961,7 @@ Roark.CustomerFlow = CustomerFlow;
 Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
 Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
+Roark.AgentPrompt = AgentPrompt;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
 Roark.Webhook = Webhook;
 Roark.Config = Config;
@@ -1136,6 +1144,13 @@ export declare namespace Roark {
     type AgentEndpointCreateParams as AgentEndpointCreateParams,
     type AgentEndpointUpdateParams as AgentEndpointUpdateParams,
     type AgentEndpointListParams as AgentEndpointListParams,
+  };
+
+  export {
+    AgentPrompt as AgentPrompt,
+    type AgentPromptListResponse as AgentPromptListResponse,
+    type AgentPromptListVersionsResponse as AgentPromptListVersionsResponse,
+    type AgentPromptListVersionsParams as AgentPromptListVersionsParams,
   };
 
   export {

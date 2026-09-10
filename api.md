@@ -265,6 +265,18 @@ Methods:
 - <code title="get /v1/agent/endpoint">client.agentEndpoint.<a href="./src/resources/agent-endpoint.ts">list</a>({ ...params }) -> AgentEndpointListResponse</code>
 - <code title="get /v1/agent/endpoint/{endpointId}">client.agentEndpoint.<a href="./src/resources/agent-endpoint.ts">getByID</a>(endpointID) -> AgentEndpointGetByIDResponse</code>
 
+# AgentPrompt
+
+Types:
+
+- <code><a href="./src/resources/agent-prompt.ts">AgentPromptListResponse</a></code>
+- <code><a href="./src/resources/agent-prompt.ts">AgentPromptListVersionsResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/agent/{agentId}/prompts">client.agentPrompt.<a href="./src/resources/agent-prompt.ts">list</a>(agentID) -> AgentPromptListResponse</code>
+- <code title="get /v1/agent/{agentId}/prompts/{promptId}/versions">client.agentPrompt.<a href="./src/resources/agent-prompt.ts">listVersions</a>(promptID, { ...params }) -> AgentPromptListVersionsResponse</code>
+
 # HTTPRequestDefinition
 
 Types:
