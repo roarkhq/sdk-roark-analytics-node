@@ -42,6 +42,8 @@ import {
   AgentPromptListResponse,
   AgentPromptListVersionsParams,
   AgentPromptListVersionsResponse,
+  AgentPromptUpdateParams,
+  AgentPromptUpdateResponse,
 } from './resources/agent-prompt';
 import {
   Call,
@@ -1148,8 +1150,10 @@ export declare namespace Roark {
 
   export {
     AgentPrompt as AgentPrompt,
+    type AgentPromptUpdateResponse as AgentPromptUpdateResponse,
     type AgentPromptListResponse as AgentPromptListResponse,
     type AgentPromptListVersionsResponse as AgentPromptListVersionsResponse,
+    type AgentPromptUpdateParams as AgentPromptUpdateParams,
     type AgentPromptListVersionsParams as AgentPromptListVersionsParams,
   };
 

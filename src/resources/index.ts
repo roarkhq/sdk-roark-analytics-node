@@ -22,8 +22,10 @@ export {
 } from './agent-endpoint';
 export {
   AgentPrompt,
+  type AgentPromptUpdateResponse,
   type AgentPromptListResponse,
   type AgentPromptListVersionsResponse,
+  type AgentPromptUpdateParams,
   type AgentPromptListVersionsParams,
 } from './agent-prompt';
 export {
