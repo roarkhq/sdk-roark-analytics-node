@@ -186,6 +186,13 @@ export namespace SimulationRunPlanCreateResponse {
       includeFlowMetrics: boolean;
 
       /**
+       * Whether this plan is managed by config as code. A managed plan is reconciled
+       * from your config: PUT and DELETE on it return 409, and changes belong in the
+       * config file.
+       */
+      isConfigManaged: boolean;
+
+      /**
        * Number of iterations to run for each test case
        */
       iterationCount: number;
@@ -455,6 +462,13 @@ export namespace SimulationRunPlanUpdateResponse {
     includeFlowMetrics: boolean;
 
     /**
+     * Whether this plan is managed by config as code. A managed plan is reconciled
+     * from your config: PUT and DELETE on it return 409, and changes belong in the
+     * config file.
+     */
+    isConfigManaged: boolean;
+
+    /**
      * Number of iterations to run for each test case
      */
     iterationCount: number;
@@ -686,6 +700,13 @@ export namespace SimulationRunPlanListResponse {
      * own list.
      */
     includeFlowMetrics: boolean;
+
+    /**
+     * Whether this plan is managed by config as code. A managed plan is reconciled
+     * from your config: PUT and DELETE on it return 409, and changes belong in the
+     * config file.
+     */
+    isConfigManaged: boolean;
 
     /**
      * Number of iterations to run for each test case
@@ -947,6 +968,13 @@ export namespace SimulationRunPlanGetByIDResponse {
      * own list.
      */
     includeFlowMetrics: boolean;
+
+    /**
+     * Whether this plan is managed by config as code. A managed plan is reconciled
+     * from your config: PUT and DELETE on it return 409, and changes belong in the
+     * config file.
+     */
+    isConfigManaged: boolean;
 
     /**
      * Number of iterations to run for each test case
