@@ -403,6 +403,8 @@ export namespace Bundle {
     export interface AgentEndpoint {
       agent: string;
 
+      direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
       value?: string;
     }
 
@@ -978,6 +980,8 @@ export namespace ConfigApplyParams {
     export interface AgentEndpoint {
       agent: string;
 
+      direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
       value?: string;
     }
 
@@ -1445,6 +1449,8 @@ export namespace ConfigDiffParams {
   export namespace SimulationPlanConfig {
     export interface AgentEndpoint {
       agent: string;
+
+      direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
       value?: string;
     }
