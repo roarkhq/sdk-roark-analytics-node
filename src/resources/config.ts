@@ -71,13 +71,13 @@ export namespace Bundle {
 
   export namespace AgentConfig {
     export interface Endpoint {
-      direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
-
-      name: string;
-
       value: string;
 
+      direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
       environment?: string;
+
+      type?: 'PHONE' | 'WEBSOCKET';
     }
   }
 
@@ -390,6 +390,8 @@ export namespace Bundle {
 
     executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
 
+    includeAutomaticMetrics?: boolean;
+
     includeFlowMetrics?: boolean;
 
     iterations?: number;
@@ -648,13 +650,13 @@ export namespace ConfigApplyParams {
 
   export namespace AgentConfig {
     export interface Endpoint {
-      direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
-
-      name: string;
-
       value: string;
 
+      direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
       environment?: string;
+
+      type?: 'PHONE' | 'WEBSOCKET';
     }
   }
 
@@ -966,6 +968,8 @@ export namespace ConfigApplyParams {
     enrichWithLiveConversation?: boolean;
 
     executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    includeAutomaticMetrics?: boolean;
 
     includeFlowMetrics?: boolean;
 
@@ -1118,13 +1122,13 @@ export namespace ConfigDiffParams {
 
   export namespace AgentConfig {
     export interface Endpoint {
-      direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
-
-      name: string;
-
       value: string;
 
+      direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
       environment?: string;
+
+      type?: 'PHONE' | 'WEBSOCKET';
     }
   }
 
@@ -1436,6 +1440,8 @@ export namespace ConfigDiffParams {
     enrichWithLiveConversation?: boolean;
 
     executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    includeAutomaticMetrics?: boolean;
 
     includeFlowMetrics?: boolean;
 

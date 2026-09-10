@@ -180,6 +180,12 @@ export namespace SimulationRunPlanCreateResponse {
       flows: Array<RunPlan.Flow>;
 
       /**
+       * Whether this plan lets a run add metrics by itself off the attached flows, on
+       * top of its own list. False means the `metrics` list is the whole answer.
+       */
+      includeAutomaticMetrics: boolean;
+
+      /**
        * Whether this plan also collects each attached flow's own metrics, on top of its
        * own list.
        */
@@ -456,6 +462,12 @@ export namespace SimulationRunPlanUpdateResponse {
     flows: Array<Data.Flow>;
 
     /**
+     * Whether this plan lets a run add metrics by itself off the attached flows, on
+     * top of its own list. False means the `metrics` list is the whole answer.
+     */
+    includeAutomaticMetrics: boolean;
+
+    /**
      * Whether this plan also collects each attached flow's own metrics, on top of its
      * own list.
      */
@@ -694,6 +706,12 @@ export namespace SimulationRunPlanListResponse {
      * Customer flows included in this run plan
      */
     flows: Array<Data.Flow>;
+
+    /**
+     * Whether this plan lets a run add metrics by itself off the attached flows, on
+     * top of its own list. False means the `metrics` list is the whole answer.
+     */
+    includeAutomaticMetrics: boolean;
 
     /**
      * Whether this plan also collects each attached flow's own metrics, on top of its
@@ -964,6 +982,12 @@ export namespace SimulationRunPlanGetByIDResponse {
     flows: Array<Data.Flow>;
 
     /**
+     * Whether this plan lets a run add metrics by itself off the attached flows, on
+     * top of its own list. False means the `metrics` list is the whole answer.
+     */
+    includeAutomaticMetrics: boolean;
+
+    /**
      * Whether this plan also collects each attached flow's own metrics, on top of its
      * own list.
      */
@@ -1216,6 +1240,22 @@ export interface SimulationRunPlanCreateParams {
   flows?: Array<SimulationRunPlanCreateParams.Flow>;
 
   /**
+   * Let the run add metrics by itself off the attached flows, on top of the
+   * `metrics` named here.
+   *
+   * Two attach this way today: Agent Expectations wherever an attached flow has
+   * agent expectations written on it, and Keypad Entry wherever one has steps where
+   * the agent is expected to press keys. Both grade something authored on the flow
+   * that nothing else measures, which is why it is on by default.
+   *
+   * Set false when the `metrics` list is meant to be exhaustive: a plan testing only
+   * whether the caller can complete the flow may not want the agent graded on its
+   * expectations as well. False also pins the plan against any automatic metric
+   * Roark adds later.
+   */
+  includeAutomaticMetrics?: boolean;
+
+  /**
    * Also collect each attached flow's own metrics, on top of the `metrics` named
    * here.
    *
@@ -1424,6 +1464,12 @@ export interface SimulationRunPlanUpdateParams {
    * unchanged; send an empty array to detach them all.
    */
   flows?: Array<SimulationRunPlanUpdateParams.Flow>;
+
+  /**
+   * Whether to let the run add metrics by itself off the attached flows. See
+   * `POST /v1/simulation/plan`.
+   */
+  includeAutomaticMetrics?: boolean;
 
   /**
    * Whether to also collect each attached flow's own metrics, on top of this plan's
