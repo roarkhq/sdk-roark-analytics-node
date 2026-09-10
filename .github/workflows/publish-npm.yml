@@ -51,15 +51,25 @@ jobs:
           INPUT_PATH: ${{ github.event.inputs.path }}
           NPM_TOKEN: ${{ secrets.ROARK_NPM_TOKEN || secrets.NPM_TOKEN }}
 
-      # Post the outcome to #alarms-prod. No-op until the SLACK_ALARMS_PROD_WEBHOOK_URL org
-      # secret is set; jq builds the payload so message text cannot break it.
+      # A release that worked is a log line, not a page, so it goes to #releases
+      # while the failure notify below stays in #alarms-prod. #alarms-prod is the
+      # channel app-agent-oncall ingests, and it triages every message that lands
+      # there - so a routine success ping costs a triage run and teaches everyone
+      # to skim the one channel that is supposed to interrupt them.
+      #
+      # No-op until the SLACK_RELEASES_WEBHOOK_URL org secret is set. Deliberately
+      # no fallback to the #alarms-prod webhook: that would quietly put these back
+      # where they came from, which is the whole thing being fixed. A success
+      # notice that goes nowhere for a release or two is not an outage; the
+      # failure paths are untouched. jq builds the payload so message text cannot
+      # break it.
       - name: Slack notify - published
         if: success()
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_ALARMS_PROD_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_WEBHOOK_URL }}
           VERSION: ${{ github.event.release.tag_name }}
         run: |
-          [ -n "${SLACK_WEBHOOK_URL:-}" ] || { echo 'SLACK_ALARMS_PROD_WEBHOOK_URL unset; skipping'; exit 0; }
+          [ -n "${SLACK_WEBHOOK_URL:-}" ] || { echo 'SLACK_RELEASES_WEBHOOK_URL unset; skipping'; exit 0; }
           text="📦 \`@roarkanalytics/sdk\` ${VERSION:-(new version)} published to npm"
           resp=$(curl -sS --max-time 15 -X POST -H 'Content-type: application/json' \
             --data "$(jq -n --arg t "$text" '{text:$t}')" "$SLACK_WEBHOOK_URL") \
