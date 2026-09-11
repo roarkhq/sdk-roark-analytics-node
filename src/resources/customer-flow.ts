@@ -392,9 +392,9 @@ export namespace CustomerFlowCreateResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -1127,9 +1127,9 @@ export namespace CustomerFlowCreateResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -2655,9 +2655,9 @@ export namespace CustomerFlowUpdateResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -3390,9 +3390,9 @@ export namespace CustomerFlowUpdateResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -4921,9 +4921,9 @@ export namespace CustomerFlowListResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -5656,9 +5656,9 @@ export namespace CustomerFlowListResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -7214,9 +7214,9 @@ export namespace CustomerFlowDuplicateResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -7949,9 +7949,9 @@ export namespace CustomerFlowDuplicateResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -9477,9 +9477,9 @@ export namespace CustomerFlowGetByIDResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -10212,9 +10212,9 @@ export namespace CustomerFlowGetByIDResponse {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -13674,9 +13674,9 @@ export declare namespace CustomerFlowCreateParams {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -13705,9 +13705,9 @@ export declare namespace CustomerFlowCreateParams {
 
     /**
      * STRICT only. What the simulated customer does when your agent does not say the
-     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
      * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
      * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -13828,9 +13828,9 @@ export interface CustomerFlowUpdateParams {
 
   /**
    * STRICT only. What the simulated customer does when your agent does not say the
-   * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-   * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-   * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+   * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+   * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+   * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
    * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
    * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
    * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
@@ -13861,9 +13861,9 @@ export namespace CustomerFlowUpdateParams {
 
   /**
    * STRICT only. What the simulated customer does when your agent does not say the
-   * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
-   * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
-   * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+   * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+   * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+   * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
    * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
    * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
    * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
