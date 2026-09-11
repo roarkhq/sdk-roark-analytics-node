@@ -68,6 +68,12 @@ export namespace SimulationJobGetByIDResponse {
      */
     enrichment: Data.Enrichment;
 
+    /**
+     * Present when the run was invalidated: it keeps its transcript and recording, but
+     * nothing scored it and it is excluded from every run total.
+     */
+    invalidation: Data.Invalidation | null;
+
     persona: Data.Persona;
 
     /**
@@ -193,6 +199,28 @@ export namespace SimulationJobGetByIDResponse {
        * waited.
        */
       waitStartedAt?: string | null;
+    }
+
+    /**
+     * Present when the run was invalidated: it keeps its transcript and recording, but
+     * nothing scored it and it is excluded from every run total.
+     */
+    export interface Invalidation {
+      /**
+       * When the run was invalidated.
+       */
+      invalidatedAt: string;
+
+      /**
+       * Why the result does not count. `SCRIPT_DIVERGED`: a strict flow went off script
+       * at a step whose off-script policy is HANG_UP_INVALIDATE.
+       */
+      reason: 'SCRIPT_DIVERGED';
+
+      /**
+       * One sentence: where the script was left and what your agent did instead.
+       */
+      detail?: string | null;
     }
 
     export interface Persona {
@@ -470,6 +498,12 @@ export namespace SimulationJobLookupResponse {
      */
     enrichment: Data.Enrichment;
 
+    /**
+     * Present when the run was invalidated: it keeps its transcript and recording, but
+     * nothing scored it and it is excluded from every run total.
+     */
+    invalidation: Data.Invalidation | null;
+
     persona: Data.Persona;
 
     /**
@@ -595,6 +629,28 @@ export namespace SimulationJobLookupResponse {
        * waited.
        */
       waitStartedAt?: string | null;
+    }
+
+    /**
+     * Present when the run was invalidated: it keeps its transcript and recording, but
+     * nothing scored it and it is excluded from every run total.
+     */
+    export interface Invalidation {
+      /**
+       * When the run was invalidated.
+       */
+      invalidatedAt: string;
+
+      /**
+       * Why the result does not count. `SCRIPT_DIVERGED`: a strict flow went off script
+       * at a step whose off-script policy is HANG_UP_INVALIDATE.
+       */
+      reason: 'SCRIPT_DIVERGED';
+
+      /**
+       * One sentence: where the script was left and what your agent did instead.
+       */
+      detail?: string | null;
     }
 
     export interface Persona {

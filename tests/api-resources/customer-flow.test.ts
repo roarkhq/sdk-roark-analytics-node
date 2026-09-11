@@ -31,6 +31,13 @@ describe('resource customerFlow', () => {
           content: 'content',
           mergeIntoNodeIds: ['x'],
           nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          offScriptPolicy: {
+            maxAttempts: 1,
+            reaction: 'STAY_SILENT',
+            then: 'HANG_UP',
+            sayLine: 'x',
+            waitSeconds: 1,
+          },
           ref: 'x',
           steps: [
             {
@@ -38,6 +45,13 @@ describe('resource customerFlow', () => {
               content: 'content',
               mergeIntoNodeIds: ['x'],
               nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              offScriptPolicy: {
+                maxAttempts: 1,
+                reaction: 'STAY_SILENT',
+                then: 'HANG_UP',
+                sayLine: 'x',
+                waitSeconds: 1,
+              },
               ref: 'x',
               steps: [
                 {
@@ -45,6 +59,13 @@ describe('resource customerFlow', () => {
                   content: 'content',
                   mergeIntoNodeIds: ['x'],
                   nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                  offScriptPolicy: {
+                    maxAttempts: 1,
+                    reaction: 'STAY_SILENT',
+                    then: 'HANG_UP',
+                    sayLine: 'x',
+                    waitSeconds: 1,
+                  },
                   ref: 'x',
                   steps: [
                     {
@@ -52,6 +73,7 @@ describe('resource customerFlow', () => {
                       content: 'content',
                       mergeIntoNodeIds: [],
                       nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                      offScriptPolicy: {},
                       ref: 'x',
                       steps: [],
                     },
@@ -207,6 +229,13 @@ describe('resource customerFlow', () => {
           content: 'content',
           mergeIntoNodeIds: ['x'],
           nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          offScriptPolicy: {
+            maxAttempts: 1,
+            reaction: 'STAY_SILENT',
+            then: 'HANG_UP',
+            sayLine: 'x',
+            waitSeconds: 1,
+          },
           ref: 'x',
           steps: [
             {
@@ -214,6 +243,13 @@ describe('resource customerFlow', () => {
               content: 'content',
               mergeIntoNodeIds: ['x'],
               nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              offScriptPolicy: {
+                maxAttempts: 1,
+                reaction: 'STAY_SILENT',
+                then: 'HANG_UP',
+                sayLine: 'x',
+                waitSeconds: 1,
+              },
               ref: 'x',
               steps: [
                 {
@@ -221,6 +257,13 @@ describe('resource customerFlow', () => {
                   content: 'content',
                   mergeIntoNodeIds: ['x'],
                   nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                  offScriptPolicy: {
+                    maxAttempts: 1,
+                    reaction: 'STAY_SILENT',
+                    then: 'HANG_UP',
+                    sayLine: 'x',
+                    waitSeconds: 1,
+                  },
                   ref: 'x',
                   steps: [
                     {
@@ -228,6 +271,7 @@ describe('resource customerFlow', () => {
                       content: 'content',
                       mergeIntoNodeIds: [],
                       nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                      offScriptPolicy: {},
                       ref: 'x',
                       steps: [],
                     },
