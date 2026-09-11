@@ -66,6 +66,8 @@ export namespace Bundle {
 
     description?: string | null;
 
+    displayName?: string;
+
     endpoints?: Array<AgentConfig.Endpoint>;
 
     prompt?: string | null;
@@ -283,7 +285,7 @@ export namespace Bundle {
 
       sayLine?: string;
 
-      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       waitSeconds?: number;
     }
@@ -553,11 +555,27 @@ export interface ConfigFlowStep {
 
   mergeInto?: Array<string>;
 
+  offScript?: ConfigFlowStep.OffScript;
+
   ref?: string;
 
   silenceDurationSeconds?: number;
 
   steps?: Array<ConfigAPI.ConfigFlowStep>;
+}
+
+export namespace ConfigFlowStep {
+  export interface OffScript {
+    maxAttempts?: number;
+
+    reaction?: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+    sayLine?: string;
+
+    then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+    waitSeconds?: number;
+  }
 }
 
 export interface ConfigApplyResponse {
@@ -664,6 +682,8 @@ export namespace ConfigApplyParams {
     customId?: string | null;
 
     description?: string | null;
+
+    displayName?: string;
 
     endpoints?: Array<AgentConfig.Endpoint>;
 
@@ -882,7 +902,7 @@ export namespace ConfigApplyParams {
 
       sayLine?: string;
 
-      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       waitSeconds?: number;
     }
@@ -1157,6 +1177,8 @@ export namespace ConfigDiffParams {
 
     description?: string | null;
 
+    displayName?: string;
+
     endpoints?: Array<AgentConfig.Endpoint>;
 
     prompt?: string | null;
@@ -1374,7 +1396,7 @@ export namespace ConfigDiffParams {
 
       sayLine?: string;
 
-      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       waitSeconds?: number;
     }
