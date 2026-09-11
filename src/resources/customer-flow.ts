@@ -390,6 +390,27 @@ export namespace CustomerFlowCreateResponse {
      */
     happyPath: ScriptedCustomerFlow.HappyPath | null;
 
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
     source: 'SYSTEM' | 'CUSTOM';
 
     title: string;
@@ -1102,6 +1123,27 @@ export namespace CustomerFlowCreateResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -2611,6 +2653,27 @@ export namespace CustomerFlowUpdateResponse {
      */
     happyPath: ScriptedCustomerFlow.HappyPath | null;
 
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
     source: 'SYSTEM' | 'CUSTOM';
 
     title: string;
@@ -3323,6 +3386,27 @@ export namespace CustomerFlowUpdateResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -4835,6 +4919,27 @@ export namespace CustomerFlowListResponse {
      */
     happyPath: ScriptedCustomerFlow.HappyPath | null;
 
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
     source: 'SYSTEM' | 'CUSTOM';
 
     title: string;
@@ -5547,6 +5652,27 @@ export namespace CustomerFlowListResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -7086,6 +7212,27 @@ export namespace CustomerFlowDuplicateResponse {
      */
     happyPath: ScriptedCustomerFlow.HappyPath | null;
 
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
     source: 'SYSTEM' | 'CUSTOM';
 
     title: string;
@@ -7798,6 +7945,27 @@ export namespace CustomerFlowDuplicateResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -9307,6 +9475,27 @@ export namespace CustomerFlowGetByIDResponse {
      */
     happyPath: ScriptedCustomerFlow.HappyPath | null;
 
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
     source: 'SYSTEM' | 'CUSTOM';
 
     title: string;
@@ -10019,6 +10208,27 @@ export namespace CustomerFlowGetByIDResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -13461,6 +13671,28 @@ export declare namespace CustomerFlowCreateParams {
     branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
 
     description?: string | null;
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    offScriptPolicy?: CreateScriptedCustomerFlowInput.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models. (LOOSE is the
+     * default.)
+     */
+    scriptAdherence?: 'LOOSE' | 'STRICT';
   }
 
   export namespace CreateScriptedCustomerFlowInput {
@@ -13469,6 +13701,27 @@ export declare namespace CustomerFlowCreateParams {
        * What the agent under test is graded against.
        */
       prompt: string;
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+     * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -13573,6 +13826,28 @@ export interface CustomerFlowUpdateParams {
 
   description?: string | null;
 
+  /**
+   * STRICT only. What the simulated customer does when your agent does not say the
+   * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+   * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+   * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+   * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+   * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+   * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+   */
+  offScriptPolicy?: CustomerFlowUpdateParams.OffScriptPolicy | null;
+
+  /**
+   * Scripted flows only. How closely a run follows the script. LOOSE (default) hands
+   * the whole script to the simulated customer as one prompt; it keeps the call
+   * moving whatever your agent says. STRICT runs the script as a state machine on
+   * the agent service: at every agent step the simulated customer waits, silent,
+   * until your agent has said the expected line, and only then moves on. Scripted
+   * flows only; STRICT needs the agent-service transport and is not available on
+   * realtime models.
+   */
+  scriptAdherence?: 'LOOSE' | 'STRICT';
+
   title?: string;
 }
 
@@ -13582,6 +13857,27 @@ export namespace CustomerFlowUpdateParams {
      * What the agent under test is graded against.
      */
     prompt: string;
+  }
+
+  /**
+   * STRICT only. What the simulated customer does when your agent does not say the
+   * expected line. Each unmatched agent utterance is a strike: `reaction` runs per
+   * strike (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+   * without moving on, or SAY `sayLine`), and `then` runs when strikes reach
+   * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+   * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
+   * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+   */
+  export interface OffScriptPolicy {
+    maxAttempts: number;
+
+    reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+    then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+    sayLine?: string | null;
+
+    waitSeconds?: number | null;
   }
 }
 
