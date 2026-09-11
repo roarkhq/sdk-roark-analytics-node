@@ -260,6 +260,8 @@ export namespace Bundle {
 
     type: 'scripted';
 
+    adherence?: 'LOOSE' | 'STRICT';
+
     agents?: Array<string>;
 
     branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
@@ -268,7 +270,23 @@ export namespace Bundle {
 
     expectations?: Array<string>;
 
+    offScript?: ScriptedFlowConfig.OffScript;
+
     title?: string;
+  }
+
+  export namespace ScriptedFlowConfig {
+    export interface OffScript {
+      maxAttempts?: number;
+
+      reaction?: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      sayLine?: string;
+
+      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+      waitSeconds?: number;
+    }
   }
 
   export interface CollectorConfig {
@@ -841,6 +859,8 @@ export namespace ConfigApplyParams {
 
     type: 'scripted';
 
+    adherence?: 'LOOSE' | 'STRICT';
+
     agents?: Array<string>;
 
     branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
@@ -849,7 +869,23 @@ export namespace ConfigApplyParams {
 
     expectations?: Array<string>;
 
+    offScript?: ScriptedFlowConfig.OffScript;
+
     title?: string;
+  }
+
+  export namespace ScriptedFlowConfig {
+    export interface OffScript {
+      maxAttempts?: number;
+
+      reaction?: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      sayLine?: string;
+
+      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+      waitSeconds?: number;
+    }
   }
 
   export interface CollectorConfig {
@@ -1315,6 +1351,8 @@ export namespace ConfigDiffParams {
 
     type: 'scripted';
 
+    adherence?: 'LOOSE' | 'STRICT';
+
     agents?: Array<string>;
 
     branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
@@ -1323,7 +1361,23 @@ export namespace ConfigDiffParams {
 
     expectations?: Array<string>;
 
+    offScript?: ScriptedFlowConfig.OffScript;
+
     title?: string;
+  }
+
+  export namespace ScriptedFlowConfig {
+    export interface OffScript {
+      maxAttempts?: number;
+
+      reaction?: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      sayLine?: string;
+
+      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+
+      waitSeconds?: number;
+    }
   }
 
   export interface CollectorConfig {

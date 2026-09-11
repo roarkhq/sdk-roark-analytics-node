@@ -68,6 +68,14 @@ describe('resource customerFlow', () => {
       agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
       branchingMode: 'DETERMINISTIC',
       description: 'description',
+      offScriptPolicy: {
+        maxAttempts: 1,
+        reaction: 'STAY_SILENT',
+        then: 'HANG_UP',
+        sayLine: 'x',
+        waitSeconds: 1,
+      },
+      scriptAdherence: 'LOOSE',
     });
   });
 
@@ -94,6 +102,14 @@ describe('resource customerFlow', () => {
           agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
           branchingMode: 'DETERMINISTIC',
           description: 'description',
+          offScriptPolicy: {
+            maxAttempts: 1,
+            reaction: 'STAY_SILENT',
+            then: 'HANG_UP',
+            sayLine: 'x',
+            waitSeconds: 1,
+          },
+          scriptAdherence: 'LOOSE',
           title: 'x',
         },
         { path: '/_stainless_unknown_path' },
