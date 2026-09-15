@@ -581,9 +581,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -655,9 +659,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -909,9 +917,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -983,9 +995,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -1348,9 +1364,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -1422,9 +1442,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -1674,9 +1698,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -1748,9 +1776,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -2083,9 +2115,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -2157,9 +2193,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -2404,9 +2444,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -2478,9 +2522,13 @@ export namespace CustomerFlowCreateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -2874,9 +2922,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -2948,9 +3000,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -3202,9 +3258,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -3276,9 +3336,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -3641,9 +3705,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -3715,9 +3783,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -3967,9 +4039,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -4041,9 +4117,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -4376,9 +4456,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -4450,9 +4534,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -4697,9 +4785,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -4771,9 +4863,13 @@ export namespace CustomerFlowUpdateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -5170,9 +5266,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -5244,9 +5344,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -5498,9 +5602,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -5572,9 +5680,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -5937,9 +6049,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -6011,9 +6127,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -6263,9 +6383,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -6337,9 +6461,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -6672,9 +6800,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -6746,9 +6878,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -6993,9 +7129,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -7067,9 +7207,13 @@ export namespace CustomerFlowListResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -7493,9 +7637,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -7567,9 +7715,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -7821,9 +7973,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -7895,9 +8051,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -8260,9 +8420,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -8334,9 +8498,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -8586,9 +8754,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -8660,9 +8832,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -8995,9 +9171,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -9069,9 +9249,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -9316,9 +9500,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -9390,9 +9578,13 @@ export namespace CustomerFlowDuplicateResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -9786,9 +9978,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -9860,9 +10056,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -10114,9 +10314,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -10188,9 +10392,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -10553,9 +10761,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -10627,9 +10839,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -10879,9 +11095,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -10953,9 +11173,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -11288,9 +11512,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -11362,9 +11590,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -11609,9 +11841,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -11683,9 +11919,13 @@ export namespace CustomerFlowGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -11967,9 +12207,13 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -12041,9 +12285,13 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -12293,9 +12541,13 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -12367,9 +12619,13 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -12614,9 +12870,13 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         backgroundNoiseVolume: number;
 
@@ -12688,9 +12948,13 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona
@@ -12955,9 +13219,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'CHILDREN_PLAYING'
         | 'CITY'
         | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
         | 'DRIVING'
+        | 'LIBRARY'
         | 'OFFICE'
-        | 'THUNDERSTORM';
+        | 'THUNDERSTORM'
+        | 'TRAIN';
 
       backgroundNoiseVolume: number;
 
@@ -13029,9 +13297,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'CHILDREN_PLAYING'
         | 'CITY'
         | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
         | 'DRIVING'
+        | 'LIBRARY'
         | 'OFFICE'
-        | 'THUNDERSTORM';
+        | 'THUNDERSTORM'
+        | 'TRAIN';
 
       /**
        * Base emotional state of the persona
@@ -13281,9 +13553,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'CHILDREN_PLAYING'
         | 'CITY'
         | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
         | 'DRIVING'
+        | 'LIBRARY'
         | 'OFFICE'
-        | 'THUNDERSTORM';
+        | 'THUNDERSTORM'
+        | 'TRAIN';
 
       backgroundNoiseVolume: number;
 
@@ -13355,9 +13631,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'CHILDREN_PLAYING'
         | 'CITY'
         | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
         | 'DRIVING'
+        | 'LIBRARY'
         | 'OFFICE'
-        | 'THUNDERSTORM';
+        | 'THUNDERSTORM'
+        | 'TRAIN';
 
       /**
        * Base emotional state of the persona
@@ -13602,9 +13882,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'CHILDREN_PLAYING'
         | 'CITY'
         | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
         | 'DRIVING'
+        | 'LIBRARY'
         | 'OFFICE'
-        | 'THUNDERSTORM';
+        | 'THUNDERSTORM'
+        | 'TRAIN';
 
       backgroundNoiseVolume: number;
 
@@ -13676,9 +13960,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'CHILDREN_PLAYING'
         | 'CITY'
         | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
         | 'DRIVING'
+        | 'LIBRARY'
         | 'OFFICE'
-        | 'THUNDERSTORM';
+        | 'THUNDERSTORM'
+        | 'TRAIN';
 
       /**
        * Base emotional state of the persona
