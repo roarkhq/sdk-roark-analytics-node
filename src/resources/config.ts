@@ -185,7 +185,7 @@ export namespace Bundle {
 
     properties?: { [key: string]: unknown };
 
-    responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
+    responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
     secondaryLanguage?: 'EN';
 
@@ -812,7 +812,7 @@ export namespace ConfigApplyParams {
 
     properties?: { [key: string]: unknown };
 
-    responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
+    responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
     secondaryLanguage?: 'EN';
 
@@ -1316,7 +1316,7 @@ export namespace ConfigDiffParams {
 
     properties?: { [key: string]: unknown };
 
-    responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
+    responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
     secondaryLanguage?: 'EN';
 

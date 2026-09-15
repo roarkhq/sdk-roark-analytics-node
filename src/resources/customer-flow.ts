@@ -760,9 +760,10 @@ export namespace CustomerFlowCreateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -1087,9 +1088,10 @@ export namespace CustomerFlowCreateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -1525,9 +1527,10 @@ export namespace CustomerFlowCreateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -1850,9 +1853,10 @@ export namespace CustomerFlowCreateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -2258,9 +2262,10 @@ export namespace CustomerFlowCreateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -2578,9 +2583,10 @@ export namespace CustomerFlowCreateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -3047,9 +3053,10 @@ export namespace CustomerFlowUpdateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -3374,9 +3381,10 @@ export namespace CustomerFlowUpdateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -3812,9 +3820,10 @@ export namespace CustomerFlowUpdateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -4137,9 +4146,10 @@ export namespace CustomerFlowUpdateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -4545,9 +4555,10 @@ export namespace CustomerFlowUpdateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -4865,9 +4876,10 @@ export namespace CustomerFlowUpdateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -5337,9 +5349,10 @@ export namespace CustomerFlowListResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -5664,9 +5677,10 @@ export namespace CustomerFlowListResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -6102,9 +6116,10 @@ export namespace CustomerFlowListResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -6427,9 +6442,10 @@ export namespace CustomerFlowListResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -6835,9 +6851,10 @@ export namespace CustomerFlowListResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -7155,9 +7172,10 @@ export namespace CustomerFlowListResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -7654,9 +7672,10 @@ export namespace CustomerFlowDuplicateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -7981,9 +8000,10 @@ export namespace CustomerFlowDuplicateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -8419,9 +8439,10 @@ export namespace CustomerFlowDuplicateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -8744,9 +8765,10 @@ export namespace CustomerFlowDuplicateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -9152,9 +9174,10 @@ export namespace CustomerFlowDuplicateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -9472,9 +9495,10 @@ export namespace CustomerFlowDuplicateResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -9941,9 +9965,10 @@ export namespace CustomerFlowGetByIDResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -10268,9 +10293,10 @@ export namespace CustomerFlowGetByIDResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -10706,9 +10732,10 @@ export namespace CustomerFlowGetByIDResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -11031,9 +11058,10 @@ export namespace CustomerFlowGetByIDResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -11439,9 +11467,10 @@ export namespace CustomerFlowGetByIDResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -11759,9 +11788,10 @@ export namespace CustomerFlowGetByIDResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -12116,9 +12146,10 @@ export namespace CustomerFlowReplaceGraphResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -12441,9 +12472,10 @@ export namespace CustomerFlowReplaceGraphResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -12761,9 +12793,10 @@ export namespace CustomerFlowReplaceGraphResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -13101,9 +13134,10 @@ export namespace CustomerFlowUpdateHappyPathResponse {
 
       /**
        * Controls how quickly the persona responds to pauses in conversation (QUICK,
-       * NORMAL, RELAXED)
+       * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+       * for several seconds.
        */
-      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
       /**
        * Speech clarity of the persona
@@ -13426,9 +13460,10 @@ export namespace CustomerFlowUpdateHappyPathResponse {
 
       /**
        * Controls how quickly the persona responds to pauses in conversation (QUICK,
-       * NORMAL, RELAXED)
+       * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+       * for several seconds.
        */
-      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
       /**
        * Speech clarity of the persona
@@ -13746,9 +13781,10 @@ export namespace CustomerFlowUpdateHappyPathResponse {
 
       /**
        * Controls how quickly the persona responds to pauses in conversation (QUICK,
-       * NORMAL, RELAXED)
+       * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+       * for several seconds.
        */
-      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
       /**
        * Speech clarity of the persona
@@ -14085,7 +14121,18 @@ export interface CustomerFlowListParams {
   type?: 'SCRIPTED' | 'IMPROV' | 'VOICEMAIL';
 }
 
-export interface CustomerFlowDuplicateParams {}
+export interface CustomerFlowDuplicateParams {
+  /**
+   * Agents to link on the copy. Omit to carry the source flow's agents over.
+   * Required when the source is a Roark-managed flow with no agents of its own.
+   */
+  agentIds?: Array<string>;
+
+  /**
+   * Title for the copy. Defaults to "Copy of" the source flow.
+   */
+  title?: string;
+}
 
 export interface CustomerFlowReplaceGraphParams {
   /**

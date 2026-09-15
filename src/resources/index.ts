@@ -29,6 +29,20 @@ export {
   type AgentPromptListVersionsParams,
 } from './agent-prompt';
 export {
+  Benchmark,
+  type BenchmarkGetLeaderboardResponse,
+  type BenchmarkGetTargetResponse,
+  type BenchmarkListMetricsResponse,
+  type BenchmarkListSuitesResponse,
+  type BenchmarkListTargetHistoryResponse,
+  type BenchmarkListTargetScoreSamplesResponse,
+  type BenchmarkGetLeaderboardParams,
+  type BenchmarkGetTargetParams,
+  type BenchmarkListMetricsParams,
+  type BenchmarkListTargetHistoryParams,
+  type BenchmarkListTargetScoreSamplesParams,
+} from './benchmark';
+export {
   Call,
   type CallCreateResponse,
   type CallListResponse,
@@ -174,6 +188,7 @@ export {
 export {
   SimulationRunPlanJob,
   type SimulationRunPlanJobListResponse,
+  type SimulationRunPlanJobCancelResponse,
   type SimulationRunPlanJobGetByIDResponse,
   type SimulationRunPlanJobStartResponse,
   type SimulationRunPlanJobListParams,
