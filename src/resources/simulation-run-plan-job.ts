@@ -24,6 +24,23 @@ export class SimulationRunPlanJob extends APIResource {
   }
 
   /**
+   * Stops a run that has not finished yet. Already-finished runs are left alone.
+   *
+   * Intended for CI: when a pipeline is cancelled or superseded, cancelling the run
+   * stops it placing calls you no longer need. Safe to call more than once.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulationRunPlanJob.cancel(
+   *   '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
+   * );
+   * ```
+   */
+  cancel(jobID: string, options?: RequestOptions): APIPromise<SimulationRunPlanJobCancelResponse> {
+    return this._client.post(path`/v1/simulation/plan/job/${jobID}/cancel`, options);
+  }
+
+  /**
    * Retrieve details of a simulation plan job including all associated simulation
    * jobs (calls)
    *
@@ -144,6 +161,45 @@ export namespace SimulationRunPlanJobListResponse {
   }
 }
 
+export interface SimulationRunPlanJobCancelResponse {
+  /**
+   * Result of cancelling a simulation plan job
+   */
+  data: SimulationRunPlanJobCancelResponse.Data;
+}
+
+export namespace SimulationRunPlanJobCancelResponse {
+  /**
+   * Result of cancelling a simulation plan job
+   */
+  export interface Data {
+    /**
+     * True when this request stopped the run. False when it had already finished,
+     * which is not an error.
+     */
+    cancelled: boolean;
+
+    simulationRunPlanJobId: string;
+
+    /**
+     * The job status after the request. Unchanged when the run had already finished.
+     */
+    status:
+      | 'PENDING'
+      | 'QUEUED'
+      | 'CREATING_SNAPSHOTS'
+      | 'CREATING_SIMULATIONS'
+      | 'PREPARING_CAPACITY'
+      | 'RUNNING_SIMULATIONS'
+      | 'COMPLETED'
+      | 'FAILED'
+      | 'TIMED_OUT'
+      | 'CANCELLED'
+      | 'CANCELLING'
+      | 'ENDING_SIMULATIONS';
+  }
+}
+
 export interface SimulationRunPlanJobGetByIDResponse {
   /**
    * Simulation run plan job with all associated simulation jobs
@@ -202,6 +258,12 @@ export namespace SimulationRunPlanJobGetByIDResponse {
      * When the job started
      */
     startedAt?: string | null;
+
+    /**
+     * Pass/fail verdict for the run, judged against the success criteria pinned on the
+     * run plan when the run started.
+     */
+    verdict?: Data.Verdict | null;
   }
 
   export namespace Data {
@@ -496,9 +558,10 @@ export namespace SimulationRunPlanJobGetByIDResponse {
 
         /**
          * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED)
+         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+         * for several seconds.
          */
-        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
         /**
          * Speech clarity of the persona
@@ -576,6 +639,141 @@ export namespace SimulationRunPlanJobGetByIDResponse {
          * Scenario description
          */
         description?: string | null;
+      }
+    }
+
+    /**
+     * Pass/fail verdict for the run, judged against the success criteria pinned on the
+     * run plan when the run started.
+     */
+    export interface Verdict {
+      /**
+       * Every check the run was judged on, with its rate and the minimum it had to
+       * reach.
+       */
+      checks: Array<Verdict.Check>;
+
+      /**
+       * Every criterion the run missed. Empty when it passed.
+       */
+      failures: Array<
+        Verdict.UnionMember0 | Verdict.UnionMember1 | Verdict.UnionMember2 | Verdict.UnionMember3
+      >;
+
+      /**
+       * Whether every check cleared its own `minPassRate` (and the run completed with
+       * full coverage). Use this as the CI exit status.
+       *
+       * Never derived from `score`: a run can score 95 and still fail, or score 40 and
+       * still pass.
+       */
+      passed: boolean;
+
+      /**
+       * The run's headline quality number, 0-100: the mean of each check's own pass
+       * rate.
+       *
+       * REPORTING ONLY, for dashboards and trend lines. Nothing is judged against it.
+       * Null when nothing was evaluated.
+       */
+      score: number | null;
+    }
+
+    export namespace Verdict {
+      /**
+       * How one pass/fail metric did. Present for every check, passing or not.
+       */
+      export interface Check {
+        evaluatedSims: number;
+
+        /**
+         * Whether `minPassRate` is the 80% default (`true`) or a minimum this metric set
+         * for itself.
+         */
+        inherited: boolean;
+
+        metricDefinitionId: string;
+
+        /**
+         * THE BAR it was judged against: the share of the run's simulations it had to
+         * pass.
+         */
+        minPassRate: number;
+
+        /**
+         * This check's own pass rate, 0-100: the share of sims it evaluated that passed
+         * it. Null when it evaluated nothing.
+         */
+        passRate: number | null;
+
+        /**
+         * `passRate >= minPassRate`.
+         */
+        passed: boolean;
+
+        passedSims: number;
+
+        metricName?: string | null;
+      }
+
+      export interface UnionMember0 {
+        /**
+         * The status the run actually ended in.
+         */
+        status:
+          | 'PENDING'
+          | 'QUEUED'
+          | 'CREATING_SNAPSHOTS'
+          | 'CREATING_SIMULATIONS'
+          | 'PREPARING_CAPACITY'
+          | 'RUNNING_SIMULATIONS'
+          | 'COMPLETED'
+          | 'FAILED'
+          | 'TIMED_OUT'
+          | 'CANCELLED'
+          | 'CANCELLING'
+          | 'ENDING_SIMULATIONS';
+
+        type: 'RUN_NOT_COMPLETED';
+      }
+
+      export interface UnionMember1 {
+        evaluatedCalls: number;
+
+        expectedCalls: number;
+
+        type: 'INCOMPLETE_COVERAGE';
+      }
+
+      export interface UnionMember2 {
+        metricDefinitionId: string;
+
+        type: 'METRIC_NOT_EVALUATED';
+
+        /**
+         * The check’s name, for rendering the failure.
+         */
+        metricName?: string | null;
+      }
+
+      export interface UnionMember3 {
+        /**
+         * Whether the missed minimum was the 80% default (`true`) or this metric's own.
+         */
+        inherited: boolean;
+
+        metricDefinitionId: string;
+
+        minPassRate: number;
+
+        passRate: number;
+
+        type: 'METRIC_BELOW_MIN_PASS_RATE';
+
+        /**
+         * The check’s name, for rendering the failure.
+         */
+        metricName?: string | null;
       }
     }
   }
@@ -745,6 +943,7 @@ export namespace SimulationRunPlanJobStartParams {
 export declare namespace SimulationRunPlanJob {
   export {
     type SimulationRunPlanJobListResponse as SimulationRunPlanJobListResponse,
+    type SimulationRunPlanJobCancelResponse as SimulationRunPlanJobCancelResponse,
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
     type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
     type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,

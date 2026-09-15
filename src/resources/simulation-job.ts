@@ -378,9 +378,10 @@ export namespace SimulationJobGetByIDResponse {
 
       /**
        * Controls how quickly the persona responds to pauses in conversation (QUICK,
-       * NORMAL, RELAXED)
+       * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+       * for several seconds.
        */
-      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
       /**
        * Speech clarity of the persona
@@ -818,9 +819,10 @@ export namespace SimulationJobLookupResponse {
 
       /**
        * Controls how quickly the persona responds to pauses in conversation (QUICK,
-       * NORMAL, RELAXED)
+       * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+       * for several seconds.
        */
-      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
       /**
        * Speech clarity of the persona
