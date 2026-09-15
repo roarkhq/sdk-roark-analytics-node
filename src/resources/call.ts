@@ -1148,7 +1148,7 @@ export namespace CallListMetricsResponse {
          * How this property resolved against the transcript. NOT_MENTIONED means the
          * subject never came up and is not a mismatch.
          */
-        verdict: 'MATCH' | 'MISMATCH' | 'NOT_MENTIONED';
+        verdict: 'MATCH' | 'MISMATCH' | 'TRANSCRIPTION_ERROR' | 'NOT_MENTIONED';
 
         /**
          * What the transcript said instead. Only present when verdict is MISMATCH.

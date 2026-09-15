@@ -197,6 +197,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -272,7 +274,17 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -413,6 +425,13 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -503,6 +522,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -578,7 +599,17 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -719,6 +750,13 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -804,6 +842,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -879,7 +919,17 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -1020,6 +1070,13 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1124,6 +1181,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -1199,7 +1258,17 @@ export namespace CustomerFlowEdgeCaseAddResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -1340,6 +1409,13 @@ export namespace CustomerFlowEdgeCaseAddResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1430,6 +1506,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -1505,7 +1583,17 @@ export namespace CustomerFlowEdgeCaseAddResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -1646,6 +1734,13 @@ export namespace CustomerFlowEdgeCaseAddResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1731,6 +1826,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -1806,7 +1903,17 @@ export namespace CustomerFlowEdgeCaseAddResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -1947,6 +2054,13 @@ export namespace CustomerFlowEdgeCaseAddResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -2051,6 +2165,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -2126,7 +2242,17 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -2267,6 +2393,13 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -2357,6 +2490,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -2432,7 +2567,17 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -2573,6 +2718,13 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -2658,6 +2810,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -2733,7 +2887,17 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -2874,6 +3038,13 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)

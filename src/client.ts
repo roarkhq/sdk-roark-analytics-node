@@ -38,6 +38,14 @@ import {
   AgentEndpointUpdateResponse,
 } from './resources/agent-endpoint';
 import {
+  AgentPrompt,
+  AgentPromptListResponse,
+  AgentPromptListVersionsParams,
+  AgentPromptListVersionsResponse,
+  AgentPromptUpdateParams,
+  AgentPromptUpdateResponse,
+} from './resources/agent-prompt';
+import {
   Call,
   CallAppendToolInvocationsParams,
   CallAppendToolInvocationsResponse,
@@ -66,6 +74,8 @@ import {
   CustomerFlowCreateParams,
   CustomerFlowCreateResponse,
   CustomerFlowDeleteResponse,
+  CustomerFlowDuplicateParams,
+  CustomerFlowDuplicateResponse,
   CustomerFlowGetByIDResponse,
   CustomerFlowListParams,
   CustomerFlowListResponse,
@@ -142,9 +152,14 @@ import {
 import { Simulation, SimulationRunParams, SimulationRunResponse } from './resources/simulation';
 import {
   SimulationEnvironment,
+  SimulationEnvironmentCreateParams,
+  SimulationEnvironmentCreateResponse,
+  SimulationEnvironmentDeleteResponse,
   SimulationEnvironmentGetByIDResponse,
   SimulationEnvironmentListParams,
   SimulationEnvironmentListResponse,
+  SimulationEnvironmentUpdateParams,
+  SimulationEnvironmentUpdateResponse,
 } from './resources/simulation-environment';
 import {
   SimulationJob,
@@ -925,6 +940,7 @@ export class Roark {
   customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
   agent: API.Agent = new API.Agent(this);
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
+  agentPrompt: API.AgentPrompt = new API.AgentPrompt(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
   webhook: API.Webhook = new API.Webhook(this);
   config: API.Config = new API.Config(this);
@@ -947,6 +963,7 @@ Roark.CustomerFlow = CustomerFlow;
 Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
 Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
+Roark.AgentPrompt = AgentPrompt;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
 Roark.Webhook = Webhook;
 Roark.Config = Config;
@@ -1063,8 +1080,13 @@ export declare namespace Roark {
 
   export {
     SimulationEnvironment as SimulationEnvironment,
+    type SimulationEnvironmentCreateResponse as SimulationEnvironmentCreateResponse,
+    type SimulationEnvironmentUpdateResponse as SimulationEnvironmentUpdateResponse,
     type SimulationEnvironmentListResponse as SimulationEnvironmentListResponse,
+    type SimulationEnvironmentDeleteResponse as SimulationEnvironmentDeleteResponse,
     type SimulationEnvironmentGetByIDResponse as SimulationEnvironmentGetByIDResponse,
+    type SimulationEnvironmentCreateParams as SimulationEnvironmentCreateParams,
+    type SimulationEnvironmentUpdateParams as SimulationEnvironmentUpdateParams,
     type SimulationEnvironmentListParams as SimulationEnvironmentListParams,
   };
 
@@ -1080,12 +1102,14 @@ export declare namespace Roark {
     type CustomerFlowUpdateResponse as CustomerFlowUpdateResponse,
     type CustomerFlowListResponse as CustomerFlowListResponse,
     type CustomerFlowDeleteResponse as CustomerFlowDeleteResponse,
+    type CustomerFlowDuplicateResponse as CustomerFlowDuplicateResponse,
     type CustomerFlowGetByIDResponse as CustomerFlowGetByIDResponse,
     type CustomerFlowReplaceGraphResponse as CustomerFlowReplaceGraphResponse,
     type CustomerFlowUpdateHappyPathResponse as CustomerFlowUpdateHappyPathResponse,
     type CustomerFlowCreateParams as CustomerFlowCreateParams,
     type CustomerFlowUpdateParams as CustomerFlowUpdateParams,
     type CustomerFlowListParams as CustomerFlowListParams,
+    type CustomerFlowDuplicateParams as CustomerFlowDuplicateParams,
     type CustomerFlowReplaceGraphParams as CustomerFlowReplaceGraphParams,
     type CustomerFlowUpdateHappyPathParams as CustomerFlowUpdateHappyPathParams,
   };
@@ -1122,6 +1146,15 @@ export declare namespace Roark {
     type AgentEndpointCreateParams as AgentEndpointCreateParams,
     type AgentEndpointUpdateParams as AgentEndpointUpdateParams,
     type AgentEndpointListParams as AgentEndpointListParams,
+  };
+
+  export {
+    AgentPrompt as AgentPrompt,
+    type AgentPromptUpdateResponse as AgentPromptUpdateResponse,
+    type AgentPromptListResponse as AgentPromptListResponse,
+    type AgentPromptListVersionsResponse as AgentPromptListVersionsResponse,
+    type AgentPromptUpdateParams as AgentPromptUpdateParams,
+    type AgentPromptListVersionsParams as AgentPromptListVersionsParams,
   };
 
   export {

@@ -220,6 +220,22 @@ export declare namespace SimulationRunParams {
       flows?: Array<Plan.Flow>;
 
       /**
+       * Let the run add metrics by itself off the attached flows, on top of the
+       * `metrics` named here.
+       *
+       * Two attach this way today: Agent Expectations wherever an attached flow has
+       * agent expectations written on it, and Keypad Entry wherever one has steps where
+       * the agent is expected to press keys. Both grade something authored on the flow
+       * that nothing else measures, which is why it is on by default.
+       *
+       * Set false when the `metrics` list is meant to be exhaustive: a plan testing only
+       * whether the caller can complete the flow may not want the agent graded on its
+       * expectations as well. False also pins the plan against any automatic metric
+       * Roark adds later.
+       */
+      includeAutomaticMetrics?: boolean;
+
+      /**
        * Also collect each attached flow's own metrics, on top of the `metrics` named
        * here.
        *
@@ -523,7 +539,8 @@ export declare namespace SimulationRunParams {
 
     /**
      * Semantic conditions that trigger end of call. The LLM evaluates the conversation
-     * against these conditions. Empty array disables the feature.
+     * against these conditions. Defaults to the template's `defaultEndCallReasons`, as
+     * returned by GET /v1/simulation/template. Pass an empty array to run with none.
      */
     endCallReasons?: Array<string>;
 

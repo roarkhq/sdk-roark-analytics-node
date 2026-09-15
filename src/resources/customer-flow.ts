@@ -81,6 +81,29 @@ export class CustomerFlow extends APIResource {
   }
 
   /**
+   * Deep-copies a flow into a new project-owned flow. The copy carries the source's
+   * description, branching mode, linked agents, flow-level expectations and
+   * flow-owned metrics. A scripted flow copies its whole step graph; an improv flow
+   * copies its variants (personas, briefs, expectations). Duplicating a
+   * Roark-managed flow is how you customise it. Voicemail flows are Roark-managed
+   * and cannot be duplicated.
+   *
+   * @example
+   * ```ts
+   * const response = await client.customerFlow.duplicate(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  duplicate(
+    flowID: string,
+    body: CustomerFlowDuplicateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerFlowDuplicateResponse> {
+    return this._client.post(path`/v1/customer-flow/${flowID}/duplicate`, { body, ...options });
+  }
+
+  /**
    * Returns a customer flow with its happy path, edge cases, expectations and linked
    * agents. Scripted flows also carry their step graph.
    *
@@ -165,12 +188,23 @@ export class CustomerFlow extends APIResource {
  * step is a root wired straight from the start of the flow, so a merge target
  * parked there would also be reachable directly.
  *
+ * A `CUSTOMER_TURN` describes what the simulated customer says and the persona
+ * phrases it; a `CUSTOMER_VERBATIM_TURN` is said word for word, and one placed as
+ * a top-level step opens the call the moment it connects, before the agent speaks.
+ * `CUSTOMER_FIRST_MESSAGE` is the retired name for that opening case: still
+ * accepted, stored and returned as `CUSTOMER_VERBATIM_TURN`.
+ *
  * The two DTMF types are mirror images and both require `dtmfDigits`.
  * `CUSTOMER_DTMF` is keys the simulated caller presses while navigating your
  * agent. `AGENT_DTMF` is keys your agent under test is expected to press while
  * navigating a menu the simulation is playing, so its digits are an assertion the
  * run is graded against rather than an instruction, and it counts as an agent turn
  * for role alternation.
+ *
+ * In a STRICT flow an `AGENT_TURN` may carry its own `offScriptPolicy`, which
+ * replaces the flow-level one at that step. Omit it (or send null) to follow the
+ * flow's policy. Use it where one missed step makes the rest of the call
+ * meaningless: an authentication menu, say, with `then: HANG_UP_INVALIDATE`.
  */
 export type FlowStep =
   | FlowStep.UnionMember0
@@ -180,7 +214,8 @@ export type FlowStep =
   | FlowStep.UnionMember4
   | FlowStep.UnionMember5
   | FlowStep.UnionMember6
-  | FlowStep.UnionMember7;
+  | FlowStep.UnionMember7
+  | FlowStep.UnionMember8;
 
 export namespace FlowStep {
   export interface UnionMember0 {
@@ -192,9 +227,25 @@ export namespace FlowStep {
 
     nodeId?: string;
 
+    offScriptPolicy?: UnionMember0.OffScriptPolicy | null;
+
     ref?: string;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember0 {
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
+    }
   }
 
   export interface UnionMember1 {
@@ -226,6 +277,20 @@ export namespace FlowStep {
   }
 
   export interface UnionMember3 {
+    type: 'CUSTOMER_VERBATIM_TURN';
+
+    content?: string | null;
+
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export interface UnionMember4 {
     type: 'CUSTOMER_SILENCE';
 
     mergeIntoNodeIds?: Array<string>;
@@ -239,7 +304,7 @@ export namespace FlowStep {
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
-  export interface UnionMember4 {
+  export interface UnionMember5 {
     type: 'CUSTOMER_DTMF';
 
     dtmfDigits?: string | null;
@@ -253,7 +318,7 @@ export namespace FlowStep {
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
-  export interface UnionMember5 {
+  export interface UnionMember6 {
     type: 'AGENT_DTMF';
 
     dtmfDigits?: string | null;
@@ -267,7 +332,7 @@ export namespace FlowStep {
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
-  export interface UnionMember6 {
+  export interface UnionMember7 {
     type: 'VOICEMAIL';
 
     mergeIntoNodeIds?: Array<string>;
@@ -279,7 +344,7 @@ export namespace FlowStep {
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
-  export interface UnionMember7 {
+  export interface UnionMember8 {
     type: 'SCENARIO_LINK';
 
     linkedCustomerFlowId?: string | null;
@@ -346,6 +411,30 @@ export namespace CustomerFlowCreateResponse {
      */
     happyPath: ScriptedCustomerFlow.HappyPath | null;
 
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
     source: 'SYSTEM' | 'CUSTOM';
 
     title: string;
@@ -496,6 +585,8 @@ export namespace CustomerFlowCreateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -578,7 +669,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -719,6 +813,13 @@ export namespace CustomerFlowCreateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -811,6 +912,8 @@ export namespace CustomerFlowCreateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -893,7 +996,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -1036,10 +1142,41 @@ export namespace CustomerFlowCreateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -1213,6 +1350,8 @@ export namespace CustomerFlowCreateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -1295,7 +1434,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -1436,6 +1578,13 @@ export namespace CustomerFlowCreateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1526,6 +1675,8 @@ export namespace CustomerFlowCreateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -1608,7 +1759,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -1749,6 +1903,13 @@ export namespace CustomerFlowCreateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1922,6 +2083,8 @@ export namespace CustomerFlowCreateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -2004,7 +2167,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -2145,6 +2311,13 @@ export namespace CustomerFlowCreateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -2230,6 +2403,8 @@ export namespace CustomerFlowCreateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -2312,7 +2487,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -2453,6 +2631,13 @@ export namespace CustomerFlowCreateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -2513,6 +2698,30 @@ export namespace CustomerFlowUpdateResponse {
      */
     happyPath: ScriptedCustomerFlow.HappyPath | null;
 
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
     source: 'SYSTEM' | 'CUSTOM';
 
     title: string;
@@ -2663,6 +2872,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -2745,7 +2956,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -2886,6 +3100,13 @@ export namespace CustomerFlowUpdateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -2978,6 +3199,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -3060,7 +3283,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -3203,10 +3429,41 @@ export namespace CustomerFlowUpdateResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -3380,6 +3637,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -3462,7 +3721,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -3603,6 +3865,13 @@ export namespace CustomerFlowUpdateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -3693,6 +3962,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -3775,7 +4046,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -3916,6 +4190,13 @@ export namespace CustomerFlowUpdateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -4089,6 +4370,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -4171,7 +4454,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -4312,6 +4598,13 @@ export namespace CustomerFlowUpdateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -4397,6 +4690,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -4479,7 +4774,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -4620,6 +4918,13 @@ export namespace CustomerFlowUpdateResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -4683,6 +4988,30 @@ export namespace CustomerFlowListResponse {
      */
     happyPath: ScriptedCustomerFlow.HappyPath | null;
 
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
     source: 'SYSTEM' | 'CUSTOM';
 
     title: string;
@@ -4833,6 +5162,8 @@ export namespace CustomerFlowListResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -4915,7 +5246,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -5056,6 +5390,13 @@ export namespace CustomerFlowListResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -5148,6 +5489,8 @@ export namespace CustomerFlowListResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -5230,7 +5573,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -5373,10 +5719,41 @@ export namespace CustomerFlowListResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -5550,6 +5927,8 @@ export namespace CustomerFlowListResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -5632,7 +6011,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -5773,6 +6155,13 @@ export namespace CustomerFlowListResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -5863,6 +6252,8 @@ export namespace CustomerFlowListResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -5945,7 +6336,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -6086,6 +6480,13 @@ export namespace CustomerFlowListResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -6259,6 +6660,8 @@ export namespace CustomerFlowListResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -6341,7 +6744,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -6482,6 +6888,13 @@ export namespace CustomerFlowListResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -6567,6 +6980,8 @@ export namespace CustomerFlowListResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -6649,7 +7064,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -6792,6 +7210,13 @@ export namespace CustomerFlowListResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -6827,6 +7252,2293 @@ export namespace CustomerFlowDeleteResponse {
      * Whether the flow was deleted
      */
     deleted: boolean;
+  }
+}
+
+export interface CustomerFlowDuplicateResponse {
+  /**
+   * The conversation a simulated customer has with the agent under test.
+   */
+  data:
+    | CustomerFlowDuplicateResponse.ScriptedCustomerFlow
+    | CustomerFlowDuplicateResponse.ImprovCustomerFlow
+    | CustomerFlowDuplicateResponse.VoicemailCustomerFlow;
+}
+
+export namespace CustomerFlowDuplicateResponse {
+  /**
+   * A flow whose conversation is written out as a graph of turns.
+   */
+  export interface ScriptedCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<ScriptedCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<ScriptedCustomerFlow.Agent>;
+
+    /**
+     * How a run walks the graph. DETERMINISTIC ("Simulate every path" in the app)
+     * places one call per variant, each following its path exactly whatever the agent
+     * says. ADAPTIVE ("Adapt to your agent") collapses the paths into one call PER
+     * PERSONA, on which the simulated customer picks a branch from what the agent
+     * actually said. Both modes speak the exact authored lines, and neither changes
+     * how metrics or expectations grade.
+     */
+    branchingMode: 'DETERMINISTIC' | 'ADAPTIVE';
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    /**
+     * Every other way of running this flow.
+     */
+    edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
+
+    /**
+     * One path through a scripted flow. The path engine owns which paths exist, so
+     * editing the graph is what creates and removes these.
+     */
+    happyPath: ScriptedCustomerFlow.HappyPath | null;
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'SCRIPTED';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    description?: string | null;
+
+    /**
+     * The conversation, as a graph of steps. Present on a single flow; omitted from
+     * the list, where reading it would mean walking the project step graph once per
+     * row.
+     */
+    graph?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace ScriptedCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One path through a scripted flow. The path engine owns which paths exist, so
+     * editing the graph is what creates and removes these.
+     */
+    export interface EdgeCase {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<EdgeCase.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: EdgeCase.Environment | null;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      personaOverride: EdgeCase.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      /**
+       * The one path through the graph this variant runs, in order. Linear by
+       * construction, so these steps never nest.
+       */
+      steps: Array<CustomerFlowAPI.FlowStep>;
+
+      title: string;
+
+      type: 'SCRIPTED';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+
+      systemKey?: string | null;
+    }
+
+    export namespace EdgeCase {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        backgroundNoiseVolume: number;
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+
+    /**
+     * One path through a scripted flow. The path engine owns which paths exist, so
+     * editing the graph is what creates and removes these.
+     */
+    export interface HappyPath {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<HappyPath.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: HappyPath.Environment | null;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      personaOverride: HappyPath.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      /**
+       * The one path through the graph this variant runs, in order. Linear by
+       * construction, so these steps never nest.
+       */
+      steps: Array<CustomerFlowAPI.FlowStep>;
+
+      title: string;
+
+      type: 'SCRIPTED';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+
+      systemKey?: string | null;
+    }
+
+    export namespace HappyPath {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        backgroundNoiseVolume: number;
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
+    }
+  }
+
+  /**
+   * A flow whose conversation is not written out: each variant gives the simulated
+   * customer a brief and lets it improvise.
+   */
+  export interface ImprovCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<ImprovCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<ImprovCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    /**
+     * Every other way of running this flow.
+     */
+    edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
+
+    /**
+     * One brief to run an improv flow with.
+     */
+    happyPath: ImprovCustomerFlow.HappyPath | null;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'IMPROV';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    description?: string | null;
+  }
+
+  export namespace ImprovCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One brief to run an improv flow with.
+     */
+    export interface EdgeCase {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<EdgeCase.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: EdgeCase.Environment | null;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      personaOverride: EdgeCase.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'IMPROV';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+
+      /**
+       * The brief the simulated customer improvises from.
+       */
+      prompt?: string | null;
+
+      systemKey?: string | null;
+    }
+
+    export namespace EdgeCase {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        backgroundNoiseVolume: number;
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+
+    /**
+     * One brief to run an improv flow with.
+     */
+    export interface HappyPath {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<HappyPath.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: HappyPath.Environment | null;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      personaOverride: HappyPath.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'IMPROV';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+
+      /**
+       * The brief the simulated customer improvises from.
+       */
+      prompt?: string | null;
+
+      systemKey?: string | null;
+    }
+
+    export namespace HappyPath {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        backgroundNoiseVolume: number;
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+  }
+
+  /**
+   * A flow that leaves a voicemail. Curated by Roark, read-only.
+   */
+  export interface VoicemailCustomerFlow {
+    id: string;
+
+    agentExpectations: Array<VoicemailCustomerFlow.AgentExpectation>;
+
+    /**
+     * The agents this flow is run against.
+     */
+    agents: Array<VoicemailCustomerFlow.Agent>;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    /**
+     * Every other way of running this flow.
+     */
+    edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
+
+    /**
+     * One voicemail greeting.
+     */
+    happyPath: VoicemailCustomerFlow.HappyPath | null;
+
+    source: 'SYSTEM' | 'CUSTOM';
+
+    title: string;
+
+    type: 'VOICEMAIL';
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+
+    description?: string | null;
+  }
+
+  export namespace VoicemailCustomerFlow {
+    /**
+     * One thing the agent under test is graded against.
+     */
+    export interface AgentExpectation {
+      id: string;
+
+      /**
+       * What the agent under test is graded against.
+       */
+      prompt: string;
+    }
+
+    export interface Agent {
+      /**
+       * Unique identifier of the agent
+       */
+      id: string;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * Custom identifier for the agent
+       */
+      customId: string | null;
+
+      /**
+       * Description of the agent
+       */
+      description: string | null;
+
+      /**
+       * Name of the agent
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
+     * One voicemail greeting.
+     */
+    export interface EdgeCase {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<EdgeCase.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: EdgeCase.Environment | null;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      personaOverride: EdgeCase.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'VOICEMAIL';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+
+      systemKey?: string | null;
+    }
+
+    export namespace EdgeCase {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        backgroundNoiseVolume: number;
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
+
+    /**
+     * One voicemail greeting.
+     */
+    export interface HappyPath {
+      id: string;
+
+      /**
+       * Graded on top of the flow's own expectations, for this variant only.
+       */
+      additionalExpectations: Array<HappyPath.AdditionalExpectation>;
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      environment: HappyPath.Environment | null;
+
+      isGenerated: boolean;
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      personaOverride: HappyPath.PersonaOverride | null;
+
+      precededByCustomerFlowId: string | null;
+
+      precededByCustomerFlowVariantId: string | null;
+
+      title: string;
+
+      type: 'VOICEMAIL';
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+
+      systemKey?: string | null;
+    }
+
+    export namespace HappyPath {
+      /**
+       * One thing the agent under test is graded against.
+       */
+      export interface AdditionalExpectation {
+        id: string;
+
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
+
+      /**
+       * A simulation environment: the ambient conditions a customer flow variant runs
+       * under. The list includes both your own and the ones Roark curates for every
+       * project.
+       */
+      export interface Environment {
+        id: string;
+
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        backgroundNoiseVolume: number;
+
+        /**
+         * Creation timestamp in ISO 8601 format
+         */
+        createdAt: string;
+
+        name: string;
+
+        /**
+         * Last update timestamp in ISO 8601 format
+         */
+        updatedAt: string;
+
+        description?: string | null;
+      }
+
+      /**
+       * The persona this runs as instead of the happy path's. Null means it inherits.
+       */
+      export interface PersonaOverride {
+        /**
+         * Unique identifier of the persona
+         */
+        id: string;
+
+        /**
+         * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+         * optional variants
+         */
+        accent:
+          | 'US'
+          | 'US_X_SOUTH'
+          | 'GB'
+          | 'ES'
+          | 'DE'
+          | 'IN'
+          | 'FR'
+          | 'NL'
+          | 'SA'
+          | 'GR'
+          | 'AU'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JP'
+          | 'NZ'
+          | 'PH'
+          | 'SG'
+          | 'MY'
+          | 'HK'
+          | 'TR'
+          | 'PT'
+          | 'IL';
+
+        /**
+         * How old the caller sounds and behaves. Only ages the persona's accent has a
+         * voice for are accepted; defaults to ADULT, which every accent supports.
+         */
+        age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+        /**
+         * Background noise setting
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'DRIVING'
+          | 'OFFICE'
+          | 'THUNDERSTORM';
+
+        /**
+         * Base emotional state of the persona
+         */
+        baseEmotion:
+          | 'NEUTRAL'
+          | 'CHEERFUL'
+          | 'CONFUSED'
+          | 'FRUSTRATED'
+          | 'SKEPTICAL'
+          | 'RUSHED'
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
+
+        /**
+         * How the persona confirms information
+         */
+        confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+
+        /**
+         * Gender of the persona
+         */
+        gender: 'MALE' | 'FEMALE';
+
+        /**
+         * Whether the persona uses filler words like "um" and "uh"
+         */
+        hasDisfluencies: boolean;
+
+        /**
+         * Maximum number of idle messages the persona will send before giving up
+         */
+        idleMessageMaxSpokenCount: number;
+
+        /**
+         * Whether the idle message counter resets when the agent speaks
+         */
+        idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+        /**
+         * Messages the persona will say when the agent goes silent during a call. null =
+         * "Automatic": language-appropriate defaults are used at call time.
+         */
+        idleMessages: Array<string> | null;
+
+        /**
+         * Seconds of silence before the persona sends an idle message
+         */
+        idleTimeoutSeconds: number;
+
+        /**
+         * How clearly the persona expresses their intentions
+         */
+        intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+        /**
+         * Primary language ISO 639-1 code for the persona
+         */
+        language:
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE';
+
+        /**
+         * How reliable the persona's memory is
+         */
+        memoryReliability: 'HIGH' | 'LOW';
+
+        /**
+         * The name the agent will identify as during conversations
+         */
+        name: string;
+
+        /**
+         * Additional custom properties about the persona
+         */
+        properties: { [key: string]: unknown };
+
+        /**
+         * Controls how quickly the persona responds to pauses in conversation (QUICK,
+         * NORMAL, RELAXED)
+         */
+        responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+
+        /**
+         * Speech clarity of the persona
+         */
+        speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+        /**
+         * Speech pace of the persona
+         */
+        speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+        /**
+         * Languages the persona can understand. Multilingual combinations are limited by
+         * multilingual speech recognition support.
+         */
+        understoodLanguages: Array<
+          | 'EN'
+          | 'ES'
+          | 'DE'
+          | 'HI'
+          | 'FR'
+          | 'NL'
+          | 'AR'
+          | 'EL'
+          | 'IT'
+          | 'ID'
+          | 'TH'
+          | 'JA'
+          | 'TL'
+          | 'MS'
+          | 'ZH'
+          | 'TR'
+          | 'PT'
+          | 'HE'
+        >;
+
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+
+        /**
+         * Background story and behavioral patterns for the persona
+         */
+        backstoryPrompt?: string | null;
+
+        /**
+         * Human-readable description of the persona
+         */
+        description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
+         * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+         */
+        secondaryLanguage?: 'EN' | null;
+      }
+    }
   }
 }
 
@@ -6880,6 +9592,30 @@ export namespace CustomerFlowGetByIDResponse {
      */
     happyPath: ScriptedCustomerFlow.HappyPath | null;
 
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models.
+     */
+    scriptAdherence: 'LOOSE' | 'STRICT';
+
     source: 'SYSTEM' | 'CUSTOM';
 
     title: string;
@@ -7030,6 +9766,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -7112,7 +9850,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -7253,6 +9994,13 @@ export namespace CustomerFlowGetByIDResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -7345,6 +10093,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -7427,7 +10177,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -7570,10 +10323,41 @@ export namespace CustomerFlowGetByIDResponse {
         description?: string | null;
 
         /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -7747,6 +10531,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -7829,7 +10615,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -7970,6 +10759,13 @@ export namespace CustomerFlowGetByIDResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -8060,6 +10856,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -8142,7 +10940,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -8283,6 +11084,13 @@ export namespace CustomerFlowGetByIDResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -8456,6 +11264,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -8538,7 +11348,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -8679,6 +11492,13 @@ export namespace CustomerFlowGetByIDResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -8764,6 +11584,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -8846,7 +11668,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -8987,6 +11812,13 @@ export namespace CustomerFlowGetByIDResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -9109,6 +11941,8 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -9191,7 +12025,10 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -9332,6 +12169,13 @@ export namespace CustomerFlowReplaceGraphResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -9422,6 +12266,8 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -9504,7 +12350,10 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -9645,6 +12494,13 @@ export namespace CustomerFlowReplaceGraphResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -9730,6 +12586,8 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'OFFICE'
           | 'THUNDERSTORM';
 
+        backgroundNoiseVolume: number;
+
         /**
          * Creation timestamp in ISO 8601 format
          */
@@ -9812,7 +12670,10 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -9953,6 +12814,13 @@ export namespace CustomerFlowReplaceGraphResponse {
          * Human-readable description of the persona
          */
         description?: string | null;
+
+        /**
+         * Label shown in place of the name across the dashboard (e.g. a short descriptor
+         * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+         * or set null to display the name itself.
+         */
+        displayName?: string | null;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -10058,6 +12926,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -10133,7 +13003,17 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -10274,6 +13154,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -10364,6 +13251,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -10439,7 +13328,17 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -10580,6 +13479,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -10665,6 +13571,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'OFFICE'
         | 'THUNDERSTORM';
 
+      backgroundNoiseVolume: number;
+
       /**
        * Creation timestamp in ISO 8601 format
        */
@@ -10740,7 +13648,17 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -10883,6 +13801,13 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       description?: string | null;
 
       /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
+
+      /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
@@ -10899,7 +13824,8 @@ export declare namespace CustomerFlowCreateParams {
     /**
      * The conversation, as a graph of steps. At most 100 steps across at most 25
      * paths. The variants come from the graph: one per path, so they are not sent
-     * here.
+     * here. A CUSTOMER_TURN describes what the simulated customer says and the persona
+     * phrases it; a CUSTOMER_VERBATIM_TURN is said word for word.
      */
     graph: Array<FlowStep>;
 
@@ -10925,6 +13851,31 @@ export declare namespace CustomerFlowCreateParams {
     branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
 
     description?: string | null;
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    offScriptPolicy?: CreateScriptedCustomerFlowInput.OffScriptPolicy | null;
+
+    /**
+     * How closely a run follows the script. LOOSE (default) hands the whole script to
+     * the simulated customer as one prompt; it keeps the call moving whatever your
+     * agent says. STRICT runs the script as a state machine on the agent service: at
+     * every agent step the simulated customer waits, silent, until your agent has said
+     * the expected line, and only then moves on. Scripted flows only; STRICT needs the
+     * agent-service transport and is not available on realtime models. (LOOSE is the
+     * default.)
+     */
+    scriptAdherence?: 'LOOSE' | 'STRICT';
   }
 
   export namespace CreateScriptedCustomerFlowInput {
@@ -10933,6 +13884,30 @@ export declare namespace CustomerFlowCreateParams {
        * What the agent under test is graded against.
        */
       prompt: string;
+    }
+
+    /**
+     * STRICT only. What the simulated customer does when your agent does not say the
+     * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+     * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+     * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+     * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
+     */
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
     }
   }
 
@@ -11037,6 +14012,31 @@ export interface CustomerFlowUpdateParams {
 
   description?: string | null;
 
+  /**
+   * STRICT only. What the simulated customer does when your agent does not say the
+   * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+   * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+   * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+   * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+   * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+   * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+   * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+   * stay silent, 3 attempts, hang up. The default for every agent step; an
+   * AGENT_TURN step can carry its own.
+   */
+  offScriptPolicy?: CustomerFlowUpdateParams.OffScriptPolicy | null;
+
+  /**
+   * Scripted flows only. How closely a run follows the script. LOOSE (default) hands
+   * the whole script to the simulated customer as one prompt; it keeps the call
+   * moving whatever your agent says. STRICT runs the script as a state machine on
+   * the agent service: at every agent step the simulated customer waits, silent,
+   * until your agent has said the expected line, and only then moves on. Scripted
+   * flows only; STRICT needs the agent-service transport and is not available on
+   * realtime models.
+   */
+  scriptAdherence?: 'LOOSE' | 'STRICT';
+
   title?: string;
 }
 
@@ -11046,6 +14046,30 @@ export namespace CustomerFlowUpdateParams {
      * What the agent under test is graded against.
      */
     prompt: string;
+  }
+
+  /**
+   * STRICT only. What the simulated customer does when your agent does not say the
+   * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
+   * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
+   * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
+   * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
+   * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+   * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+   * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+   * stay silent, 3 attempts, hang up. The default for every agent step; an
+   * AGENT_TURN step can carry its own.
+   */
+  export interface OffScriptPolicy {
+    maxAttempts: number;
+
+    reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+    then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+    sayLine?: string | null;
+
+    waitSeconds?: number | null;
   }
 }
 
@@ -11060,6 +14084,8 @@ export interface CustomerFlowListParams {
 
   type?: 'SCRIPTED' | 'IMPROV' | 'VOICEMAIL';
 }
+
+export interface CustomerFlowDuplicateParams {}
 
 export interface CustomerFlowReplaceGraphParams {
   /**
@@ -11117,12 +14143,14 @@ export declare namespace CustomerFlow {
     type CustomerFlowUpdateResponse as CustomerFlowUpdateResponse,
     type CustomerFlowListResponse as CustomerFlowListResponse,
     type CustomerFlowDeleteResponse as CustomerFlowDeleteResponse,
+    type CustomerFlowDuplicateResponse as CustomerFlowDuplicateResponse,
     type CustomerFlowGetByIDResponse as CustomerFlowGetByIDResponse,
     type CustomerFlowReplaceGraphResponse as CustomerFlowReplaceGraphResponse,
     type CustomerFlowUpdateHappyPathResponse as CustomerFlowUpdateHappyPathResponse,
     type CustomerFlowCreateParams as CustomerFlowCreateParams,
     type CustomerFlowUpdateParams as CustomerFlowUpdateParams,
     type CustomerFlowListParams as CustomerFlowListParams,
+    type CustomerFlowDuplicateParams as CustomerFlowDuplicateParams,
     type CustomerFlowReplaceGraphParams as CustomerFlowReplaceGraphParams,
     type CustomerFlowUpdateHappyPathParams as CustomerFlowUpdateHappyPathParams,
   };

@@ -68,6 +68,12 @@ export namespace SimulationJobGetByIDResponse {
      */
     enrichment: Data.Enrichment;
 
+    /**
+     * Present when the run was invalidated: it keeps its transcript and recording, but
+     * nothing scored it and it is excluded from every run total.
+     */
+    invalidation: Data.Invalidation | null;
+
     persona: Data.Persona;
 
     /**
@@ -195,6 +201,28 @@ export namespace SimulationJobGetByIDResponse {
       waitStartedAt?: string | null;
     }
 
+    /**
+     * Present when the run was invalidated: it keeps its transcript and recording, but
+     * nothing scored it and it is excluded from every run total.
+     */
+    export interface Invalidation {
+      /**
+       * When the run was invalidated.
+       */
+      invalidatedAt: string;
+
+      /**
+       * Why the result does not count. `SCRIPT_DIVERGED`: a strict flow went off script
+       * at a step whose off-script policy is HANG_UP_INVALIDATE.
+       */
+      reason: 'SCRIPT_DIVERGED';
+
+      /**
+       * One sentence: where the script was left and what your agent did instead.
+       */
+      detail?: string | null;
+    }
+
     export interface Persona {
       /**
        * Unique identifier of the persona
@@ -252,7 +280,17 @@ export namespace SimulationJobGetByIDResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -393,6 +431,13 @@ export namespace SimulationJobGetByIDResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -463,6 +508,12 @@ export namespace SimulationJobLookupResponse {
      */
     enrichment: Data.Enrichment;
 
+    /**
+     * Present when the run was invalidated: it keeps its transcript and recording, but
+     * nothing scored it and it is excluded from every run total.
+     */
+    invalidation: Data.Invalidation | null;
+
     persona: Data.Persona;
 
     /**
@@ -590,6 +641,28 @@ export namespace SimulationJobLookupResponse {
       waitStartedAt?: string | null;
     }
 
+    /**
+     * Present when the run was invalidated: it keeps its transcript and recording, but
+     * nothing scored it and it is excluded from every run total.
+     */
+    export interface Invalidation {
+      /**
+       * When the run was invalidated.
+       */
+      invalidatedAt: string;
+
+      /**
+       * Why the result does not count. `SCRIPT_DIVERGED`: a strict flow went off script
+       * at a step whose off-script policy is HANG_UP_INVALIDATE.
+       */
+      reason: 'SCRIPT_DIVERGED';
+
+      /**
+       * One sentence: where the script was left and what your agent did instead.
+       */
+      detail?: string | null;
+    }
+
     export interface Persona {
       /**
        * Unique identifier of the persona
@@ -647,7 +720,17 @@ export namespace SimulationJobLookupResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -788,6 +871,13 @@ export namespace SimulationJobLookupResponse {
        * Human-readable description of the persona
        */
       description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)

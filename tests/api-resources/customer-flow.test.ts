@@ -31,6 +31,13 @@ describe('resource customerFlow', () => {
           content: 'content',
           mergeIntoNodeIds: ['x'],
           nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          offScriptPolicy: {
+            maxAttempts: 1,
+            reaction: 'STAY_SILENT',
+            then: 'HANG_UP',
+            sayLine: 'x',
+            waitSeconds: 1,
+          },
           ref: 'x',
           steps: [
             {
@@ -38,6 +45,13 @@ describe('resource customerFlow', () => {
               content: 'content',
               mergeIntoNodeIds: ['x'],
               nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              offScriptPolicy: {
+                maxAttempts: 1,
+                reaction: 'STAY_SILENT',
+                then: 'HANG_UP',
+                sayLine: 'x',
+                waitSeconds: 1,
+              },
               ref: 'x',
               steps: [
                 {
@@ -45,6 +59,13 @@ describe('resource customerFlow', () => {
                   content: 'content',
                   mergeIntoNodeIds: ['x'],
                   nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                  offScriptPolicy: {
+                    maxAttempts: 1,
+                    reaction: 'STAY_SILENT',
+                    then: 'HANG_UP',
+                    sayLine: 'x',
+                    waitSeconds: 1,
+                  },
                   ref: 'x',
                   steps: [
                     {
@@ -52,6 +73,7 @@ describe('resource customerFlow', () => {
                       content: 'content',
                       mergeIntoNodeIds: [],
                       nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                      offScriptPolicy: { maxAttempts: 1, reaction: 'STAY_SILENT', then: 'HANG_UP' },
                       ref: 'x',
                       steps: [],
                     },
@@ -68,6 +90,14 @@ describe('resource customerFlow', () => {
       agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
       branchingMode: 'DETERMINISTIC',
       description: 'description',
+      offScriptPolicy: {
+        maxAttempts: 1,
+        reaction: 'STAY_SILENT',
+        then: 'HANG_UP',
+        sayLine: 'x',
+        waitSeconds: 1,
+      },
+      scriptAdherence: 'LOOSE',
     });
   });
 
@@ -94,6 +124,14 @@ describe('resource customerFlow', () => {
           agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
           branchingMode: 'DETERMINISTIC',
           description: 'description',
+          offScriptPolicy: {
+            maxAttempts: 1,
+            reaction: 'STAY_SILENT',
+            then: 'HANG_UP',
+            sayLine: 'x',
+            waitSeconds: 1,
+          },
+          scriptAdherence: 'LOOSE',
           title: 'x',
         },
         { path: '/_stainless_unknown_path' },
@@ -139,6 +177,28 @@ describe('resource customerFlow', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
+  test('duplicate', async () => {
+    const responsePromise = client.customerFlow.duplicate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('duplicate: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.customerFlow.duplicate(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {},
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
+
   test('getByID', async () => {
     const responsePromise = client.customerFlow.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -171,6 +231,13 @@ describe('resource customerFlow', () => {
           content: 'content',
           mergeIntoNodeIds: ['x'],
           nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          offScriptPolicy: {
+            maxAttempts: 1,
+            reaction: 'STAY_SILENT',
+            then: 'HANG_UP',
+            sayLine: 'x',
+            waitSeconds: 1,
+          },
           ref: 'x',
           steps: [
             {
@@ -178,6 +245,13 @@ describe('resource customerFlow', () => {
               content: 'content',
               mergeIntoNodeIds: ['x'],
               nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              offScriptPolicy: {
+                maxAttempts: 1,
+                reaction: 'STAY_SILENT',
+                then: 'HANG_UP',
+                sayLine: 'x',
+                waitSeconds: 1,
+              },
               ref: 'x',
               steps: [
                 {
@@ -185,6 +259,13 @@ describe('resource customerFlow', () => {
                   content: 'content',
                   mergeIntoNodeIds: ['x'],
                   nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                  offScriptPolicy: {
+                    maxAttempts: 1,
+                    reaction: 'STAY_SILENT',
+                    then: 'HANG_UP',
+                    sayLine: 'x',
+                    waitSeconds: 1,
+                  },
                   ref: 'x',
                   steps: [
                     {
@@ -192,6 +273,7 @@ describe('resource customerFlow', () => {
                       content: 'content',
                       mergeIntoNodeIds: [],
                       nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+                      offScriptPolicy: { maxAttempts: 1, reaction: 'STAY_SILENT', then: 'HANG_UP' },
                       ref: 'x',
                       steps: [],
                     },

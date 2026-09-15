@@ -55,6 +55,7 @@ describe('resource simulation', () => {
             variables: { customerName: 'John Doe', appointmentDate: '2024-02-15' },
           },
         ],
+        includeAutomaticMetrics: true,
         includeFlowMetrics: true,
         iterationCount: 1,
         maxConcurrentJobs: 5,

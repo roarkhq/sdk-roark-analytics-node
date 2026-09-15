@@ -136,7 +136,17 @@ export namespace SimulationPersonaCreateResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     /**
      * How the persona confirms information
@@ -277,6 +287,13 @@ export namespace SimulationPersonaCreateResponse {
      * Human-readable description of the persona
      */
     description?: string | null;
+
+    /**
+     * Label shown in place of the name across the dashboard (e.g. a short descriptor
+     * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+     * or set null to display the name itself.
+     */
+    displayName?: string | null;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -347,7 +364,17 @@ export namespace SimulationPersonaUpdateResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     /**
      * How the persona confirms information
@@ -488,6 +515,13 @@ export namespace SimulationPersonaUpdateResponse {
      * Human-readable description of the persona
      */
     description?: string | null;
+
+    /**
+     * Label shown in place of the name across the dashboard (e.g. a short descriptor
+     * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+     * or set null to display the name itself.
+     */
+    displayName?: string | null;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -560,7 +594,17 @@ export namespace SimulationPersonaListResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     /**
      * How the persona confirms information
@@ -701,6 +745,13 @@ export namespace SimulationPersonaListResponse {
      * Human-readable description of the persona
      */
     description?: string | null;
+
+    /**
+     * Label shown in place of the name across the dashboard (e.g. a short descriptor
+     * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+     * or set null to display the name itself.
+     */
+    displayName?: string | null;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -788,7 +839,17 @@ export namespace SimulationPersonaGetByIDResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     /**
      * How the persona confirms information
@@ -929,6 +990,13 @@ export namespace SimulationPersonaGetByIDResponse {
      * Human-readable description of the persona
      */
     description?: string | null;
+
+    /**
+     * Label shown in place of the name across the dashboard (e.g. a short descriptor
+     * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+     * or set null to display the name itself.
+     */
+    displayName?: string | null;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1027,7 +1095,17 @@ export interface SimulationPersonaCreateParams {
   /**
    * Base emotional state of the persona
    */
-  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+  baseEmotion?:
+    | 'NEUTRAL'
+    | 'CHEERFUL'
+    | 'CONFUSED'
+    | 'FRUSTRATED'
+    | 'SKEPTICAL'
+    | 'RUSHED'
+    | 'DISTRACTED'
+    | 'ANGRY'
+    | 'ANXIOUS'
+    | 'SAD';
 
   /**
    * How the persona confirms information
@@ -1038,6 +1116,13 @@ export interface SimulationPersonaCreateParams {
    * Human-readable description of the persona
    */
   description?: string | null;
+
+  /**
+   * Label shown in place of the name across the dashboard (e.g. a short descriptor
+   * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+   * or set null to display the name itself.
+   */
+  displayName?: string | null;
 
   /**
    * Whether the persona uses filler words like "um" and "uh"
@@ -1184,7 +1269,17 @@ export interface SimulationPersonaUpdateParams {
   /**
    * Base emotional state of the persona
    */
-  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+  baseEmotion?:
+    | 'NEUTRAL'
+    | 'CHEERFUL'
+    | 'CONFUSED'
+    | 'FRUSTRATED'
+    | 'SKEPTICAL'
+    | 'RUSHED'
+    | 'DISTRACTED'
+    | 'ANGRY'
+    | 'ANXIOUS'
+    | 'SAD';
 
   /**
    * How the persona confirms information
@@ -1195,6 +1290,13 @@ export interface SimulationPersonaUpdateParams {
    * Human-readable description of the persona
    */
   description?: string | null;
+
+  /**
+   * Label shown in place of the name across the dashboard (e.g. a short descriptor
+   * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+   * or set null to display the name itself.
+   */
+  displayName?: string | null;
 
   /**
    * Gender of the persona
