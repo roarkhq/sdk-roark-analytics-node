@@ -40,6 +40,9 @@ jobs:
       startsWith(github.head_ref, 'release-please--') &&
       (vars.RELEASE_PLEASE_ACTOR == '' || github.event.pull_request.user.login == vars.RELEASE_PLEASE_ACTOR)
     runs-on: ubuntu-latest
+    # The Python copy has this; a hung `gh pr merge --auto` otherwise holds the
+    # per-PR concurrency group for six hours.
+    timeout-minutes: 5
     permissions:
       contents: write
       pull-requests: write

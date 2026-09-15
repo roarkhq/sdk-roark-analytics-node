@@ -43,9 +43,16 @@ jobs:
        (github.event.workflow_run.event == 'push' &&
         github.event.workflow_run.conclusion == 'success'))
     runs-on: ubuntu-latest
+    # Ten minutes is generous for a fetch, a `gh pr create` and a merge; the
+    # Python copy has had it since the train was built. Without one a hung `gh`
+    # call holds the `fold-next-into-main` concurrency group for six hours, and
+    # every fold behind it queues.
+    timeout-minutes: 10
+    # `read`: every `gh` call below uses the App token minted in the first step,
+    # never GITHUB_TOKEN, so the job needs no write scope of its own. The Python
+    # copy already says so; this one asked for write it never used.
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
