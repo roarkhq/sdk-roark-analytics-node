@@ -66,6 +66,8 @@ export namespace Bundle {
 
     description?: string | null;
 
+    displayName?: string;
+
     endpoints?: Array<AgentConfig.Endpoint>;
 
     prompt?: string | null;
@@ -149,7 +151,17 @@ export namespace Bundle {
 
     backstoryPrompt?: string | null;
 
-    baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion?:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     confirmationStyle?: 'EXPLICIT' | 'VAGUE';
 
@@ -283,7 +295,7 @@ export namespace Bundle {
 
       sayLine?: string;
 
-      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       waitSeconds?: number;
     }
@@ -553,11 +565,27 @@ export interface ConfigFlowStep {
 
   mergeInto?: Array<string>;
 
+  offScript?: ConfigFlowStep.OffScript;
+
   ref?: string;
 
   silenceDurationSeconds?: number;
 
   steps?: Array<ConfigAPI.ConfigFlowStep>;
+}
+
+export namespace ConfigFlowStep {
+  export interface OffScript {
+    maxAttempts?: number;
+
+    reaction?: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+    sayLine?: string;
+
+    then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+    waitSeconds?: number;
+  }
 }
 
 export interface ConfigApplyResponse {
@@ -665,6 +693,8 @@ export namespace ConfigApplyParams {
 
     description?: string | null;
 
+    displayName?: string;
+
     endpoints?: Array<AgentConfig.Endpoint>;
 
     prompt?: string | null;
@@ -748,7 +778,17 @@ export namespace ConfigApplyParams {
 
     backstoryPrompt?: string | null;
 
-    baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion?:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     confirmationStyle?: 'EXPLICIT' | 'VAGUE';
 
@@ -882,7 +922,7 @@ export namespace ConfigApplyParams {
 
       sayLine?: string;
 
-      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       waitSeconds?: number;
     }
@@ -1157,6 +1197,8 @@ export namespace ConfigDiffParams {
 
     description?: string | null;
 
+    displayName?: string;
+
     endpoints?: Array<AgentConfig.Endpoint>;
 
     prompt?: string | null;
@@ -1240,7 +1282,17 @@ export namespace ConfigDiffParams {
 
     backstoryPrompt?: string | null;
 
-    baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion?:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     confirmationStyle?: 'EXPLICIT' | 'VAGUE';
 
@@ -1374,7 +1426,7 @@ export namespace ConfigDiffParams {
 
       sayLine?: string;
 
-      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       waitSeconds?: number;
     }
