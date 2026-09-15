@@ -273,9 +273,13 @@ export namespace SimulationJobGetByIDResponse {
         | 'CHILDREN_PLAYING'
         | 'CITY'
         | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
         | 'DRIVING'
+        | 'LIBRARY'
         | 'OFFICE'
-        | 'THUNDERSTORM';
+        | 'THUNDERSTORM'
+        | 'TRAIN';
 
       /**
        * Base emotional state of the persona
@@ -714,9 +718,13 @@ export namespace SimulationJobLookupResponse {
         | 'CHILDREN_PLAYING'
         | 'CITY'
         | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
         | 'DRIVING'
+        | 'LIBRARY'
         | 'OFFICE'
-        | 'THUNDERSTORM';
+        | 'THUNDERSTORM'
+        | 'TRAIN';
 
       /**
        * Base emotional state of the persona

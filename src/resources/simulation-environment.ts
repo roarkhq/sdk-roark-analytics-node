@@ -124,9 +124,13 @@ export namespace SimulationEnvironmentCreateResponse {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     backgroundNoiseVolume: number;
 
@@ -170,9 +174,13 @@ export namespace SimulationEnvironmentUpdateResponse {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     backgroundNoiseVolume: number;
 
@@ -217,9 +225,13 @@ export namespace SimulationEnvironmentListResponse {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     backgroundNoiseVolume: number;
 
@@ -298,9 +310,13 @@ export namespace SimulationEnvironmentGetByIDResponse {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     backgroundNoiseVolume: number;
 
@@ -330,9 +346,13 @@ export interface SimulationEnvironmentCreateParams {
     | 'CHILDREN_PLAYING'
     | 'CITY'
     | 'COFFEE_SHOP'
+    | 'CONSTRUCTION'
+    | 'CRYING_BABY'
     | 'DRIVING'
+    | 'LIBRARY'
     | 'OFFICE'
-    | 'THUNDERSTORM';
+    | 'THUNDERSTORM'
+    | 'TRAIN';
 
   /**
    * Display name, shown wherever a flow variant references the environment
@@ -362,9 +382,13 @@ export interface SimulationEnvironmentUpdateParams {
     | 'CHILDREN_PLAYING'
     | 'CITY'
     | 'COFFEE_SHOP'
+    | 'CONSTRUCTION'
+    | 'CRYING_BABY'
     | 'DRIVING'
+    | 'LIBRARY'
     | 'OFFICE'
-    | 'THUNDERSTORM';
+    | 'THUNDERSTORM'
+    | 'TRAIN';
 
   /**
    * How loud the bed plays, as a gain from 0 (silent) to 1 (as loud as the caller).
