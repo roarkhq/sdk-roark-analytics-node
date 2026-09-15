@@ -453,9 +453,13 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'CHILDREN_PLAYING'
           | 'CITY'
           | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
           | 'DRIVING'
+          | 'LIBRARY'
           | 'OFFICE'
-          | 'THUNDERSTORM';
+          | 'THUNDERSTORM'
+          | 'TRAIN';
 
         /**
          * Base emotional state of the persona

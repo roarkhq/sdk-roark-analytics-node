@@ -145,9 +145,13 @@ export namespace Bundle {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     backstoryPrompt?: string | null;
 
@@ -772,9 +776,13 @@ export namespace ConfigApplyParams {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     backstoryPrompt?: string | null;
 
@@ -1276,9 +1284,13 @@ export namespace ConfigDiffParams {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     backstoryPrompt?: string | null;
 

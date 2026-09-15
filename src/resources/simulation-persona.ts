@@ -129,9 +129,13 @@ export namespace SimulationPersonaCreateResponse {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     /**
      * Base emotional state of the persona
@@ -358,9 +362,13 @@ export namespace SimulationPersonaUpdateResponse {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     /**
      * Base emotional state of the persona
@@ -589,9 +597,13 @@ export namespace SimulationPersonaListResponse {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     /**
      * Base emotional state of the persona
@@ -835,9 +847,13 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'CHILDREN_PLAYING'
       | 'CITY'
       | 'COFFEE_SHOP'
+      | 'CONSTRUCTION'
+      | 'CRYING_BABY'
       | 'DRIVING'
+      | 'LIBRARY'
       | 'OFFICE'
-      | 'THUNDERSTORM';
+      | 'THUNDERSTORM'
+      | 'TRAIN';
 
     /**
      * Base emotional state of the persona
@@ -1087,9 +1103,13 @@ export interface SimulationPersonaCreateParams {
     | 'CHILDREN_PLAYING'
     | 'CITY'
     | 'COFFEE_SHOP'
+    | 'CONSTRUCTION'
+    | 'CRYING_BABY'
     | 'DRIVING'
+    | 'LIBRARY'
     | 'OFFICE'
-    | 'THUNDERSTORM';
+    | 'THUNDERSTORM'
+    | 'TRAIN';
 
   /**
    * Background story and behavioral patterns for the persona
@@ -1262,9 +1282,13 @@ export interface SimulationPersonaUpdateParams {
     | 'CHILDREN_PLAYING'
     | 'CITY'
     | 'COFFEE_SHOP'
+    | 'CONSTRUCTION'
+    | 'CRYING_BABY'
     | 'DRIVING'
+    | 'LIBRARY'
     | 'OFFICE'
-    | 'THUNDERSTORM';
+    | 'THUNDERSTORM'
+    | 'TRAIN';
 
   /**
    * Background story and behavioral patterns for the persona
