@@ -200,6 +200,11 @@ export class CustomerFlow extends APIResource {
  * navigating a menu the simulation is playing, so its digits are an assertion the
  * run is graded against rather than an instruction, and it counts as an agent turn
  * for role alternation.
+ *
+ * In a STRICT flow an `AGENT_TURN` may carry its own `offScriptPolicy`, which
+ * replaces the flow-level one at that step. Omit it (or send null) to follow the
+ * flow's policy. Use it where one missed step makes the rest of the call
+ * meaningless: an authentication menu, say, with `then: HANG_UP_INVALIDATE`.
  */
 export type FlowStep =
   | FlowStep.UnionMember0
@@ -222,9 +227,25 @@ export namespace FlowStep {
 
     nodeId?: string;
 
+    offScriptPolicy?: UnionMember0.OffScriptPolicy | null;
+
     ref?: string;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember0 {
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
+    }
   }
 
   export interface UnionMember1 {
@@ -396,8 +417,11 @@ export namespace CustomerFlowCreateResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
 
@@ -645,7 +669,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -969,7 +996,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -1131,15 +1161,18 @@ export namespace CustomerFlowCreateResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     export interface OffScriptPolicy {
       maxAttempts: number;
 
       reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
 
-      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       sayLine?: string | null;
 
@@ -1401,7 +1434,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -1723,7 +1759,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -2128,7 +2167,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -2445,7 +2487,10 @@ export namespace CustomerFlowCreateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -2659,8 +2704,11 @@ export namespace CustomerFlowUpdateResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
 
@@ -2908,7 +2956,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -3232,7 +3283,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -3394,15 +3448,18 @@ export namespace CustomerFlowUpdateResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     export interface OffScriptPolicy {
       maxAttempts: number;
 
       reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
 
-      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       sayLine?: string | null;
 
@@ -3664,7 +3721,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -3986,7 +4046,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -4391,7 +4454,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -4708,7 +4774,10 @@ export namespace CustomerFlowUpdateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -4925,8 +4994,11 @@ export namespace CustomerFlowListResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
 
@@ -5174,7 +5246,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -5498,7 +5573,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -5660,15 +5738,18 @@ export namespace CustomerFlowListResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     export interface OffScriptPolicy {
       maxAttempts: number;
 
       reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
 
-      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       sayLine?: string | null;
 
@@ -5930,7 +6011,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -6252,7 +6336,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -6657,7 +6744,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -6974,7 +7064,10 @@ export namespace CustomerFlowListResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -7218,8 +7311,11 @@ export namespace CustomerFlowDuplicateResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
 
@@ -7467,7 +7563,10 @@ export namespace CustomerFlowDuplicateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -7791,7 +7890,10 @@ export namespace CustomerFlowDuplicateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -7953,15 +8055,18 @@ export namespace CustomerFlowDuplicateResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     export interface OffScriptPolicy {
       maxAttempts: number;
 
       reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
 
-      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       sayLine?: string | null;
 
@@ -8223,7 +8328,10 @@ export namespace CustomerFlowDuplicateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -8545,7 +8653,10 @@ export namespace CustomerFlowDuplicateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -8950,7 +9061,10 @@ export namespace CustomerFlowDuplicateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -9267,7 +9381,10 @@ export namespace CustomerFlowDuplicateResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -9481,8 +9598,11 @@ export namespace CustomerFlowGetByIDResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     offScriptPolicy: ScriptedCustomerFlow.OffScriptPolicy | null;
 
@@ -9730,7 +9850,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -10054,7 +10177,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -10216,15 +10342,18 @@ export namespace CustomerFlowGetByIDResponse {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     export interface OffScriptPolicy {
       maxAttempts: number;
 
       reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
 
-      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       sayLine?: string | null;
 
@@ -10486,7 +10615,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -10808,7 +10940,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -11213,7 +11348,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -11530,7 +11668,10 @@ export namespace CustomerFlowGetByIDResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -11884,7 +12025,10 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -12206,7 +12350,10 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -12523,7 +12670,10 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'FRUSTRATED'
           | 'SKEPTICAL'
           | 'RUSHED'
-          | 'DISTRACTED';
+          | 'DISTRACTED'
+          | 'ANGRY'
+          | 'ANXIOUS'
+          | 'SAD';
 
         /**
          * How the persona confirms information
@@ -12853,7 +13003,17 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -13168,7 +13328,17 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -13478,7 +13648,17 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -13678,8 +13858,11 @@ export declare namespace CustomerFlowCreateParams {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     offScriptPolicy?: CreateScriptedCustomerFlowInput.OffScriptPolicy | null;
 
@@ -13709,15 +13892,18 @@ export declare namespace CustomerFlowCreateParams {
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
      * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
      * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-     * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-     * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+     * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+     * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+     * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+     * stay silent, 3 attempts, hang up. The default for every agent step; an
+     * AGENT_TURN step can carry its own.
      */
     export interface OffScriptPolicy {
       maxAttempts: number;
 
       reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
 
-      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
       sayLine?: string | null;
 
@@ -13832,8 +14018,11 @@ export interface CustomerFlowUpdateParams {
    * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
    * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
    * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-   * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-   * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+   * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+   * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+   * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+   * stay silent, 3 attempts, hang up. The default for every agent step; an
+   * AGENT_TURN step can carry its own.
    */
   offScriptPolicy?: CustomerFlowUpdateParams.OffScriptPolicy | null;
 
@@ -13865,15 +14054,18 @@ export namespace CustomerFlowUpdateParams {
    * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
    * without moving on, or SAY `sayLine`), and `then` runs when attempts reach
    * `maxAttempts` or your agent stays silent for `waitSeconds` (HANG_UP ends the
-   * call with ended reason SCRIPT_DIVERGED, MOVE_ON advances anyway, ADAPT hands the
-   * rest of the call to loose behaviour). Null: stay silent, 3 attempts, hang up.
+   * call with ended reason SCRIPT_DIVERGED, HANG_UP_INVALIDATE ends it the same way
+   * and invalidates the run so it is scored by nothing and counted nowhere, MOVE_ON
+   * advances anyway, ADAPT hands the rest of the call to loose behaviour). Null:
+   * stay silent, 3 attempts, hang up. The default for every agent step; an
+   * AGENT_TURN step can carry its own.
    */
   export interface OffScriptPolicy {
     maxAttempts: number;
 
     reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
 
-    then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT';
+    then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
     sayLine?: string | null;
 

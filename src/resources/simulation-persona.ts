@@ -136,7 +136,17 @@ export namespace SimulationPersonaCreateResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     /**
      * How the persona confirms information
@@ -354,7 +364,17 @@ export namespace SimulationPersonaUpdateResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     /**
      * How the persona confirms information
@@ -574,7 +594,17 @@ export namespace SimulationPersonaListResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     /**
      * How the persona confirms information
@@ -809,7 +839,17 @@ export namespace SimulationPersonaGetByIDResponse {
     /**
      * Base emotional state of the persona
      */
-    baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+    baseEmotion:
+      | 'NEUTRAL'
+      | 'CHEERFUL'
+      | 'CONFUSED'
+      | 'FRUSTRATED'
+      | 'SKEPTICAL'
+      | 'RUSHED'
+      | 'DISTRACTED'
+      | 'ANGRY'
+      | 'ANXIOUS'
+      | 'SAD';
 
     /**
      * How the persona confirms information
@@ -1055,7 +1095,17 @@ export interface SimulationPersonaCreateParams {
   /**
    * Base emotional state of the persona
    */
-  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+  baseEmotion?:
+    | 'NEUTRAL'
+    | 'CHEERFUL'
+    | 'CONFUSED'
+    | 'FRUSTRATED'
+    | 'SKEPTICAL'
+    | 'RUSHED'
+    | 'DISTRACTED'
+    | 'ANGRY'
+    | 'ANXIOUS'
+    | 'SAD';
 
   /**
    * How the persona confirms information
@@ -1219,7 +1269,17 @@ export interface SimulationPersonaUpdateParams {
   /**
    * Base emotional state of the persona
    */
-  baseEmotion?: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+  baseEmotion?:
+    | 'NEUTRAL'
+    | 'CHEERFUL'
+    | 'CONFUSED'
+    | 'FRUSTRATED'
+    | 'SKEPTICAL'
+    | 'RUSHED'
+    | 'DISTRACTED'
+    | 'ANGRY'
+    | 'ANXIOUS'
+    | 'SAD';
 
   /**
    * How the persona confirms information

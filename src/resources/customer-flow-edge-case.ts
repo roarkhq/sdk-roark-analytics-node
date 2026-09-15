@@ -274,7 +274,17 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -589,7 +599,17 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -899,7 +919,17 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -1228,7 +1258,17 @@ export namespace CustomerFlowEdgeCaseAddResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -1543,7 +1583,17 @@ export namespace CustomerFlowEdgeCaseAddResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -1853,7 +1903,17 @@ export namespace CustomerFlowEdgeCaseAddResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -2182,7 +2242,17 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -2497,7 +2567,17 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
@@ -2807,7 +2887,17 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
       /**
        * Base emotional state of the persona
        */
-      baseEmotion: 'NEUTRAL' | 'CHEERFUL' | 'CONFUSED' | 'FRUSTRATED' | 'SKEPTICAL' | 'RUSHED' | 'DISTRACTED';
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
 
       /**
        * How the persona confirms information
