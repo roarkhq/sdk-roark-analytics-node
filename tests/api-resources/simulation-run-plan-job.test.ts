@@ -36,6 +36,17 @@ describe('resource simulationRunPlanJob', () => {
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
+  test('cancel', async () => {
+    const responsePromise = client.simulationRunPlanJob.cancel('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
   test('getByID', async () => {
     const responsePromise = client.simulationRunPlanJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');
     const rawResponse = await responsePromise.asResponse();

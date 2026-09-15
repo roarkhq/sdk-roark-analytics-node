@@ -234,9 +234,10 @@ export namespace SimulationPersonaCreateResponse {
 
     /**
      * Controls how quickly the persona responds to pauses in conversation (QUICK,
-     * NORMAL, RELAXED)
+     * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+     * for several seconds.
      */
-    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
     /**
      * Speech clarity of the persona
@@ -462,9 +463,10 @@ export namespace SimulationPersonaUpdateResponse {
 
     /**
      * Controls how quickly the persona responds to pauses in conversation (QUICK,
-     * NORMAL, RELAXED)
+     * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+     * for several seconds.
      */
-    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
     /**
      * Speech clarity of the persona
@@ -692,9 +694,10 @@ export namespace SimulationPersonaListResponse {
 
     /**
      * Controls how quickly the persona responds to pauses in conversation (QUICK,
-     * NORMAL, RELAXED)
+     * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+     * for several seconds.
      */
-    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
     /**
      * Speech clarity of the persona
@@ -937,9 +940,10 @@ export namespace SimulationPersonaGetByIDResponse {
 
     /**
      * Controls how quickly the persona responds to pauses in conversation (QUICK,
-     * NORMAL, RELAXED)
+     * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+     * for several seconds.
      */
-    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK';
+    responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
     /**
      * Speech clarity of the persona
@@ -1167,9 +1171,10 @@ export interface SimulationPersonaCreateParams {
 
   /**
    * Controls how quickly the persona responds to pauses in conversation (QUICK,
-   * NORMAL, RELAXED)
+   * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+   * for several seconds.
    */
-  responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
+  responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
   /**
    * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1374,9 +1379,10 @@ export interface SimulationPersonaUpdateParams {
 
   /**
    * Controls how quickly the persona responds to pauses in conversation (QUICK,
-   * NORMAL, RELAXED)
+   * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+   * for several seconds.
    */
-  responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK';
+  responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 
   /**
    * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)

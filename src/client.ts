@@ -46,6 +46,20 @@ import {
   AgentPromptUpdateResponse,
 } from './resources/agent-prompt';
 import {
+  Benchmark,
+  BenchmarkGetLeaderboardParams,
+  BenchmarkGetLeaderboardResponse,
+  BenchmarkGetTargetParams,
+  BenchmarkGetTargetResponse,
+  BenchmarkListMetricsParams,
+  BenchmarkListMetricsResponse,
+  BenchmarkListSuitesResponse,
+  BenchmarkListTargetHistoryParams,
+  BenchmarkListTargetHistoryResponse,
+  BenchmarkListTargetScoreSamplesParams,
+  BenchmarkListTargetScoreSamplesResponse,
+} from './resources/benchmark';
+import {
   Call,
   CallAppendToolInvocationsParams,
   CallAppendToolInvocationsResponse,
@@ -190,6 +204,7 @@ import {
 } from './resources/simulation-run-plan';
 import {
   SimulationRunPlanJob,
+  SimulationRunPlanJobCancelResponse,
   SimulationRunPlanJobGetByIDResponse,
   SimulationRunPlanJobListParams,
   SimulationRunPlanJobListResponse,
@@ -943,6 +958,7 @@ export class Roark {
   agentPrompt: API.AgentPrompt = new API.AgentPrompt(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
   webhook: API.Webhook = new API.Webhook(this);
+  benchmark: API.Benchmark = new API.Benchmark(this);
   config: API.Config = new API.Config(this);
 }
 
@@ -966,6 +982,7 @@ Roark.AgentEndpoint = AgentEndpoint;
 Roark.AgentPrompt = AgentPrompt;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
 Roark.Webhook = Webhook;
+Roark.Benchmark = Benchmark;
 Roark.Config = Config;
 
 export declare namespace Roark {
@@ -1061,6 +1078,7 @@ export declare namespace Roark {
   export {
     SimulationRunPlanJob as SimulationRunPlanJob,
     type SimulationRunPlanJobListResponse as SimulationRunPlanJobListResponse,
+    type SimulationRunPlanJobCancelResponse as SimulationRunPlanJobCancelResponse,
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
     type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
     type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,
@@ -1176,6 +1194,21 @@ export declare namespace Roark {
     type WebhookGetByIDResponse as WebhookGetByIDResponse,
     type WebhookCreateParams as WebhookCreateParams,
     type WebhookListParams as WebhookListParams,
+  };
+
+  export {
+    Benchmark as Benchmark,
+    type BenchmarkGetLeaderboardResponse as BenchmarkGetLeaderboardResponse,
+    type BenchmarkGetTargetResponse as BenchmarkGetTargetResponse,
+    type BenchmarkListMetricsResponse as BenchmarkListMetricsResponse,
+    type BenchmarkListSuitesResponse as BenchmarkListSuitesResponse,
+    type BenchmarkListTargetHistoryResponse as BenchmarkListTargetHistoryResponse,
+    type BenchmarkListTargetScoreSamplesResponse as BenchmarkListTargetScoreSamplesResponse,
+    type BenchmarkGetLeaderboardParams as BenchmarkGetLeaderboardParams,
+    type BenchmarkGetTargetParams as BenchmarkGetTargetParams,
+    type BenchmarkListMetricsParams as BenchmarkListMetricsParams,
+    type BenchmarkListTargetHistoryParams as BenchmarkListTargetHistoryParams,
+    type BenchmarkListTargetScoreSamplesParams as BenchmarkListTargetScoreSamplesParams,
   };
 
   export {

@@ -139,12 +139,14 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobListResponse</a></code>
+- <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobCancelResponse</a></code>
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobGetByIDResponse</a></code>
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobStartResponse</a></code>
 
 Methods:
 
 - <code title="get /v1/simulation/plan/jobs">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">list</a>({ ...params }) -> SimulationRunPlanJobListResponse</code>
+- <code title="post /v1/simulation/plan/job/{jobId}/cancel">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">cancel</a>(jobID) -> SimulationRunPlanJobCancelResponse</code>
 - <code title="get /v1/simulation/plan/job/{jobId}">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">getByID</a>(jobID) -> SimulationRunPlanJobGetByIDResponse</code>
 - <code title="post /v1/simulation/plan/{planId}/job">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">start</a>(planID, { ...params }) -> SimulationRunPlanJobStartResponse</code>
 
@@ -310,6 +312,26 @@ Methods:
 - <code title="get /v1/webhook">client.webhook.<a href="./src/resources/webhook.ts">list</a>({ ...params }) -> WebhookListResponse</code>
 - <code title="delete /v1/webhook/{webhookId}">client.webhook.<a href="./src/resources/webhook.ts">delete</a>(webhookID) -> WebhookDeleteResponse</code>
 - <code title="get /v1/webhook/{webhookId}">client.webhook.<a href="./src/resources/webhook.ts">getByID</a>(webhookID) -> WebhookGetByIDResponse</code>
+
+# Benchmark
+
+Types:
+
+- <code><a href="./src/resources/benchmark.ts">BenchmarkGetLeaderboardResponse</a></code>
+- <code><a href="./src/resources/benchmark.ts">BenchmarkGetTargetResponse</a></code>
+- <code><a href="./src/resources/benchmark.ts">BenchmarkListMetricsResponse</a></code>
+- <code><a href="./src/resources/benchmark.ts">BenchmarkListSuitesResponse</a></code>
+- <code><a href="./src/resources/benchmark.ts">BenchmarkListTargetHistoryResponse</a></code>
+- <code><a href="./src/resources/benchmark.ts">BenchmarkListTargetScoreSamplesResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/benchmark/leaderboard">client.benchmark.<a href="./src/resources/benchmark.ts">getLeaderboard</a>({ ...params }) -> BenchmarkGetLeaderboardResponse</code>
+- <code title="get /v1/benchmark/target/{targetKey}">client.benchmark.<a href="./src/resources/benchmark.ts">getTarget</a>(targetKey, { ...params }) -> BenchmarkGetTargetResponse</code>
+- <code title="get /v1/benchmark/metric">client.benchmark.<a href="./src/resources/benchmark.ts">listMetrics</a>({ ...params }) -> BenchmarkListMetricsResponse</code>
+- <code title="get /v1/benchmark/suite">client.benchmark.<a href="./src/resources/benchmark.ts">listSuites</a>() -> BenchmarkListSuitesResponse</code>
+- <code title="get /v1/benchmark/target/{targetKey}/history">client.benchmark.<a href="./src/resources/benchmark.ts">listTargetHistory</a>(targetKey, { ...params }) -> BenchmarkListTargetHistoryResponse</code>
+- <code title="get /v1/benchmark/target/{targetKey}/score-sample">client.benchmark.<a href="./src/resources/benchmark.ts">listTargetScoreSamples</a>(targetKey, { ...params }) -> BenchmarkListTargetScoreSamplesResponse</code>
 
 # Config
 

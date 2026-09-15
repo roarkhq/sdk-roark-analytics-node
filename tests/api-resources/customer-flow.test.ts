@@ -193,7 +193,10 @@ describe('resource customerFlow', () => {
     await expect(
       client.customerFlow.duplicate(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        {},
+        {
+          agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+          title: 'Reschedule an appointment (v2)',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Roark.NotFoundError);
