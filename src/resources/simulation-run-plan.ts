@@ -139,6 +139,34 @@ export namespace SimulationRunPlanCreateResponse {
       agentEndpoints: Array<RunPlan.AgentEndpoint>;
 
       /**
+       * The value of `comparisonProperty` every other value is measured against, such as
+       * `NONE` for `BACKGROUND_NOISE`. `null` when no comparison is declared, or when
+       * the property has no obvious norm and none was chosen.
+       */
+      comparisonBaseline: string | null;
+
+      /**
+       * The property of the caller or their surroundings this plan investigates, such as
+       * `BACKGROUND_NOISE`. The run report compares the arms on it. `null` means the
+       * report works out for itself which property varies.
+       */
+      comparisonProperty:
+        | 'ACCENT'
+        | 'AGE'
+        | 'BACKGROUND_NOISE'
+        | 'BACKGROUND_NOISE_VOLUME'
+        | 'BASE_EMOTION'
+        | 'CONFIRMATION_STYLE'
+        | 'GENDER'
+        | 'INTENT_CLARITY'
+        | 'LANGUAGE'
+        | 'MEMORY_RELIABILITY'
+        | 'RESPONSE_TIMING'
+        | 'SPEECH_CLARITY'
+        | 'SPEECH_PACE'
+        | null;
+
+      /**
        * When the run plan was created
        */
       createdAt: string;
@@ -227,13 +255,6 @@ export namespace SimulationRunPlanCreateResponse {
        * Personas included in this run plan. Only meaningful alongside `scenarios`.
        */
       personas: Array<RunPlan.Persona>;
-
-      /**
-       * The flow variant this plan's runs are measured against: the run report shows
-       * every other flow variant in the run as a difference from it. `null` means the
-       * plan declares no experiment.
-       */
-      referenceCustomerFlowVariantId: string | null;
 
       /**
        * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
@@ -434,6 +455,34 @@ export namespace SimulationRunPlanUpdateResponse {
     agentEndpoints: Array<Data.AgentEndpoint>;
 
     /**
+     * The value of `comparisonProperty` every other value is measured against, such as
+     * `NONE` for `BACKGROUND_NOISE`. `null` when no comparison is declared, or when
+     * the property has no obvious norm and none was chosen.
+     */
+    comparisonBaseline: string | null;
+
+    /**
+     * The property of the caller or their surroundings this plan investigates, such as
+     * `BACKGROUND_NOISE`. The run report compares the arms on it. `null` means the
+     * report works out for itself which property varies.
+     */
+    comparisonProperty:
+      | 'ACCENT'
+      | 'AGE'
+      | 'BACKGROUND_NOISE'
+      | 'BACKGROUND_NOISE_VOLUME'
+      | 'BASE_EMOTION'
+      | 'CONFIRMATION_STYLE'
+      | 'GENDER'
+      | 'INTENT_CLARITY'
+      | 'LANGUAGE'
+      | 'MEMORY_RELIABILITY'
+      | 'RESPONSE_TIMING'
+      | 'SPEECH_CLARITY'
+      | 'SPEECH_PACE'
+      | null;
+
+    /**
      * When the run plan was created
      */
     createdAt: string;
@@ -522,13 +571,6 @@ export namespace SimulationRunPlanUpdateResponse {
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
-
-    /**
-     * The flow variant this plan's runs are measured against: the run report shows
-     * every other flow variant in the run as a difference from it. `null` means the
-     * plan declares no experiment.
-     */
-    referenceCustomerFlowVariantId: string | null;
 
     /**
      * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
@@ -693,6 +735,34 @@ export namespace SimulationRunPlanListResponse {
     agentEndpoints: Array<Data.AgentEndpoint>;
 
     /**
+     * The value of `comparisonProperty` every other value is measured against, such as
+     * `NONE` for `BACKGROUND_NOISE`. `null` when no comparison is declared, or when
+     * the property has no obvious norm and none was chosen.
+     */
+    comparisonBaseline: string | null;
+
+    /**
+     * The property of the caller or their surroundings this plan investigates, such as
+     * `BACKGROUND_NOISE`. The run report compares the arms on it. `null` means the
+     * report works out for itself which property varies.
+     */
+    comparisonProperty:
+      | 'ACCENT'
+      | 'AGE'
+      | 'BACKGROUND_NOISE'
+      | 'BACKGROUND_NOISE_VOLUME'
+      | 'BASE_EMOTION'
+      | 'CONFIRMATION_STYLE'
+      | 'GENDER'
+      | 'INTENT_CLARITY'
+      | 'LANGUAGE'
+      | 'MEMORY_RELIABILITY'
+      | 'RESPONSE_TIMING'
+      | 'SPEECH_CLARITY'
+      | 'SPEECH_PACE'
+      | null;
+
+    /**
      * When the run plan was created
      */
     createdAt: string;
@@ -781,13 +851,6 @@ export namespace SimulationRunPlanListResponse {
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
-
-    /**
-     * The flow variant this plan's runs are measured against: the run report shows
-     * every other flow variant in the run as a difference from it. `null` means the
-     * plan declares no experiment.
-     */
-    referenceCustomerFlowVariantId: string | null;
 
     /**
      * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
@@ -980,6 +1043,34 @@ export namespace SimulationRunPlanGetByIDResponse {
     agentEndpoints: Array<Data.AgentEndpoint>;
 
     /**
+     * The value of `comparisonProperty` every other value is measured against, such as
+     * `NONE` for `BACKGROUND_NOISE`. `null` when no comparison is declared, or when
+     * the property has no obvious norm and none was chosen.
+     */
+    comparisonBaseline: string | null;
+
+    /**
+     * The property of the caller or their surroundings this plan investigates, such as
+     * `BACKGROUND_NOISE`. The run report compares the arms on it. `null` means the
+     * report works out for itself which property varies.
+     */
+    comparisonProperty:
+      | 'ACCENT'
+      | 'AGE'
+      | 'BACKGROUND_NOISE'
+      | 'BACKGROUND_NOISE_VOLUME'
+      | 'BASE_EMOTION'
+      | 'CONFIRMATION_STYLE'
+      | 'GENDER'
+      | 'INTENT_CLARITY'
+      | 'LANGUAGE'
+      | 'MEMORY_RELIABILITY'
+      | 'RESPONSE_TIMING'
+      | 'SPEECH_CLARITY'
+      | 'SPEECH_PACE'
+      | null;
+
+    /**
      * When the run plan was created
      */
     createdAt: string;
@@ -1068,13 +1159,6 @@ export namespace SimulationRunPlanGetByIDResponse {
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
-
-    /**
-     * The flow variant this plan's runs are measured against: the run report shows
-     * every other flow variant in the run as a difference from it. `null` means the
-     * plan declares no experiment.
-     */
-    referenceCustomerFlowVariantId: string | null;
 
     /**
      * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
@@ -1249,6 +1333,46 @@ export interface SimulationRunPlanCreateParams {
   autoRun?: boolean;
 
   /**
+   * The value of `comparisonProperty` every other value is measured against, for
+   * example `NONE` for `BACKGROUND_NOISE` or `NORMAL` for `SPEECH_PACE`. Must be a
+   * value that property can take.
+   *
+   * Stored rather than assumed, so the report can say "compared against US accent"
+   * instead of implying Roark decided which value is normal. Most properties have an
+   * obvious baseline and the dashboard prefills it; `GENDER` has none, so choose the
+   * one you are testing against.
+   */
+  comparisonBaseline?: string | null;
+
+  /**
+   * The property this run plan investigates: the one thing its arms differ by.
+   *
+   * Set it and the run report compares the arms on that property, so a run answers
+   * "what did background noise cost" rather than just "what did each arm score".
+   * Every value is a field already recorded on each call, so the report can label an
+   * arm `CRYING_BABY` rather than repeating a flow variant's title.
+   *
+   * Omit it and the report still compares when it can: it detects which property
+   * varies across the arms. Setting it is what tells the written summary what you
+   * were trying to find out, which detection cannot infer.
+   */
+  comparisonProperty?:
+    | 'ACCENT'
+    | 'AGE'
+    | 'BACKGROUND_NOISE'
+    | 'BACKGROUND_NOISE_VOLUME'
+    | 'BASE_EMOTION'
+    | 'CONFIRMATION_STYLE'
+    | 'GENDER'
+    | 'INTENT_CLARITY'
+    | 'LANGUAGE'
+    | 'MEMORY_RELIABILITY'
+    | 'RESPONSE_TIMING'
+    | 'SPEECH_CLARITY'
+    | 'SPEECH_PACE'
+    | null;
+
+  /**
    * Description of the run plan
    */
   description?: string;
@@ -1336,21 +1460,6 @@ export interface SimulationRunPlanCreateParams {
    * `flows`, where each variant carries its own persona.
    */
   personas?: Array<SimulationRunPlanCreateParams.Persona>;
-
-  /**
-   * Name one flow variant as this run plan's REFERENCE arm.
-   *
-   * Every other flow variant the plan runs is then reported as a difference from
-   * this one, which is how a run answers "what did the change cost" rather than just
-   * "what did it score". The usual shape is one flow whose default variant is the
-   * control (say, a silent environment) plus one edge-case variant per condition
-   * under test.
-   *
-   * The variant must be one this plan actually runs: it has to belong to a flow in
-   * `flows`, and that flow's variant selection has to resolve to it. Omit or set
-   * null for a plan that is a general health check rather than an experiment.
-   */
-  referenceCustomerFlowVariantId?: string | null;
 
   /**
    * @deprecated Deprecated: use `flows` instead. Scenarios to include in this run
@@ -1505,6 +1614,46 @@ export interface SimulationRunPlanUpdateParams {
   agentEndpoints?: Array<SimulationRunPlanUpdateParams.AgentEndpoint>;
 
   /**
+   * The value every other value is measured against. See `POST /v1/simulation/plan`.
+   *
+   * A real value cannot be sent on its own: the property it belongs to decides which
+   * values are legal, and an omitted property means "leave unchanged", which this
+   * endpoint cannot check a baseline against. Send `comparisonProperty` with it, or
+   * get a `400`.
+   *
+   * `null` on its own IS allowed, and clears just the baseline while leaving the
+   * property set. Nothing needs validating when clearing, and a property with no
+   * baseline is a real state: the report falls back to that property's own norm, and
+   * `GENDER` has no norm to fall back to.
+   */
+  comparisonBaseline?: string | null;
+
+  /**
+   * The property this plan investigates. Send `null` to clear the comparison; omit
+   * the field to leave it unchanged. See `POST /v1/simulation/plan`.
+   *
+   * The pair moves together. Sending `comparisonProperty` also sets
+   * `comparisonBaseline` to whatever this request carries, or to `null` if it
+   * carries none, because a baseline is a value of one specific property and keeping
+   * the old one would store a pair that is not valid.
+   */
+  comparisonProperty?:
+    | 'ACCENT'
+    | 'AGE'
+    | 'BACKGROUND_NOISE'
+    | 'BACKGROUND_NOISE_VOLUME'
+    | 'BASE_EMOTION'
+    | 'CONFIRMATION_STYLE'
+    | 'GENDER'
+    | 'INTENT_CLARITY'
+    | 'LANGUAGE'
+    | 'MEMORY_RELIABILITY'
+    | 'RESPONSE_TIMING'
+    | 'SPEECH_CLARITY'
+    | 'SPEECH_PACE'
+    | null;
+
+  /**
    * Description of the run plan
    */
   description?: string;
@@ -1593,13 +1742,6 @@ export interface SimulationRunPlanUpdateParams {
    * Personas to include in this run plan
    */
   personas?: Array<SimulationRunPlanUpdateParams.Persona>;
-
-  /**
-   * The reference arm every other flow variant in a run is reported as a difference
-   * from. Send `null` to clear it; omit the field to leave it unchanged. See
-   * `POST /v1/simulation/plan`.
-   */
-  referenceCustomerFlowVariantId?: string | null;
 
   /**
    * @deprecated Deprecated: use `flows` instead. Replaces the scenarios on this run
