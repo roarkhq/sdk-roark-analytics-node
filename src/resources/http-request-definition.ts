@@ -114,6 +114,13 @@ export namespace HTTPRequestDefinitionCreateResponse {
     headers: { [key: string]: string };
 
     /**
+     * Whether this definition is managed by config-as-code. A managed definition is
+     * reconciled from your config: PUT returns 409, and changes belong in the config
+     * file (or detach it first).
+     */
+    isConfigManaged: boolean;
+
+    /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
     method: 'POST' | 'PUT' | 'PATCH' | 'GET';
@@ -183,6 +190,13 @@ export namespace HTTPRequestDefinitionUpdateResponse {
     headers: { [key: string]: string };
 
     /**
+     * Whether this definition is managed by config-as-code. A managed definition is
+     * reconciled from your config: PUT returns 409, and changes belong in the config
+     * file (or detach it first).
+     */
+    isConfigManaged: boolean;
+
+    /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
     method: 'POST' | 'PUT' | 'PATCH' | 'GET';
@@ -244,6 +258,13 @@ export namespace HTTPRequestDefinitionListResponse {
      * Request headers as key-value pairs
      */
     headers: { [key: string]: string };
+
+    /**
+     * Whether this definition is managed by config-as-code. A managed definition is
+     * reconciled from your config: PUT returns 409, and changes belong in the config
+     * file (or detach it first).
+     */
+    isConfigManaged: boolean;
 
     /**
      * HTTP method: POST, PUT, PATCH, or GET
@@ -325,6 +346,13 @@ export namespace HTTPRequestDefinitionGetByIDResponse {
      * Request headers as key-value pairs
      */
     headers: { [key: string]: string };
+
+    /**
+     * Whether this definition is managed by config-as-code. A managed definition is
+     * reconciled from your config: PUT returns 409, and changes belong in the config
+     * file (or detach it first).
+     */
+    isConfigManaged: boolean;
 
     /**
      * HTTP method: POST, PUT, PATCH, or GET
