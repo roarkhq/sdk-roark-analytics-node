@@ -272,6 +272,21 @@ export declare namespace SimulationRunParams {
       personas?: Array<Plan.Persona>;
 
       /**
+       * Name one flow variant as this run plan's REFERENCE arm.
+       *
+       * Every other flow variant the plan runs is then reported as a difference from
+       * this one, which is how a run answers "what did the change cost" rather than just
+       * "what did it score". The usual shape is one flow whose default variant is the
+       * control (say, a silent environment) plus one edge-case variant per condition
+       * under test.
+       *
+       * The variant must be one this plan actually runs: it has to belong to a flow in
+       * `flows`, and that flow's variant selection has to resolve to it. Omit or set
+       * null for a plan that is a general health check rather than an experiment.
+       */
+      referenceCustomerFlowVariantId?: string | null;
+
+      /**
        * @deprecated Deprecated: use `flows` instead. Scenarios to include in this run
        * plan. The same scenario ID can appear multiple times with different variables.
        */
