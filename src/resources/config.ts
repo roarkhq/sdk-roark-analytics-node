@@ -335,6 +335,8 @@ export namespace Bundle {
 
     name: string;
 
+    displayName?: string;
+
     filters?: Array<CollectorConfig.Filter>;
 
     status?: 'ACTIVE' | 'INACTIVE';
@@ -491,6 +493,8 @@ export namespace Bundle {
       | AlertConfig.AlertSimulationTrigger;
 
     actions?: AlertConfig.Actions;
+
+    displayName?: string;
 
     enabled?: boolean;
   }
@@ -1010,6 +1014,8 @@ export namespace ConfigApplyParams {
 
     name: string;
 
+    displayName?: string;
+
     filters?: Array<CollectorConfig.Filter>;
 
     status?: 'ACTIVE' | 'INACTIVE';
@@ -1166,6 +1172,8 @@ export namespace ConfigApplyParams {
       | AlertConfig.AlertSimulationTrigger;
 
     actions?: AlertConfig.Actions;
+
+    displayName?: string;
 
     enabled?: boolean;
   }
@@ -1539,6 +1547,8 @@ export namespace ConfigDiffParams {
 
     name: string;
 
+    displayName?: string;
+
     filters?: Array<CollectorConfig.Filter>;
 
     status?: 'ACTIVE' | 'INACTIVE';
@@ -1695,6 +1705,8 @@ export namespace ConfigDiffParams {
       | AlertConfig.AlertSimulationTrigger;
 
     actions?: AlertConfig.Actions;
+
+    displayName?: string;
 
     enabled?: boolean;
   }
