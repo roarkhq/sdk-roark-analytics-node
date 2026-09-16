@@ -61,6 +61,7 @@ describe('resource simulationRunPlan', () => {
       iterationCount: 1,
       maxConcurrentJobs: 5,
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+      referenceCustomerFlowVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       scenarios: [
         {
           id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -122,6 +123,7 @@ describe('resource simulationRunPlan', () => {
           ],
           name: 'x',
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+          referenceCustomerFlowVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           scenarios: [
             {
               id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
