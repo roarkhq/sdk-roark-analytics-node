@@ -597,6 +597,8 @@ export interface ConfigFlowStep {
 
   ref?: string;
 
+  requiredForValidRun?: boolean;
+
   silenceDurationSeconds?: number;
 
   steps?: Array<ConfigAPI.ConfigFlowStep>;
