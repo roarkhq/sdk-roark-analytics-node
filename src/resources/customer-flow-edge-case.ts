@@ -472,6 +472,12 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      */
     environment: ImprovFlowVariant.Environment | null;
 
+    /**
+     * The personas this brief hands the phone to, in order of first mention. Empty
+     * when the brief inherits the happy path's: read the happy path's list.
+     */
+    handoffPersonas: Array<ImprovFlowVariant.HandoffPersona>;
+
     isGenerated: boolean;
 
     /**
@@ -493,7 +499,9 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
     updatedAt: string;
 
     /**
-     * The brief the simulated customer improvises from.
+     * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
+     * hands the phone to that persona mid-call; the sentences around the mention say
+     * when.
      */
     prompt?: string | null;
 
@@ -550,6 +558,233 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
       updatedAt: string;
 
       description?: string | null;
+    }
+
+    export interface HandoffPersona {
+      /**
+       * Unique identifier of the persona
+       */
+      id: string;
+
+      /**
+       * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+       * optional variants
+       */
+      accent:
+        | 'US'
+        | 'US_X_SOUTH'
+        | 'GB'
+        | 'ES'
+        | 'DE'
+        | 'IN'
+        | 'FR'
+        | 'NL'
+        | 'SA'
+        | 'GR'
+        | 'AU'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JP'
+        | 'NZ'
+        | 'PH'
+        | 'SG'
+        | 'MY'
+        | 'HK'
+        | 'TR'
+        | 'PT'
+        | 'IL';
+
+      /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
+       * Background noise setting
+       */
+      backgroundNoise:
+        | 'NONE'
+        | 'AIRPORT'
+        | 'CHILDREN_PLAYING'
+        | 'CITY'
+        | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
+        | 'DRIVING'
+        | 'LIBRARY'
+        | 'OFFICE'
+        | 'THUNDERSTORM'
+        | 'TRAIN';
+
+      /**
+       * Base emotional state of the persona
+       */
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
+
+      /**
+       * How the persona confirms information
+       */
+      confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+      /**
+       * Creation timestamp
+       */
+      createdAt: string;
+
+      /**
+       * Gender of the persona
+       */
+      gender: 'MALE' | 'FEMALE';
+
+      /**
+       * Whether the persona uses filler words like "um" and "uh"
+       */
+      hasDisfluencies: boolean;
+
+      /**
+       * Maximum number of idle messages the persona will send before giving up
+       */
+      idleMessageMaxSpokenCount: number;
+
+      /**
+       * Whether the idle message counter resets when the agent speaks
+       */
+      idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+      /**
+       * Messages the persona will say when the agent goes silent during a call. null =
+       * "Automatic": language-appropriate defaults are used at call time.
+       */
+      idleMessages: Array<string> | null;
+
+      /**
+       * Seconds of silence before the persona sends an idle message
+       */
+      idleTimeoutSeconds: number;
+
+      /**
+       * How clearly the persona expresses their intentions
+       */
+      intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+      /**
+       * Primary language ISO 639-1 code for the persona
+       */
+      language:
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE';
+
+      /**
+       * How reliable the persona's memory is
+       */
+      memoryReliability: 'HIGH' | 'LOW';
+
+      /**
+       * The name the agent will identify as during conversations
+       */
+      name: string;
+
+      /**
+       * Additional custom properties about the persona
+       */
+      properties: { [key: string]: unknown };
+
+      /**
+       * Controls how quickly the persona responds to pauses in conversation (QUICK,
+       * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+       * for several seconds.
+       */
+      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
+
+      /**
+       * Speech clarity of the persona
+       */
+      speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+      /**
+       * Speech pace of the persona
+       */
+      speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+      /**
+       * Languages the persona can understand. Multilingual combinations are limited by
+       * multilingual speech recognition support.
+       */
+      understoodLanguages: Array<
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE'
+      >;
+
+      /**
+       * Last update timestamp
+       */
+      updatedAt: string;
+
+      /**
+       * Background story and behavioral patterns for the persona
+       */
+      backstoryPrompt?: string | null;
+
+      /**
+       * Human-readable description of the persona
+       */
+      description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
+
+      /**
+       * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+       */
+      secondaryLanguage?: 'EN' | null;
     }
 
     /**
@@ -1483,6 +1718,12 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      */
     environment: ImprovFlowVariant.Environment | null;
 
+    /**
+     * The personas this brief hands the phone to, in order of first mention. Empty
+     * when the brief inherits the happy path's: read the happy path's list.
+     */
+    handoffPersonas: Array<ImprovFlowVariant.HandoffPersona>;
+
     isGenerated: boolean;
 
     /**
@@ -1504,7 +1745,9 @@ export namespace CustomerFlowEdgeCaseAddResponse {
     updatedAt: string;
 
     /**
-     * The brief the simulated customer improvises from.
+     * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
+     * hands the phone to that persona mid-call; the sentences around the mention say
+     * when.
      */
     prompt?: string | null;
 
@@ -1561,6 +1804,233 @@ export namespace CustomerFlowEdgeCaseAddResponse {
       updatedAt: string;
 
       description?: string | null;
+    }
+
+    export interface HandoffPersona {
+      /**
+       * Unique identifier of the persona
+       */
+      id: string;
+
+      /**
+       * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+       * optional variants
+       */
+      accent:
+        | 'US'
+        | 'US_X_SOUTH'
+        | 'GB'
+        | 'ES'
+        | 'DE'
+        | 'IN'
+        | 'FR'
+        | 'NL'
+        | 'SA'
+        | 'GR'
+        | 'AU'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JP'
+        | 'NZ'
+        | 'PH'
+        | 'SG'
+        | 'MY'
+        | 'HK'
+        | 'TR'
+        | 'PT'
+        | 'IL';
+
+      /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
+       * Background noise setting
+       */
+      backgroundNoise:
+        | 'NONE'
+        | 'AIRPORT'
+        | 'CHILDREN_PLAYING'
+        | 'CITY'
+        | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
+        | 'DRIVING'
+        | 'LIBRARY'
+        | 'OFFICE'
+        | 'THUNDERSTORM'
+        | 'TRAIN';
+
+      /**
+       * Base emotional state of the persona
+       */
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
+
+      /**
+       * How the persona confirms information
+       */
+      confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+      /**
+       * Creation timestamp
+       */
+      createdAt: string;
+
+      /**
+       * Gender of the persona
+       */
+      gender: 'MALE' | 'FEMALE';
+
+      /**
+       * Whether the persona uses filler words like "um" and "uh"
+       */
+      hasDisfluencies: boolean;
+
+      /**
+       * Maximum number of idle messages the persona will send before giving up
+       */
+      idleMessageMaxSpokenCount: number;
+
+      /**
+       * Whether the idle message counter resets when the agent speaks
+       */
+      idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+      /**
+       * Messages the persona will say when the agent goes silent during a call. null =
+       * "Automatic": language-appropriate defaults are used at call time.
+       */
+      idleMessages: Array<string> | null;
+
+      /**
+       * Seconds of silence before the persona sends an idle message
+       */
+      idleTimeoutSeconds: number;
+
+      /**
+       * How clearly the persona expresses their intentions
+       */
+      intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+      /**
+       * Primary language ISO 639-1 code for the persona
+       */
+      language:
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE';
+
+      /**
+       * How reliable the persona's memory is
+       */
+      memoryReliability: 'HIGH' | 'LOW';
+
+      /**
+       * The name the agent will identify as during conversations
+       */
+      name: string;
+
+      /**
+       * Additional custom properties about the persona
+       */
+      properties: { [key: string]: unknown };
+
+      /**
+       * Controls how quickly the persona responds to pauses in conversation (QUICK,
+       * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+       * for several seconds.
+       */
+      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
+
+      /**
+       * Speech clarity of the persona
+       */
+      speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+      /**
+       * Speech pace of the persona
+       */
+      speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+      /**
+       * Languages the persona can understand. Multilingual combinations are limited by
+       * multilingual speech recognition support.
+       */
+      understoodLanguages: Array<
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE'
+      >;
+
+      /**
+       * Last update timestamp
+       */
+      updatedAt: string;
+
+      /**
+       * Background story and behavioral patterns for the persona
+       */
+      backstoryPrompt?: string | null;
+
+      /**
+       * Human-readable description of the persona
+       */
+      description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
+
+      /**
+       * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+       */
+      secondaryLanguage?: 'EN' | null;
     }
 
     /**
@@ -2494,6 +2964,12 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      */
     environment: ImprovFlowVariant.Environment | null;
 
+    /**
+     * The personas this brief hands the phone to, in order of first mention. Empty
+     * when the brief inherits the happy path's: read the happy path's list.
+     */
+    handoffPersonas: Array<ImprovFlowVariant.HandoffPersona>;
+
     isGenerated: boolean;
 
     /**
@@ -2515,7 +2991,9 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
     updatedAt: string;
 
     /**
-     * The brief the simulated customer improvises from.
+     * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
+     * hands the phone to that persona mid-call; the sentences around the mention say
+     * when.
      */
     prompt?: string | null;
 
@@ -2572,6 +3050,233 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
       updatedAt: string;
 
       description?: string | null;
+    }
+
+    export interface HandoffPersona {
+      /**
+       * Unique identifier of the persona
+       */
+      id: string;
+
+      /**
+       * Accent of the persona, defined using ISO 3166-1 alpha-2 country codes with
+       * optional variants
+       */
+      accent:
+        | 'US'
+        | 'US_X_SOUTH'
+        | 'GB'
+        | 'ES'
+        | 'DE'
+        | 'IN'
+        | 'FR'
+        | 'NL'
+        | 'SA'
+        | 'GR'
+        | 'AU'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JP'
+        | 'NZ'
+        | 'PH'
+        | 'SG'
+        | 'MY'
+        | 'HK'
+        | 'TR'
+        | 'PT'
+        | 'IL';
+
+      /**
+       * How old the caller sounds and behaves. Only ages the persona's accent has a
+       * voice for are accepted; defaults to ADULT, which every accent supports.
+       */
+      age: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      /**
+       * Background noise setting
+       */
+      backgroundNoise:
+        | 'NONE'
+        | 'AIRPORT'
+        | 'CHILDREN_PLAYING'
+        | 'CITY'
+        | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
+        | 'DRIVING'
+        | 'LIBRARY'
+        | 'OFFICE'
+        | 'THUNDERSTORM'
+        | 'TRAIN';
+
+      /**
+       * Base emotional state of the persona
+       */
+      baseEmotion:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
+
+      /**
+       * How the persona confirms information
+       */
+      confirmationStyle: 'EXPLICIT' | 'VAGUE';
+
+      /**
+       * Creation timestamp
+       */
+      createdAt: string;
+
+      /**
+       * Gender of the persona
+       */
+      gender: 'MALE' | 'FEMALE';
+
+      /**
+       * Whether the persona uses filler words like "um" and "uh"
+       */
+      hasDisfluencies: boolean;
+
+      /**
+       * Maximum number of idle messages the persona will send before giving up
+       */
+      idleMessageMaxSpokenCount: number;
+
+      /**
+       * Whether the idle message counter resets when the agent speaks
+       */
+      idleMessageResetCountOnUserSpeechEnabled: boolean;
+
+      /**
+       * Messages the persona will say when the agent goes silent during a call. null =
+       * "Automatic": language-appropriate defaults are used at call time.
+       */
+      idleMessages: Array<string> | null;
+
+      /**
+       * Seconds of silence before the persona sends an idle message
+       */
+      idleTimeoutSeconds: number;
+
+      /**
+       * How clearly the persona expresses their intentions
+       */
+      intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+      /**
+       * Primary language ISO 639-1 code for the persona
+       */
+      language:
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE';
+
+      /**
+       * How reliable the persona's memory is
+       */
+      memoryReliability: 'HIGH' | 'LOW';
+
+      /**
+       * The name the agent will identify as during conversations
+       */
+      name: string;
+
+      /**
+       * Additional custom properties about the persona
+       */
+      properties: { [key: string]: unknown };
+
+      /**
+       * Controls how quickly the persona responds to pauses in conversation (QUICK,
+       * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
+       * for several seconds.
+       */
+      responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
+
+      /**
+       * Speech clarity of the persona
+       */
+      speechClarity: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+      /**
+       * Speech pace of the persona
+       */
+      speechPace: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+      /**
+       * Languages the persona can understand. Multilingual combinations are limited by
+       * multilingual speech recognition support.
+       */
+      understoodLanguages: Array<
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE'
+      >;
+
+      /**
+       * Last update timestamp
+       */
+      updatedAt: string;
+
+      /**
+       * Background story and behavioral patterns for the persona
+       */
+      backstoryPrompt?: string | null;
+
+      /**
+       * Human-readable description of the persona
+       */
+      description?: string | null;
+
+      /**
+       * Label shown in place of the name across the dashboard (e.g. a short descriptor
+       * like "Irate Escalator"). The persona still identifies as `name` on calls. Omit
+       * or set null to display the name itself.
+       */
+      displayName?: string | null;
+
+      /**
+       * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
+       */
+      secondaryLanguage?: 'EN' | null;
     }
 
     /**
