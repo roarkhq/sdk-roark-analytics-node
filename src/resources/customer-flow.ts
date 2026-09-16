@@ -210,6 +210,16 @@ export class CustomerFlow extends APIResource {
  * replaces the flow-level one at that step. Omit it (or send null) to follow the
  * flow's policy. Use it where one missed step makes the rest of the call
  * meaningless: an authentication menu, say, with `then: HANG_UP_INVALIDATE`.
+ *
+ * Any step may set `requiredForValidRun`, which marks a step the flow requires a
+ * run to reach for its result to count. A run that ends without ever reaching it
+ * is invalidated: it stays in the report, labelled with the step it never reached
+ * and where it stopped, and is left out of the run score and the success-criteria
+ * verdict. Put it on the step where the test itself begins, typically the first
+ * one after an IVR or a login, so an agent that never gets past the menu does not
+ * fail every check in a scenario it never started. A path may have one; a
+ * branching flow may mark one step per branch, and reaching any of them makes the
+ * call valid. A path that marks none behaves exactly as before.
  */
 export type FlowStep =
   | FlowStep.UnionMember0
@@ -236,6 +246,8 @@ export namespace FlowStep {
     offScriptPolicy?: UnionMember0.OffScriptPolicy | null;
 
     ref?: string;
+
+    requiredForValidRun?: boolean;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
@@ -265,6 +277,8 @@ export namespace FlowStep {
 
     ref?: string;
 
+    requiredForValidRun?: boolean;
+
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
@@ -278,6 +292,8 @@ export namespace FlowStep {
     nodeId?: string;
 
     ref?: string;
+
+    requiredForValidRun?: boolean;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
@@ -293,6 +309,8 @@ export namespace FlowStep {
 
     ref?: string;
 
+    requiredForValidRun?: boolean;
+
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
@@ -304,6 +322,8 @@ export namespace FlowStep {
     nodeId?: string;
 
     ref?: string;
+
+    requiredForValidRun?: boolean;
 
     silenceDurationSeconds?: number | null;
 
@@ -321,6 +341,8 @@ export namespace FlowStep {
 
     ref?: string;
 
+    requiredForValidRun?: boolean;
+
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
@@ -335,6 +357,8 @@ export namespace FlowStep {
 
     ref?: string;
 
+    requiredForValidRun?: boolean;
+
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
 
@@ -346,6 +370,8 @@ export namespace FlowStep {
     nodeId?: string;
 
     ref?: string;
+
+    requiredForValidRun?: boolean;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
@@ -360,6 +386,8 @@ export namespace FlowStep {
     nodeId?: string;
 
     ref?: string;
+
+    requiredForValidRun?: boolean;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
@@ -376,6 +404,8 @@ export namespace FlowStep {
     nodeId?: string;
 
     ref?: string;
+
+    requiredForValidRun?: boolean;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }

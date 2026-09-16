@@ -279,8 +279,10 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       createdAt: string;
 
       /**
-       * Present when the run was invalidated: it keeps its transcript and recording, but
-       * nothing scored it and it is excluded from every run total.
+       * Present when the run was invalidated: the call ended before a step its flow
+       * requires for a valid run, or a strict flow went off script at a step whose
+       * policy invalidates the run. It keeps its transcript and recording, but nothing
+       * scored it and it is excluded from every run total.
        */
       invalidation: SimulationJob.Invalidation | null;
 
@@ -382,8 +384,10 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       }
 
       /**
-       * Present when the run was invalidated: it keeps its transcript and recording, but
-       * nothing scored it and it is excluded from every run total.
+       * Present when the run was invalidated: the call ended before a step its flow
+       * requires for a valid run, or a strict flow went off script at a step whose
+       * policy invalidates the run. It keeps its transcript and recording, but nothing
+       * scored it and it is excluded from every run total.
        */
       export interface Invalidation {
         /**
@@ -395,7 +399,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
          * Why the result does not count. `SCRIPT_DIVERGED`: a strict flow went off script
          * at a step whose off-script policy is HANG_UP_INVALIDATE.
          */
-        reason: 'SCRIPT_DIVERGED';
+        reason: 'SCRIPT_DIVERGED' | 'REQUIRED_STEP_NOT_REACHED';
 
         /**
          * One sentence: where the script was left and what your agent did instead.
