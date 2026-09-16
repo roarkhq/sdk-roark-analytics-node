@@ -95,6 +95,20 @@ export namespace SimulationTemplateListResponse {
     slug: string;
 
     /**
+     * Set when this template is a property sweep: it runs ONE flow once per value of a
+     * single caller or environment property, and the report compares the values
+     * against `baseline`.
+     *
+     * This is what decides the size of the run. A sweep attaches the flow once per
+     * entry in `values`, so a plan built from it costs `values.length` times the calls
+     * a normal template would, before iterations. Read it before creating a plan you
+     * have to pay for.
+     *
+     * `null` for every other template.
+     */
+    sweep: Data.Sweep | null;
+
+    /**
      * The Pass/Fail checks this template attaches alongside its metrics.
      */
     thresholds: Array<Data.Threshold>;
@@ -180,6 +194,50 @@ export namespace SimulationTemplateListResponse {
        * Stable metric slug, e.g. "response_time"
        */
       slug: string;
+    }
+
+    /**
+     * Set when this template is a property sweep: it runs ONE flow once per value of a
+     * single caller or environment property, and the report compares the values
+     * against `baseline`.
+     *
+     * This is what decides the size of the run. A sweep attaches the flow once per
+     * entry in `values`, so a plan built from it costs `values.length` times the calls
+     * a normal template would, before iterations. Read it before creating a plan you
+     * have to pay for.
+     *
+     * `null` for every other template.
+     */
+    export interface Sweep {
+      /**
+       * The value the others are measured against, resolved to what a plan built from
+       * this template will actually record. `null` when the property has no obvious
+       * norm, and the report then compares against the best-performing value instead.
+       */
+      baseline: string | null;
+
+      /**
+       * The property this template varies across the flow it runs.
+       */
+      property:
+        | 'ACCENT'
+        | 'AGE'
+        | 'BACKGROUND_NOISE'
+        | 'BACKGROUND_NOISE_VOLUME'
+        | 'BASE_EMOTION'
+        | 'CONFIRMATION_STYLE'
+        | 'GENDER'
+        | 'INTENT_CLARITY'
+        | 'LANGUAGE'
+        | 'MEMORY_RELIABILITY'
+        | 'RESPONSE_TIMING'
+        | 'SPEECH_CLARITY'
+        | 'SPEECH_PACE';
+
+      /**
+       * Every value the template sweeps, in the order the plan attaches them.
+       */
+      values: Array<string>;
     }
 
     export interface Threshold {

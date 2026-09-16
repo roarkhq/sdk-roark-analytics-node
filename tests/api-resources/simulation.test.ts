@@ -43,6 +43,7 @@ describe('resource simulation', () => {
         ],
         comparisonBaseline: 'NONE',
         comparisonProperty: 'BACKGROUND_NOISE',
+        comparisonValues: ['NONE', 'CITY', 'TRAIN'],
         description: 'A run plan for testing inbound calls',
         endCallPhrases: ['goodbye'],
         endCallReasons: ['Order has been confirmed by the agent'],

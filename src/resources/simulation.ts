@@ -217,6 +217,20 @@ export declare namespace SimulationRunParams {
         | null;
 
       /**
+       * Which values of `comparisonProperty` to run. This is what the plan costs: the
+       * flow is attached once per value, so ten values is ten times the calls of one.
+       *
+       * Omit it to run every value the property has, which for `ACCENT` is more than
+       * twenty. Send a subset to narrow the sweep, for example three accents you
+       * actually serve. A `comparisonBaseline` outside this set is rejected, because it
+       * would anchor every difference to an arm the run never made.
+       *
+       * Not stored as a field: the arms are the values. Reading the plan back returns
+       * them as its flow attachments.
+       */
+      comparisonValues?: Array<string>;
+
+      /**
        * Description of the run plan
        */
       description?: string;
