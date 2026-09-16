@@ -44,6 +44,7 @@ export class Config extends APIResource {
 export interface Bundle {
   resources: Array<
     | Bundle.AgentConfig
+    | Bundle.HTTPRequestDefinitionConfig
     | Bundle.PersonaConfig
     | Bundle.ImprovFlowConfig
     | Bundle.ScriptedFlowConfig
@@ -81,8 +82,28 @@ export namespace Bundle {
 
       environment?: string;
 
+      outboundDialHttpRequestDefinition?: string;
+
+      outboundDialType?: 'NONE' | 'HTTP_REQUEST';
+
       type?: 'PHONE' | 'WEBSOCKET';
     }
+  }
+
+  export interface HTTPRequestDefinitionConfig {
+    kind: 'httpRequestDefinition';
+
+    name: string;
+
+    url: string;
+
+    body?: string;
+
+    description?: string | null;
+
+    headers?: { [key: string]: string };
+
+    method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
   }
 
   export interface PersonaConfig {
@@ -559,13 +580,16 @@ export interface ConfigFlowStep {
     | 'CUSTOMER_DTMF'
     | 'AGENT_DTMF'
     | 'VOICEMAIL'
-    | 'SCENARIO_LINK';
+    | 'SCENARIO_LINK'
+    | 'CUSTOMER_HANDOFF';
 
   content?: string;
 
   dtmfDigits?: string;
 
   flow?: string;
+
+  handoffPersona?: string;
 
   mergeInto?: Array<string>;
 
@@ -607,7 +631,15 @@ export namespace ConfigApplyResponse {
     export interface Change {
       configKey: string;
 
-      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric' | 'simulationPlan' | 'alert';
+      kind:
+        | 'agent'
+        | 'persona'
+        | 'httpRequestDefinition'
+        | 'flow'
+        | 'collector'
+        | 'metric'
+        | 'simulationPlan'
+        | 'alert';
 
       name: string;
 
@@ -620,6 +652,8 @@ export namespace ConfigApplyResponse {
       detail?: string;
 
       error?: string;
+
+      signingSecret?: string;
     }
 
     export interface Summary {
@@ -651,7 +685,15 @@ export namespace ConfigDiffResponse {
     export interface Change {
       configKey: string;
 
-      kind: 'agent' | 'persona' | 'flow' | 'collector' | 'metric' | 'simulationPlan' | 'alert';
+      kind:
+        | 'agent'
+        | 'persona'
+        | 'httpRequestDefinition'
+        | 'flow'
+        | 'collector'
+        | 'metric'
+        | 'simulationPlan'
+        | 'alert';
 
       name: string;
 
@@ -675,6 +717,7 @@ export namespace ConfigDiffResponse {
 export interface ConfigApplyParams {
   resources: Array<
     | ConfigApplyParams.AgentConfig
+    | ConfigApplyParams.HTTPRequestDefinitionConfig
     | ConfigApplyParams.PersonaConfig
     | ConfigApplyParams.ImprovFlowConfig
     | ConfigApplyParams.ScriptedFlowConfig
@@ -712,8 +755,28 @@ export namespace ConfigApplyParams {
 
       environment?: string;
 
+      outboundDialHttpRequestDefinition?: string;
+
+      outboundDialType?: 'NONE' | 'HTTP_REQUEST';
+
       type?: 'PHONE' | 'WEBSOCKET';
     }
+  }
+
+  export interface HTTPRequestDefinitionConfig {
+    kind: 'httpRequestDefinition';
+
+    name: string;
+
+    url: string;
+
+    body?: string;
+
+    description?: string | null;
+
+    headers?: { [key: string]: string };
+
+    method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
   }
 
   export interface PersonaConfig {
@@ -1183,6 +1246,7 @@ export namespace ConfigApplyParams {
 export interface ConfigDiffParams {
   resources: Array<
     | ConfigDiffParams.AgentConfig
+    | ConfigDiffParams.HTTPRequestDefinitionConfig
     | ConfigDiffParams.PersonaConfig
     | ConfigDiffParams.ImprovFlowConfig
     | ConfigDiffParams.ScriptedFlowConfig
@@ -1220,8 +1284,28 @@ export namespace ConfigDiffParams {
 
       environment?: string;
 
+      outboundDialHttpRequestDefinition?: string;
+
+      outboundDialType?: 'NONE' | 'HTTP_REQUEST';
+
       type?: 'PHONE' | 'WEBSOCKET';
     }
+  }
+
+  export interface HTTPRequestDefinitionConfig {
+    kind: 'httpRequestDefinition';
+
+    name: string;
+
+    url: string;
+
+    body?: string;
+
+    description?: string | null;
+
+    headers?: { [key: string]: string };
+
+    method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
   }
 
   export interface PersonaConfig {
