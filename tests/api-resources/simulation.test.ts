@@ -41,6 +41,8 @@ describe('resource simulation', () => {
             slug: 'x',
           },
         ],
+        comparisonBaseline: 'NONE',
+        comparisonProperty: 'BACKGROUND_NOISE',
         description: 'A run plan for testing inbound calls',
         endCallPhrases: ['goodbye'],
         endCallReasons: ['Order has been confirmed by the agent'],
@@ -62,7 +64,6 @@ describe('resource simulation', () => {
         maxConcurrentJobs: 5,
         name: 'Billing regression',
         personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-        referenceCustomerFlowVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         scenarios: [
           {
             id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',

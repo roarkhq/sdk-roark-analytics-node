@@ -41,6 +41,8 @@ describe('resource simulationRunPlan', () => {
       ],
       name: 'My Run Plan',
       autoRun: false,
+      comparisonBaseline: 'NONE',
+      comparisonProperty: 'BACKGROUND_NOISE',
       description: 'A run plan for testing inbound calls',
       endCallPhrases: ['goodbye'],
       endCallReasons: ['Order has been confirmed by the agent'],
@@ -61,7 +63,6 @@ describe('resource simulationRunPlan', () => {
       iterationCount: 1,
       maxConcurrentJobs: 5,
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-      referenceCustomerFlowVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       scenarios: [
         {
           id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -90,6 +91,8 @@ describe('resource simulationRunPlan', () => {
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+          comparisonBaseline: 'comparisonBaseline',
+          comparisonProperty: 'ACCENT',
           description: 'description',
           direction: 'INBOUND',
           endCallPhrases: ['endCallPhrases'],
@@ -123,7 +126,6 @@ describe('resource simulationRunPlan', () => {
           ],
           name: 'x',
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-          referenceCustomerFlowVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           scenarios: [
             {
               id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
