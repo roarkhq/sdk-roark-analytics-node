@@ -54,6 +54,10 @@ describe('resource simulation', () => {
             edgeCases: 'ALL',
             happyPath: true,
             id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            overrides: [
+              { property: 'ACCENT', value: 'IN' },
+              { property: 'BACKGROUND_NOISE', value: 'TRAIN' },
+            ],
             personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
             slug: 'sf-prompt-injection',
             variables: { customerName: 'John Doe', appointmentDate: '2024-02-15' },

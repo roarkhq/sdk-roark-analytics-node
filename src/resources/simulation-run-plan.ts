@@ -318,6 +318,18 @@ export namespace SimulationRunPlanCreateResponse {
         happyPath?: boolean;
 
         /**
+         * Persona and environment properties to change for this attachment only, without
+         * editing the persona or the environment themselves. Each entry patches the
+         * per-run snapshot this attachment records, so the flow runs as a caller with that
+         * accent, or over that background noise, and everything else stays as authored.
+         *
+         * This is how you attach the same flow twice and vary one thing between them,
+         * which is what a sweep template builds for you. One value per property; a
+         * property named twice is rejected.
+         */
+        overrides?: Array<Flow.Override>;
+
+        /**
          * Runs everything this attachment resolves as that persona instead of its own.
          */
         personaOverrideId?: string | null;
@@ -359,6 +371,28 @@ export namespace SimulationRunPlanCreateResponse {
            * Values for this one only.
            */
           variables?: { [key: string]: string };
+        }
+
+        /**
+         * One persona or environment property, changed for this flow attachment only.
+         */
+        export interface Override {
+          property:
+            | 'ACCENT'
+            | 'AGE'
+            | 'BACKGROUND_NOISE'
+            | 'BACKGROUND_NOISE_VOLUME'
+            | 'BASE_EMOTION'
+            | 'CONFIRMATION_STYLE'
+            | 'GENDER'
+            | 'INTENT_CLARITY'
+            | 'LANGUAGE'
+            | 'MEMORY_RELIABILITY'
+            | 'RESPONSE_TIMING'
+            | 'SPEECH_CLARITY'
+            | 'SPEECH_PACE';
+
+          value: string;
         }
       }
 
@@ -634,6 +668,18 @@ export namespace SimulationRunPlanUpdateResponse {
       happyPath?: boolean;
 
       /**
+       * Persona and environment properties to change for this attachment only, without
+       * editing the persona or the environment themselves. Each entry patches the
+       * per-run snapshot this attachment records, so the flow runs as a caller with that
+       * accent, or over that background noise, and everything else stays as authored.
+       *
+       * This is how you attach the same flow twice and vary one thing between them,
+       * which is what a sweep template builds for you. One value per property; a
+       * property named twice is rejected.
+       */
+      overrides?: Array<Flow.Override>;
+
+      /**
        * Runs everything this attachment resolves as that persona instead of its own.
        */
       personaOverrideId?: string | null;
@@ -675,6 +721,28 @@ export namespace SimulationRunPlanUpdateResponse {
          * Values for this one only.
          */
         variables?: { [key: string]: string };
+      }
+
+      /**
+       * One persona or environment property, changed for this flow attachment only.
+       */
+      export interface Override {
+        property:
+          | 'ACCENT'
+          | 'AGE'
+          | 'BACKGROUND_NOISE'
+          | 'BACKGROUND_NOISE_VOLUME'
+          | 'BASE_EMOTION'
+          | 'CONFIRMATION_STYLE'
+          | 'GENDER'
+          | 'INTENT_CLARITY'
+          | 'LANGUAGE'
+          | 'MEMORY_RELIABILITY'
+          | 'RESPONSE_TIMING'
+          | 'SPEECH_CLARITY'
+          | 'SPEECH_PACE';
+
+        value: string;
       }
     }
 
@@ -914,6 +982,18 @@ export namespace SimulationRunPlanListResponse {
       happyPath?: boolean;
 
       /**
+       * Persona and environment properties to change for this attachment only, without
+       * editing the persona or the environment themselves. Each entry patches the
+       * per-run snapshot this attachment records, so the flow runs as a caller with that
+       * accent, or over that background noise, and everything else stays as authored.
+       *
+       * This is how you attach the same flow twice and vary one thing between them,
+       * which is what a sweep template builds for you. One value per property; a
+       * property named twice is rejected.
+       */
+      overrides?: Array<Flow.Override>;
+
+      /**
        * Runs everything this attachment resolves as that persona instead of its own.
        */
       personaOverrideId?: string | null;
@@ -955,6 +1035,28 @@ export namespace SimulationRunPlanListResponse {
          * Values for this one only.
          */
         variables?: { [key: string]: string };
+      }
+
+      /**
+       * One persona or environment property, changed for this flow attachment only.
+       */
+      export interface Override {
+        property:
+          | 'ACCENT'
+          | 'AGE'
+          | 'BACKGROUND_NOISE'
+          | 'BACKGROUND_NOISE_VOLUME'
+          | 'BASE_EMOTION'
+          | 'CONFIRMATION_STYLE'
+          | 'GENDER'
+          | 'INTENT_CLARITY'
+          | 'LANGUAGE'
+          | 'MEMORY_RELIABILITY'
+          | 'RESPONSE_TIMING'
+          | 'SPEECH_CLARITY'
+          | 'SPEECH_PACE';
+
+        value: string;
       }
     }
 
@@ -1222,6 +1324,18 @@ export namespace SimulationRunPlanGetByIDResponse {
       happyPath?: boolean;
 
       /**
+       * Persona and environment properties to change for this attachment only, without
+       * editing the persona or the environment themselves. Each entry patches the
+       * per-run snapshot this attachment records, so the flow runs as a caller with that
+       * accent, or over that background noise, and everything else stays as authored.
+       *
+       * This is how you attach the same flow twice and vary one thing between them,
+       * which is what a sweep template builds for you. One value per property; a
+       * property named twice is rejected.
+       */
+      overrides?: Array<Flow.Override>;
+
+      /**
        * Runs everything this attachment resolves as that persona instead of its own.
        */
       personaOverrideId?: string | null;
@@ -1263,6 +1377,28 @@ export namespace SimulationRunPlanGetByIDResponse {
          * Values for this one only.
          */
         variables?: { [key: string]: string };
+      }
+
+      /**
+       * One persona or environment property, changed for this flow attachment only.
+       */
+      export interface Override {
+        property:
+          | 'ACCENT'
+          | 'AGE'
+          | 'BACKGROUND_NOISE'
+          | 'BACKGROUND_NOISE_VOLUME'
+          | 'BASE_EMOTION'
+          | 'CONFIRMATION_STYLE'
+          | 'GENDER'
+          | 'INTENT_CLARITY'
+          | 'LANGUAGE'
+          | 'MEMORY_RELIABILITY'
+          | 'RESPONSE_TIMING'
+          | 'SPEECH_CLARITY'
+          | 'SPEECH_PACE';
+
+        value: string;
       }
     }
 
@@ -1425,7 +1561,9 @@ export interface SimulationRunPlanCreateParams {
 
   /**
    * Customer flows to include in this run plan. The same flow can appear more than
-   * once with a different persona override or different variables.
+   * once with a different persona override, different variables, or different
+   * `overrides`: attaching it once per value of one property is how you compare that
+   * property without a template.
    */
   flows?: Array<SimulationRunPlanCreateParams.Flow>;
 
@@ -1559,6 +1697,18 @@ export namespace SimulationRunPlanCreateParams {
     happyPath?: boolean;
 
     /**
+     * Persona and environment properties to change for this attachment only, without
+     * editing the persona or the environment themselves. Each entry patches the
+     * per-run snapshot this attachment records, so the flow runs as a caller with that
+     * accent, or over that background noise, and everything else stays as authored.
+     *
+     * This is how you attach the same flow twice and vary one thing between them,
+     * which is what a sweep template builds for you. One value per property; a
+     * property named twice is rejected.
+     */
+    overrides?: Array<Flow.Override>;
+
+    /**
      * Runs everything this attachment resolves as that persona instead of its own.
      */
     personaOverrideId?: string | null;
@@ -1600,6 +1750,28 @@ export namespace SimulationRunPlanCreateParams {
        * Values for this one only.
        */
       variables?: { [key: string]: string };
+    }
+
+    /**
+     * One persona or environment property, changed for this flow attachment only.
+     */
+    export interface Override {
+      property:
+        | 'ACCENT'
+        | 'AGE'
+        | 'BACKGROUND_NOISE'
+        | 'BACKGROUND_NOISE_VOLUME'
+        | 'BASE_EMOTION'
+        | 'CONFIRMATION_STYLE'
+        | 'GENDER'
+        | 'INTENT_CLARITY'
+        | 'LANGUAGE'
+        | 'MEMORY_RELIABILITY'
+        | 'RESPONSE_TIMING'
+        | 'SPEECH_CLARITY'
+        | 'SPEECH_PACE';
+
+      value: string;
     }
   }
 
@@ -1810,6 +1982,18 @@ export namespace SimulationRunPlanUpdateParams {
     happyPath?: boolean;
 
     /**
+     * Persona and environment properties to change for this attachment only, without
+     * editing the persona or the environment themselves. Each entry patches the
+     * per-run snapshot this attachment records, so the flow runs as a caller with that
+     * accent, or over that background noise, and everything else stays as authored.
+     *
+     * This is how you attach the same flow twice and vary one thing between them,
+     * which is what a sweep template builds for you. One value per property; a
+     * property named twice is rejected.
+     */
+    overrides?: Array<Flow.Override>;
+
+    /**
      * Runs everything this attachment resolves as that persona instead of its own.
      */
     personaOverrideId?: string | null;
@@ -1851,6 +2035,28 @@ export namespace SimulationRunPlanUpdateParams {
        * Values for this one only.
        */
       variables?: { [key: string]: string };
+    }
+
+    /**
+     * One persona or environment property, changed for this flow attachment only.
+     */
+    export interface Override {
+      property:
+        | 'ACCENT'
+        | 'AGE'
+        | 'BACKGROUND_NOISE'
+        | 'BACKGROUND_NOISE_VOLUME'
+        | 'BASE_EMOTION'
+        | 'CONFIRMATION_STYLE'
+        | 'GENDER'
+        | 'INTENT_CLARITY'
+        | 'LANGUAGE'
+        | 'MEMORY_RELIABILITY'
+        | 'RESPONSE_TIMING'
+        | 'SPEECH_CLARITY'
+        | 'SPEECH_PACE';
+
+      value: string;
     }
   }
 
