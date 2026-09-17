@@ -269,7 +269,9 @@ export declare namespace SimulationRunParams {
 
       /**
        * Customer flows to include in this run plan. The same flow can appear more than
-       * once with a different persona override or different variables.
+       * once with a different persona override, different variables, or different
+       * `overrides`: attaching it once per value of one property is how you compare that
+       * property without a template.
        */
       flows?: Array<Plan.Flow>;
 
@@ -409,6 +411,18 @@ export declare namespace SimulationRunParams {
         happyPath?: boolean;
 
         /**
+         * Persona and environment properties to change for this attachment only, without
+         * editing the persona or the environment themselves. Each entry patches the
+         * per-run snapshot this attachment records, so the flow runs as a caller with that
+         * accent, or over that background noise, and everything else stays as authored.
+         *
+         * This is how you attach the same flow twice and vary one thing between them,
+         * which is what a sweep template builds for you. One value per property; a
+         * property named twice is rejected.
+         */
+        overrides?: Array<Flow.Override>;
+
+        /**
          * Runs everything this attachment resolves as that persona instead of its own.
          */
         personaOverrideId?: string | null;
@@ -450,6 +464,28 @@ export declare namespace SimulationRunParams {
            * Values for this one only.
            */
           variables?: { [key: string]: string };
+        }
+
+        /**
+         * One persona or environment property, changed for this flow attachment only.
+         */
+        export interface Override {
+          property:
+            | 'ACCENT'
+            | 'AGE'
+            | 'BACKGROUND_NOISE'
+            | 'BACKGROUND_NOISE_VOLUME'
+            | 'BASE_EMOTION'
+            | 'CONFIRMATION_STYLE'
+            | 'GENDER'
+            | 'INTENT_CLARITY'
+            | 'LANGUAGE'
+            | 'MEMORY_RELIABILITY'
+            | 'RESPONSE_TIMING'
+            | 'SPEECH_CLARITY'
+            | 'SPEECH_PACE';
+
+          value: string;
         }
       }
 
@@ -597,6 +633,30 @@ export declare namespace SimulationRunParams {
     template: string;
 
     /**
+     * The value of the sweep every other value is measured against. Defaults to the
+     * template's own baseline, as returned by GET /v1/simulation/template.
+     *
+     * Send it with `comparisonValues` and it must be one of them, or the request is
+     * rejected: anchoring every difference to an arm the run never made would measure
+     * it against nothing. Leave it out and the template's own baseline is used, and
+     * quietly dropped if your narrowing excluded it, since that one you did not
+     * choose.
+     */
+    comparisonBaseline?: string | null;
+
+    /**
+     * Which values of the sweep to run, for a template that sweeps one (GET
+     * /v1/simulation/template returns `sweep.property` for those that do). This is
+     * what the run costs: the flow is called once per value, so ten values is ten
+     * times the calls of one.
+     *
+     * Omit it to run every value the property has, which for `accent-handling` is more
+     * than twenty. Send a subset to narrow it, for example the three accents you
+     * actually serve.
+     */
+    comparisonValues?: Array<string>;
+
+    /**
      * Phrases that trigger end of call. Empty array disables the feature.
      */
     endCallPhrases?: Array<string>;
@@ -715,6 +775,18 @@ export declare namespace SimulationRunParams {
       happyPath?: boolean;
 
       /**
+       * Persona and environment properties to change for this attachment only, without
+       * editing the persona or the environment themselves. Each entry patches the
+       * per-run snapshot this attachment records, so the flow runs as a caller with that
+       * accent, or over that background noise, and everything else stays as authored.
+       *
+       * This is how you attach the same flow twice and vary one thing between them,
+       * which is what a sweep template builds for you. One value per property; a
+       * property named twice is rejected.
+       */
+      overrides?: Array<Flow.Override>;
+
+      /**
        * Runs everything this attachment resolves as that persona instead of its own.
        */
       personaOverrideId?: string | null;
@@ -756,6 +828,28 @@ export declare namespace SimulationRunParams {
          * Values for this one only.
          */
         variables?: { [key: string]: string };
+      }
+
+      /**
+       * One persona or environment property, changed for this flow attachment only.
+       */
+      export interface Override {
+        property:
+          | 'ACCENT'
+          | 'AGE'
+          | 'BACKGROUND_NOISE'
+          | 'BACKGROUND_NOISE_VOLUME'
+          | 'BASE_EMOTION'
+          | 'CONFIRMATION_STYLE'
+          | 'GENDER'
+          | 'INTENT_CLARITY'
+          | 'LANGUAGE'
+          | 'MEMORY_RELIABILITY'
+          | 'RESPONSE_TIMING'
+          | 'SPEECH_CLARITY'
+          | 'SPEECH_PACE';
+
+        value: string;
       }
     }
 
