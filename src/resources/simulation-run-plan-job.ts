@@ -527,6 +527,16 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         intentClarity: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
         /**
+         * How much the persona talks over the agent while it is still speaking. OFF waits
+         * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
+         * taking the floor, which tests whether the agent wrongly stops for them.
+         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
+         * Timing is randomised per turn, so two runs of the same persona do not interrupt
+         * at identical moments.
+         */
+        interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
+
+        /**
          * Primary language ISO 639-1 code for the persona
          */
         language:
@@ -565,9 +575,13 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         properties: { [key: string]: unknown };
 
         /**
-         * Controls how quickly the persona responds to pauses in conversation (QUICK,
-         * NORMAL, RELAXED). BARGE_IN also talks over the agent once it has held the floor
-         * for several seconds.
+         * Deprecated and inert: it no longer affects the call. It set how long the persona
+         * waited once the agent stopped talking, and measured across production
+         * simulations it moved the reply gap by less than the noise floor, because model
+         * and speech latency dominate it. Every persona now uses one voice-activity
+         * profile. Use `interruption` for a caller who talks over the agent. Still
+         * accepted and stored so existing clients keep working. BARGE_IN is stored as
+         * `responseTiming: QUICK` with `interruption: OCCASIONAL`.
          */
         responseTiming: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
 

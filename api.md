@@ -194,6 +194,31 @@ Methods:
 
 - <code title="get /v1/simulation/template">client.simulationTemplate.<a href="./src/resources/simulation-template.ts">list</a>() -> SimulationTemplateListResponse</code>
 
+# AutoimproveFix
+
+Types:
+
+- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveLogEntry</a></code>
+- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixCreateResponse</a></code>
+- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixListResponse</a></code>
+- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixAnswerQuestionResponse</a></code>
+- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixCancelResponse</a></code>
+- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixDismissResponse</a></code>
+- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixGetByIDResponse</a></code>
+- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixPromoteResponse</a></code>
+- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixSendGuidanceResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/autoimprove/fix">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">create</a>({ ...params }) -> AutoimproveFixCreateResponse</code>
+- <code title="get /v1/autoimprove/fix">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">list</a>() -> AutoimproveFixListResponse</code>
+- <code title="post /v1/autoimprove/fix/{fixId}/answer">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">answerQuestion</a>(fixID, { ...params }) -> AutoimproveFixAnswerQuestionResponse</code>
+- <code title="post /v1/autoimprove/fix/{fixId}/cancel">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">cancel</a>(fixID) -> AutoimproveFixCancelResponse</code>
+- <code title="post /v1/autoimprove/fix/{fixId}/dismiss">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">dismiss</a>(fixID) -> AutoimproveFixDismissResponse</code>
+- <code title="get /v1/autoimprove/fix/{fixId}">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">getByID</a>(fixID) -> AutoimproveFixGetByIDResponse</code>
+- <code title="post /v1/autoimprove/fix/{fixId}/promote">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">promote</a>(fixID) -> AutoimproveFixPromoteResponse</code>
+- <code title="post /v1/autoimprove/fix/{fixId}/guidance">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">sendGuidance</a>(fixID, { ...params }) -> AutoimproveFixSendGuidanceResponse</code>
+
 # CustomerFlow
 
 Types:
