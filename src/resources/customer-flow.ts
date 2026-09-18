@@ -211,15 +211,20 @@ export class CustomerFlow extends APIResource {
  * flow's policy. Use it where one missed step makes the rest of the call
  * meaningless: an authentication menu, say, with `then: HANG_UP_INVALIDATE`.
  *
- * Any step may set `requiredForValidRun`, which marks a step the flow requires a
- * run to reach for its result to count. A run that ends without ever reaching it
- * is invalidated: it stays in the report, labelled with the step it never reached
- * and where it stopped, and is left out of the run score and the success-criteria
- * verdict. Put it on the step where the test itself begins, typically the first
- * one after an IVR or a login, so an agent that never gets past the menu does not
- * fail every check in a scenario it never started. A path may have one; a
- * branching flow may mark one step per branch, and reaching any of them makes the
- * call valid. A path that marks none behaves exactly as before.
+ * Any step may set `stage`, the named phase of the flow it belongs to: the IVR,
+ * the login, the scenario itself. Steps in one stage are drawn as a group in the
+ * editor, and the name is yours: the reports say it back to you. The stage does
+ * not have to exist first, it is created the first time a step names it, and a
+ * name already in the project is matched ignoring case.
+ *
+ * A stage with `required: true` is a gate. A run that ends without getting PAST it
+ * never reached what was being measured, so it stays in the report, labelled with
+ * the stage it never completed and the one it stopped in, and is left out of the
+ * run score and the success-criteria verdict: an agent that never clears the IVR
+ * does not fail every check in a scenario it never started. `required` belongs to
+ * the stage rather than to the step, so a read returns it on every step in that
+ * stage, and a write that sets it on any one of them marks the whole stage. A flow
+ * that requires no stage is scored exactly as before.
  */
 export type FlowStep =
   | FlowStep.UnionMember0
@@ -247,7 +252,7 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
+    stage?: UnionMember0.Stage | null;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
   }
@@ -264,6 +269,12 @@ export namespace FlowStep {
 
       waitSeconds?: number | null;
     }
+
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 
   export interface UnionMember1 {
@@ -277,9 +288,17 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
+    stage?: UnionMember1.Stage | null;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember1 {
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 
   export interface UnionMember2 {
@@ -293,9 +312,17 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
+    stage?: UnionMember2.Stage | null;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember2 {
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 
   export interface UnionMember3 {
@@ -309,9 +336,17 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
+    stage?: UnionMember3.Stage | null;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember3 {
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 
   export interface UnionMember4 {
@@ -323,11 +358,19 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
-
     silenceDurationSeconds?: number | null;
 
+    stage?: UnionMember4.Stage | null;
+
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember4 {
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 
   export interface UnionMember5 {
@@ -341,9 +384,17 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
+    stage?: UnionMember5.Stage | null;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember5 {
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 
   export interface UnionMember6 {
@@ -357,9 +408,17 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
+    stage?: UnionMember6.Stage | null;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember6 {
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 
   export interface UnionMember7 {
@@ -371,9 +430,17 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
+    stage?: UnionMember7.Stage | null;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember7 {
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 
   export interface UnionMember8 {
@@ -387,9 +454,17 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
+    stage?: UnionMember8.Stage | null;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember8 {
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 
   export interface UnionMember9 {
@@ -405,9 +480,17 @@ export namespace FlowStep {
 
     ref?: string;
 
-    requiredForValidRun?: boolean;
+    stage?: UnionMember9.Stage | null;
 
     steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember9 {
+    export interface Stage {
+      name: string;
+
+      required?: boolean;
+    }
   }
 }
 
