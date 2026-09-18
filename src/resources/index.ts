@@ -29,20 +29,20 @@ export {
   type AgentPromptListVersionsParams,
 } from './agent-prompt';
 export {
-  AutoimproveFix,
+  AutoimproveJob,
   type AutoimproveLogEntry,
-  type AutoimproveFixCreateResponse,
-  type AutoimproveFixListResponse,
-  type AutoimproveFixAnswerQuestionResponse,
-  type AutoimproveFixCancelResponse,
-  type AutoimproveFixDismissResponse,
-  type AutoimproveFixGetByIDResponse,
-  type AutoimproveFixPromoteResponse,
-  type AutoimproveFixSendGuidanceResponse,
-  type AutoimproveFixCreateParams,
-  type AutoimproveFixAnswerQuestionParams,
-  type AutoimproveFixSendGuidanceParams,
-} from './autoimprove-fix';
+  type AutoimproveJobCreateResponse,
+  type AutoimproveJobListResponse,
+  type AutoimproveJobAnswerQuestionResponse,
+  type AutoimproveJobCancelResponse,
+  type AutoimproveJobDismissResponse,
+  type AutoimproveJobGetByIDResponse,
+  type AutoimproveJobPromoteResponse,
+  type AutoimproveJobSendGuidanceResponse,
+  type AutoimproveJobCreateParams,
+  type AutoimproveJobAnswerQuestionParams,
+  type AutoimproveJobSendGuidanceParams,
+} from './autoimprove-job';
 export {
   Benchmark,
   type BenchmarkGetLeaderboardResponse,

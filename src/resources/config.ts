@@ -603,9 +603,14 @@ export interface ConfigFlowStep {
 
   ref?: string;
 
+  /**
+   * Removed. Use `stage` with `required: true`.
+   */
   requiredForValidRun?: boolean;
 
   silenceDurationSeconds?: number;
+
+  stage?: string | ConfigFlowStep.UnionMember1;
 
   steps?: Array<ConfigAPI.ConfigFlowStep>;
 }
@@ -621,6 +626,12 @@ export namespace ConfigFlowStep {
     then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
 
     waitSeconds?: number;
+  }
+
+  export interface UnionMember1 {
+    name: string;
+
+    required?: boolean;
   }
 }
 
