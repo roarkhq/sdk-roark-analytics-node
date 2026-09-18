@@ -46,6 +46,21 @@ import {
   AgentPromptUpdateResponse,
 } from './resources/agent-prompt';
 import {
+  AutoimproveFix,
+  AutoimproveFixAnswerQuestionParams,
+  AutoimproveFixAnswerQuestionResponse,
+  AutoimproveFixCancelResponse,
+  AutoimproveFixCreateParams,
+  AutoimproveFixCreateResponse,
+  AutoimproveFixDismissResponse,
+  AutoimproveFixGetByIDResponse,
+  AutoimproveFixListResponse,
+  AutoimproveFixPromoteResponse,
+  AutoimproveFixSendGuidanceParams,
+  AutoimproveFixSendGuidanceResponse,
+  AutoimproveLogEntry,
+} from './resources/autoimprove-fix';
+import {
   Benchmark,
   BenchmarkGetLeaderboardParams,
   BenchmarkGetLeaderboardResponse,
@@ -951,6 +966,7 @@ export class Roark {
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
   simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
   simulationTemplate: API.SimulationTemplate = new API.SimulationTemplate(this);
+  autoimproveFix: API.AutoimproveFix = new API.AutoimproveFix(this);
   customerFlow: API.CustomerFlow = new API.CustomerFlow(this);
   customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
   agent: API.Agent = new API.Agent(this);
@@ -975,6 +991,7 @@ Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationPersona = SimulationPersona;
 Roark.SimulationEnvironment = SimulationEnvironment;
 Roark.SimulationTemplate = SimulationTemplate;
+Roark.AutoimproveFix = AutoimproveFix;
 Roark.CustomerFlow = CustomerFlow;
 Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
 Roark.Agent = Agent;
@@ -1111,6 +1128,22 @@ export declare namespace Roark {
   export {
     SimulationTemplate as SimulationTemplate,
     type SimulationTemplateListResponse as SimulationTemplateListResponse,
+  };
+
+  export {
+    AutoimproveFix as AutoimproveFix,
+    type AutoimproveLogEntry as AutoimproveLogEntry,
+    type AutoimproveFixCreateResponse as AutoimproveFixCreateResponse,
+    type AutoimproveFixListResponse as AutoimproveFixListResponse,
+    type AutoimproveFixAnswerQuestionResponse as AutoimproveFixAnswerQuestionResponse,
+    type AutoimproveFixCancelResponse as AutoimproveFixCancelResponse,
+    type AutoimproveFixDismissResponse as AutoimproveFixDismissResponse,
+    type AutoimproveFixGetByIDResponse as AutoimproveFixGetByIDResponse,
+    type AutoimproveFixPromoteResponse as AutoimproveFixPromoteResponse,
+    type AutoimproveFixSendGuidanceResponse as AutoimproveFixSendGuidanceResponse,
+    type AutoimproveFixCreateParams as AutoimproveFixCreateParams,
+    type AutoimproveFixAnswerQuestionParams as AutoimproveFixAnswerQuestionParams,
+    type AutoimproveFixSendGuidanceParams as AutoimproveFixSendGuidanceParams,
   };
 
   export {

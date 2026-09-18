@@ -206,6 +206,8 @@ export namespace Bundle {
 
     intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
+    interruption?: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
+
     memoryReliability?: 'HIGH' | 'LOW';
 
     properties?: { [key: string]: unknown };
@@ -885,6 +887,8 @@ export namespace ConfigApplyParams {
 
     intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
 
+    interruption?: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
+
     memoryReliability?: 'HIGH' | 'LOW';
 
     properties?: { [key: string]: unknown };
@@ -1417,6 +1421,8 @@ export namespace ConfigDiffParams {
     idleTimeoutSeconds?: number;
 
     intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+    interruption?: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
     memoryReliability?: 'HIGH' | 'LOW';
 
