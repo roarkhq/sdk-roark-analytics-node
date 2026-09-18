@@ -29,6 +29,21 @@ export {
   type AgentPromptListVersionsParams,
 } from './agent-prompt';
 export {
+  AutoimproveFix,
+  type AutoimproveLogEntry,
+  type AutoimproveFixCreateResponse,
+  type AutoimproveFixListResponse,
+  type AutoimproveFixAnswerQuestionResponse,
+  type AutoimproveFixCancelResponse,
+  type AutoimproveFixDismissResponse,
+  type AutoimproveFixGetByIDResponse,
+  type AutoimproveFixPromoteResponse,
+  type AutoimproveFixSendGuidanceResponse,
+  type AutoimproveFixCreateParams,
+  type AutoimproveFixAnswerQuestionParams,
+  type AutoimproveFixSendGuidanceParams,
+} from './autoimprove-fix';
+export {
   Benchmark,
   type BenchmarkGetLeaderboardResponse,
   type BenchmarkGetTargetResponse,

@@ -229,6 +229,7 @@ export namespace SimulationTemplateListResponse {
         | 'GENDER'
         | 'INTENT_CLARITY'
         | 'LANGUAGE'
+        | 'INTERRUPTION'
         | 'MEMORY_RELIABILITY'
         | 'RESPONSE_TIMING'
         | 'SPEECH_CLARITY'
