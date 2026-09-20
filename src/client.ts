@@ -46,20 +46,20 @@ import {
   AgentPromptUpdateResponse,
 } from './resources/agent-prompt';
 import {
-  AutoimproveFix,
-  AutoimproveFixAnswerQuestionParams,
-  AutoimproveFixAnswerQuestionResponse,
-  AutoimproveFixCancelResponse,
-  AutoimproveFixCreateParams,
-  AutoimproveFixCreateResponse,
-  AutoimproveFixDismissResponse,
-  AutoimproveFixGetByIDResponse,
-  AutoimproveFixListResponse,
-  AutoimproveFixPromoteResponse,
-  AutoimproveFixSendGuidanceParams,
-  AutoimproveFixSendGuidanceResponse,
+  AutoimproveJob,
+  AutoimproveJobAnswerQuestionParams,
+  AutoimproveJobAnswerQuestionResponse,
+  AutoimproveJobCancelResponse,
+  AutoimproveJobCreateParams,
+  AutoimproveJobCreateResponse,
+  AutoimproveJobDismissResponse,
+  AutoimproveJobGetByIDResponse,
+  AutoimproveJobListResponse,
+  AutoimproveJobPromoteResponse,
+  AutoimproveJobSendGuidanceParams,
+  AutoimproveJobSendGuidanceResponse,
   AutoimproveLogEntry,
-} from './resources/autoimprove-fix';
+} from './resources/autoimprove-job';
 import {
   Benchmark,
   BenchmarkGetLeaderboardParams,
@@ -966,7 +966,7 @@ export class Roark {
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
   simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
   simulationTemplate: API.SimulationTemplate = new API.SimulationTemplate(this);
-  autoimproveFix: API.AutoimproveFix = new API.AutoimproveFix(this);
+  autoimproveJob: API.AutoimproveJob = new API.AutoimproveJob(this);
   customerFlow: API.CustomerFlow = new API.CustomerFlow(this);
   customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
   agent: API.Agent = new API.Agent(this);
@@ -991,7 +991,7 @@ Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationPersona = SimulationPersona;
 Roark.SimulationEnvironment = SimulationEnvironment;
 Roark.SimulationTemplate = SimulationTemplate;
-Roark.AutoimproveFix = AutoimproveFix;
+Roark.AutoimproveJob = AutoimproveJob;
 Roark.CustomerFlow = CustomerFlow;
 Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
 Roark.Agent = Agent;
@@ -1131,19 +1131,19 @@ export declare namespace Roark {
   };
 
   export {
-    AutoimproveFix as AutoimproveFix,
+    AutoimproveJob as AutoimproveJob,
     type AutoimproveLogEntry as AutoimproveLogEntry,
-    type AutoimproveFixCreateResponse as AutoimproveFixCreateResponse,
-    type AutoimproveFixListResponse as AutoimproveFixListResponse,
-    type AutoimproveFixAnswerQuestionResponse as AutoimproveFixAnswerQuestionResponse,
-    type AutoimproveFixCancelResponse as AutoimproveFixCancelResponse,
-    type AutoimproveFixDismissResponse as AutoimproveFixDismissResponse,
-    type AutoimproveFixGetByIDResponse as AutoimproveFixGetByIDResponse,
-    type AutoimproveFixPromoteResponse as AutoimproveFixPromoteResponse,
-    type AutoimproveFixSendGuidanceResponse as AutoimproveFixSendGuidanceResponse,
-    type AutoimproveFixCreateParams as AutoimproveFixCreateParams,
-    type AutoimproveFixAnswerQuestionParams as AutoimproveFixAnswerQuestionParams,
-    type AutoimproveFixSendGuidanceParams as AutoimproveFixSendGuidanceParams,
+    type AutoimproveJobCreateResponse as AutoimproveJobCreateResponse,
+    type AutoimproveJobListResponse as AutoimproveJobListResponse,
+    type AutoimproveJobAnswerQuestionResponse as AutoimproveJobAnswerQuestionResponse,
+    type AutoimproveJobCancelResponse as AutoimproveJobCancelResponse,
+    type AutoimproveJobDismissResponse as AutoimproveJobDismissResponse,
+    type AutoimproveJobGetByIDResponse as AutoimproveJobGetByIDResponse,
+    type AutoimproveJobPromoteResponse as AutoimproveJobPromoteResponse,
+    type AutoimproveJobSendGuidanceResponse as AutoimproveJobSendGuidanceResponse,
+    type AutoimproveJobCreateParams as AutoimproveJobCreateParams,
+    type AutoimproveJobAnswerQuestionParams as AutoimproveJobAnswerQuestionParams,
+    type AutoimproveJobSendGuidanceParams as AutoimproveJobSendGuidanceParams,
   };
 
   export {

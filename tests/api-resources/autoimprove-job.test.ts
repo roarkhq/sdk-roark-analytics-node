@@ -7,9 +7,9 @@ const client = new Roark({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource autoimproveFix', () => {
+describe('resource autoimproveJob', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.autoimproveFix.create({
+    const responsePromise = client.autoimproveJob.create({
       agentId: 'b3b0c8e2-4c1d-4f6a-9e2b-1a2b3c4d5e6f',
       objectiveLabel: 'Consent collection should pass',
       objectiveMetricDefinitionId: 'f2f0c8e2-4c1d-4f6a-9e2b-1a2b3c4d5e6f',
@@ -24,7 +24,7 @@ describe('resource autoimproveFix', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.autoimproveFix.create({
+    const response = await client.autoimproveJob.create({
       agentId: 'b3b0c8e2-4c1d-4f6a-9e2b-1a2b3c4d5e6f',
       objectiveLabel: 'Consent collection should pass',
       objectiveMetricDefinitionId: 'f2f0c8e2-4c1d-4f6a-9e2b-1a2b3c4d5e6f',
@@ -38,7 +38,7 @@ describe('resource autoimproveFix', () => {
   });
 
   test('list', async () => {
-    const responsePromise = client.autoimproveFix.list();
+    const responsePromise = client.autoimproveJob.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -49,7 +49,7 @@ describe('resource autoimproveFix', () => {
   });
 
   test('answerQuestion: only required params', async () => {
-    const responsePromise = client.autoimproveFix.answerQuestion('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    const responsePromise = client.autoimproveJob.answerQuestion('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Keep the current voice; focus on the closing confirmation.',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -62,13 +62,13 @@ describe('resource autoimproveFix', () => {
   });
 
   test('answerQuestion: required and optional params', async () => {
-    const response = await client.autoimproveFix.answerQuestion('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    const response = await client.autoimproveJob.answerQuestion('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Keep the current voice; focus on the closing confirmation.',
     });
   });
 
   test('cancel', async () => {
-    const responsePromise = client.autoimproveFix.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.autoimproveJob.cancel('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -79,7 +79,7 @@ describe('resource autoimproveFix', () => {
   });
 
   test('dismiss', async () => {
-    const responsePromise = client.autoimproveFix.dismiss('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.autoimproveJob.dismiss('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -90,7 +90,7 @@ describe('resource autoimproveFix', () => {
   });
 
   test('getByID', async () => {
-    const responsePromise = client.autoimproveFix.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.autoimproveJob.getByID('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -101,7 +101,7 @@ describe('resource autoimproveFix', () => {
   });
 
   test('promote', async () => {
-    const responsePromise = client.autoimproveFix.promote('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.autoimproveJob.promote('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -112,7 +112,7 @@ describe('resource autoimproveFix', () => {
   });
 
   test('sendGuidance: only required params', async () => {
-    const responsePromise = client.autoimproveFix.sendGuidance('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    const responsePromise = client.autoimproveJob.sendGuidance('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Keep the current voice; focus on the closing confirmation.',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -125,7 +125,7 @@ describe('resource autoimproveFix', () => {
   });
 
   test('sendGuidance: required and optional params', async () => {
-    const response = await client.autoimproveFix.sendGuidance('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+    const response = await client.autoimproveJob.sendGuidance('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Keep the current voice; focus on the closing confirmation.',
     });
   });

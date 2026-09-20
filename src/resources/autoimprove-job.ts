@@ -1,29 +1,29 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as AutoimproveFixAPI from './autoimprove-fix';
+import * as AutoimproveJobAPI from './autoimprove-job';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
-export class AutoimproveFix extends APIResource {
+export class AutoimproveJob extends APIResource {
   /**
    * Commission Roark on an objective. It clones the agent into a staging shadow (or
    * uses your designated staging agent), authors a validation suite of simulated
    * callers, measures a baseline, changes the staging configuration, and re-tests
    * until the objective metric passes its target. Production is never touched by the
-   * loop; a verified fix waits for promotion.
+   * loop; verified changes wait for promotion.
    *
    * Requires an active provider integration (Vapi or Retell) with agent config
-   * writes enabled. One live fix per agent: starting a second returns a conflict.
+   * writes enabled. One live job per agent: starting a second returns a conflict.
    *
-   * The fix runs asynchronously; poll GET /v1/autoimprove/fix/{fixId} or watch it in
+   * The job runs asynchronously; poll GET /v1/autoimprove/job/{jobId} or watch it in
    * the dashboard. When its status is NEEDS_INPUT, answer via the answer endpoint;
    * when AWAITING_PROMOTE, promote or dismiss.
    *
    * @example
    * ```ts
-   * const autoimproveFix = await client.autoimproveFix.create({
+   * const autoimproveJob = await client.autoimproveJob.create({
    *   agentId: 'b3b0c8e2-4c1d-4f6a-9e2b-1a2b3c4d5e6f',
    *   objectiveLabel: 'Consent collection should pass',
    *   objectiveMetricDefinitionId:
@@ -32,36 +32,36 @@ export class AutoimproveFix extends APIResource {
    * ```
    */
   create(
-    body: AutoimproveFixCreateParams,
+    body: AutoimproveJobCreateParams,
     options?: RequestOptions,
-  ): APIPromise<AutoimproveFixCreateResponse> {
-    return this._client.post('/v1/autoimprove/fix', { body, ...options });
+  ): APIPromise<AutoimproveJobCreateResponse> {
+    return this._client.post('/v1/autoimprove/job', { body, ...options });
   }
 
   /**
-   * List the Autoimprove fixes in this project, most recent first, capped at 100.
+   * List the Autoimprove jobs in this project, most recent first, capped at 100.
    *
-   * A fix is one autonomous engagement: Roark improving one agent toward one
+   * A job is one autonomous engagement: Roark improving one agent toward one
    * objective metric on a staging copy, with a human-gated promote to production at
    * the end.
    *
    * @example
    * ```ts
-   * const autoimproveFixes = await client.autoimproveFix.list();
+   * const autoimproveJobs = await client.autoimproveJob.list();
    * ```
    */
-  list(options?: RequestOptions): APIPromise<AutoimproveFixListResponse> {
-    return this._client.get('/v1/autoimprove/fix', options);
+  list(options?: RequestOptions): APIPromise<AutoimproveJobListResponse> {
+    return this._client.get('/v1/autoimprove/job', options);
   }
 
   /**
-   * Answer the question a fix is blocked on. Only meaningful while the fix status is
+   * Answer the question a job is blocked on. Only meaningful while the job status is
    * NEEDS_INPUT (the open QUESTION entry carries the offered options; free text is
    * also accepted). Otherwise returns a conflict.
    *
    * @example
    * ```ts
-   * const response = await client.autoimproveFix.answerQuestion(
+   * const response = await client.autoimproveJob.answerQuestion(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    *   {
    *     text: 'Keep the current voice; focus on the closing confirmation.',
@@ -70,63 +70,63 @@ export class AutoimproveFix extends APIResource {
    * ```
    */
   answerQuestion(
-    fixID: string,
-    body: AutoimproveFixAnswerQuestionParams,
+    jobID: string,
+    body: AutoimproveJobAnswerQuestionParams,
     options?: RequestOptions,
-  ): APIPromise<AutoimproveFixAnswerQuestionResponse> {
-    return this._client.post(path`/v1/autoimprove/fix/${fixID}/answer`, { body, ...options });
+  ): APIPromise<AutoimproveJobAnswerQuestionResponse> {
+    return this._client.post(path`/v1/autoimprove/job/${jobID}/answer`, { body, ...options });
   }
 
   /**
-   * Stop a live fix. Production is never changed by a cancel; everything the fix set
+   * Stop a live job. Production is never changed by a cancel; everything the job set
    * up (the shadow agent, its phone number, authored test flows and run plan) is
    * cleaned up automatically.
    *
    * @example
    * ```ts
-   * const response = await client.autoimproveFix.cancel(
+   * const response = await client.autoimproveJob.cancel(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    * );
    * ```
    */
-  cancel(fixID: string, options?: RequestOptions): APIPromise<AutoimproveFixCancelResponse> {
-    return this._client.post(path`/v1/autoimprove/fix/${fixID}/cancel`, options);
+  cancel(jobID: string, options?: RequestOptions): APIPromise<AutoimproveJobCancelResponse> {
+    return this._client.post(path`/v1/autoimprove/job/${jobID}/cancel`, options);
   }
 
   /**
-   * Discard a verified fix without promoting: production stays untouched and the
-   * staging resources are cleaned up. Only a fix in AWAITING_PROMOTE can be
+   * Discard a verified job without promoting: production stays untouched and the
+   * staging resources are cleaned up. Only a job in AWAITING_PROMOTE can be
    * dismissed.
    *
    * @example
    * ```ts
-   * const response = await client.autoimproveFix.dismiss(
+   * const response = await client.autoimproveJob.dismiss(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    * );
    * ```
    */
-  dismiss(fixID: string, options?: RequestOptions): APIPromise<AutoimproveFixDismissResponse> {
-    return this._client.post(path`/v1/autoimprove/fix/${fixID}/dismiss`, options);
+  dismiss(jobID: string, options?: RequestOptions): APIPromise<AutoimproveJobDismissResponse> {
+    return this._client.post(path`/v1/autoimprove/job/${jobID}/dismiss`, options);
   }
 
   /**
-   * Fetch one fix with its full worklog: every step Roark took, the validation
+   * Fetch one job with its full worklog: every step Roark took, the validation
    * batches with their pass-rate movement, any question it is waiting on, and its
    * final report once concluded.
    *
    * @example
    * ```ts
-   * const response = await client.autoimproveFix.getByID(
+   * const response = await client.autoimproveJob.getByID(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    * );
    * ```
    */
-  getByID(fixID: string, options?: RequestOptions): APIPromise<AutoimproveFixGetByIDResponse> {
-    return this._client.get(path`/v1/autoimprove/fix/${fixID}`, options);
+  getByID(jobID: string, options?: RequestOptions): APIPromise<AutoimproveJobGetByIDResponse> {
+    return this._client.get(path`/v1/autoimprove/job/${jobID}`, options);
   }
 
   /**
-   * Apply the verified staging changes to the PRODUCTION agent. Only a fix in
+   * Apply the verified staging changes to the PRODUCTION agent. Only a job in
    * AWAITING_PROMOTE can be promoted.
    *
    * A snapshot of the production configuration is taken immediately before the
@@ -135,23 +135,23 @@ export class AutoimproveFix extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.autoimproveFix.promote(
+   * const response = await client.autoimproveJob.promote(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    * );
    * ```
    */
-  promote(fixID: string, options?: RequestOptions): APIPromise<AutoimproveFixPromoteResponse> {
-    return this._client.post(path`/v1/autoimprove/fix/${fixID}/promote`, options);
+  promote(jobID: string, options?: RequestOptions): APIPromise<AutoimproveJobPromoteResponse> {
+    return this._client.post(path`/v1/autoimprove/job/${jobID}/promote`, options);
   }
 
   /**
-   * Steer Roark mid-fix. The message is folded into its next decision and is
-   * binding. Accepted while the fix is live (RUNNING, NEEDS_INPUT, or PAUSED); a
-   * concluded fix returns a conflict.
+   * Steer Roark mid-job. The message is folded into its next decision and is
+   * binding. Accepted while the job is live (RUNNING, NEEDS_INPUT, or PAUSED); a
+   * concluded job returns a conflict.
    *
    * @example
    * ```ts
-   * const response = await client.autoimproveFix.sendGuidance(
+   * const response = await client.autoimproveJob.sendGuidance(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    *   {
    *     text: 'Keep the current voice; focus on the closing confirmation.',
@@ -160,16 +160,16 @@ export class AutoimproveFix extends APIResource {
    * ```
    */
   sendGuidance(
-    fixID: string,
-    body: AutoimproveFixSendGuidanceParams,
+    jobID: string,
+    body: AutoimproveJobSendGuidanceParams,
     options?: RequestOptions,
-  ): APIPromise<AutoimproveFixSendGuidanceResponse> {
-    return this._client.post(path`/v1/autoimprove/fix/${fixID}/guidance`, { body, ...options });
+  ): APIPromise<AutoimproveJobSendGuidanceResponse> {
+    return this._client.post(path`/v1/autoimprove/job/${jobID}/guidance`, { body, ...options });
   }
 }
 
 /**
- * One entry in the fix's worklog: what Roark did or observed at that step.
+ * One entry in the job's worklog: what Roark did or observed at that step.
  * VALIDATION entries carry the batch's trial count and pass-rate movement;
  * QUESTION entries carry the quick-reply options Roark is waiting on.
  */
@@ -211,20 +211,20 @@ export interface AutoimproveLogEntry {
   trialCount: number | null;
 }
 
-export interface AutoimproveFixCreateResponse {
+export interface AutoimproveJobCreateResponse {
   /**
-   * One Autoimprove engagement: Roark autonomously improving one agent toward one
-   * objective metric. Roark only ever changes the staging agent (a shadow clone by
-   * default); production changes exactly once, when a verified fix is promoted.
+   * One Autoimprove job: Roark autonomously improving one agent toward one objective
+   * metric. Roark only ever changes the staging agent (a shadow clone by default);
+   * production changes exactly once, when verified changes are promoted.
    */
-  data: AutoimproveFixCreateResponse.Data;
+  data: AutoimproveJobCreateResponse.Data;
 }
 
-export namespace AutoimproveFixCreateResponse {
+export namespace AutoimproveJobCreateResponse {
   /**
-   * One Autoimprove engagement: Roark autonomously improving one agent toward one
-   * objective metric. Roark only ever changes the staging agent (a shadow clone by
-   * default); production changes exactly once, when a verified fix is promoted.
+   * One Autoimprove job: Roark autonomously improving one agent toward one objective
+   * metric. Roark only ever changes the staging agent (a shadow clone by default);
+   * production changes exactly once, when verified changes are promoted.
    */
   export interface Data {
     id: string;
@@ -234,12 +234,12 @@ export namespace AutoimproveFixCreateResponse {
     baselineValue: number | null;
 
     /**
-     * When the fix reached a terminal status (ISO 8601).
+     * When the job reached a terminal status (ISO 8601).
      */
     concludedAt: string | null;
 
     /**
-     * When the fix was created (ISO 8601).
+     * When the job was created (ISO 8601).
      */
     createdAt: string;
 
@@ -290,7 +290,7 @@ export namespace AutoimproveFixCreateResponse {
     trigger: 'ISSUE' | 'RUN_THRESHOLD_FAILED' | 'USER' | 'DEGRADATION';
 
     /**
-     * When the fix last changed (ISO 8601).
+     * When the job last changed (ISO 8601).
      */
     updatedAt: string;
 
@@ -300,15 +300,15 @@ export namespace AutoimproveFixCreateResponse {
   }
 }
 
-export interface AutoimproveFixListResponse {
-  data: Array<AutoimproveFixListResponse.Data>;
+export interface AutoimproveJobListResponse {
+  data: Array<AutoimproveJobListResponse.Data>;
 }
 
-export namespace AutoimproveFixListResponse {
+export namespace AutoimproveJobListResponse {
   /**
-   * One Autoimprove engagement: Roark autonomously improving one agent toward one
-   * objective metric. Roark only ever changes the staging agent (a shadow clone by
-   * default); production changes exactly once, when a verified fix is promoted.
+   * One Autoimprove job: Roark autonomously improving one agent toward one objective
+   * metric. Roark only ever changes the staging agent (a shadow clone by default);
+   * production changes exactly once, when verified changes are promoted.
    */
   export interface Data {
     id: string;
@@ -318,12 +318,12 @@ export namespace AutoimproveFixListResponse {
     baselineValue: number | null;
 
     /**
-     * When the fix reached a terminal status (ISO 8601).
+     * When the job reached a terminal status (ISO 8601).
      */
     concludedAt: string | null;
 
     /**
-     * When the fix was created (ISO 8601).
+     * When the job was created (ISO 8601).
      */
     createdAt: string;
 
@@ -374,7 +374,7 @@ export namespace AutoimproveFixListResponse {
     trigger: 'ISSUE' | 'RUN_THRESHOLD_FAILED' | 'USER' | 'DEGRADATION';
 
     /**
-     * When the fix last changed (ISO 8601).
+     * When the job last changed (ISO 8601).
      */
     updatedAt: string;
 
@@ -384,40 +384,40 @@ export namespace AutoimproveFixListResponse {
   }
 }
 
-export interface AutoimproveFixAnswerQuestionResponse {
-  data: AutoimproveFixAnswerQuestionResponse.Data;
+export interface AutoimproveJobAnswerQuestionResponse {
+  data: AutoimproveJobAnswerQuestionResponse.Data;
 }
 
-export namespace AutoimproveFixAnswerQuestionResponse {
+export namespace AutoimproveJobAnswerQuestionResponse {
   export interface Data {
     accepted: true;
   }
 }
 
-export interface AutoimproveFixCancelResponse {
-  data: AutoimproveFixCancelResponse.Data;
+export interface AutoimproveJobCancelResponse {
+  data: AutoimproveJobCancelResponse.Data;
 }
 
-export namespace AutoimproveFixCancelResponse {
+export namespace AutoimproveJobCancelResponse {
   export interface Data {
     accepted: true;
   }
 }
 
-export interface AutoimproveFixDismissResponse {
+export interface AutoimproveJobDismissResponse {
   /**
-   * One Autoimprove engagement: Roark autonomously improving one agent toward one
-   * objective metric. Roark only ever changes the staging agent (a shadow clone by
-   * default); production changes exactly once, when a verified fix is promoted.
+   * One Autoimprove job: Roark autonomously improving one agent toward one objective
+   * metric. Roark only ever changes the staging agent (a shadow clone by default);
+   * production changes exactly once, when verified changes are promoted.
    */
-  data: AutoimproveFixDismissResponse.Data;
+  data: AutoimproveJobDismissResponse.Data;
 }
 
-export namespace AutoimproveFixDismissResponse {
+export namespace AutoimproveJobDismissResponse {
   /**
-   * One Autoimprove engagement: Roark autonomously improving one agent toward one
-   * objective metric. Roark only ever changes the staging agent (a shadow clone by
-   * default); production changes exactly once, when a verified fix is promoted.
+   * One Autoimprove job: Roark autonomously improving one agent toward one objective
+   * metric. Roark only ever changes the staging agent (a shadow clone by default);
+   * production changes exactly once, when verified changes are promoted.
    */
   export interface Data {
     id: string;
@@ -427,12 +427,12 @@ export namespace AutoimproveFixDismissResponse {
     baselineValue: number | null;
 
     /**
-     * When the fix reached a terminal status (ISO 8601).
+     * When the job reached a terminal status (ISO 8601).
      */
     concludedAt: string | null;
 
     /**
-     * When the fix was created (ISO 8601).
+     * When the job was created (ISO 8601).
      */
     createdAt: string;
 
@@ -483,7 +483,7 @@ export namespace AutoimproveFixDismissResponse {
     trigger: 'ISSUE' | 'RUN_THRESHOLD_FAILED' | 'USER' | 'DEGRADATION';
 
     /**
-     * When the fix last changed (ISO 8601).
+     * When the job last changed (ISO 8601).
      */
     updatedAt: string;
 
@@ -493,15 +493,15 @@ export namespace AutoimproveFixDismissResponse {
   }
 }
 
-export interface AutoimproveFixGetByIDResponse {
-  data: AutoimproveFixGetByIDResponse.Data;
+export interface AutoimproveJobGetByIDResponse {
+  data: AutoimproveJobGetByIDResponse.Data;
 }
 
-export namespace AutoimproveFixGetByIDResponse {
+export namespace AutoimproveJobGetByIDResponse {
   /**
-   * One Autoimprove engagement: Roark autonomously improving one agent toward one
-   * objective metric. Roark only ever changes the staging agent (a shadow clone by
-   * default); production changes exactly once, when a verified fix is promoted.
+   * One Autoimprove job: Roark autonomously improving one agent toward one objective
+   * metric. Roark only ever changes the staging agent (a shadow clone by default);
+   * production changes exactly once, when verified changes are promoted.
    */
   export interface Data {
     id: string;
@@ -511,12 +511,12 @@ export namespace AutoimproveFixGetByIDResponse {
     baselineValue: number | null;
 
     /**
-     * When the fix reached a terminal status (ISO 8601).
+     * When the job reached a terminal status (ISO 8601).
      */
     concludedAt: string | null;
 
     /**
-     * When the fix was created (ISO 8601).
+     * When the job was created (ISO 8601).
      */
     createdAt: string;
 
@@ -535,7 +535,7 @@ export namespace AutoimproveFixGetByIDResponse {
     /**
      * The full worklog, oldest first.
      */
-    logEntries: Array<AutoimproveFixAPI.AutoimproveLogEntry>;
+    logEntries: Array<AutoimproveJobAPI.AutoimproveLogEntry>;
 
     maxIterations: number;
 
@@ -572,7 +572,7 @@ export namespace AutoimproveFixGetByIDResponse {
     trigger: 'ISSUE' | 'RUN_THRESHOLD_FAILED' | 'USER' | 'DEGRADATION';
 
     /**
-     * When the fix last changed (ISO 8601).
+     * When the job last changed (ISO 8601).
      */
     updatedAt: string;
 
@@ -582,20 +582,20 @@ export namespace AutoimproveFixGetByIDResponse {
   }
 }
 
-export interface AutoimproveFixPromoteResponse {
+export interface AutoimproveJobPromoteResponse {
   /**
-   * One Autoimprove engagement: Roark autonomously improving one agent toward one
-   * objective metric. Roark only ever changes the staging agent (a shadow clone by
-   * default); production changes exactly once, when a verified fix is promoted.
+   * One Autoimprove job: Roark autonomously improving one agent toward one objective
+   * metric. Roark only ever changes the staging agent (a shadow clone by default);
+   * production changes exactly once, when verified changes are promoted.
    */
-  data: AutoimproveFixPromoteResponse.Data;
+  data: AutoimproveJobPromoteResponse.Data;
 }
 
-export namespace AutoimproveFixPromoteResponse {
+export namespace AutoimproveJobPromoteResponse {
   /**
-   * One Autoimprove engagement: Roark autonomously improving one agent toward one
-   * objective metric. Roark only ever changes the staging agent (a shadow clone by
-   * default); production changes exactly once, when a verified fix is promoted.
+   * One Autoimprove job: Roark autonomously improving one agent toward one objective
+   * metric. Roark only ever changes the staging agent (a shadow clone by default);
+   * production changes exactly once, when verified changes are promoted.
    */
   export interface Data {
     id: string;
@@ -605,12 +605,12 @@ export namespace AutoimproveFixPromoteResponse {
     baselineValue: number | null;
 
     /**
-     * When the fix reached a terminal status (ISO 8601).
+     * When the job reached a terminal status (ISO 8601).
      */
     concludedAt: string | null;
 
     /**
-     * When the fix was created (ISO 8601).
+     * When the job was created (ISO 8601).
      */
     createdAt: string;
 
@@ -661,7 +661,7 @@ export namespace AutoimproveFixPromoteResponse {
     trigger: 'ISSUE' | 'RUN_THRESHOLD_FAILED' | 'USER' | 'DEGRADATION';
 
     /**
-     * When the fix last changed (ISO 8601).
+     * When the job last changed (ISO 8601).
      */
     updatedAt: string;
 
@@ -671,24 +671,24 @@ export namespace AutoimproveFixPromoteResponse {
   }
 }
 
-export interface AutoimproveFixSendGuidanceResponse {
-  data: AutoimproveFixSendGuidanceResponse.Data;
+export interface AutoimproveJobSendGuidanceResponse {
+  data: AutoimproveJobSendGuidanceResponse.Data;
 }
 
-export namespace AutoimproveFixSendGuidanceResponse {
+export namespace AutoimproveJobSendGuidanceResponse {
   export interface Data {
     accepted: true;
   }
 }
 
-export interface AutoimproveFixCreateParams {
+export interface AutoimproveJobCreateParams {
   /**
    * The production agent to improve. It is never modified until you promote.
    */
   agentId: string;
 
   /**
-   * Human-readable label for the objective, shown everywhere the fix appears.
+   * Human-readable label for the objective, shown everywhere the job appears.
    */
   objectiveLabel: string;
 
@@ -707,7 +707,7 @@ export interface AutoimproveFixCreateParams {
   customerIntegrationId?: string;
 
   /**
-   * Cap on decision turns. Defaults to 10.
+   * Cap on decision turns. Defaults to 50.
    */
   maxIterations?: number;
 
@@ -734,33 +734,33 @@ export interface AutoimproveFixCreateParams {
   validationRunPlanId?: string;
 }
 
-export interface AutoimproveFixAnswerQuestionParams {
+export interface AutoimproveJobAnswerQuestionParams {
   /**
    * The message for Roark.
    */
   text: string;
 }
 
-export interface AutoimproveFixSendGuidanceParams {
+export interface AutoimproveJobSendGuidanceParams {
   /**
    * The message for Roark.
    */
   text: string;
 }
 
-export declare namespace AutoimproveFix {
+export declare namespace AutoimproveJob {
   export {
     type AutoimproveLogEntry as AutoimproveLogEntry,
-    type AutoimproveFixCreateResponse as AutoimproveFixCreateResponse,
-    type AutoimproveFixListResponse as AutoimproveFixListResponse,
-    type AutoimproveFixAnswerQuestionResponse as AutoimproveFixAnswerQuestionResponse,
-    type AutoimproveFixCancelResponse as AutoimproveFixCancelResponse,
-    type AutoimproveFixDismissResponse as AutoimproveFixDismissResponse,
-    type AutoimproveFixGetByIDResponse as AutoimproveFixGetByIDResponse,
-    type AutoimproveFixPromoteResponse as AutoimproveFixPromoteResponse,
-    type AutoimproveFixSendGuidanceResponse as AutoimproveFixSendGuidanceResponse,
-    type AutoimproveFixCreateParams as AutoimproveFixCreateParams,
-    type AutoimproveFixAnswerQuestionParams as AutoimproveFixAnswerQuestionParams,
-    type AutoimproveFixSendGuidanceParams as AutoimproveFixSendGuidanceParams,
+    type AutoimproveJobCreateResponse as AutoimproveJobCreateResponse,
+    type AutoimproveJobListResponse as AutoimproveJobListResponse,
+    type AutoimproveJobAnswerQuestionResponse as AutoimproveJobAnswerQuestionResponse,
+    type AutoimproveJobCancelResponse as AutoimproveJobCancelResponse,
+    type AutoimproveJobDismissResponse as AutoimproveJobDismissResponse,
+    type AutoimproveJobGetByIDResponse as AutoimproveJobGetByIDResponse,
+    type AutoimproveJobPromoteResponse as AutoimproveJobPromoteResponse,
+    type AutoimproveJobSendGuidanceResponse as AutoimproveJobSendGuidanceResponse,
+    type AutoimproveJobCreateParams as AutoimproveJobCreateParams,
+    type AutoimproveJobAnswerQuestionParams as AutoimproveJobAnswerQuestionParams,
+    type AutoimproveJobSendGuidanceParams as AutoimproveJobSendGuidanceParams,
   };
 }
