@@ -39,7 +39,7 @@ describe('resource customerFlow', () => {
             waitSeconds: 1,
           },
           ref: 'x',
-          requiredForValidRun: true,
+          stage: { name: 'x', analyze: true, required: true },
           steps: [
             {
               type: 'AGENT_TURN',
@@ -54,7 +54,7 @@ describe('resource customerFlow', () => {
                 waitSeconds: 1,
               },
               ref: 'x',
-              requiredForValidRun: true,
+              stage: { name: 'x', analyze: true, required: true },
               steps: [
                 {
                   type: 'AGENT_TURN',
@@ -69,7 +69,7 @@ describe('resource customerFlow', () => {
                     waitSeconds: 1,
                   },
                   ref: 'x',
-                  requiredForValidRun: true,
+                  stage: { name: 'x', analyze: true, required: true },
                   steps: [
                     {
                       type: 'AGENT_TURN',
@@ -78,7 +78,7 @@ describe('resource customerFlow', () => {
                       nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
                       offScriptPolicy: { maxAttempts: 1, reaction: 'STAY_SILENT', then: 'HANG_UP' },
                       ref: 'x',
-                      requiredForValidRun: true,
+                      stage: { name: 'x' },
                       steps: [],
                     },
                   ],
@@ -246,7 +246,7 @@ describe('resource customerFlow', () => {
             waitSeconds: 1,
           },
           ref: 'x',
-          requiredForValidRun: true,
+          stage: { name: 'x', analyze: true, required: true },
           steps: [
             {
               type: 'AGENT_TURN',
@@ -261,7 +261,7 @@ describe('resource customerFlow', () => {
                 waitSeconds: 1,
               },
               ref: 'x',
-              requiredForValidRun: true,
+              stage: { name: 'x', analyze: true, required: true },
               steps: [
                 {
                   type: 'AGENT_TURN',
@@ -276,7 +276,7 @@ describe('resource customerFlow', () => {
                     waitSeconds: 1,
                   },
                   ref: 'x',
-                  requiredForValidRun: true,
+                  stage: { name: 'x', analyze: true, required: true },
                   steps: [
                     {
                       type: 'AGENT_TURN',
@@ -285,7 +285,7 @@ describe('resource customerFlow', () => {
                       nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
                       offScriptPolicy: { maxAttempts: 1, reaction: 'STAY_SILENT', then: 'HANG_UP' },
                       ref: 'x',
-                      requiredForValidRun: true,
+                      stage: { name: 'x' },
                       steps: [],
                     },
                   ],
