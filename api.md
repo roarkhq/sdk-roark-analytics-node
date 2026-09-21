@@ -194,30 +194,30 @@ Methods:
 
 - <code title="get /v1/simulation/template">client.simulationTemplate.<a href="./src/resources/simulation-template.ts">list</a>() -> SimulationTemplateListResponse</code>
 
-# AutoimproveFix
+# AutoimproveJob
 
 Types:
 
-- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveLogEntry</a></code>
-- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixCreateResponse</a></code>
-- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixListResponse</a></code>
-- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixAnswerQuestionResponse</a></code>
-- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixCancelResponse</a></code>
-- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixDismissResponse</a></code>
-- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixGetByIDResponse</a></code>
-- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixPromoteResponse</a></code>
-- <code><a href="./src/resources/autoimprove-fix.ts">AutoimproveFixSendGuidanceResponse</a></code>
+- <code><a href="./src/resources/autoimprove-job.ts">AutoimproveLogEntry</a></code>
+- <code><a href="./src/resources/autoimprove-job.ts">AutoimproveJobCreateResponse</a></code>
+- <code><a href="./src/resources/autoimprove-job.ts">AutoimproveJobListResponse</a></code>
+- <code><a href="./src/resources/autoimprove-job.ts">AutoimproveJobAnswerQuestionResponse</a></code>
+- <code><a href="./src/resources/autoimprove-job.ts">AutoimproveJobCancelResponse</a></code>
+- <code><a href="./src/resources/autoimprove-job.ts">AutoimproveJobDismissResponse</a></code>
+- <code><a href="./src/resources/autoimprove-job.ts">AutoimproveJobGetByIDResponse</a></code>
+- <code><a href="./src/resources/autoimprove-job.ts">AutoimproveJobPromoteResponse</a></code>
+- <code><a href="./src/resources/autoimprove-job.ts">AutoimproveJobSendGuidanceResponse</a></code>
 
 Methods:
 
-- <code title="post /v1/autoimprove/fix">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">create</a>({ ...params }) -> AutoimproveFixCreateResponse</code>
-- <code title="get /v1/autoimprove/fix">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">list</a>() -> AutoimproveFixListResponse</code>
-- <code title="post /v1/autoimprove/fix/{fixId}/answer">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">answerQuestion</a>(fixID, { ...params }) -> AutoimproveFixAnswerQuestionResponse</code>
-- <code title="post /v1/autoimprove/fix/{fixId}/cancel">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">cancel</a>(fixID) -> AutoimproveFixCancelResponse</code>
-- <code title="post /v1/autoimprove/fix/{fixId}/dismiss">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">dismiss</a>(fixID) -> AutoimproveFixDismissResponse</code>
-- <code title="get /v1/autoimprove/fix/{fixId}">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">getByID</a>(fixID) -> AutoimproveFixGetByIDResponse</code>
-- <code title="post /v1/autoimprove/fix/{fixId}/promote">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">promote</a>(fixID) -> AutoimproveFixPromoteResponse</code>
-- <code title="post /v1/autoimprove/fix/{fixId}/guidance">client.autoimproveFix.<a href="./src/resources/autoimprove-fix.ts">sendGuidance</a>(fixID, { ...params }) -> AutoimproveFixSendGuidanceResponse</code>
+- <code title="post /v1/autoimprove/job">client.autoimproveJob.<a href="./src/resources/autoimprove-job.ts">create</a>({ ...params }) -> AutoimproveJobCreateResponse</code>
+- <code title="get /v1/autoimprove/job">client.autoimproveJob.<a href="./src/resources/autoimprove-job.ts">list</a>() -> AutoimproveJobListResponse</code>
+- <code title="post /v1/autoimprove/job/{jobId}/answer">client.autoimproveJob.<a href="./src/resources/autoimprove-job.ts">answerQuestion</a>(jobID, { ...params }) -> AutoimproveJobAnswerQuestionResponse</code>
+- <code title="post /v1/autoimprove/job/{jobId}/cancel">client.autoimproveJob.<a href="./src/resources/autoimprove-job.ts">cancel</a>(jobID) -> AutoimproveJobCancelResponse</code>
+- <code title="post /v1/autoimprove/job/{jobId}/dismiss">client.autoimproveJob.<a href="./src/resources/autoimprove-job.ts">dismiss</a>(jobID) -> AutoimproveJobDismissResponse</code>
+- <code title="get /v1/autoimprove/job/{jobId}">client.autoimproveJob.<a href="./src/resources/autoimprove-job.ts">getByID</a>(jobID) -> AutoimproveJobGetByIDResponse</code>
+- <code title="post /v1/autoimprove/job/{jobId}/promote">client.autoimproveJob.<a href="./src/resources/autoimprove-job.ts">promote</a>(jobID) -> AutoimproveJobPromoteResponse</code>
+- <code title="post /v1/autoimprove/job/{jobId}/guidance">client.autoimproveJob.<a href="./src/resources/autoimprove-job.ts">sendGuidance</a>(jobID, { ...params }) -> AutoimproveJobSendGuidanceResponse</code>
 
 # CustomerFlow
 

@@ -219,7 +219,7 @@ export namespace SimulationJobGetByIDResponse {
        * Why the result does not count. `SCRIPT_DIVERGED`: a strict flow went off script
        * at a step whose off-script policy is HANG_UP_INVALIDATE.
        */
-      reason: 'SCRIPT_DIVERGED' | 'REQUIRED_STEP_NOT_REACHED';
+      reason: 'SCRIPT_DIVERGED' | 'REQUIRED_STEP_NOT_REACHED' | 'REQUIRED_STAGE_INCOMPLETE';
 
       /**
        * One sentence: where the script was left and what your agent did instead.
@@ -682,7 +682,7 @@ export namespace SimulationJobLookupResponse {
        * Why the result does not count. `SCRIPT_DIVERGED`: a strict flow went off script
        * at a step whose off-script policy is HANG_UP_INVALIDATE.
        */
-      reason: 'SCRIPT_DIVERGED' | 'REQUIRED_STEP_NOT_REACHED';
+      reason: 'SCRIPT_DIVERGED' | 'REQUIRED_STEP_NOT_REACHED' | 'REQUIRED_STAGE_INCOMPLETE';
 
       /**
        * One sentence: where the script was left and what your agent did instead.
