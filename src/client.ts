@@ -268,6 +268,21 @@ export interface ClientOptions {
   bearerToken?: string | undefined;
 
   /**
+   * The project every request acts on, sent as the `X-Roark-Project-Id` header.
+   *
+   * Required only for credentials that are not themselves tied to a project. A project API key
+   * already names its project, and ignores this; a user credential (a CLI login, or a connected
+   * application authorized through OAuth) can reach every project you belong to, so each request
+   * has to say which one it means.
+   *
+   * Set it once on the client, or derive a per-project client with
+   * `client.withOptions({ project })` - useful when one process serves several projects.
+   *
+   * Defaults to process.env['ROARK_PROJECT_ID'].
+   */
+  project?: string | null | undefined;
+
+  /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
    * Defaults to process.env['ROARK_BASE_URL'].
@@ -341,6 +356,7 @@ export interface ClientOptions {
  */
 export class Roark {
   bearerToken: string;
+  project: string | undefined;
 
   baseURL: string;
   maxRetries: number;
@@ -358,6 +374,7 @@ export class Roark {
    * API Client for interfacing with the Roark API.
    *
    * @param {string | undefined} [opts.bearerToken=process.env['ROARK_API_BEARER_TOKEN'] ?? undefined]
+   * @param {string | null | undefined} [opts.project=process.env['ROARK_PROJECT_ID'] ?? undefined] - The project every request acts on, sent as `X-Roark-Project-Id`.
    * @param {string} [opts.baseURL=process.env['ROARK_BASE_URL'] ?? https://api.roark.ai] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -369,6 +386,7 @@ export class Roark {
   constructor({
     baseURL = readEnv('ROARK_BASE_URL'),
     bearerToken = readEnv('ROARK_API_BEARER_TOKEN'),
+    project = readEnv('ROARK_PROJECT_ID'),
     ...opts
   }: ClientOptions = {}) {
     if (bearerToken === undefined) {
@@ -379,6 +397,7 @@ export class Roark {
 
     const options: ClientOptions = {
       bearerToken,
+      project,
       ...opts,
       baseURL: baseURL || `https://api.roark.ai`,
     };
@@ -413,6 +432,9 @@ export class Roark {
     this._options = options;
 
     this.bearerToken = bearerToken;
+    // `null` is how a caller opts out of an inherited `ROARK_PROJECT_ID`; both it and an unset
+    // option mean "send no project header", so they collapse to `undefined` here.
+    this.project = project ?? undefined;
   }
 
   /**
@@ -429,6 +451,11 @@ export class Roark {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       bearerToken: this.bearerToken,
+      // Carried explicitly, like every other resolved field above: `this._options.project` still
+      // holds whatever was passed in, but `this.project` is the value actually in force after the
+      // environment default. Spreading `options` last is what makes `withOptions({ project })` the
+      // supported way to point one client at another project.
+      project: this.project,
       ...options,
     });
     return client;
@@ -451,6 +478,18 @@ export class Roark {
 
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     return buildHeaders([{ Authorization: `Bearer ${this.bearerToken}` }]);
+  }
+
+  /**
+   * The project header, when the client was given a project.
+   *
+   * Kept separate from `authHeaders` because it is not authentication: it selects which of the
+   * projects the credential can already reach this request is for. A project-scoped key ignores
+   * the header entirely, so setting it is never harmful, only redundant.
+   */
+  protected projectHeaders(opts: FinalRequestOptions): NullableHeaders | undefined {
+    if (!this.project) return undefined;
+    return buildHeaders([{ 'X-Roark-Project-Id': this.project }]);
   }
 
   protected stringifyQuery(query: object | Record<string, unknown>): string {
@@ -877,6 +916,10 @@ export class Roark {
         ...getPlatformHeaders(),
       },
       await this.authHeaders(options),
+      // Before `defaultHeaders` and `options.headers`, both of which win on conflict: anyone
+      // already setting `X-Roark-Project-Id` by hand keeps the behaviour they have today, and a
+      // single call can still override the client's project without building a second client.
+      this.projectHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,

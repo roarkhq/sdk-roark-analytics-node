@@ -49,6 +49,108 @@ describe('instantiate client', () => {
       expect(req.headers.has('x-my-default-header')).toBe(false);
     });
   });
+
+  describe('project', () => {
+    test('is sent as X-Roark-Project-Id', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_123',
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'get' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_123');
+    });
+
+    test('is absent when no project is configured', async () => {
+      // A project-scoped key names its own project, so the header must not appear at all rather
+      // than appear empty - customer-api reads presence, and an empty value is a 400.
+      const client = new Roark({ baseURL: 'http://localhost:5000/', bearerToken: 'My Bearer Token' });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'get' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('falls back to ROARK_PROJECT_ID', async () => {
+      process.env['ROARK_PROJECT_ID'] = 'proj_from_env';
+      const client = new Roark({ baseURL: 'http://localhost:5000/', bearerToken: 'My Bearer Token' });
+      expect(client.project).toEqual('proj_from_env');
+      const { req } = await client.buildRequest({ path: '/foo', method: 'get' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_from_env');
+    });
+
+    test('an explicit project beats the environment', async () => {
+      process.env['ROARK_PROJECT_ID'] = 'proj_from_env';
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_explicit',
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'get' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_explicit');
+    });
+
+    test('null opts out of an inherited ROARK_PROJECT_ID', async () => {
+      // The escape hatch for a process that has the variable set for something else and holds a
+      // project-scoped key here.
+      process.env['ROARK_PROJECT_ID'] = 'proj_from_env';
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: null,
+      });
+      expect(client.project).toBeUndefined();
+      const { req } = await client.buildRequest({ path: '/foo', method: 'get' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('a per-request header overrides the client project', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_123',
+      });
+      const { req } = await client.buildRequest({
+        path: '/foo',
+        method: 'get',
+        headers: { 'X-Roark-Project-Id': 'proj_other' },
+      });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_other');
+    });
+
+    test('defaultHeaders still win, so existing callers are unaffected', async () => {
+      // Setting the header by hand was the only way to do this before the option existed. Anyone
+      // doing that keeps exactly the behaviour they have today.
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_123',
+        defaultHeaders: { 'X-Roark-Project-Id': 'proj_by_hand' },
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'get' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_by_hand');
+    });
+
+    test('withOptions retargets the project, and preserves it otherwise', async () => {
+      // The multi-project case: one process, one credential, a client per project.
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_123',
+      });
+
+      const retargeted = client.withOptions({ project: 'proj_456' });
+      expect(retargeted.project).toEqual('proj_456');
+      expect(
+        (await retargeted.buildRequest({ path: '/foo', method: 'get' })).req.headers.get(
+          'x-roark-project-id',
+        ),
+      ).toEqual('proj_456');
+
+      // The original is untouched, and an unrelated override keeps the project.
+      expect(client.project).toEqual('proj_123');
+      expect(client.withOptions({ maxRetries: 5 }).project).toEqual('proj_123');
+    });
+  });
+
   describe('logging', () => {
     const env = process.env;
 
