@@ -45,6 +45,34 @@ const call = await client.call.create({
 console.log(call.data);
 ```
 
+### Choosing a project
+
+Most credentials are project API keys, which already name the project they act on. Nothing extra is
+needed for those.
+
+A **user credential** is different. A CLI login, or an application you authorized through OAuth, acts
+as you and can reach every project you belong to, so each request has to say which project it means.
+Give the client a `project`:
+
+<!-- prettier-ignore -->
+```js
+const client = new Roark({
+  bearerToken: process.env['ROARK_API_BEARER_TOKEN'],
+  project: process.env['ROARK_PROJECT_ID'], // This is the default and can be omitted
+});
+```
+
+It is sent as the `X-Roark-Project-Id` header on every request. A project API key ignores it, so
+setting it is never harmful, only redundant.
+
+To serve several projects from one process, derive a client per project. They share the same
+connection settings and credential:
+
+<!-- prettier-ignore -->
+```js
+const forProject = client.withOptions({ project: 'proj_123' });
+```
+
 ### Request & Response types
 
 This library includes TypeScript definitions for all request params and response fields. You may import and use them like so:
