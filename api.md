@@ -194,6 +194,27 @@ Methods:
 
 - <code title="get /v1/simulation/template">client.simulationTemplate.<a href="./src/resources/simulation-template.ts">list</a>() -> SimulationTemplateListResponse</code>
 
+# AgentConfig
+
+Types:
+
+- <code><a href="./src/resources/agent-config.ts">ManagedAgentConfigRevision</a></code>
+- <code><a href="./src/resources/agent-config.ts">AgentConfigUpdateResponse</a></code>
+- <code><a href="./src/resources/agent-config.ts">AgentConfigListResponse</a></code>
+- <code><a href="./src/resources/agent-config.ts">AgentConfigDeleteStagingResponse</a></code>
+- <code><a href="./src/resources/agent-config.ts">AgentConfigGetByIDResponse</a></code>
+- <code><a href="./src/resources/agent-config.ts">AgentConfigPromoteResponse</a></code>
+- <code><a href="./src/resources/agent-config.ts">AgentConfigResolveResponse</a></code>
+
+Methods:
+
+- <code title="put /v1/agent-config/{key}">client.agentConfig.<a href="./src/resources/agent-config.ts">update</a>(key, { ...params }) -> AgentConfigUpdateResponse</code>
+- <code title="get /v1/agent-config">client.agentConfig.<a href="./src/resources/agent-config.ts">list</a>() -> AgentConfigListResponse</code>
+- <code title="delete /v1/agent-config/{key}/staging">client.agentConfig.<a href="./src/resources/agent-config.ts">deleteStaging</a>(key) -> AgentConfigDeleteStagingResponse</code>
+- <code title="get /v1/agent-config/{key}">client.agentConfig.<a href="./src/resources/agent-config.ts">getByID</a>(key) -> AgentConfigGetByIDResponse</code>
+- <code title="post /v1/agent-config/{key}/promote">client.agentConfig.<a href="./src/resources/agent-config.ts">promote</a>(key) -> AgentConfigPromoteResponse</code>
+- <code title="post /v1/agent-config/{key}/resolve">client.agentConfig.<a href="./src/resources/agent-config.ts">resolve</a>(key, { ...params }) -> AgentConfigResolveResponse</code>
+
 # AutoimproveJob
 
 Types:

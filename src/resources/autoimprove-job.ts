@@ -14,8 +14,9 @@ export class AutoimproveJob extends APIResource {
    * until the objective metric passes its target. Production is never touched by the
    * loop; verified changes wait for promotion.
    *
-   * Requires an active provider integration (Vapi or Retell) with agent config
-   * writes enabled. One live job per agent: starting a second returns a conflict.
+   * Requires an active provider integration (Vapi, Retell, or ElevenLabs) with agent
+   * config writes enabled. One live job per agent: starting a second returns a
+   * conflict.
    *
    * The job runs asynchronously; poll GET /v1/autoimprove/job/{jobId} or watch it in
    * the dashboard. When its status is NEEDS_INPUT, answer via the answer endpoint;
@@ -245,7 +246,7 @@ export namespace AutoimproveJobCreateResponse {
 
     currentValue: number | null;
 
-    customerIntegrationId: string;
+    customerIntegrationId: string | null;
 
     finalReport: string | null;
 
@@ -273,7 +274,7 @@ export namespace AutoimproveJobCreateResponse {
 
     stagingAgentId: string;
 
-    stagingKind: 'DESIGNATED' | 'SHADOW';
+    stagingKind: 'DESIGNATED' | 'SHADOW' | 'CHANNEL';
 
     status:
       | 'RUNNING'
@@ -329,7 +330,7 @@ export namespace AutoimproveJobListResponse {
 
     currentValue: number | null;
 
-    customerIntegrationId: string;
+    customerIntegrationId: string | null;
 
     finalReport: string | null;
 
@@ -357,7 +358,7 @@ export namespace AutoimproveJobListResponse {
 
     stagingAgentId: string;
 
-    stagingKind: 'DESIGNATED' | 'SHADOW';
+    stagingKind: 'DESIGNATED' | 'SHADOW' | 'CHANNEL';
 
     status:
       | 'RUNNING'
@@ -438,7 +439,7 @@ export namespace AutoimproveJobDismissResponse {
 
     currentValue: number | null;
 
-    customerIntegrationId: string;
+    customerIntegrationId: string | null;
 
     finalReport: string | null;
 
@@ -466,7 +467,7 @@ export namespace AutoimproveJobDismissResponse {
 
     stagingAgentId: string;
 
-    stagingKind: 'DESIGNATED' | 'SHADOW';
+    stagingKind: 'DESIGNATED' | 'SHADOW' | 'CHANNEL';
 
     status:
       | 'RUNNING'
@@ -522,7 +523,7 @@ export namespace AutoimproveJobGetByIDResponse {
 
     currentValue: number | null;
 
-    customerIntegrationId: string;
+    customerIntegrationId: string | null;
 
     finalReport: string | null;
 
@@ -555,7 +556,7 @@ export namespace AutoimproveJobGetByIDResponse {
 
     stagingAgentId: string;
 
-    stagingKind: 'DESIGNATED' | 'SHADOW';
+    stagingKind: 'DESIGNATED' | 'SHADOW' | 'CHANNEL';
 
     status:
       | 'RUNNING'
@@ -616,7 +617,7 @@ export namespace AutoimproveJobPromoteResponse {
 
     currentValue: number | null;
 
-    customerIntegrationId: string;
+    customerIntegrationId: string | null;
 
     finalReport: string | null;
 
@@ -644,7 +645,7 @@ export namespace AutoimproveJobPromoteResponse {
 
     stagingAgentId: string;
 
-    stagingKind: 'DESIGNATED' | 'SHADOW';
+    stagingKind: 'DESIGNATED' | 'SHADOW' | 'CHANNEL';
 
     status:
       | 'RUNNING'

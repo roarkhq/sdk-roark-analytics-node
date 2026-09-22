@@ -28,6 +28,18 @@ import {
   AgentUpdateResponse,
 } from './resources/agent';
 import {
+  AgentConfig,
+  AgentConfigDeleteStagingResponse,
+  AgentConfigGetByIDResponse,
+  AgentConfigListResponse,
+  AgentConfigPromoteResponse,
+  AgentConfigResolveParams,
+  AgentConfigResolveResponse,
+  AgentConfigUpdateParams,
+  AgentConfigUpdateResponse,
+  ManagedAgentConfigRevision,
+} from './resources/agent-config';
+import {
   AgentEndpoint,
   AgentEndpointCreateParams,
   AgentEndpointCreateResponse,
@@ -966,6 +978,7 @@ export class Roark {
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
   simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
   simulationTemplate: API.SimulationTemplate = new API.SimulationTemplate(this);
+  agentConfig: API.AgentConfig = new API.AgentConfig(this);
   autoimproveJob: API.AutoimproveJob = new API.AutoimproveJob(this);
   customerFlow: API.CustomerFlow = new API.CustomerFlow(this);
   customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
@@ -991,6 +1004,7 @@ Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationPersona = SimulationPersona;
 Roark.SimulationEnvironment = SimulationEnvironment;
 Roark.SimulationTemplate = SimulationTemplate;
+Roark.AgentConfig = AgentConfig;
 Roark.AutoimproveJob = AutoimproveJob;
 Roark.CustomerFlow = CustomerFlow;
 Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
@@ -1128,6 +1142,19 @@ export declare namespace Roark {
   export {
     SimulationTemplate as SimulationTemplate,
     type SimulationTemplateListResponse as SimulationTemplateListResponse,
+  };
+
+  export {
+    AgentConfig as AgentConfig,
+    type ManagedAgentConfigRevision as ManagedAgentConfigRevision,
+    type AgentConfigUpdateResponse as AgentConfigUpdateResponse,
+    type AgentConfigListResponse as AgentConfigListResponse,
+    type AgentConfigDeleteStagingResponse as AgentConfigDeleteStagingResponse,
+    type AgentConfigGetByIDResponse as AgentConfigGetByIDResponse,
+    type AgentConfigPromoteResponse as AgentConfigPromoteResponse,
+    type AgentConfigResolveResponse as AgentConfigResolveResponse,
+    type AgentConfigUpdateParams as AgentConfigUpdateParams,
+    type AgentConfigResolveParams as AgentConfigResolveParams,
   };
 
   export {
