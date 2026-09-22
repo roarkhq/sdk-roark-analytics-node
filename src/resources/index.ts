@@ -11,6 +11,18 @@ export {
   type AgentListParams,
 } from './agent';
 export {
+  AgentConfig,
+  type ManagedAgentConfigRevision,
+  type AgentConfigUpdateResponse,
+  type AgentConfigListResponse,
+  type AgentConfigDeleteStagingResponse,
+  type AgentConfigGetByIDResponse,
+  type AgentConfigPromoteResponse,
+  type AgentConfigResolveResponse,
+  type AgentConfigUpdateParams,
+  type AgentConfigResolveParams,
+} from './agent-config';
+export {
   AgentEndpoint,
   type AgentEndpointCreateResponse,
   type AgentEndpointUpdateResponse,
