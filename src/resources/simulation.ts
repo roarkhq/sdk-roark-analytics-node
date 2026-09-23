@@ -90,6 +90,12 @@ export namespace SimulationMockToolResponse {
 
     simulationJobId: string;
 
+    /**
+     * GENERATED = the scenario-aware model answered; FIXTURE = a pinned deterministic
+     * response you configured answered.
+     */
+    source: 'GENERATED' | 'FIXTURE';
+
     toolName: string;
 
     /**

@@ -199,6 +199,7 @@ export {
   type SimulationJobLookupResponse,
   type SimulationJobLookupParams,
 } from './simulation-job';
+export { SimulationJobToolMock, type SimulationJobToolMockListResponse } from './simulation-job-tool-mock';
 export {
   SimulationPersona,
   type SimulationPersonaCreateResponse,
@@ -230,6 +231,16 @@ export {
   type SimulationRunPlanJobStartParams,
 } from './simulation-run-plan-job';
 export { SimulationTemplate, type SimulationTemplateListResponse } from './simulation-template';
+export {
+  SimulationToolFixture,
+  type SimulationToolFixtureCreateResponse,
+  type SimulationToolFixtureUpdateResponse,
+  type SimulationToolFixtureListResponse,
+  type SimulationToolFixtureDeleteResponse,
+  type SimulationToolFixtureCreateParams,
+  type SimulationToolFixtureUpdateParams,
+  type SimulationToolFixtureListParams,
+} from './simulation-tool-fixture';
 export {
   Webhook,
   type WebhookCreateResponse,
