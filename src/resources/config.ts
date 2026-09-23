@@ -51,6 +51,7 @@ export interface Bundle {
     | Bundle.CollectorConfig
     | Bundle.MetricConfig
     | Bundle.SimulationPlanConfig
+    | Bundle.QaSimulationPlanConfig
     | Bundle.AlertConfig
   >;
 
@@ -460,6 +461,8 @@ export namespace Bundle {
     maxConcurrentJobs?: number;
 
     silenceTimeoutSeconds?: number;
+
+    template?: 'manual';
   }
 
   export namespace SimulationPlanConfig {
@@ -481,6 +484,68 @@ export namespace Bundle {
       personaOverride?: string;
 
       system?: string;
+    }
+  }
+
+  export interface QaSimulationPlanConfig {
+    agentEndpoints: Array<QaSimulationPlanConfig.AgentEndpoint>;
+
+    direction: 'INBOUND' | 'OUTBOUND';
+
+    environment: string;
+
+    kind: 'simulationPlan';
+
+    maxDurationSeconds: number;
+
+    name: string;
+
+    persona: string;
+
+    questions: Array<QaSimulationPlanConfig.Question>;
+
+    template: 'qa';
+
+    description?: string | null;
+
+    endCallPhrases?: Array<string>;
+
+    endCallReasons?: Array<string>;
+
+    enrichWithLiveConversation?: boolean;
+
+    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    gradeWithKnowledgeBase?: boolean;
+
+    includeAutomaticMetrics?: boolean;
+
+    includeFlowMetrics?: boolean;
+
+    iterations?: number;
+
+    maxConcurrentJobs?: number;
+
+    metrics?: Array<string>;
+
+    silenceTimeoutSeconds?: number;
+  }
+
+  export namespace QaSimulationPlanConfig {
+    export interface AgentEndpoint {
+      agent: string;
+
+      direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+      value?: string;
+    }
+
+    export interface Question {
+      ask: string;
+
+      expect?: string;
+
+      name?: string;
     }
   }
 
@@ -745,6 +810,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.CollectorConfig
     | ConfigApplyParams.MetricConfig
     | ConfigApplyParams.SimulationPlanConfig
+    | ConfigApplyParams.QaSimulationPlanConfig
     | ConfigApplyParams.AlertConfig
   >;
 
@@ -1154,6 +1220,8 @@ export namespace ConfigApplyParams {
     maxConcurrentJobs?: number;
 
     silenceTimeoutSeconds?: number;
+
+    template?: 'manual';
   }
 
   export namespace SimulationPlanConfig {
@@ -1175,6 +1243,68 @@ export namespace ConfigApplyParams {
       personaOverride?: string;
 
       system?: string;
+    }
+  }
+
+  export interface QaSimulationPlanConfig {
+    agentEndpoints: Array<QaSimulationPlanConfig.AgentEndpoint>;
+
+    direction: 'INBOUND' | 'OUTBOUND';
+
+    environment: string;
+
+    kind: 'simulationPlan';
+
+    maxDurationSeconds: number;
+
+    name: string;
+
+    persona: string;
+
+    questions: Array<QaSimulationPlanConfig.Question>;
+
+    template: 'qa';
+
+    description?: string | null;
+
+    endCallPhrases?: Array<string>;
+
+    endCallReasons?: Array<string>;
+
+    enrichWithLiveConversation?: boolean;
+
+    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    gradeWithKnowledgeBase?: boolean;
+
+    includeAutomaticMetrics?: boolean;
+
+    includeFlowMetrics?: boolean;
+
+    iterations?: number;
+
+    maxConcurrentJobs?: number;
+
+    metrics?: Array<string>;
+
+    silenceTimeoutSeconds?: number;
+  }
+
+  export namespace QaSimulationPlanConfig {
+    export interface AgentEndpoint {
+      agent: string;
+
+      direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+      value?: string;
+    }
+
+    export interface Question {
+      ask: string;
+
+      expect?: string;
+
+      name?: string;
     }
   }
 
@@ -1280,6 +1410,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.CollectorConfig
     | ConfigDiffParams.MetricConfig
     | ConfigDiffParams.SimulationPlanConfig
+    | ConfigDiffParams.QaSimulationPlanConfig
     | ConfigDiffParams.AlertConfig
   >;
 
@@ -1689,6 +1820,8 @@ export namespace ConfigDiffParams {
     maxConcurrentJobs?: number;
 
     silenceTimeoutSeconds?: number;
+
+    template?: 'manual';
   }
 
   export namespace SimulationPlanConfig {
@@ -1710,6 +1843,68 @@ export namespace ConfigDiffParams {
       personaOverride?: string;
 
       system?: string;
+    }
+  }
+
+  export interface QaSimulationPlanConfig {
+    agentEndpoints: Array<QaSimulationPlanConfig.AgentEndpoint>;
+
+    direction: 'INBOUND' | 'OUTBOUND';
+
+    environment: string;
+
+    kind: 'simulationPlan';
+
+    maxDurationSeconds: number;
+
+    name: string;
+
+    persona: string;
+
+    questions: Array<QaSimulationPlanConfig.Question>;
+
+    template: 'qa';
+
+    description?: string | null;
+
+    endCallPhrases?: Array<string>;
+
+    endCallReasons?: Array<string>;
+
+    enrichWithLiveConversation?: boolean;
+
+    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    gradeWithKnowledgeBase?: boolean;
+
+    includeAutomaticMetrics?: boolean;
+
+    includeFlowMetrics?: boolean;
+
+    iterations?: number;
+
+    maxConcurrentJobs?: number;
+
+    metrics?: Array<string>;
+
+    silenceTimeoutSeconds?: number;
+  }
+
+  export namespace QaSimulationPlanConfig {
+    export interface AgentEndpoint {
+      agent: string;
+
+      direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+      value?: string;
+    }
+
+    export interface Question {
+      ask: string;
+
+      expect?: string;
+
+      name?: string;
     }
   }
 
