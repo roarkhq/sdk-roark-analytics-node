@@ -50,6 +50,23 @@ export class Agent extends APIResource {
   }
 
   /**
+   * Creates a new Roark-hosted agent from a one-line job description. Roark authors
+   * the system prompt and hosts the config, so the agent is live and self-improvable
+   * from creation.
+   *
+   * @example
+   * ```ts
+   * const response = await client.agent.build({
+   *   jobDescription: 'x',
+   *   name: 'x',
+   * });
+   * ```
+   */
+  build(body: AgentBuildParams, options?: RequestOptions): APIPromise<AgentBuildResponse> {
+    return this._client.post('/v1/agent/build', { body, ...options });
+  }
+
+  /**
    * Returns a specific agent by its ID.
    *
    * @example
@@ -195,6 +212,44 @@ export namespace AgentListResponse {
   }
 }
 
+export interface AgentBuildResponse {
+  data: AgentBuildResponse.Data;
+}
+
+export namespace AgentBuildResponse {
+  export interface Data {
+    /**
+     * Unique identifier of the agent
+     */
+    id: string;
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    /**
+     * Custom identifier for the agent
+     */
+    customId: string | null;
+
+    /**
+     * Description of the agent
+     */
+    description: string | null;
+
+    /**
+     * Name of the agent
+     */
+    name: string;
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+  }
+}
+
 export interface AgentGetByIDResponse {
   data: AgentGetByIDResponse.Data;
 }
@@ -270,14 +325,34 @@ export interface AgentListParams {
   searchText?: string;
 }
 
+export interface AgentBuildParams {
+  /**
+   * One-line description of what the agent should do. Roark authors the system
+   * prompt from this.
+   */
+  jobDescription: string;
+
+  /**
+   * Name of the agent
+   */
+  name: string;
+
+  /**
+   * Optional voice label for the hosted agent
+   */
+  voice?: string | null;
+}
+
 export declare namespace Agent {
   export {
     type AgentCreateResponse as AgentCreateResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentListResponse as AgentListResponse,
+    type AgentBuildResponse as AgentBuildResponse,
     type AgentGetByIDResponse as AgentGetByIDResponse,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,
+    type AgentBuildParams as AgentBuildParams,
   };
 }
