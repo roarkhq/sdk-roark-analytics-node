@@ -175,7 +175,13 @@ export {
   type MetricVariantDeleteParams,
   type MetricVariantGetByIDParams,
 } from './metric-variant';
-export { Simulation, type SimulationRunResponse, type SimulationRunParams } from './simulation';
+export {
+  Simulation,
+  type SimulationMockToolResponse,
+  type SimulationRunResponse,
+  type SimulationMockToolParams,
+  type SimulationRunParams,
+} from './simulation';
 export {
   SimulationEnvironment,
   type SimulationEnvironmentCreateResponse,
