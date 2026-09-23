@@ -98,10 +98,12 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/simulation.ts">SimulationMockToolResponse</a></code>
 - <code><a href="./src/resources/simulation.ts">SimulationRunResponse</a></code>
 
 Methods:
 
+- <code title="post /v1/simulation/tool-mock">client.simulation.<a href="./src/resources/simulation.ts">mockTool</a>({ ...params }) -> SimulationMockToolResponse</code>
 - <code title="post /v1/simulation/run">client.simulation.<a href="./src/resources/simulation.ts">run</a>({ ...params }) -> SimulationRunResponse</code>
 
 # SimulationJob

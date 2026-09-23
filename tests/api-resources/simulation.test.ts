@@ -8,6 +8,31 @@ const client = new Roark({
 });
 
 describe('resource simulation', () => {
+  test('mockTool: only required params', async () => {
+    const responsePromise = client.simulation.mockTool({
+      simulationJobId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      toolName: 'book_appointment',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('mockTool: required and optional params', async () => {
+    const response = await client.simulation.mockTool({
+      simulationJobId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      toolName: 'book_appointment',
+      arguments: { date: '2026-10-01', time: '15:00' },
+      sessionId: 'sessionId',
+      toolDescription:
+        'Books an appointment. Args: date (YYYY-MM-DD), time (HH:MM). Returns {confirmationId, status}.',
+    });
+  });
+
   test('run: only required params', async () => {
     const responsePromise = client.simulation.run({
       plan: {

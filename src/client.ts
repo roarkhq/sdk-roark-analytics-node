@@ -192,7 +192,13 @@ import {
   MetricVariantUpdateParams,
   MetricVariantUpdateResponse,
 } from './resources/metric-variant';
-import { Simulation, SimulationRunParams, SimulationRunResponse } from './resources/simulation';
+import {
+  Simulation,
+  SimulationMockToolParams,
+  SimulationMockToolResponse,
+  SimulationRunParams,
+  SimulationRunResponse,
+} from './resources/simulation';
 import {
   SimulationEnvironment,
   SimulationEnvironmentCreateParams,
@@ -1085,7 +1091,9 @@ export declare namespace Roark {
 
   export {
     Simulation as Simulation,
+    type SimulationMockToolResponse as SimulationMockToolResponse,
     type SimulationRunResponse as SimulationRunResponse,
+    type SimulationMockToolParams as SimulationMockToolParams,
     type SimulationRunParams as SimulationRunParams,
   };
 
