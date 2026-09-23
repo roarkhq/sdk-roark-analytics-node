@@ -6,6 +6,36 @@ import { RequestOptions } from '../internal/request-options';
 
 export class Simulation extends APIResource {
   /**
+   * The server half of the tool guard for code-first agents. When a guarded tool
+   * fires during a Roark test call, send the invocation here instead of executing
+   * it: Roark answers with a simulated backend response that is valid JSON, shaped
+   * by the tool contract you pass, consistent with the test scenario, and consistent
+   * with earlier mocked responses in the same call. Real callers are never affected:
+   * the guard only diverts when the agent-config resolve response identified the
+   * session as a Roark simulation, and this endpoint independently re-validates the
+   * simulation before answering.
+   *
+   * Failure contract for your wrapper: `404` means the simulation id is unknown to
+   * this project (treat the session as real). `409` means the simulation has already
+   * ended (stale session state: do NOT execute the real tool; return your static
+   * fallback). `5xx` means generation failed (return your static fallback).
+   *
+   * Identical retries (same tool, same arguments) within a few minutes return the
+   * stored response, so double-fired handlers stay consistent.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.mockTool({
+   *   simulationJobId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   toolName: 'book_appointment',
+   * });
+   * ```
+   */
+  mockTool(body: SimulationMockToolParams, options?: RequestOptions): APIPromise<SimulationMockToolResponse> {
+    return this._client.post('/v1/simulation/tool-mock', { body, ...options });
+  }
+
+  /**
    * Starts a simulation and returns the run.
    *
    * Send `template` to run one of the built-in templates: it supplies the metrics
@@ -35,6 +65,39 @@ export class Simulation extends APIResource {
    */
   run(body: SimulationRunParams, options?: RequestOptions): APIPromise<SimulationRunResponse> {
     return this._client.post('/v1/simulation/run', { body, ...options });
+  }
+}
+
+export interface SimulationMockToolResponse {
+  /**
+   * A simulated backend response for a guarded tool during a Roark test call. The
+   * real tool was not, and must not be, executed.
+   */
+  data: SimulationMockToolResponse.Data;
+}
+
+export namespace SimulationMockToolResponse {
+  /**
+   * A simulated backend response for a guarded tool during a Roark test call. The
+   * real tool was not, and must not be, executed.
+   */
+  export interface Data {
+    /**
+     * True when this exact invocation (same tool, same arguments) was answered moments
+     * ago and the stored response was returned, e.g. on a retry.
+     */
+    reused: boolean;
+
+    simulationJobId: string;
+
+    toolName: string;
+
+    /**
+     * The simulated tool response: valid JSON, shaped by the tool contract, consistent
+     * with the test scenario and with earlier mocked responses in the same call.
+     * Return this from your tool instead of executing it.
+     */
+    result?: unknown;
   }
 }
 
@@ -95,6 +158,36 @@ export namespace SimulationRunResponse {
       | 'CANCELLING'
       | 'ENDING_SIMULATIONS';
   }
+}
+
+export interface SimulationMockToolParams {
+  /**
+   * The simulation this session belongs to, from the agent-config resolve response
+   * (`simulationJobId`). Roark re-validates it against the live simulation before
+   * answering.
+   */
+  simulationJobId: string;
+
+  /**
+   * The tool the agent invoked.
+   */
+  toolName: string;
+
+  /**
+   * The arguments the agent called the tool with, verbatim.
+   */
+  arguments?: { [key: string]: unknown };
+
+  /**
+   * Your session or room identifier, echoed back in logs for correlation.
+   */
+  sessionId?: string;
+
+  /**
+   * The tool's contract: its description and, ideally, its parameter and return
+   * shape. The more contract you pass, the more faithful the simulated response.
+   */
+  toolDescription?: string;
 }
 
 export type SimulationRunParams =
@@ -882,7 +975,9 @@ export declare namespace SimulationRunParams {
 
 export declare namespace Simulation {
   export {
+    type SimulationMockToolResponse as SimulationMockToolResponse,
     type SimulationRunResponse as SimulationRunResponse,
+    type SimulationMockToolParams as SimulationMockToolParams,
     type SimulationRunParams as SimulationRunParams,
   };
 }
