@@ -288,6 +288,7 @@ Types:
 - <code><a href="./src/resources/agent.ts">AgentCreateResponse</a></code>
 - <code><a href="./src/resources/agent.ts">AgentUpdateResponse</a></code>
 - <code><a href="./src/resources/agent.ts">AgentListResponse</a></code>
+- <code><a href="./src/resources/agent.ts">AgentBuildResponse</a></code>
 - <code><a href="./src/resources/agent.ts">AgentGetByIDResponse</a></code>
 
 Methods:
@@ -295,6 +296,7 @@ Methods:
 - <code title="post /v1/agent">client.agent.<a href="./src/resources/agent.ts">create</a>({ ...params }) -> AgentCreateResponse</code>
 - <code title="put /v1/agent/{agentId}">client.agent.<a href="./src/resources/agent.ts">update</a>(agentID, { ...params }) -> AgentUpdateResponse</code>
 - <code title="get /v1/agent">client.agent.<a href="./src/resources/agent.ts">list</a>({ ...params }) -> AgentListResponse</code>
+- <code title="post /v1/agent/build">client.agent.<a href="./src/resources/agent.ts">build</a>({ ...params }) -> AgentBuildResponse</code>
 - <code title="get /v1/agent/{agentId}">client.agent.<a href="./src/resources/agent.ts">getByID</a>(agentID) -> AgentGetByIDResponse</code>
 
 # AgentEndpoint
