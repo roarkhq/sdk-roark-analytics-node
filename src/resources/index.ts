@@ -5,10 +5,12 @@ export {
   type AgentCreateResponse,
   type AgentUpdateResponse,
   type AgentListResponse,
+  type AgentBuildResponse,
   type AgentGetByIDResponse,
   type AgentCreateParams,
   type AgentUpdateParams,
   type AgentListParams,
+  type AgentBuildParams,
 } from './agent';
 export {
   AgentConfig,

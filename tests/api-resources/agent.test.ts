@@ -77,6 +77,21 @@ describe('resource agent', () => {
     ).rejects.toThrow(Roark.NotFoundError);
   });
 
+  test('build: only required params', async () => {
+    const responsePromise = client.agent.build({ jobDescription: 'x', name: 'x' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('build: required and optional params', async () => {
+    const response = await client.agent.build({ jobDescription: 'x', name: 'x', voice: 'voice' });
+  });
+
   test('getByID', async () => {
     const responsePromise = client.agent.getByID('agentId');
     const rawResponse = await responsePromise.asResponse();

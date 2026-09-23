@@ -19,6 +19,8 @@ import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
   Agent,
+  AgentBuildParams,
+  AgentBuildResponse,
   AgentCreateParams,
   AgentCreateResponse,
   AgentGetByIDResponse,
@@ -1209,10 +1211,12 @@ export declare namespace Roark {
     type AgentCreateResponse as AgentCreateResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentListResponse as AgentListResponse,
+    type AgentBuildResponse as AgentBuildResponse,
     type AgentGetByIDResponse as AgentGetByIDResponse,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,
+    type AgentBuildParams as AgentBuildParams,
   };
 
   export {
