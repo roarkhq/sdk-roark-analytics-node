@@ -293,6 +293,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
        */
       processingStatus:
         | 'PENDING'
+        | 'RESERVING_CAPACITY'
         | 'CONNECTING'
         | 'WAITING_FOR_OUTBOUND_CALL'
         | 'SIMULATING'

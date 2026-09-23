@@ -217,6 +217,10 @@ import {
   SimulationJobLookupResponse,
 } from './resources/simulation-job';
 import {
+  SimulationJobToolMock,
+  SimulationJobToolMockListResponse,
+} from './resources/simulation-job-tool-mock';
+import {
   SimulationPersona,
   SimulationPersonaCreateParams,
   SimulationPersonaCreateResponse,
@@ -247,6 +251,16 @@ import {
   SimulationRunPlanJobStartResponse,
 } from './resources/simulation-run-plan-job';
 import { SimulationTemplate, SimulationTemplateListResponse } from './resources/simulation-template';
+import {
+  SimulationToolFixture,
+  SimulationToolFixtureCreateParams,
+  SimulationToolFixtureCreateResponse,
+  SimulationToolFixtureDeleteResponse,
+  SimulationToolFixtureListParams,
+  SimulationToolFixtureListResponse,
+  SimulationToolFixtureUpdateParams,
+  SimulationToolFixtureUpdateResponse,
+} from './resources/simulation-tool-fixture';
 import {
   Webhook,
   WebhookCreateParams,
@@ -981,6 +995,8 @@ export class Roark {
   metricVariant: API.MetricVariant = new API.MetricVariant(this);
   simulation: API.Simulation = new API.Simulation(this);
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
+  simulationJobToolMock: API.SimulationJobToolMock = new API.SimulationJobToolMock(this);
+  simulationToolFixture: API.SimulationToolFixture = new API.SimulationToolFixture(this);
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
@@ -1007,6 +1023,8 @@ Roark.MetricCollectionJob = MetricCollectionJob;
 Roark.MetricVariant = MetricVariant;
 Roark.Simulation = Simulation;
 Roark.SimulationJob = SimulationJob;
+Roark.SimulationJobToolMock = SimulationJobToolMock;
+Roark.SimulationToolFixture = SimulationToolFixture;
 Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationPersona = SimulationPersona;
@@ -1102,6 +1120,22 @@ export declare namespace Roark {
     type SimulationJobGetByIDResponse as SimulationJobGetByIDResponse,
     type SimulationJobLookupResponse as SimulationJobLookupResponse,
     type SimulationJobLookupParams as SimulationJobLookupParams,
+  };
+
+  export {
+    SimulationJobToolMock as SimulationJobToolMock,
+    type SimulationJobToolMockListResponse as SimulationJobToolMockListResponse,
+  };
+
+  export {
+    SimulationToolFixture as SimulationToolFixture,
+    type SimulationToolFixtureCreateResponse as SimulationToolFixtureCreateResponse,
+    type SimulationToolFixtureUpdateResponse as SimulationToolFixtureUpdateResponse,
+    type SimulationToolFixtureListResponse as SimulationToolFixtureListResponse,
+    type SimulationToolFixtureDeleteResponse as SimulationToolFixtureDeleteResponse,
+    type SimulationToolFixtureCreateParams as SimulationToolFixtureCreateParams,
+    type SimulationToolFixtureUpdateParams as SimulationToolFixtureUpdateParams,
+    type SimulationToolFixtureListParams as SimulationToolFixtureListParams,
   };
 
   export {
