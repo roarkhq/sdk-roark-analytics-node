@@ -118,6 +118,32 @@ Methods:
 - <code title="get /v1/simulation/job/{jobId}">client.simulationJob.<a href="./src/resources/simulation-job.ts">getByID</a>(jobID) -> SimulationJobGetByIDResponse</code>
 - <code title="get /v1/simulation/job/lookup">client.simulationJob.<a href="./src/resources/simulation-job.ts">lookup</a>({ ...params }) -> SimulationJobLookupResponse</code>
 
+# SimulationJobToolMock
+
+Types:
+
+- <code><a href="./src/resources/simulation-job-tool-mock.ts">SimulationJobToolMockListResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/simulation/job/{jobId}/tool-mock">client.simulationJobToolMock.<a href="./src/resources/simulation-job-tool-mock.ts">list</a>(jobID) -> SimulationJobToolMockListResponse</code>
+
+# SimulationToolFixture
+
+Types:
+
+- <code><a href="./src/resources/simulation-tool-fixture.ts">SimulationToolFixtureCreateResponse</a></code>
+- <code><a href="./src/resources/simulation-tool-fixture.ts">SimulationToolFixtureUpdateResponse</a></code>
+- <code><a href="./src/resources/simulation-tool-fixture.ts">SimulationToolFixtureListResponse</a></code>
+- <code><a href="./src/resources/simulation-tool-fixture.ts">SimulationToolFixtureDeleteResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/simulation/tool-fixture">client.simulationToolFixture.<a href="./src/resources/simulation-tool-fixture.ts">create</a>({ ...params }) -> SimulationToolFixtureCreateResponse</code>
+- <code title="put /v1/simulation/tool-fixture/{fixtureId}">client.simulationToolFixture.<a href="./src/resources/simulation-tool-fixture.ts">update</a>(fixtureID, { ...params }) -> SimulationToolFixtureUpdateResponse</code>
+- <code title="get /v1/simulation/tool-fixture">client.simulationToolFixture.<a href="./src/resources/simulation-tool-fixture.ts">list</a>({ ...params }) -> SimulationToolFixtureListResponse</code>
+- <code title="delete /v1/simulation/tool-fixture/{fixtureId}">client.simulationToolFixture.<a href="./src/resources/simulation-tool-fixture.ts">delete</a>(fixtureID) -> SimulationToolFixtureDeleteResponse</code>
+
 # SimulationRunPlan
 
 Types:
