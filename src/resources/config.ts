@@ -53,6 +53,7 @@ export interface Bundle {
     | Bundle.SimulationPlanConfig
     | Bundle.QaSimulationPlanConfig
     | Bundle.AlertConfig
+    | Bundle.ToolConfig
   >;
 
   prune?: boolean;
@@ -639,6 +640,22 @@ export namespace Bundle {
       }
     }
   }
+
+  export interface ToolConfig {
+    kind: 'tool';
+
+    name: string;
+
+    agent?: string;
+
+    description?: string | null;
+
+    expectedResult?: string | null;
+
+    invocationCriteria?: string | null;
+
+    parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+  }
 }
 
 export interface ConfigFlowStep {
@@ -725,7 +742,8 @@ export namespace ConfigApplyResponse {
         | 'collector'
         | 'metric'
         | 'simulationPlan'
-        | 'alert';
+        | 'alert'
+        | 'tool';
 
       name: string;
 
@@ -779,7 +797,8 @@ export namespace ConfigDiffResponse {
         | 'collector'
         | 'metric'
         | 'simulationPlan'
-        | 'alert';
+        | 'alert'
+        | 'tool';
 
       name: string;
 
@@ -812,6 +831,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.SimulationPlanConfig
     | ConfigApplyParams.QaSimulationPlanConfig
     | ConfigApplyParams.AlertConfig
+    | ConfigApplyParams.ToolConfig
   >;
 
   prune?: boolean;
@@ -1398,6 +1418,22 @@ export namespace ConfigApplyParams {
       }
     }
   }
+
+  export interface ToolConfig {
+    kind: 'tool';
+
+    name: string;
+
+    agent?: string;
+
+    description?: string | null;
+
+    expectedResult?: string | null;
+
+    invocationCriteria?: string | null;
+
+    parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+  }
 }
 
 export interface ConfigDiffParams {
@@ -1412,6 +1448,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.SimulationPlanConfig
     | ConfigDiffParams.QaSimulationPlanConfig
     | ConfigDiffParams.AlertConfig
+    | ConfigDiffParams.ToolConfig
   >;
 
   prune?: boolean;
@@ -1997,6 +2034,22 @@ export namespace ConfigDiffParams {
         channelName: string;
       }
     }
+  }
+
+  export interface ToolConfig {
+    kind: 'tool';
+
+    name: string;
+
+    agent?: string;
+
+    description?: string | null;
+
+    expectedResult?: string | null;
+
+    invocationCriteria?: string | null;
+
+    parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
   }
 }
 
