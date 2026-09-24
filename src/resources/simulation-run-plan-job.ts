@@ -260,6 +260,19 @@ export namespace SimulationRunPlanJobGetByIDResponse {
     startedAt?: string | null;
 
     /**
+     * For a run that swept a property (accent, background noise, speech pace and so
+     * on): which check failures the property caused.
+     *
+     * Each value is compared with every other value combined using a one-sided Fisher
+     * exact test, and every comparison in the run is corrected together with
+     * Benjamini-Hochberg. A value is only called worse when the difference is
+     * statistically significant, so a value that happened to fail a few more
+     * simulations by chance is not reported as a problem. Invalidated simulations and
+     * simulations that failed on the Roark platform are left out.
+     */
+    sweepAttribution?: Data.SweepAttribution | null;
+
+    /**
      * Pass/fail verdict for the run, judged against the success criteria pinned on the
      * run plan when the run started.
      */
@@ -670,6 +683,195 @@ export namespace SimulationRunPlanJobGetByIDResponse {
          * Scenario description
          */
         description?: string | null;
+      }
+    }
+
+    /**
+     * For a run that swept a property (accent, background noise, speech pace and so
+     * on): which check failures the property caused.
+     *
+     * Each value is compared with every other value combined using a one-sided Fisher
+     * exact test, and every comparison in the run is corrected together with
+     * Benjamini-Hochberg. A value is only called worse when the difference is
+     * statistically significant, so a value that happened to fail a few more
+     * simulations by chance is not reported as a problem. Invalidated simulations and
+     * simulations that failed on the Roark platform are left out.
+     */
+    export interface SweepAttribution {
+      /**
+       * Plain sentences on what this run could not see, ready to show to a reader.
+       */
+      caveats: Array<string>;
+
+      /**
+       * Every check the run was graded on: `PROPERTY_ATTRIBUTABLE` first, then
+       * `FOUND_UNATTRIBUTED`, then `WITHIN_NOISE`.
+       */
+      checks: Array<SweepAttribution.Check>;
+
+      /**
+       * The Benjamini-Hochberg false discovery rate the comparisons are held to.
+       */
+      falseDiscoveryRate: number;
+
+      /**
+       * The overall failure rate, 0-100, at which a check with no standout value is
+       * reported as `FOUND_UNATTRIBUTED`.
+       */
+      foundUnattributedFailureRate: number;
+
+      /**
+       * Counted simulations a value needs before it is compared.
+       */
+      minArmCalls: number;
+
+      /**
+       * Roughly how many percentage points more often a value would need to fail than
+       * the rest of the run to be flagged at this sample size. Optimistic: it uses
+       * simulation counts rather than the verdicts on each check and ignores the
+       * correction, so checks graded on fewer simulations need larger gaps. Large when
+       * few simulations ran per value: finding no significant difference then means the
+       * run could not see one, not that none exists.
+       */
+      minimumDetectableGap: number | null;
+
+      /**
+       * How many values had enough counted simulations to be compared.
+       */
+      testableValueCount: number;
+
+      /**
+       * How many value and check pairs were actually tested. A value can have enough
+       * simulations and still go untested (no other value graded that check, or too few
+       * verdicts on it). When this is 0 no comparison ran, so an empty `worseValues`
+       * everywhere means nothing was tested, not that no value did worse.
+       */
+      testedComparisonCount: number;
+
+      /**
+       * Every value of the swept property, baseline first.
+       */
+      values: Array<SweepAttribution.Value>;
+    }
+
+    export namespace SweepAttribution {
+      /**
+       * How one check's failures relate to the swept property.
+       */
+      export interface Check {
+        /**
+         * How this check relates to the swept property:
+         *
+         * - `PROPERTY_ATTRIBUTABLE`: at least one value failed it significantly more often
+         *   than every other value combined. `worseValues` names them. This is the only
+         *   case in which a value is called worse.
+         * - `FOUND_UNATTRIBUTED`: no value stands out, but the check failed on at least
+         *   `foundUnattributedFailureRate`% of counted simulations overall. A real issue
+         *   with the agent on which no value stood out, so the run cannot tie it to the
+         *   property. It does not show the property had no effect: a small run may be
+         *   unable to see one.
+         * - `WITHIN_NOISE`: neither. Any differences between values are within what chance
+         *   produces.
+         */
+        attribution: 'PROPERTY_ATTRIBUTABLE' | 'FOUND_UNATTRIBUTED' | 'WITHIN_NOISE';
+
+        evaluated: number;
+
+        failed: number;
+
+        /**
+         * Share of counted simulations across every value that failed the check, 0-100.
+         */
+        failureRate: number | null;
+
+        metricDefinitionId: string;
+
+        metricName: string;
+
+        /**
+         * The values significantly worse than the rest, most significant first. Empty
+         * unless `attribution` is `PROPERTY_ATTRIBUTABLE`.
+         */
+        worseValues: Array<Check.WorseValue>;
+      }
+
+      export namespace Check {
+        /**
+         * A value that failed a check significantly more often than the rest of the run.
+         */
+        export interface WorseValue {
+          /**
+           * How likely a difference at least this large would be by chance alone, after
+           * correcting for every comparison in the run (Benjamini-Hochberg). The value is
+           * called worse only when this is at most `falseDiscoveryRate`.
+           */
+          adjustedPValue: number;
+
+          evaluated: number;
+
+          failed: number;
+
+          /**
+           * Share of the counted simulations at this value that failed the check, 0-100.
+           */
+          failureRate: number | null;
+
+          label: string;
+
+          /**
+           * The same share across every other value combined, 0-100. This is what the value
+           * is compared with.
+           */
+          restFailureRate: number | null;
+
+          value: string;
+        }
+      }
+
+      /**
+       * One value of the swept property.
+       */
+      export interface Value {
+        /**
+         * Simulations run at this value. Simulations that failed on the Roark platform are
+         * left out, since they say nothing about your agent.
+         */
+        attempted: number;
+
+        /**
+         * Simulations that actually tested the property: not invalidated, and graded by at
+         * least one check. Only these are used in the comparison.
+         */
+        counted: number;
+
+        /**
+         * Whether this is the baseline the plan named.
+         */
+        isBaseline: boolean;
+
+        /**
+         * The value in words, e.g. `American`.
+         */
+        label: string;
+
+        /**
+         * The mean of each check's pass rate at this value, 0-100, the same rule as the
+         * run's `score`. Descriptive only: a lower score alone never makes a value worse.
+         * Null when nothing counted.
+         */
+        score: number | null;
+
+        /**
+         * Whether this value had at least `minArmCalls` counted simulations. A value below
+         * that is "insufficient data": it is reported with its numbers but never compared
+         * or ranked, because a rate from one or two calls cannot be told apart from luck.
+         */
+        testable: boolean;
+
+        /**
+         * The stored value of the swept property, e.g. `US`.
+         */
+        value: string;
       }
     }
 
