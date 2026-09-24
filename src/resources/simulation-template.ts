@@ -210,9 +210,10 @@ export namespace SimulationTemplateListResponse {
      */
     export interface Sweep {
       /**
-       * The value the others are measured against, resolved to what a plan built from
-       * this template will actually record. `null` when the property has no obvious
-       * norm, and the report then compares against the best-performing value instead.
+       * The reference value, shown first in the results, resolved to what a plan built
+       * from this template will actually record. `null` when the property has no obvious
+       * norm. It does not change the verdict: each value is compared with every other
+       * value combined.
        */
       baseline: string | null;
 

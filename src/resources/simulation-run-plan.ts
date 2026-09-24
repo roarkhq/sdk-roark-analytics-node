@@ -139,9 +139,11 @@ export namespace SimulationRunPlanCreateResponse {
       agentEndpoints: Array<RunPlan.AgentEndpoint>;
 
       /**
-       * The value of `comparisonProperty` every other value is measured against, such as
-       * `NONE` for `BACKGROUND_NOISE`. `null` when no comparison is declared, or when
-       * the property has no obvious norm and none was chosen.
+       * The reference value of `comparisonProperty`, such as `NONE` for
+       * `BACKGROUND_NOISE`: shown first in the results. Whether a value did
+       * significantly worse does not depend on it: that is decided against every other
+       * value combined (see `sweepAttribution`). `null` when no comparison is declared,
+       * or when the property has no obvious norm and none was chosen.
        */
       comparisonBaseline: string | null;
 
@@ -491,9 +493,11 @@ export namespace SimulationRunPlanUpdateResponse {
     agentEndpoints: Array<Data.AgentEndpoint>;
 
     /**
-     * The value of `comparisonProperty` every other value is measured against, such as
-     * `NONE` for `BACKGROUND_NOISE`. `null` when no comparison is declared, or when
-     * the property has no obvious norm and none was chosen.
+     * The reference value of `comparisonProperty`, such as `NONE` for
+     * `BACKGROUND_NOISE`: shown first in the results. Whether a value did
+     * significantly worse does not depend on it: that is decided against every other
+     * value combined (see `sweepAttribution`). `null` when no comparison is declared,
+     * or when the property has no obvious norm and none was chosen.
      */
     comparisonBaseline: string | null;
 
@@ -807,9 +811,11 @@ export namespace SimulationRunPlanListResponse {
     agentEndpoints: Array<Data.AgentEndpoint>;
 
     /**
-     * The value of `comparisonProperty` every other value is measured against, such as
-     * `NONE` for `BACKGROUND_NOISE`. `null` when no comparison is declared, or when
-     * the property has no obvious norm and none was chosen.
+     * The reference value of `comparisonProperty`, such as `NONE` for
+     * `BACKGROUND_NOISE`: shown first in the results. Whether a value did
+     * significantly worse does not depend on it: that is decided against every other
+     * value combined (see `sweepAttribution`). `null` when no comparison is declared,
+     * or when the property has no obvious norm and none was chosen.
      */
     comparisonBaseline: string | null;
 
@@ -1151,9 +1157,11 @@ export namespace SimulationRunPlanGetByIDResponse {
     agentEndpoints: Array<Data.AgentEndpoint>;
 
     /**
-     * The value of `comparisonProperty` every other value is measured against, such as
-     * `NONE` for `BACKGROUND_NOISE`. `null` when no comparison is declared, or when
-     * the property has no obvious norm and none was chosen.
+     * The reference value of `comparisonProperty`, such as `NONE` for
+     * `BACKGROUND_NOISE`: shown first in the results. Whether a value did
+     * significantly worse does not depend on it: that is decided against every other
+     * value combined (see `sweepAttribution`). `null` when no comparison is declared,
+     * or when the property has no obvious norm and none was chosen.
      */
     comparisonBaseline: string | null;
 
@@ -1477,9 +1485,11 @@ export interface SimulationRunPlanCreateParams {
   autoRun?: boolean;
 
   /**
-   * The value of `comparisonProperty` every other value is measured against, for
-   * example `NONE` for `BACKGROUND_NOISE` or `NORMAL` for `SPEECH_PACE`. Must be a
-   * value that property can take.
+   * The reference value of `comparisonProperty`, for example `NONE` for
+   * `BACKGROUND_NOISE` or `NORMAL` for `SPEECH_PACE`: shown first in the results.
+   * Must be a value that property can take. Whether a value did significantly worse
+   * does not depend on it: that is decided against every other value combined (see
+   * `sweepAttribution`).
    *
    * Stored rather than assumed, so the report can say "compared against US accent"
    * instead of implying Roark decided which value is normal. Most properties have an
@@ -1810,7 +1820,7 @@ export interface SimulationRunPlanUpdateParams {
   agentEndpoints?: Array<SimulationRunPlanUpdateParams.AgentEndpoint>;
 
   /**
-   * The value every other value is measured against. See `POST /v1/simulation/plan`.
+   * The reference value, shown first in the results. See `POST /v1/simulation/plan`.
    *
    * A real value cannot be sent on its own: the property it belongs to decides which
    * values are legal, and an omitted property means "leave unchanged", which this
