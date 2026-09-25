@@ -505,7 +505,7 @@ export namespace Bundle {
 
     questions: Array<QaSimulationPlanConfig.Question>;
 
-    template: 'qa';
+    template: 'question-answer-check';
 
     description?: string | null;
 
@@ -1283,7 +1283,7 @@ export namespace ConfigApplyParams {
 
     questions: Array<QaSimulationPlanConfig.Question>;
 
-    template: 'qa';
+    template: 'question-answer-check';
 
     description?: string | null;
 
@@ -1900,7 +1900,7 @@ export namespace ConfigDiffParams {
 
     questions: Array<QaSimulationPlanConfig.Question>;
 
-    template: 'qa';
+    template: 'question-answer-check';
 
     description?: string | null;
 
