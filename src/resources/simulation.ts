@@ -790,6 +790,11 @@ export declare namespace SimulationRunParams {
     enrichWithLiveConversation?: boolean;
 
     /**
+     * For `question-answer-check`: the environment the calls run in.
+     */
+    environmentId?: string;
+
+    /**
      * Execution mode (PARALLEL or SEQUENTIAL)
      */
     executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
@@ -828,6 +833,17 @@ export declare namespace SimulationRunParams {
      * with `saveAsPlan`.
      */
     name?: string;
+
+    /**
+     * For `question-answer-check`: the persona that asks the questions.
+     */
+    personaId?: string;
+
+    /**
+     * For the `question-answer-check` template: the questions to ask and the answer
+     * expected for each. Every question runs as its own graded call.
+     */
+    questions?: Array<RunSimulationFromTemplate.Question>;
 
     /**
      * Keeps the resolved configuration as a run plan, listed by GET
@@ -959,6 +975,18 @@ export declare namespace SimulationRunParams {
 
         value: string;
       }
+    }
+
+    export interface Question {
+      /**
+       * The question the caller asks the agent.
+       */
+      ask: string;
+
+      /**
+       * The answer the agent must give, judged against the transcript.
+       */
+      expect: string;
     }
 
     export interface UnionMember1 {
