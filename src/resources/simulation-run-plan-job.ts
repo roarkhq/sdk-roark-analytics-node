@@ -415,13 +415,16 @@ export namespace SimulationRunPlanJobGetByIDResponse {
          * `REQUIRED_STAGE_INCOMPLETE`: the call ended before it got through a stage its
          * flow requires. `CALLER_NEVER_TOOK_OVER`: the call opened on the persona of a
          * preceding flow, which never handed the phone to the persona under test, so none
-         * of that persona's properties were exercised.
+         * of that persona's properties were exercised. `AGENT_NEVER_SPOKE`: your agent
+         * answered and never said a word (it hung up within seconds, or the line stayed
+         * silent until our caller gave up), so there was nothing to grade.
          */
         reason:
           | 'SCRIPT_DIVERGED'
           | 'REQUIRED_STEP_NOT_REACHED'
           | 'REQUIRED_STAGE_INCOMPLETE'
-          | 'CALLER_NEVER_TOOK_OVER';
+          | 'CALLER_NEVER_TOOK_OVER'
+          | 'AGENT_NEVER_SPOKE';
 
         /**
          * One sentence: where the script was left and what your agent did instead.
