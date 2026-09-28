@@ -52,6 +52,9 @@ describe('resource customerFlowEdgeCase', () => {
   test('add: required and optional params', async () => {
     const response = await client.customerFlowEdgeCase.add('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       title: 'x',
+      additionalExpectations: [
+        { prompt: 'The agent confirmed the new appointment time back to the customer' },
+      ],
       environmentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       precededByCustomerFlowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
