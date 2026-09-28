@@ -17936,11 +17936,29 @@ export declare namespace CustomerFlowCreateParams {
 
       title: string;
 
+      /**
+       * The expectations graded on this variant only, on top of the flow's own. Sent as
+       * the complete set: it replaces whatever the variant had, so omit it to leave the
+       * set alone and send [] to clear it. Improv flows only: a scripted variant's
+       * expectations come from the agent turns on its path and are rewritten on every
+       * graph edit.
+       */
+      additionalExpectations?: Array<HappyPath.AdditionalExpectation>;
+
       precededByCustomerFlowId?: string | null;
 
       precededByCustomerFlowVariantId?: string | null;
 
       prompt?: string | null;
+    }
+
+    export namespace HappyPath {
+      export interface AdditionalExpectation {
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
     }
 
     export interface AgentExpectation {
@@ -17952,6 +17970,15 @@ export declare namespace CustomerFlowCreateParams {
 
     export interface EdgeCase {
       title: string;
+
+      /**
+       * The expectations graded on this variant only, on top of the flow's own. Sent as
+       * the complete set: it replaces whatever the variant had, so omit it to leave the
+       * set alone and send [] to clear it. Improv flows only: a scripted variant's
+       * expectations come from the agent turns on its path and are rewritten on every
+       * graph edit.
+       */
+      additionalExpectations?: Array<EdgeCase.AdditionalExpectation>;
 
       environmentId?: string | null;
 
@@ -17965,6 +17992,15 @@ export declare namespace CustomerFlowCreateParams {
       precededByCustomerFlowVariantId?: string | null;
 
       prompt?: string | null;
+    }
+
+    export namespace EdgeCase {
+      export interface AdditionalExpectation {
+        /**
+         * What the agent under test is graded against.
+         */
+        prompt: string;
+      }
     }
   }
 }
@@ -18096,9 +18132,10 @@ export interface CustomerFlowReplaceGraphParams {
 
 export interface CustomerFlowUpdateHappyPathParams {
   /**
-   * Replaces the expectations that apply to this variant on top of the flow's. Omit
-   * to leave them alone, send [] to clear. Improv flows only: a scripted variant's
-   * expectations come from the agent turns on its path and are rewritten on the next
+   * The expectations graded on this variant only, on top of the flow's own. Sent as
+   * the complete set: it replaces whatever the variant had, so omit it to leave the
+   * set alone and send [] to clear it. Improv flows only: a scripted variant's
+   * expectations come from the agent turns on its path and are rewritten on every
    * graph edit.
    */
   additionalExpectations?: Array<CustomerFlowUpdateHappyPathParams.AdditionalExpectation>;
