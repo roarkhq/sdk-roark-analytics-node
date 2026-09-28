@@ -8,6 +8,26 @@ Methods:
 
 - <code title="get /health">client.health.<a href="./src/resources/health.ts">get</a>() -> HealthGetResponse</code>
 
+# Me
+
+Types:
+
+- <code><a href="./src/resources/me.ts">MeGetResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/me">client.me.<a href="./src/resources/me.ts">get</a>() -> MeGetResponse</code>
+
+# Project
+
+Types:
+
+- <code><a href="./src/resources/project.ts">ProjectListResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/projects">client.project.<a href="./src/resources/project.ts">list</a>() -> ProjectListResponse</code>
+
 # Call
 
 Types:

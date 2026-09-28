@@ -152,6 +152,7 @@ import {
   HTTPRequestDefinitionUpdateParams,
   HTTPRequestDefinitionUpdateResponse,
 } from './resources/http-request-definition';
+import { Me, MeGetResponse } from './resources/me';
 import {
   Metric,
   MetricCreateDefinitionParams,
@@ -192,6 +193,7 @@ import {
   MetricVariantUpdateParams,
   MetricVariantUpdateResponse,
 } from './resources/metric-variant';
+import { Project, ProjectListResponse } from './resources/project';
 import {
   Simulation,
   SimulationMockToolParams,
@@ -988,6 +990,8 @@ export class Roark {
   static toFile = Uploads.toFile;
 
   health: API.Health = new API.Health(this);
+  me: API.Me = new API.Me(this);
+  project: API.Project = new API.Project(this);
   call: API.Call = new API.Call(this);
   metric: API.Metric = new API.Metric(this);
   metricPolicy: API.MetricPolicy = new API.MetricPolicy(this);
@@ -1016,6 +1020,8 @@ export class Roark {
 }
 
 Roark.Health = Health;
+Roark.Me = Me;
+Roark.Project = Project;
 Roark.Call = Call;
 Roark.Metric = Metric;
 Roark.MetricPolicy = MetricPolicy;
@@ -1046,6 +1052,10 @@ export declare namespace Roark {
   export type RequestOptions = Opts.RequestOptions;
 
   export { Health as Health, type HealthGetResponse as HealthGetResponse };
+
+  export { Me as Me, type MeGetResponse as MeGetResponse };
+
+  export { Project as Project, type ProjectListResponse as ProjectListResponse };
 
   export {
     Call as Call,

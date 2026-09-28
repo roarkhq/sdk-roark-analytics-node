@@ -135,6 +135,7 @@ export {
   type HTTPRequestDefinitionListParams,
 } from './http-request-definition';
 export { Health, type HealthGetResponse } from './health';
+export { Me, type MeGetResponse } from './me';
 export {
   Metric,
   type MetricCreateDefinitionResponse,
@@ -175,6 +176,7 @@ export {
   type MetricVariantDeleteParams,
   type MetricVariantGetByIDParams,
 } from './metric-variant';
+export { Project, type ProjectListResponse } from './project';
 export {
   Simulation,
   type SimulationMockToolResponse,
