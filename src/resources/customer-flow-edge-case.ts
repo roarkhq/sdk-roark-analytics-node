@@ -4028,10 +4028,11 @@ export interface CustomerFlowEdgeCaseUpdateParams {
   flowId: string;
 
   /**
-   * Body param: Replaces the expectations that apply to this variant on top of the
-   * flow's. Omit to leave them alone, send [] to clear. Improv flows only: a
-   * scripted variant's expectations come from the agent turns on its path and are
-   * rewritten on the next graph edit.
+   * Body param: The expectations graded on this variant only, on top of the flow's
+   * own. Sent as the complete set: it replaces whatever the variant had, so omit it
+   * to leave the set alone and send [] to clear it. Improv flows only: a scripted
+   * variant's expectations come from the agent turns on its path and are rewritten
+   * on every graph edit.
    */
   additionalExpectations?: Array<CustomerFlowEdgeCaseUpdateParams.AdditionalExpectation>;
 
@@ -4079,6 +4080,15 @@ export namespace CustomerFlowEdgeCaseUpdateParams {
 export interface CustomerFlowEdgeCaseAddParams {
   title: string;
 
+  /**
+   * The expectations graded on this variant only, on top of the flow's own. Sent as
+   * the complete set: it replaces whatever the variant had, so omit it to leave the
+   * set alone and send [] to clear it. Improv flows only: a scripted variant's
+   * expectations come from the agent turns on its path and are rewritten on every
+   * graph edit.
+   */
+  additionalExpectations?: Array<CustomerFlowEdgeCaseAddParams.AdditionalExpectation>;
+
   environmentId?: string | null;
 
   /**
@@ -4091,6 +4101,15 @@ export interface CustomerFlowEdgeCaseAddParams {
   precededByCustomerFlowVariantId?: string | null;
 
   prompt?: string | null;
+}
+
+export namespace CustomerFlowEdgeCaseAddParams {
+  export interface AdditionalExpectation {
+    /**
+     * What the agent under test is graded against.
+     */
+    prompt: string;
+  }
 }
 
 export interface CustomerFlowEdgeCasePromoteParams {
