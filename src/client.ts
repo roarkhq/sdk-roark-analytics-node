@@ -298,9 +298,10 @@ export interface ClientOptions {
    * belongs to, so each request has to name one; a project-scoped API key names its own project
    * and ignores this entirely.
    *
-   * Deliberately has no environment default. A credential that can reach several projects should
-   * be told which one by its caller rather than by whatever is exported in the shell, and a client
-   * that wants that behavior can read the variable itself and pass it here.
+   * Set it once on the client, or derive a per-project client with `client.withOptions({ project })`
+   * when one process serves several projects.
+   *
+   * Defaults to process.env['ROARK_PROJECT_ID']. Pass `null` to opt out of an inherited one.
    */
   project?: string | null | undefined;
 
@@ -402,11 +403,12 @@ export class Roark {
    * @param {number} [opts.maxRetries=2] - The maximum number of times the client will retry a request.
    * @param {HeadersLike} opts.defaultHeaders - Default headers to include with every request to the API.
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
-   * @param {string | null | undefined} [opts.project] - The project every request acts on, sent as `X-Roark-Project-Id`.
+   * @param {string | null | undefined} [opts.project=process.env['ROARK_PROJECT_ID'] ?? undefined] - The project every request acts on, sent as `X-Roark-Project-Id`.
    */
   constructor({
     baseURL = readEnv('ROARK_BASE_URL'),
     bearerToken = readEnv('ROARK_API_BEARER_TOKEN'),
+    project = readEnv('ROARK_PROJECT_ID'),
     ...opts
   }: ClientOptions = {}) {
     if (bearerToken === undefined) {
@@ -417,6 +419,7 @@ export class Roark {
 
     const options: ClientOptions = {
       bearerToken,
+      project,
       ...opts,
       baseURL: baseURL || `https://api.roark.ai`,
     };
@@ -499,6 +502,13 @@ export class Roark {
    * (or its stored default) decide.
    */
   protected projectHeaders(): NullableHeaders | undefined {
+    // Held in `_options` rather than as a `project` field on the client: that name is already the
+    // `/v1/projects` resource accessor (`client.project.list()`), so a second declaration of it is
+    // a duplicate-identifier error. Keeping it here also means `withOptions` carries it for free,
+    // since that spreads `_options`.
+    //
+    // `null` is how a caller opts out of an inherited ROARK_PROJECT_ID; it and an unset option
+    // both mean "send no project header".
     const project = this._options.project;
     if (!project) return undefined;
     return buildHeaders([{ 'X-Roark-Project-Id': project }]);
