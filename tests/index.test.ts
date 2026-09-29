@@ -112,6 +112,42 @@ describe('instantiate client', () => {
       expect(req.headers.get('x-roark-project-id')).toEqual('proj_from_default_headers');
     });
 
+    test('a whitespace-only project is absent, not a blank header the API 400s on', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: '   ',
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('a lowercase defaultHeaders entry still overrides, since header names are case-insensitive', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+        defaultHeaders: { 'x-roark-project-id': 'proj_lowercase' },
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_lowercase');
+    });
+
+    test('withOptions({ project: undefined }) clears it, like every other option there', async () => {
+      // Documented rather than special-cased: `withOptions` spreads its argument last, so an
+      // explicit `undefined` wins over the stored value. Clearing is the useful reading here -
+      // one client for the whole account, derived clients per project.
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+      });
+      const { req } = await client
+        .withOptions({ project: undefined })
+        .buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
     test('the project resource is still the resource, not the option', async () => {
       // `client.project` is `/v1/projects`. The option deliberately does not shadow it - a second
       // declaration of that name is what stopped the first attempt at this compiling.

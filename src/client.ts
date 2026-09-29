@@ -294,14 +294,11 @@ export interface ClientOptions {
   /**
    * The project every request acts on, sent as `X-Roark-Project-Id`.
    *
-   * Only a user-scoped credential needs this. Such a credential reaches every project its holder
-   * belongs to, so each request has to name one; a project-scoped API key names its own project
-   * and ignores this entirely.
+   * Only a user credential needs this: it reaches every project its holder belongs to, so each
+   * request has to name one. A project API key names its own project and ignores this.
    *
-   * Set it once on the client, or derive a per-project client with `client.withOptions({ project })`
-   * when one process serves several projects.
-   *
-   * Defaults to process.env['ROARK_PROJECT_ID']. Pass `null` to opt out of an inherited one.
+   * Defaults to process.env['ROARK_PROJECT_ID']. Pass `null` to opt out of an inherited one, or
+   * `client.withOptions({ project })` for a per-project client.
    */
   project?: string | null | undefined;
 
@@ -497,19 +494,12 @@ export class Roark {
   /**
    * The project header, when the client was given a project.
    *
-   * An empty value is not the same as none: the API answers a blank `X-Roark-Project-Id` with a
-   * 400, so an unset or empty option sends no header at all and lets the credential's own project
-   * (or its stored default) decide.
+   * Read from `_options` rather than a `project` field: that name is the `/v1/projects` resource
+   * accessor. Nothing to send (unset, `null`, or blank) means no header at all, because the API
+   * answers an empty `X-Roark-Project-Id` with a 400 rather than ignoring it.
    */
   protected projectHeaders(): NullableHeaders | undefined {
-    // Held in `_options` rather than as a `project` field on the client: that name is already the
-    // `/v1/projects` resource accessor (`client.project.list()`), so a second declaration of it is
-    // a duplicate-identifier error. Keeping it here also means `withOptions` carries it for free,
-    // since that spreads `_options`.
-    //
-    // `null` is how a caller opts out of an inherited ROARK_PROJECT_ID; it and an unset option
-    // both mean "send no project header".
-    const project = this._options.project;
+    const project = this._options.project?.trim();
     if (!project) return undefined;
     return buildHeaders([{ 'X-Roark-Project-Id': project }]);
   }
@@ -938,9 +928,7 @@ export class Roark {
         ...getPlatformHeaders(),
       },
       await this.authHeaders(options),
-      // Ahead of `defaultHeaders` and `options.headers` on purpose: the option is the broad
-      // "act on this project" setting, and an explicitly written header is the narrower
-      // instruction, so it wins.
+      // Ahead of `defaultHeaders` and `options.headers`, so a header written by hand still wins.
       this.projectHeaders(),
       this._options.defaultHeaders,
       bodyHeaders,
