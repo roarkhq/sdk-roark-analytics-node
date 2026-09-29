@@ -49,6 +49,158 @@ describe('instantiate client', () => {
       expect(req.headers.has('x-my-default-header')).toBe(false);
     });
   });
+
+  describe('project', () => {
+    test('is sent as X-Roark-Project-Id', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_abc');
+    });
+
+    test('is absent when no project is given', async () => {
+      // Absent, not empty: customer-api reads presence, and a blank value is a 400.
+      const client = new Roark({ baseURL: 'http://localhost:5000/', bearerToken: 'My Bearer Token' });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('falls back to ROARK_PROJECT_ID', async () => {
+      process.env['ROARK_PROJECT_ID'] = 'proj_from_env';
+      const client = new Roark({ baseURL: 'http://localhost:5000/', bearerToken: 'My Bearer Token' });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_from_env');
+    });
+
+    test('an explicit project beats the environment', async () => {
+      process.env['ROARK_PROJECT_ID'] = 'proj_from_env';
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_explicit',
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_explicit');
+    });
+
+    test('null opts out of an inherited ROARK_PROJECT_ID', async () => {
+      // The escape hatch for a process that has the variable set for something else and holds a
+      // project-scoped key here.
+      process.env['ROARK_PROJECT_ID'] = 'proj_from_env';
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: null,
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('defaultHeaders still win, so existing callers are unaffected', async () => {
+      // Setting the header by hand was the only way to do this before the option existed. Anyone
+      // doing that keeps exactly the behaviour they have today.
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+        defaultHeaders: { 'X-Roark-Project-Id': 'proj_from_default_headers' },
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_from_default_headers');
+    });
+
+    test('a whitespace-only project is absent, not a blank header the API 400s on', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: '   ',
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('a lowercase defaultHeaders entry still overrides, since header names are case-insensitive', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+        defaultHeaders: { 'x-roark-project-id': 'proj_lowercase' },
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_lowercase');
+    });
+
+    test('withOptions({ project: undefined }) clears it, like every other option there', async () => {
+      // Documented rather than special-cased: `withOptions` spreads its argument last, so an
+      // explicit `undefined` wins over the stored value. Clearing is the useful reading here -
+      // one client for the whole account, derived clients per project.
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+      });
+      const { req } = await client
+        .withOptions({ project: undefined })
+        .buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('the project resource is still the resource, not the option', async () => {
+      // `client.project` is `/v1/projects`. The option deliberately does not shadow it - a second
+      // declaration of that name is what stopped the first attempt at this compiling.
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+      });
+      expect(typeof client.project.list).toBe('function');
+    });
+
+    test('is absent for an empty project, which the API answers with a 400 rather than ignoring', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: '',
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('an explicit per-request header wins', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+      });
+      const { req } = await client.buildRequest({
+        path: '/foo',
+        method: 'post',
+        headers: { 'X-Roark-Project-Id': 'proj_override' },
+      });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_override');
+    });
+
+    test('withOptions switches the project, which is how a caller reaches another one', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+      });
+      const { req } = await client.withOptions({ project: 'proj_xyz' }).buildRequest({
+        path: '/foo',
+        method: 'post',
+      });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_xyz');
+
+      // The original client is untouched.
+      const { req: original } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(original.headers.get('x-roark-project-id')).toEqual('proj_abc');
+    });
+  });
+
   describe('logging', () => {
     const env = process.env;
 

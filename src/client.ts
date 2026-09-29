@@ -292,6 +292,17 @@ export interface ClientOptions {
   bearerToken?: string | undefined;
 
   /**
+   * The project every request acts on, sent as `X-Roark-Project-Id`.
+   *
+   * Only a user credential needs this: it reaches every project its holder belongs to, so each
+   * request has to name one. A project API key names its own project and ignores this.
+   *
+   * Defaults to process.env['ROARK_PROJECT_ID']. Pass `null` to opt out of an inherited one, or
+   * `client.withOptions({ project })` for a per-project client.
+   */
+  project?: string | null | undefined;
+
+  /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
    * Defaults to process.env['ROARK_BASE_URL'].
@@ -389,10 +400,12 @@ export class Roark {
    * @param {number} [opts.maxRetries=2] - The maximum number of times the client will retry a request.
    * @param {HeadersLike} opts.defaultHeaders - Default headers to include with every request to the API.
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
+   * @param {string | null | undefined} [opts.project=process.env['ROARK_PROJECT_ID'] ?? undefined] - The project every request acts on, sent as `X-Roark-Project-Id`.
    */
   constructor({
     baseURL = readEnv('ROARK_BASE_URL'),
     bearerToken = readEnv('ROARK_API_BEARER_TOKEN'),
+    project = readEnv('ROARK_PROJECT_ID'),
     ...opts
   }: ClientOptions = {}) {
     if (bearerToken === undefined) {
@@ -403,6 +416,7 @@ export class Roark {
 
     const options: ClientOptions = {
       bearerToken,
+      project,
       ...opts,
       baseURL: baseURL || `https://api.roark.ai`,
     };
@@ -475,6 +489,19 @@ export class Roark {
 
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     return buildHeaders([{ Authorization: `Bearer ${this.bearerToken}` }]);
+  }
+
+  /**
+   * The project header, when the client was given a project.
+   *
+   * Read from `_options` rather than a `project` field: that name is the `/v1/projects` resource
+   * accessor. Nothing to send (unset, `null`, or blank) means no header at all, because the API
+   * answers an empty `X-Roark-Project-Id` with a 400 rather than ignoring it.
+   */
+  protected projectHeaders(): NullableHeaders | undefined {
+    const project = this._options.project?.trim();
+    if (!project) return undefined;
+    return buildHeaders([{ 'X-Roark-Project-Id': project }]);
   }
 
   protected stringifyQuery(query: object | Record<string, unknown>): string {
@@ -901,6 +928,8 @@ export class Roark {
         ...getPlatformHeaders(),
       },
       await this.authHeaders(options),
+      // Ahead of `defaultHeaders` and `options.headers`, so a header written by hand still wins.
+      this.projectHeaders(),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,

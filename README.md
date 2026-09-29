@@ -68,6 +68,30 @@ const call: Roark.CallCreateResponse = await client.call.create(params);
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
 
+### Choosing a project
+
+Most credentials are project API keys, which already name the project they act on. Nothing extra is
+needed for those.
+
+A **user credential** is different. A CLI login, or an application you authorized through OAuth, acts
+as you and can reach every project you belong to, so each request has to say which project it means.
+Give the client a `project`, sent as the `X-Roark-Project-Id` header on every request:
+
+```js
+const client = new Roark({
+  bearerToken: process.env['ROARK_API_BEARER_TOKEN'],
+  project: process.env['ROARK_PROJECT_ID'], // the default, and can be omitted
+});
+```
+
+A project API key ignores the header, so setting it is never harmful, only redundant. To serve
+several projects from one process, derive a client per project: they share the same connection
+settings and credential.
+
+```js
+const forProject = client.withOptions({ project: 'proj_123' });
+```
+
 ## Handling errors
 
 When the library is unable to connect to the API,
