@@ -113,6 +113,15 @@ export namespace MetricCreateDefinitionResponse {
     description: string;
 
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: LlmJudgeMetricResponse.EvidenceSource | null;
+
+    /**
      * The rubric this judge applies, as stored. Read it back to confirm which criteria
      * are live after a create or update.
      */
@@ -195,6 +204,27 @@ export namespace MetricCreateDefinitionResponse {
 
   export namespace LlmJudgeMetricResponse {
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
      * Unit information if applicable
      */
     export interface Unit {
@@ -225,6 +255,15 @@ export namespace MetricCreateDefinitionResponse {
      * Description of what the metric measures
      */
     description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: FormulaMetricResponse.EvidenceSource | null;
 
     /**
      * Formula configuration.
@@ -308,6 +347,27 @@ export namespace MetricCreateDefinitionResponse {
 
   export namespace FormulaMetricResponse {
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
      * Formula configuration.
      */
     export interface Formula {
@@ -355,6 +415,15 @@ export namespace MetricCreateDefinitionResponse {
      * Description of what the metric measures
      */
     description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: PatternMetricResponse.EvidenceSource | null;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -437,6 +506,27 @@ export namespace MetricCreateDefinitionResponse {
   }
 
   export namespace PatternMetricResponse {
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
     /**
      * Pattern configuration.
      */
@@ -556,6 +646,15 @@ export namespace MetricListDefinitionsResponse {
     description: string;
 
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: LlmJudgeMetricResponse.EvidenceSource | null;
+
+    /**
      * The rubric this judge applies, as stored. Read it back to confirm which criteria
      * are live after a create or update.
      */
@@ -638,6 +737,27 @@ export namespace MetricListDefinitionsResponse {
 
   export namespace LlmJudgeMetricResponse {
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
      * Unit information if applicable
      */
     export interface Unit {
@@ -668,6 +788,15 @@ export namespace MetricListDefinitionsResponse {
      * Description of what the metric measures
      */
     description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: ProviderMetricResponse.EvidenceSource | null;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -746,6 +875,27 @@ export namespace MetricListDefinitionsResponse {
 
   export namespace ProviderMetricResponse {
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
      * Unit information if applicable
      */
     export interface Unit {
@@ -776,6 +926,15 @@ export namespace MetricListDefinitionsResponse {
      * Description of what the metric measures
      */
     description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: ThresholdMetricResponse.EvidenceSource | null;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -859,6 +1018,27 @@ export namespace MetricListDefinitionsResponse {
 
   export namespace ThresholdMetricResponse {
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
      * Threshold configuration.
      */
     export interface Threshold {
@@ -914,6 +1094,15 @@ export namespace MetricListDefinitionsResponse {
      * Description of what the metric measures
      */
     description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: FormulaMetricResponse.EvidenceSource | null;
 
     /**
      * Formula configuration.
@@ -997,6 +1186,27 @@ export namespace MetricListDefinitionsResponse {
 
   export namespace FormulaMetricResponse {
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
      * Formula configuration.
      */
     export interface Formula {
@@ -1044,6 +1254,15 @@ export namespace MetricListDefinitionsResponse {
      * Description of what the metric measures
      */
     description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: PatternMetricResponse.EvidenceSource | null;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -1126,6 +1345,27 @@ export namespace MetricListDefinitionsResponse {
   }
 
   export namespace PatternMetricResponse {
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
     /**
      * Pattern configuration.
      */
@@ -1249,6 +1489,15 @@ export namespace MetricUpdateDefinitionResponse {
     description: string;
 
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: LlmJudgeMetricResponse.EvidenceSource | null;
+
+    /**
      * The rubric this judge applies, as stored. Read it back to confirm which criteria
      * are live after a create or update.
      */
@@ -1331,6 +1580,27 @@ export namespace MetricUpdateDefinitionResponse {
 
   export namespace LlmJudgeMetricResponse {
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
      * Unit information if applicable
      */
     export interface Unit {
@@ -1361,6 +1631,15 @@ export namespace MetricUpdateDefinitionResponse {
      * Description of what the metric measures
      */
     description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: FormulaMetricResponse.EvidenceSource | null;
 
     /**
      * Formula configuration.
@@ -1444,6 +1723,27 @@ export namespace MetricUpdateDefinitionResponse {
 
   export namespace FormulaMetricResponse {
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
      * Formula configuration.
      */
     export interface Formula {
@@ -1491,6 +1791,15 @@ export namespace MetricUpdateDefinitionResponse {
      * Description of what the metric measures
      */
     description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: PatternMetricResponse.EvidenceSource | null;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -1573,6 +1882,27 @@ export namespace MetricUpdateDefinitionResponse {
   }
 
   export namespace PatternMetricResponse {
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
     /**
      * Pattern configuration.
      */
@@ -1663,6 +1993,15 @@ export namespace MetricUpdateDefinitionResponse {
     description: string;
 
     /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: ThresholdMetricResponse.EvidenceSource | null;
+
+    /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
      */
     metricId: string;
@@ -1743,6 +2082,27 @@ export namespace MetricUpdateDefinitionResponse {
   }
 
   export namespace ThresholdMetricResponse {
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
     /**
      * Threshold configuration.
      */
