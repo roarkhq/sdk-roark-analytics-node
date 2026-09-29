@@ -7,10 +7,12 @@ import { RequestOptions } from '../internal/request-options';
 
 export class Config extends APIResource {
   /**
-   * Reconcile a config-as-code bundle into the project. Submit the full desired set
-   * of resources; resources already managed by config are updated, new ones created,
-   * and (unless prune is false) config-managed resources absent from the bundle are
-   * deleted. Identity is by name — no ids in the bundle.
+   * Reconcile a config-as-code bundle. With a PROJECT API key, submit project-scoped
+   * resources (agents, personas, flows, collectors, metrics, ...). With an
+   * ORGANIZATION API key, submit `kind: project` resources, each optionally carrying
+   * its members and its own nested `resources`. Submit the full desired set; managed
+   * resources are updated, new ones created, and (unless prune is false) managed
+   * resources absent from the bundle are deleted. Identity is by name.
    *
    * @example
    * ```ts
@@ -24,10 +26,9 @@ export class Config extends APIResource {
   }
 
   /**
-   * Dry run for a config-as-code apply: returns the projected changes (create /
-   * update / delete) for the submitted bundle without writing anything. Submit the
-   * full desired set of resources; identity is by name — no ids in the bundle. Run
-   * this before apply to preview what would change.
+   * Dry run for an apply: returns the projected changes (create / update / delete)
+   * for the submitted bundle without writing anything. Works for both project and
+   * organization keys.
    *
    * @example
    * ```ts
@@ -54,6 +55,7 @@ export interface Bundle {
     | Bundle.QaSimulationPlanConfig
     | Bundle.AlertConfig
     | Bundle.ToolConfig
+    | Bundle.ProjectConfig
   >;
 
   prune?: boolean;
@@ -656,6 +658,650 @@ export namespace Bundle {
 
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
   }
+
+  export interface ProjectConfig {
+    kind: 'project';
+
+    name: string;
+
+    category?:
+      | 'HEALTHCARE'
+      | 'FINANCIAL'
+      | 'RETAIL'
+      | 'HOSPITALITY'
+      | 'AUTOMOTIVE'
+      | 'GOVERNMENT'
+      | 'EDUCATION'
+      | 'REAL_ESTATE'
+      | 'OTHER';
+
+    dataStorageRegion?: 'US_EAST_1' | 'EU_WEST_1';
+
+    description?: string;
+
+    displayName?: string;
+
+    members?: Array<ProjectConfig.Member>;
+
+    resources?: Array<
+      | ProjectConfig.AgentConfig
+      | ProjectConfig.HTTPRequestDefinitionConfig
+      | ProjectConfig.PersonaConfig
+      | ProjectConfig.ImprovFlowConfig
+      | ProjectConfig.ScriptedFlowConfig
+      | ProjectConfig.CollectorConfig
+      | ProjectConfig.MetricConfig
+      | ProjectConfig.SimulationPlanConfig
+      | ProjectConfig.QaSimulationPlanConfig
+      | ProjectConfig.AlertConfig
+      | ProjectConfig.ToolConfig
+    >;
+  }
+
+  export namespace ProjectConfig {
+    export interface Member {
+      email: string;
+
+      role: 'OWNER' | 'ADMIN' | 'MEMBER' | 'VIEWER';
+    }
+
+    export interface AgentConfig {
+      kind: 'agent';
+
+      name: string;
+
+      customId?: string | null;
+
+      description?: string | null;
+
+      displayName?: string;
+
+      endpoints?: Array<AgentConfig.Endpoint>;
+
+      prompt?: string | null;
+    }
+
+    export namespace AgentConfig {
+      export interface Endpoint {
+        value: string;
+
+        direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        environment?: string;
+
+        outboundDialHttpRequestDefinition?: string;
+
+        outboundDialType?: 'NONE' | 'HTTP_REQUEST';
+
+        type?: 'PHONE' | 'WEBSOCKET';
+      }
+    }
+
+    export interface HTTPRequestDefinitionConfig {
+      kind: 'httpRequestDefinition';
+
+      name: string;
+
+      url: string;
+
+      body?: string;
+
+      description?: string | null;
+
+      headers?: { [key: string]: string };
+
+      method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+    }
+
+    export interface PersonaConfig {
+      accent:
+        | 'US'
+        | 'US_X_SOUTH'
+        | 'GB'
+        | 'ES'
+        | 'DE'
+        | 'IN'
+        | 'FR'
+        | 'NL'
+        | 'SA'
+        | 'GR'
+        | 'AU'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JP'
+        | 'NZ'
+        | 'PH'
+        | 'SG'
+        | 'MY'
+        | 'HK'
+        | 'TR'
+        | 'PT'
+        | 'IL';
+
+      gender: 'MALE' | 'FEMALE';
+
+      kind: 'persona';
+
+      language:
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE';
+
+      name: string;
+
+      age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      backgroundNoise?:
+        | 'NONE'
+        | 'AIRPORT'
+        | 'CHILDREN_PLAYING'
+        | 'CITY'
+        | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
+        | 'DRIVING'
+        | 'LIBRARY'
+        | 'OFFICE'
+        | 'THUNDERSTORM'
+        | 'TRAIN';
+
+      backstoryPrompt?: string | null;
+
+      baseEmotion?:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
+
+      confirmationStyle?: 'EXPLICIT' | 'VAGUE';
+
+      description?: string | null;
+
+      displayName?: string;
+
+      hasDisfluencies?: boolean;
+
+      idleMessageMaxSpokenCount?: number;
+
+      idleMessageResetCountOnUserSpeechEnabled?: boolean;
+
+      idleMessages?: Array<string> | null;
+
+      idleTimeoutSeconds?: number;
+
+      intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+      interruption?: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
+
+      memoryReliability?: 'HIGH' | 'LOW';
+
+      properties?: { [key: string]: unknown };
+
+      responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
+
+      secondaryLanguage?: 'EN';
+
+      speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+      speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+      understoodLanguages?: Array<
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE'
+      >;
+    }
+
+    export interface ImprovFlowConfig {
+      agents: Array<string>;
+
+      happyPath: ImprovFlowConfig.HappyPath;
+
+      kind: 'flow';
+
+      name: string;
+
+      type: 'improv';
+
+      description?: string | null;
+
+      edgeCases?: Array<ImprovFlowConfig.EdgeCase>;
+
+      expectations?: Array<string>;
+
+      title?: string;
+    }
+
+    export namespace ImprovFlowConfig {
+      export interface HappyPath {
+        environment: string;
+
+        persona: string;
+
+        expectations?: Array<string>;
+
+        prompt?: string;
+
+        title?: string;
+      }
+
+      export interface EdgeCase {
+        name: string;
+
+        environment?: string;
+
+        expectations?: Array<string>;
+
+        persona?: string;
+
+        prompt?: string;
+
+        title?: string;
+      }
+    }
+
+    export interface ScriptedFlowConfig {
+      graph: Array<ConfigAPI.ConfigFlowStep>;
+
+      kind: 'flow';
+
+      name: string;
+
+      type: 'scripted';
+
+      adherence?: 'LOOSE' | 'STRICT';
+
+      agents?: Array<string>;
+
+      branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
+
+      description?: string | null;
+
+      expectations?: Array<string>;
+
+      offScript?: ScriptedFlowConfig.OffScript;
+
+      title?: string;
+    }
+
+    export namespace ScriptedFlowConfig {
+      export interface OffScript {
+        maxAttempts?: number;
+
+        reaction?: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+        sayLine?: string;
+
+        then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+        waitSeconds?: number;
+      }
+    }
+
+    export interface CollectorConfig {
+      kind: 'collector';
+
+      metrics: Array<string>;
+
+      modality: 'call' | 'chat';
+
+      name: string;
+
+      displayName?: string;
+
+      filters?: Array<CollectorConfig.Filter>;
+
+      status?: 'ACTIVE' | 'INACTIVE';
+    }
+
+    export namespace CollectorConfig {
+      export interface Filter {
+        conditions: Array<Filter.Condition>;
+      }
+
+      export namespace Filter {
+        export interface Condition {
+          key: string;
+
+          type: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'CONTAINS'
+            | 'STARTS_WITH'
+            | 'GREATER_THAN'
+            | 'LESS_THAN'
+            | 'GREATER_THAN_OR_EQUALS'
+            | 'LESS_THAN_OR_EQUALS';
+
+          value?: string;
+        }
+      }
+    }
+
+    export interface MetricConfig {
+      kind: 'metric';
+
+      name: string;
+
+      prompt: string;
+
+      type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
+
+      contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+      displayName?: string;
+
+      falseLabel?: string;
+
+      maxSelections?: number;
+
+      options?: Array<MetricConfig.Option>;
+
+      participantRole?: 'AGENT' | 'CUSTOMER';
+
+      scaleLabels?: Array<MetricConfig.ScaleLabel>;
+
+      scaleMax?: number;
+
+      scaleMin?: number;
+
+      scope?: 'GLOBAL' | 'PER_PARTICIPANT';
+
+      trueLabel?: string;
+    }
+
+    export namespace MetricConfig {
+      export interface Option {
+        displayOrder: number;
+
+        label: string;
+
+        description?: string;
+      }
+
+      export interface ScaleLabel {
+        displayOrder: number;
+
+        label: string;
+
+        rangeMax: number;
+
+        rangeMin: number;
+
+        colorHex?: string;
+
+        description?: string;
+      }
+    }
+
+    export interface SimulationPlanConfig {
+      agentEndpoints: Array<SimulationPlanConfig.AgentEndpoint>;
+
+      direction: 'INBOUND' | 'OUTBOUND';
+
+      flows: Array<SimulationPlanConfig.Flow>;
+
+      kind: 'simulationPlan';
+
+      maxDurationSeconds: number;
+
+      metrics: Array<string>;
+
+      name: string;
+
+      description?: string | null;
+
+      endCallPhrases?: Array<string>;
+
+      endCallReasons?: Array<string>;
+
+      enrichWithLiveConversation?: boolean;
+
+      executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+      includeAutomaticMetrics?: boolean;
+
+      includeFlowMetrics?: boolean;
+
+      iterations?: number;
+
+      maxConcurrentJobs?: number;
+
+      silenceTimeoutSeconds?: number;
+
+      template?: 'manual';
+    }
+
+    export namespace SimulationPlanConfig {
+      export interface AgentEndpoint {
+        agent: string;
+
+        direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        value?: string;
+      }
+
+      export interface Flow {
+        edgeCases?: Array<string>;
+
+        flow?: string;
+
+        happyPath?: boolean;
+
+        personaOverride?: string;
+
+        system?: string;
+      }
+    }
+
+    export interface QaSimulationPlanConfig {
+      agentEndpoints: Array<QaSimulationPlanConfig.AgentEndpoint>;
+
+      direction: 'INBOUND' | 'OUTBOUND';
+
+      environment: string;
+
+      kind: 'simulationPlan';
+
+      maxDurationSeconds: number;
+
+      name: string;
+
+      persona: string;
+
+      questions: Array<QaSimulationPlanConfig.Question>;
+
+      template: 'question-answer-check';
+
+      description?: string | null;
+
+      endCallPhrases?: Array<string>;
+
+      endCallReasons?: Array<string>;
+
+      enrichWithLiveConversation?: boolean;
+
+      executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+      gradeWithKnowledgeBase?: boolean;
+
+      includeAutomaticMetrics?: boolean;
+
+      includeFlowMetrics?: boolean;
+
+      iterations?: number;
+
+      maxConcurrentJobs?: number;
+
+      metrics?: Array<string>;
+
+      silenceTimeoutSeconds?: number;
+    }
+
+    export namespace QaSimulationPlanConfig {
+      export interface AgentEndpoint {
+        agent: string;
+
+        direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        value?: string;
+      }
+
+      export interface Question {
+        ask: string;
+
+        expect?: string;
+
+        name?: string;
+      }
+    }
+
+    export interface AlertConfig {
+      kind: 'alert';
+
+      name: string;
+
+      trigger:
+        | AlertConfig.AlertThresholdTrigger
+        | AlertConfig.AlertEventTrigger
+        | AlertConfig.AlertSimulationTrigger;
+
+      actions?: AlertConfig.Actions;
+
+      displayName?: string;
+
+      enabled?: boolean;
+    }
+
+    export namespace AlertConfig {
+      export interface AlertThresholdTrigger {
+        aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+
+        metric: string;
+
+        operator: 'GT' | 'GTE' | 'LT' | 'LTE';
+
+        thresholdValue: number;
+
+        type: 'threshold';
+
+        windowMinutes: number;
+
+        consecutiveOpen?: number;
+
+        consecutiveResolve?: number;
+
+        grouping?: 'NONE' | 'BY_AGENT';
+
+        metricVariant?: string;
+
+        minSampleSize?: number;
+      }
+
+      export interface AlertEventTrigger {
+        events: Array<
+          | 'CALL_ANALYSIS_COMPLETED'
+          | 'CALL_ANALYSIS_FAILED'
+          | 'CALL_ANALYSIS_CANCELLED'
+          | 'SIMULATION_RUN_PLAN_JOB_STARTED'
+          | 'SIMULATION_RUN_PLAN_JOB_COMPLETED'
+          | 'SIMULATION_RUN_PLAN_JOB_FAILED'
+          | 'SIMULATION_RUN_PLAN_JOB_CANCELLED'
+          | 'SIMULATION_JOB_STARTED'
+          | 'SIMULATION_JOB_COMPLETED'
+          | 'SIMULATION_JOB_FAILED'
+          | 'SIMULATION_JOB_CANCELLED'
+          | 'METRIC_COLLECTION_JOB_COMPLETED'
+          | 'METRIC_COLLECTION_JOB_FAILED'
+          | 'CHAT_ANALYSIS_COMPLETED'
+          | 'CHAT_ANALYSIS_FAILED'
+          | 'ISSUE_OPENED'
+          | 'ISSUE_RESOLVED'
+        >;
+
+        type: 'event';
+      }
+
+      export interface AlertSimulationTrigger {
+        conditions: Array<'SUCCESS' | 'FAILURE' | 'THRESHOLD_FAILED'>;
+
+        type: 'simulation';
+
+        deliveryFormat?: 'MESSAGE' | 'PDF';
+
+        plan?: string;
+      }
+
+      export interface Actions {
+        slack?: Array<Actions.Slack>;
+
+        webhooks?: Array<string>;
+      }
+
+      export namespace Actions {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
+      }
+    }
+
+    export interface ToolConfig {
+      kind: 'tool';
+
+      name: string;
+
+      agent?: string;
+
+      description?: string | null;
+
+      expectedResult?: string | null;
+
+      invocationCriteria?: string | null;
+
+      parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+    }
+  }
 }
 
 export interface ConfigFlowStep {
@@ -743,7 +1389,9 @@ export namespace ConfigApplyResponse {
         | 'metric'
         | 'simulationPlan'
         | 'alert'
-        | 'tool';
+        | 'tool'
+        | 'project'
+        | 'member';
 
       name: string;
 
@@ -756,6 +1404,8 @@ export namespace ConfigApplyResponse {
       detail?: string;
 
       error?: string;
+
+      project?: string;
 
       signingSecret?: string;
     }
@@ -798,13 +1448,17 @@ export namespace ConfigDiffResponse {
         | 'metric'
         | 'simulationPlan'
         | 'alert'
-        | 'tool';
+        | 'tool'
+        | 'project'
+        | 'member';
 
       name: string;
 
       op: 'create' | 'update' | 'delete' | 'noop';
 
       detail?: string;
+
+      project?: string;
     }
 
     export interface Summary {
@@ -832,6 +1486,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.QaSimulationPlanConfig
     | ConfigApplyParams.AlertConfig
     | ConfigApplyParams.ToolConfig
+    | ConfigApplyParams.ProjectConfig
   >;
 
   prune?: boolean;
@@ -1434,6 +2089,650 @@ export namespace ConfigApplyParams {
 
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
   }
+
+  export interface ProjectConfig {
+    kind: 'project';
+
+    name: string;
+
+    category?:
+      | 'HEALTHCARE'
+      | 'FINANCIAL'
+      | 'RETAIL'
+      | 'HOSPITALITY'
+      | 'AUTOMOTIVE'
+      | 'GOVERNMENT'
+      | 'EDUCATION'
+      | 'REAL_ESTATE'
+      | 'OTHER';
+
+    dataStorageRegion?: 'US_EAST_1' | 'EU_WEST_1';
+
+    description?: string;
+
+    displayName?: string;
+
+    members?: Array<ProjectConfig.Member>;
+
+    resources?: Array<
+      | ProjectConfig.AgentConfig
+      | ProjectConfig.HTTPRequestDefinitionConfig
+      | ProjectConfig.PersonaConfig
+      | ProjectConfig.ImprovFlowConfig
+      | ProjectConfig.ScriptedFlowConfig
+      | ProjectConfig.CollectorConfig
+      | ProjectConfig.MetricConfig
+      | ProjectConfig.SimulationPlanConfig
+      | ProjectConfig.QaSimulationPlanConfig
+      | ProjectConfig.AlertConfig
+      | ProjectConfig.ToolConfig
+    >;
+  }
+
+  export namespace ProjectConfig {
+    export interface Member {
+      email: string;
+
+      role: 'OWNER' | 'ADMIN' | 'MEMBER' | 'VIEWER';
+    }
+
+    export interface AgentConfig {
+      kind: 'agent';
+
+      name: string;
+
+      customId?: string | null;
+
+      description?: string | null;
+
+      displayName?: string;
+
+      endpoints?: Array<AgentConfig.Endpoint>;
+
+      prompt?: string | null;
+    }
+
+    export namespace AgentConfig {
+      export interface Endpoint {
+        value: string;
+
+        direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        environment?: string;
+
+        outboundDialHttpRequestDefinition?: string;
+
+        outboundDialType?: 'NONE' | 'HTTP_REQUEST';
+
+        type?: 'PHONE' | 'WEBSOCKET';
+      }
+    }
+
+    export interface HTTPRequestDefinitionConfig {
+      kind: 'httpRequestDefinition';
+
+      name: string;
+
+      url: string;
+
+      body?: string;
+
+      description?: string | null;
+
+      headers?: { [key: string]: string };
+
+      method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+    }
+
+    export interface PersonaConfig {
+      accent:
+        | 'US'
+        | 'US_X_SOUTH'
+        | 'GB'
+        | 'ES'
+        | 'DE'
+        | 'IN'
+        | 'FR'
+        | 'NL'
+        | 'SA'
+        | 'GR'
+        | 'AU'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JP'
+        | 'NZ'
+        | 'PH'
+        | 'SG'
+        | 'MY'
+        | 'HK'
+        | 'TR'
+        | 'PT'
+        | 'IL';
+
+      gender: 'MALE' | 'FEMALE';
+
+      kind: 'persona';
+
+      language:
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE';
+
+      name: string;
+
+      age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      backgroundNoise?:
+        | 'NONE'
+        | 'AIRPORT'
+        | 'CHILDREN_PLAYING'
+        | 'CITY'
+        | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
+        | 'DRIVING'
+        | 'LIBRARY'
+        | 'OFFICE'
+        | 'THUNDERSTORM'
+        | 'TRAIN';
+
+      backstoryPrompt?: string | null;
+
+      baseEmotion?:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
+
+      confirmationStyle?: 'EXPLICIT' | 'VAGUE';
+
+      description?: string | null;
+
+      displayName?: string;
+
+      hasDisfluencies?: boolean;
+
+      idleMessageMaxSpokenCount?: number;
+
+      idleMessageResetCountOnUserSpeechEnabled?: boolean;
+
+      idleMessages?: Array<string> | null;
+
+      idleTimeoutSeconds?: number;
+
+      intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+      interruption?: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
+
+      memoryReliability?: 'HIGH' | 'LOW';
+
+      properties?: { [key: string]: unknown };
+
+      responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
+
+      secondaryLanguage?: 'EN';
+
+      speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+      speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+      understoodLanguages?: Array<
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE'
+      >;
+    }
+
+    export interface ImprovFlowConfig {
+      agents: Array<string>;
+
+      happyPath: ImprovFlowConfig.HappyPath;
+
+      kind: 'flow';
+
+      name: string;
+
+      type: 'improv';
+
+      description?: string | null;
+
+      edgeCases?: Array<ImprovFlowConfig.EdgeCase>;
+
+      expectations?: Array<string>;
+
+      title?: string;
+    }
+
+    export namespace ImprovFlowConfig {
+      export interface HappyPath {
+        environment: string;
+
+        persona: string;
+
+        expectations?: Array<string>;
+
+        prompt?: string;
+
+        title?: string;
+      }
+
+      export interface EdgeCase {
+        name: string;
+
+        environment?: string;
+
+        expectations?: Array<string>;
+
+        persona?: string;
+
+        prompt?: string;
+
+        title?: string;
+      }
+    }
+
+    export interface ScriptedFlowConfig {
+      graph: Array<ConfigFlowStep>;
+
+      kind: 'flow';
+
+      name: string;
+
+      type: 'scripted';
+
+      adherence?: 'LOOSE' | 'STRICT';
+
+      agents?: Array<string>;
+
+      branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
+
+      description?: string | null;
+
+      expectations?: Array<string>;
+
+      offScript?: ScriptedFlowConfig.OffScript;
+
+      title?: string;
+    }
+
+    export namespace ScriptedFlowConfig {
+      export interface OffScript {
+        maxAttempts?: number;
+
+        reaction?: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+        sayLine?: string;
+
+        then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+        waitSeconds?: number;
+      }
+    }
+
+    export interface CollectorConfig {
+      kind: 'collector';
+
+      metrics: Array<string>;
+
+      modality: 'call' | 'chat';
+
+      name: string;
+
+      displayName?: string;
+
+      filters?: Array<CollectorConfig.Filter>;
+
+      status?: 'ACTIVE' | 'INACTIVE';
+    }
+
+    export namespace CollectorConfig {
+      export interface Filter {
+        conditions: Array<Filter.Condition>;
+      }
+
+      export namespace Filter {
+        export interface Condition {
+          key: string;
+
+          type: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'CONTAINS'
+            | 'STARTS_WITH'
+            | 'GREATER_THAN'
+            | 'LESS_THAN'
+            | 'GREATER_THAN_OR_EQUALS'
+            | 'LESS_THAN_OR_EQUALS';
+
+          value?: string;
+        }
+      }
+    }
+
+    export interface MetricConfig {
+      kind: 'metric';
+
+      name: string;
+
+      prompt: string;
+
+      type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
+
+      contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+      displayName?: string;
+
+      falseLabel?: string;
+
+      maxSelections?: number;
+
+      options?: Array<MetricConfig.Option>;
+
+      participantRole?: 'AGENT' | 'CUSTOMER';
+
+      scaleLabels?: Array<MetricConfig.ScaleLabel>;
+
+      scaleMax?: number;
+
+      scaleMin?: number;
+
+      scope?: 'GLOBAL' | 'PER_PARTICIPANT';
+
+      trueLabel?: string;
+    }
+
+    export namespace MetricConfig {
+      export interface Option {
+        displayOrder: number;
+
+        label: string;
+
+        description?: string;
+      }
+
+      export interface ScaleLabel {
+        displayOrder: number;
+
+        label: string;
+
+        rangeMax: number;
+
+        rangeMin: number;
+
+        colorHex?: string;
+
+        description?: string;
+      }
+    }
+
+    export interface SimulationPlanConfig {
+      agentEndpoints: Array<SimulationPlanConfig.AgentEndpoint>;
+
+      direction: 'INBOUND' | 'OUTBOUND';
+
+      flows: Array<SimulationPlanConfig.Flow>;
+
+      kind: 'simulationPlan';
+
+      maxDurationSeconds: number;
+
+      metrics: Array<string>;
+
+      name: string;
+
+      description?: string | null;
+
+      endCallPhrases?: Array<string>;
+
+      endCallReasons?: Array<string>;
+
+      enrichWithLiveConversation?: boolean;
+
+      executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+      includeAutomaticMetrics?: boolean;
+
+      includeFlowMetrics?: boolean;
+
+      iterations?: number;
+
+      maxConcurrentJobs?: number;
+
+      silenceTimeoutSeconds?: number;
+
+      template?: 'manual';
+    }
+
+    export namespace SimulationPlanConfig {
+      export interface AgentEndpoint {
+        agent: string;
+
+        direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        value?: string;
+      }
+
+      export interface Flow {
+        edgeCases?: Array<string>;
+
+        flow?: string;
+
+        happyPath?: boolean;
+
+        personaOverride?: string;
+
+        system?: string;
+      }
+    }
+
+    export interface QaSimulationPlanConfig {
+      agentEndpoints: Array<QaSimulationPlanConfig.AgentEndpoint>;
+
+      direction: 'INBOUND' | 'OUTBOUND';
+
+      environment: string;
+
+      kind: 'simulationPlan';
+
+      maxDurationSeconds: number;
+
+      name: string;
+
+      persona: string;
+
+      questions: Array<QaSimulationPlanConfig.Question>;
+
+      template: 'question-answer-check';
+
+      description?: string | null;
+
+      endCallPhrases?: Array<string>;
+
+      endCallReasons?: Array<string>;
+
+      enrichWithLiveConversation?: boolean;
+
+      executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+      gradeWithKnowledgeBase?: boolean;
+
+      includeAutomaticMetrics?: boolean;
+
+      includeFlowMetrics?: boolean;
+
+      iterations?: number;
+
+      maxConcurrentJobs?: number;
+
+      metrics?: Array<string>;
+
+      silenceTimeoutSeconds?: number;
+    }
+
+    export namespace QaSimulationPlanConfig {
+      export interface AgentEndpoint {
+        agent: string;
+
+        direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        value?: string;
+      }
+
+      export interface Question {
+        ask: string;
+
+        expect?: string;
+
+        name?: string;
+      }
+    }
+
+    export interface AlertConfig {
+      kind: 'alert';
+
+      name: string;
+
+      trigger:
+        | AlertConfig.AlertThresholdTrigger
+        | AlertConfig.AlertEventTrigger
+        | AlertConfig.AlertSimulationTrigger;
+
+      actions?: AlertConfig.Actions;
+
+      displayName?: string;
+
+      enabled?: boolean;
+    }
+
+    export namespace AlertConfig {
+      export interface AlertThresholdTrigger {
+        aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+
+        metric: string;
+
+        operator: 'GT' | 'GTE' | 'LT' | 'LTE';
+
+        thresholdValue: number;
+
+        type: 'threshold';
+
+        windowMinutes: number;
+
+        consecutiveOpen?: number;
+
+        consecutiveResolve?: number;
+
+        grouping?: 'NONE' | 'BY_AGENT';
+
+        metricVariant?: string;
+
+        minSampleSize?: number;
+      }
+
+      export interface AlertEventTrigger {
+        events: Array<
+          | 'CALL_ANALYSIS_COMPLETED'
+          | 'CALL_ANALYSIS_FAILED'
+          | 'CALL_ANALYSIS_CANCELLED'
+          | 'SIMULATION_RUN_PLAN_JOB_STARTED'
+          | 'SIMULATION_RUN_PLAN_JOB_COMPLETED'
+          | 'SIMULATION_RUN_PLAN_JOB_FAILED'
+          | 'SIMULATION_RUN_PLAN_JOB_CANCELLED'
+          | 'SIMULATION_JOB_STARTED'
+          | 'SIMULATION_JOB_COMPLETED'
+          | 'SIMULATION_JOB_FAILED'
+          | 'SIMULATION_JOB_CANCELLED'
+          | 'METRIC_COLLECTION_JOB_COMPLETED'
+          | 'METRIC_COLLECTION_JOB_FAILED'
+          | 'CHAT_ANALYSIS_COMPLETED'
+          | 'CHAT_ANALYSIS_FAILED'
+          | 'ISSUE_OPENED'
+          | 'ISSUE_RESOLVED'
+        >;
+
+        type: 'event';
+      }
+
+      export interface AlertSimulationTrigger {
+        conditions: Array<'SUCCESS' | 'FAILURE' | 'THRESHOLD_FAILED'>;
+
+        type: 'simulation';
+
+        deliveryFormat?: 'MESSAGE' | 'PDF';
+
+        plan?: string;
+      }
+
+      export interface Actions {
+        slack?: Array<Actions.Slack>;
+
+        webhooks?: Array<string>;
+      }
+
+      export namespace Actions {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
+      }
+    }
+
+    export interface ToolConfig {
+      kind: 'tool';
+
+      name: string;
+
+      agent?: string;
+
+      description?: string | null;
+
+      expectedResult?: string | null;
+
+      invocationCriteria?: string | null;
+
+      parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+    }
+  }
 }
 
 export interface ConfigDiffParams {
@@ -1449,6 +2748,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.QaSimulationPlanConfig
     | ConfigDiffParams.AlertConfig
     | ConfigDiffParams.ToolConfig
+    | ConfigDiffParams.ProjectConfig
   >;
 
   prune?: boolean;
@@ -2050,6 +3350,650 @@ export namespace ConfigDiffParams {
     invocationCriteria?: string | null;
 
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+  }
+
+  export interface ProjectConfig {
+    kind: 'project';
+
+    name: string;
+
+    category?:
+      | 'HEALTHCARE'
+      | 'FINANCIAL'
+      | 'RETAIL'
+      | 'HOSPITALITY'
+      | 'AUTOMOTIVE'
+      | 'GOVERNMENT'
+      | 'EDUCATION'
+      | 'REAL_ESTATE'
+      | 'OTHER';
+
+    dataStorageRegion?: 'US_EAST_1' | 'EU_WEST_1';
+
+    description?: string;
+
+    displayName?: string;
+
+    members?: Array<ProjectConfig.Member>;
+
+    resources?: Array<
+      | ProjectConfig.AgentConfig
+      | ProjectConfig.HTTPRequestDefinitionConfig
+      | ProjectConfig.PersonaConfig
+      | ProjectConfig.ImprovFlowConfig
+      | ProjectConfig.ScriptedFlowConfig
+      | ProjectConfig.CollectorConfig
+      | ProjectConfig.MetricConfig
+      | ProjectConfig.SimulationPlanConfig
+      | ProjectConfig.QaSimulationPlanConfig
+      | ProjectConfig.AlertConfig
+      | ProjectConfig.ToolConfig
+    >;
+  }
+
+  export namespace ProjectConfig {
+    export interface Member {
+      email: string;
+
+      role: 'OWNER' | 'ADMIN' | 'MEMBER' | 'VIEWER';
+    }
+
+    export interface AgentConfig {
+      kind: 'agent';
+
+      name: string;
+
+      customId?: string | null;
+
+      description?: string | null;
+
+      displayName?: string;
+
+      endpoints?: Array<AgentConfig.Endpoint>;
+
+      prompt?: string | null;
+    }
+
+    export namespace AgentConfig {
+      export interface Endpoint {
+        value: string;
+
+        direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        environment?: string;
+
+        outboundDialHttpRequestDefinition?: string;
+
+        outboundDialType?: 'NONE' | 'HTTP_REQUEST';
+
+        type?: 'PHONE' | 'WEBSOCKET';
+      }
+    }
+
+    export interface HTTPRequestDefinitionConfig {
+      kind: 'httpRequestDefinition';
+
+      name: string;
+
+      url: string;
+
+      body?: string;
+
+      description?: string | null;
+
+      headers?: { [key: string]: string };
+
+      method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+    }
+
+    export interface PersonaConfig {
+      accent:
+        | 'US'
+        | 'US_X_SOUTH'
+        | 'GB'
+        | 'ES'
+        | 'DE'
+        | 'IN'
+        | 'FR'
+        | 'NL'
+        | 'SA'
+        | 'GR'
+        | 'AU'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JP'
+        | 'NZ'
+        | 'PH'
+        | 'SG'
+        | 'MY'
+        | 'HK'
+        | 'TR'
+        | 'PT'
+        | 'IL';
+
+      gender: 'MALE' | 'FEMALE';
+
+      kind: 'persona';
+
+      language:
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE';
+
+      name: string;
+
+      age?: 'CHILD' | 'TEENAGER' | 'ADULT' | 'ELDERLY';
+
+      backgroundNoise?:
+        | 'NONE'
+        | 'AIRPORT'
+        | 'CHILDREN_PLAYING'
+        | 'CITY'
+        | 'COFFEE_SHOP'
+        | 'CONSTRUCTION'
+        | 'CRYING_BABY'
+        | 'DRIVING'
+        | 'LIBRARY'
+        | 'OFFICE'
+        | 'THUNDERSTORM'
+        | 'TRAIN';
+
+      backstoryPrompt?: string | null;
+
+      baseEmotion?:
+        | 'NEUTRAL'
+        | 'CHEERFUL'
+        | 'CONFUSED'
+        | 'FRUSTRATED'
+        | 'SKEPTICAL'
+        | 'RUSHED'
+        | 'DISTRACTED'
+        | 'ANGRY'
+        | 'ANXIOUS'
+        | 'SAD';
+
+      confirmationStyle?: 'EXPLICIT' | 'VAGUE';
+
+      description?: string | null;
+
+      displayName?: string;
+
+      hasDisfluencies?: boolean;
+
+      idleMessageMaxSpokenCount?: number;
+
+      idleMessageResetCountOnUserSpeechEnabled?: boolean;
+
+      idleMessages?: Array<string> | null;
+
+      idleTimeoutSeconds?: number;
+
+      intentClarity?: 'CLEAR' | 'INDIRECT' | 'VAGUE';
+
+      interruption?: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
+
+      memoryReliability?: 'HIGH' | 'LOW';
+
+      properties?: { [key: string]: unknown };
+
+      responseTiming?: 'RELAXED' | 'NORMAL' | 'QUICK' | 'BARGE_IN';
+
+      secondaryLanguage?: 'EN';
+
+      speechClarity?: 'CLEAR' | 'VAGUE' | 'RAMBLING';
+
+      speechPace?: 'SUPER_SLOW' | 'SLOW' | 'NORMAL' | 'FAST' | 'SUPER_FAST';
+
+      understoodLanguages?: Array<
+        | 'EN'
+        | 'ES'
+        | 'DE'
+        | 'HI'
+        | 'FR'
+        | 'NL'
+        | 'AR'
+        | 'EL'
+        | 'IT'
+        | 'ID'
+        | 'TH'
+        | 'JA'
+        | 'TL'
+        | 'MS'
+        | 'ZH'
+        | 'TR'
+        | 'PT'
+        | 'HE'
+      >;
+    }
+
+    export interface ImprovFlowConfig {
+      agents: Array<string>;
+
+      happyPath: ImprovFlowConfig.HappyPath;
+
+      kind: 'flow';
+
+      name: string;
+
+      type: 'improv';
+
+      description?: string | null;
+
+      edgeCases?: Array<ImprovFlowConfig.EdgeCase>;
+
+      expectations?: Array<string>;
+
+      title?: string;
+    }
+
+    export namespace ImprovFlowConfig {
+      export interface HappyPath {
+        environment: string;
+
+        persona: string;
+
+        expectations?: Array<string>;
+
+        prompt?: string;
+
+        title?: string;
+      }
+
+      export interface EdgeCase {
+        name: string;
+
+        environment?: string;
+
+        expectations?: Array<string>;
+
+        persona?: string;
+
+        prompt?: string;
+
+        title?: string;
+      }
+    }
+
+    export interface ScriptedFlowConfig {
+      graph: Array<ConfigFlowStep>;
+
+      kind: 'flow';
+
+      name: string;
+
+      type: 'scripted';
+
+      adherence?: 'LOOSE' | 'STRICT';
+
+      agents?: Array<string>;
+
+      branchingMode?: 'DETERMINISTIC' | 'ADAPTIVE';
+
+      description?: string | null;
+
+      expectations?: Array<string>;
+
+      offScript?: ScriptedFlowConfig.OffScript;
+
+      title?: string;
+    }
+
+    export namespace ScriptedFlowConfig {
+      export interface OffScript {
+        maxAttempts?: number;
+
+        reaction?: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+        sayLine?: string;
+
+        then?: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+        waitSeconds?: number;
+      }
+    }
+
+    export interface CollectorConfig {
+      kind: 'collector';
+
+      metrics: Array<string>;
+
+      modality: 'call' | 'chat';
+
+      name: string;
+
+      displayName?: string;
+
+      filters?: Array<CollectorConfig.Filter>;
+
+      status?: 'ACTIVE' | 'INACTIVE';
+    }
+
+    export namespace CollectorConfig {
+      export interface Filter {
+        conditions: Array<Filter.Condition>;
+      }
+
+      export namespace Filter {
+        export interface Condition {
+          key: string;
+
+          type: 'AGENT' | 'CALL_SOURCE' | 'CALL_PROPERTY' | 'INTEGRATION';
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'CONTAINS'
+            | 'STARTS_WITH'
+            | 'GREATER_THAN'
+            | 'LESS_THAN'
+            | 'GREATER_THAN_OR_EQUALS'
+            | 'LESS_THAN_OR_EQUALS';
+
+          value?: string;
+        }
+      }
+    }
+
+    export interface MetricConfig {
+      kind: 'metric';
+
+      name: string;
+
+      prompt: string;
+
+      type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
+
+      contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+      displayName?: string;
+
+      falseLabel?: string;
+
+      maxSelections?: number;
+
+      options?: Array<MetricConfig.Option>;
+
+      participantRole?: 'AGENT' | 'CUSTOMER';
+
+      scaleLabels?: Array<MetricConfig.ScaleLabel>;
+
+      scaleMax?: number;
+
+      scaleMin?: number;
+
+      scope?: 'GLOBAL' | 'PER_PARTICIPANT';
+
+      trueLabel?: string;
+    }
+
+    export namespace MetricConfig {
+      export interface Option {
+        displayOrder: number;
+
+        label: string;
+
+        description?: string;
+      }
+
+      export interface ScaleLabel {
+        displayOrder: number;
+
+        label: string;
+
+        rangeMax: number;
+
+        rangeMin: number;
+
+        colorHex?: string;
+
+        description?: string;
+      }
+    }
+
+    export interface SimulationPlanConfig {
+      agentEndpoints: Array<SimulationPlanConfig.AgentEndpoint>;
+
+      direction: 'INBOUND' | 'OUTBOUND';
+
+      flows: Array<SimulationPlanConfig.Flow>;
+
+      kind: 'simulationPlan';
+
+      maxDurationSeconds: number;
+
+      metrics: Array<string>;
+
+      name: string;
+
+      description?: string | null;
+
+      endCallPhrases?: Array<string>;
+
+      endCallReasons?: Array<string>;
+
+      enrichWithLiveConversation?: boolean;
+
+      executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+      includeAutomaticMetrics?: boolean;
+
+      includeFlowMetrics?: boolean;
+
+      iterations?: number;
+
+      maxConcurrentJobs?: number;
+
+      silenceTimeoutSeconds?: number;
+
+      template?: 'manual';
+    }
+
+    export namespace SimulationPlanConfig {
+      export interface AgentEndpoint {
+        agent: string;
+
+        direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        value?: string;
+      }
+
+      export interface Flow {
+        edgeCases?: Array<string>;
+
+        flow?: string;
+
+        happyPath?: boolean;
+
+        personaOverride?: string;
+
+        system?: string;
+      }
+    }
+
+    export interface QaSimulationPlanConfig {
+      agentEndpoints: Array<QaSimulationPlanConfig.AgentEndpoint>;
+
+      direction: 'INBOUND' | 'OUTBOUND';
+
+      environment: string;
+
+      kind: 'simulationPlan';
+
+      maxDurationSeconds: number;
+
+      name: string;
+
+      persona: string;
+
+      questions: Array<QaSimulationPlanConfig.Question>;
+
+      template: 'question-answer-check';
+
+      description?: string | null;
+
+      endCallPhrases?: Array<string>;
+
+      endCallReasons?: Array<string>;
+
+      enrichWithLiveConversation?: boolean;
+
+      executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+      gradeWithKnowledgeBase?: boolean;
+
+      includeAutomaticMetrics?: boolean;
+
+      includeFlowMetrics?: boolean;
+
+      iterations?: number;
+
+      maxConcurrentJobs?: number;
+
+      metrics?: Array<string>;
+
+      silenceTimeoutSeconds?: number;
+    }
+
+    export namespace QaSimulationPlanConfig {
+      export interface AgentEndpoint {
+        agent: string;
+
+        direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        value?: string;
+      }
+
+      export interface Question {
+        ask: string;
+
+        expect?: string;
+
+        name?: string;
+      }
+    }
+
+    export interface AlertConfig {
+      kind: 'alert';
+
+      name: string;
+
+      trigger:
+        | AlertConfig.AlertThresholdTrigger
+        | AlertConfig.AlertEventTrigger
+        | AlertConfig.AlertSimulationTrigger;
+
+      actions?: AlertConfig.Actions;
+
+      displayName?: string;
+
+      enabled?: boolean;
+    }
+
+    export namespace AlertConfig {
+      export interface AlertThresholdTrigger {
+        aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+
+        metric: string;
+
+        operator: 'GT' | 'GTE' | 'LT' | 'LTE';
+
+        thresholdValue: number;
+
+        type: 'threshold';
+
+        windowMinutes: number;
+
+        consecutiveOpen?: number;
+
+        consecutiveResolve?: number;
+
+        grouping?: 'NONE' | 'BY_AGENT';
+
+        metricVariant?: string;
+
+        minSampleSize?: number;
+      }
+
+      export interface AlertEventTrigger {
+        events: Array<
+          | 'CALL_ANALYSIS_COMPLETED'
+          | 'CALL_ANALYSIS_FAILED'
+          | 'CALL_ANALYSIS_CANCELLED'
+          | 'SIMULATION_RUN_PLAN_JOB_STARTED'
+          | 'SIMULATION_RUN_PLAN_JOB_COMPLETED'
+          | 'SIMULATION_RUN_PLAN_JOB_FAILED'
+          | 'SIMULATION_RUN_PLAN_JOB_CANCELLED'
+          | 'SIMULATION_JOB_STARTED'
+          | 'SIMULATION_JOB_COMPLETED'
+          | 'SIMULATION_JOB_FAILED'
+          | 'SIMULATION_JOB_CANCELLED'
+          | 'METRIC_COLLECTION_JOB_COMPLETED'
+          | 'METRIC_COLLECTION_JOB_FAILED'
+          | 'CHAT_ANALYSIS_COMPLETED'
+          | 'CHAT_ANALYSIS_FAILED'
+          | 'ISSUE_OPENED'
+          | 'ISSUE_RESOLVED'
+        >;
+
+        type: 'event';
+      }
+
+      export interface AlertSimulationTrigger {
+        conditions: Array<'SUCCESS' | 'FAILURE' | 'THRESHOLD_FAILED'>;
+
+        type: 'simulation';
+
+        deliveryFormat?: 'MESSAGE' | 'PDF';
+
+        plan?: string;
+      }
+
+      export interface Actions {
+        slack?: Array<Actions.Slack>;
+
+        webhooks?: Array<string>;
+      }
+
+      export namespace Actions {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
+      }
+    }
+
+    export interface ToolConfig {
+      kind: 'tool';
+
+      name: string;
+
+      agent?: string;
+
+      description?: string | null;
+
+      expectedResult?: string | null;
+
+      invocationCriteria?: string | null;
+
+      parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+    }
   }
 }
 
