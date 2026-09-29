@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.15.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v4.14.0...v4.15.0) (2026-09-29)
+
+
+### Features
+
+* **client:** a `project` option, sent as X-Roark-Project-Id ([#1306](https://github.com/roarkhq/sdk-roark-analytics-node/issues/1306)) ([48f0df9](https://github.com/roarkhq/sdk-roark-analytics-node/commit/48f0df908540205a259dac8e84e3db53c29e999d))
+
 ## [4.14.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v4.13.0...v4.14.0) (2026-09-29)
 
 
