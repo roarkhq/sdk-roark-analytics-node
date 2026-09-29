@@ -148,15 +148,21 @@ describe('instantiate client', () => {
       expect(req.headers.has('x-roark-project-id')).toBe(false);
     });
 
-    test('the project resource is still the resource, not the option', async () => {
-      // `client.project` is `/v1/projects`. The option deliberately does not shadow it - a second
-      // declaration of that name is what stopped the first attempt at this compiling.
+    test('the option never becomes a property of the client', async () => {
+      // `client.project` is the `/v1/projects` resource accessor. A second declaration of that
+      // name is what stopped the first attempt at this option compiling, so the guard is that the
+      // option's value never lands there.
+      //
+      // Read through `unknown` rather than as `client.project.list`: resources come and go with
+      // the spec, and this suite must not fail because one was added or removed. It did - the
+      // codegen gate applies a pinned spec that predates `/v1/projects`, which deletes the
+      // resource and left this assertion failing to compile in a repository that had not changed.
       const client = new Roark({
         baseURL: 'http://localhost:5000/',
         bearerToken: 'My Bearer Token',
         project: 'proj_abc',
       });
-      expect(typeof client.project.list).toBe('function');
+      expect(typeof (client as unknown as Record<string, unknown>)['project']).not.toBe('string');
     });
 
     test('is absent for an empty project, which the API answers with a 400 rather than ignoring', async () => {
