@@ -93,6 +93,12 @@ export namespace SimulationJobGetByIDResponse {
      */
     processingStatus: string;
 
+    /**
+     * This simulation's 1-based place in its run's queue, in the order the queue
+     * releases simulations. Null unless the status is QUEUED.
+     */
+    queuePosition: number | null;
+
     runPlan: Data.RunPlan;
 
     /**
@@ -576,6 +582,12 @@ export namespace SimulationJobLookupResponse {
      * Processing status
      */
     processingStatus: string;
+
+    /**
+     * This simulation's 1-based place in its run's queue, in the order the queue
+     * releases simulations. Null unless the status is QUEUED.
+     */
+    queuePosition: number | null;
 
     runPlan: Data.RunPlan;
 
