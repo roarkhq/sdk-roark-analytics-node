@@ -287,6 +287,14 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       agentEndpoint: SimulationJob.AgentEndpoint;
 
       /**
+       * The background noise the call actually ran with. `persona.backgroundNoise` is
+       * only what the persona was set to; a flow’s environment overrides it, and on a
+       * background-noise sweep every arm’s persona says NONE while the arms differ here.
+       * Filter by arm on this field.
+       */
+      backgroundNoise: SimulationJob.BackgroundNoise;
+
+      /**
        * When the simulation job was created
        */
       createdAt: string;
@@ -395,6 +403,43 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'KORE'
           | 'GOOGLE_CES'
           | 'DAILY';
+      }
+
+      /**
+       * The background noise the call actually ran with. `persona.backgroundNoise` is
+       * only what the persona was set to; a flow’s environment overrides it, and on a
+       * background-noise sweep every arm’s persona says NONE while the arms differ here.
+       * Filter by arm on this field.
+       */
+      export interface BackgroundNoise {
+        /**
+         * The noise bed the simulated caller was placed with. NONE when the call ran in
+         * silence.
+         */
+        backgroundNoise:
+          | 'NONE'
+          | 'AIRPORT'
+          | 'CHILDREN_PLAYING'
+          | 'CITY'
+          | 'COFFEE_SHOP'
+          | 'CONSTRUCTION'
+          | 'CRYING_BABY'
+          | 'DRIVING'
+          | 'LIBRARY'
+          | 'OFFICE'
+          | 'THUNDERSTORM'
+          | 'TRAIN';
+
+        /**
+         * Linear gain (0..1) the bed played at. 1 is as loud as the caller’s voice.
+         */
+        backgroundNoiseVolume: number;
+
+        /**
+         * `ENVIRONMENT` when the flow’s environment decided the bed (a sweep arm, or an
+         * environment with noise), `PERSONA` when the persona’s own setting did.
+         */
+        source: 'ENVIRONMENT' | 'PERSONA';
       }
 
       /**
