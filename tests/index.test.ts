@@ -49,6 +49,66 @@ describe('instantiate client', () => {
       expect(req.headers.has('x-my-default-header')).toBe(false);
     });
   });
+
+  describe('project', () => {
+    test('is sent as X-Roark-Project-Id', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_abc');
+    });
+
+    test('is absent when no project is given', async () => {
+      const client = new Roark({ baseURL: 'http://localhost:5000/', bearerToken: 'My Bearer Token' });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('is absent for an empty project, which the API answers with a 400 rather than ignoring', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: '',
+      });
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(req.headers.has('x-roark-project-id')).toBe(false);
+    });
+
+    test('an explicit per-request header wins', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+      });
+      const { req } = await client.buildRequest({
+        path: '/foo',
+        method: 'post',
+        headers: { 'X-Roark-Project-Id': 'proj_override' },
+      });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_override');
+    });
+
+    test('withOptions switches the project, which is how a caller reaches another one', async () => {
+      const client = new Roark({
+        baseURL: 'http://localhost:5000/',
+        bearerToken: 'My Bearer Token',
+        project: 'proj_abc',
+      });
+      const { req } = await client.withOptions({ project: 'proj_xyz' }).buildRequest({
+        path: '/foo',
+        method: 'post',
+      });
+      expect(req.headers.get('x-roark-project-id')).toEqual('proj_xyz');
+
+      // The original client is untouched.
+      const { req: original } = await client.buildRequest({ path: '/foo', method: 'post' });
+      expect(original.headers.get('x-roark-project-id')).toEqual('proj_abc');
+    });
+  });
+
   describe('logging', () => {
     const env = process.env;
 

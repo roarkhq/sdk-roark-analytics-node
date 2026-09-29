@@ -292,6 +292,19 @@ export interface ClientOptions {
   bearerToken?: string | undefined;
 
   /**
+   * The project every request acts on, sent as `X-Roark-Project-Id`.
+   *
+   * Only a user-scoped credential needs this. Such a credential reaches every project its holder
+   * belongs to, so each request has to name one; a project-scoped API key names its own project
+   * and ignores this entirely.
+   *
+   * Deliberately has no environment default. A credential that can reach several projects should
+   * be told which one by its caller rather than by whatever is exported in the shell, and a client
+   * that wants that behavior can read the variable itself and pass it here.
+   */
+  project?: string | null | undefined;
+
+  /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
    * Defaults to process.env['ROARK_BASE_URL'].
@@ -389,6 +402,7 @@ export class Roark {
    * @param {number} [opts.maxRetries=2] - The maximum number of times the client will retry a request.
    * @param {HeadersLike} opts.defaultHeaders - Default headers to include with every request to the API.
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
+   * @param {string | null | undefined} [opts.project] - The project every request acts on, sent as `X-Roark-Project-Id`.
    */
   constructor({
     baseURL = readEnv('ROARK_BASE_URL'),
@@ -475,6 +489,19 @@ export class Roark {
 
   protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     return buildHeaders([{ Authorization: `Bearer ${this.bearerToken}` }]);
+  }
+
+  /**
+   * The project header, when the client was given a project.
+   *
+   * An empty value is not the same as none: the API answers a blank `X-Roark-Project-Id` with a
+   * 400, so an unset or empty option sends no header at all and lets the credential's own project
+   * (or its stored default) decide.
+   */
+  protected projectHeaders(): NullableHeaders | undefined {
+    const project = this._options.project;
+    if (!project) return undefined;
+    return buildHeaders([{ 'X-Roark-Project-Id': project }]);
   }
 
   protected stringifyQuery(query: object | Record<string, unknown>): string {
@@ -901,6 +928,10 @@ export class Roark {
         ...getPlatformHeaders(),
       },
       await this.authHeaders(options),
+      // Ahead of `defaultHeaders` and `options.headers` on purpose: the option is the broad
+      // "act on this project" setting, and an explicitly written header is the narrower
+      // instruction, so it wins.
+      this.projectHeaders(),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
