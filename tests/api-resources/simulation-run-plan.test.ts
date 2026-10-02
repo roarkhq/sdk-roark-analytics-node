@@ -57,6 +57,7 @@ describe('resource simulationRunPlan', () => {
       includeFlowMetrics: true,
       iterationCount: 1,
       maxConcurrentJobs: 5,
+      maxNoResponseRetries: 2,
       metrics: [
         {
           conversationSource: 'SIMULATED',
@@ -66,6 +67,7 @@ describe('resource simulationRunPlan', () => {
           slug: 'x',
         },
       ],
+      noResponseRetryBackoffSeconds: 90,
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       scenarios: [
         {
@@ -123,6 +125,7 @@ describe('resource simulationRunPlan', () => {
           isHidden: true,
           iterationCount: 1,
           maxConcurrentJobs: 1,
+          maxNoResponseRetries: 0,
           maxSimulationDurationSeconds: 1,
           metrics: [
             {
@@ -134,6 +137,7 @@ describe('resource simulationRunPlan', () => {
             },
           ],
           name: 'x',
+          noResponseRetryBackoffSeconds: 30,
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
           scenarios: [
             {
