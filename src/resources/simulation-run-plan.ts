@@ -239,6 +239,19 @@ export namespace SimulationRunPlanCreateResponse {
       maxConcurrentJobs: number;
 
       /**
+       * How many more times to run a test case when the agent under test never responds:
+       * it never speaks on a call or never replies in a chat (0-10). 0 turns retries
+       * off. Failed checks and failures on Roark’s side are never retried.
+       *
+       * Each retry is a separate attempt, billed like any other, so a plan retrying N
+       * times can place up to N + 1 calls per test case. Every silent attempt stays on
+       * the run with its own call; the run settles once each test case has a final
+       * attempt, and the agent never spoke verdict is judged on each test case’s last
+       * attempt.
+       */
+      maxNoResponseRetries: number;
+
+      /**
        * Maximum duration in seconds for each simulation
        */
       maxSimulationDurationSeconds: number;
@@ -252,6 +265,12 @@ export namespace SimulationRunPlanCreateResponse {
        * Name of the run plan
        */
       name: string;
+
+      /**
+       * Seconds a retry waits before it dials (30-600). Only used when
+       * `maxNoResponseRetries` is above 0.
+       */
+      noResponseRetryBackoffSeconds: number;
 
       /**
        * Personas included in this run plan. Only meaningful alongside `scenarios`.
@@ -593,6 +612,19 @@ export namespace SimulationRunPlanUpdateResponse {
     maxConcurrentJobs: number;
 
     /**
+     * How many more times to run a test case when the agent under test never responds:
+     * it never speaks on a call or never replies in a chat (0-10). 0 turns retries
+     * off. Failed checks and failures on Roark’s side are never retried.
+     *
+     * Each retry is a separate attempt, billed like any other, so a plan retrying N
+     * times can place up to N + 1 calls per test case. Every silent attempt stays on
+     * the run with its own call; the run settles once each test case has a final
+     * attempt, and the agent never spoke verdict is judged on each test case’s last
+     * attempt.
+     */
+    maxNoResponseRetries: number;
+
+    /**
      * Maximum duration in seconds for each simulation
      */
     maxSimulationDurationSeconds: number;
@@ -606,6 +638,12 @@ export namespace SimulationRunPlanUpdateResponse {
      * Name of the run plan
      */
     name: string;
+
+    /**
+     * Seconds a retry waits before it dials (30-600). Only used when
+     * `maxNoResponseRetries` is above 0.
+     */
+    noResponseRetryBackoffSeconds: number;
 
     /**
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
@@ -911,6 +949,19 @@ export namespace SimulationRunPlanListResponse {
     maxConcurrentJobs: number;
 
     /**
+     * How many more times to run a test case when the agent under test never responds:
+     * it never speaks on a call or never replies in a chat (0-10). 0 turns retries
+     * off. Failed checks and failures on Roark’s side are never retried.
+     *
+     * Each retry is a separate attempt, billed like any other, so a plan retrying N
+     * times can place up to N + 1 calls per test case. Every silent attempt stays on
+     * the run with its own call; the run settles once each test case has a final
+     * attempt, and the agent never spoke verdict is judged on each test case’s last
+     * attempt.
+     */
+    maxNoResponseRetries: number;
+
+    /**
      * Maximum duration in seconds for each simulation
      */
     maxSimulationDurationSeconds: number;
@@ -924,6 +975,12 @@ export namespace SimulationRunPlanListResponse {
      * Name of the run plan
      */
     name: string;
+
+    /**
+     * Seconds a retry waits before it dials (30-600). Only used when
+     * `maxNoResponseRetries` is above 0.
+     */
+    noResponseRetryBackoffSeconds: number;
 
     /**
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
@@ -1257,6 +1314,19 @@ export namespace SimulationRunPlanGetByIDResponse {
     maxConcurrentJobs: number;
 
     /**
+     * How many more times to run a test case when the agent under test never responds:
+     * it never speaks on a call or never replies in a chat (0-10). 0 turns retries
+     * off. Failed checks and failures on Roark’s side are never retried.
+     *
+     * Each retry is a separate attempt, billed like any other, so a plan retrying N
+     * times can place up to N + 1 calls per test case. Every silent attempt stays on
+     * the run with its own call; the run settles once each test case has a final
+     * attempt, and the agent never spoke verdict is judged on each test case’s last
+     * attempt.
+     */
+    maxNoResponseRetries: number;
+
+    /**
      * Maximum duration in seconds for each simulation
      */
     maxSimulationDurationSeconds: number;
@@ -1270,6 +1340,12 @@ export namespace SimulationRunPlanGetByIDResponse {
      * Name of the run plan
      */
     name: string;
+
+    /**
+     * Seconds a retry waits before it dials (30-600). Only used when
+     * `maxNoResponseRetries` is above 0.
+     */
+    noResponseRetryBackoffSeconds: number;
 
     /**
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
@@ -1620,6 +1696,19 @@ export interface SimulationRunPlanCreateParams {
   maxConcurrentJobs?: number;
 
   /**
+   * How many more times to run a test case when the agent under test never responds:
+   * it never speaks on a call or never replies in a chat (0-10). 0 turns retries
+   * off. Failed checks and failures on Roark’s side are never retried.
+   *
+   * Each retry is a separate attempt, billed like any other, so a plan retrying N
+   * times can place up to N + 1 calls per test case. Every silent attempt stays on
+   * the run with its own call; the run settles once each test case has a final
+   * attempt, and the agent never spoke verdict is judged on each test case’s last
+   * attempt.
+   */
+  maxNoResponseRetries?: number;
+
+  /**
    * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
    * `slug`.
    *
@@ -1629,6 +1718,12 @@ export interface SimulationRunPlanCreateParams {
    * `includeAutomaticMetrics`). A plan with nothing to grade is rejected with a 400.
    */
   metrics?: Array<SimulationRunPlanCreateParams.Metric>;
+
+  /**
+   * Seconds a retry waits before it dials (30-600). Only used when
+   * `maxNoResponseRetries` is above 0.
+   */
+  noResponseRetryBackoffSeconds?: number;
 
   /**
    * Personas to include in this run plan. Required with `scenarios`; ignored with
@@ -1943,6 +2038,19 @@ export interface SimulationRunPlanUpdateParams {
   maxConcurrentJobs?: number;
 
   /**
+   * How many more times to run a test case when the agent under test never responds:
+   * it never speaks on a call or never replies in a chat (0-10). 0 turns retries
+   * off. Failed checks and failures on Roark’s side are never retried.
+   *
+   * Each retry is a separate attempt, billed like any other, so a plan retrying N
+   * times can place up to N + 1 calls per test case. Every silent attempt stays on
+   * the run with its own call; the run settles once each test case has a final
+   * attempt, and the agent never spoke verdict is judged on each test case’s last
+   * attempt.
+   */
+  maxNoResponseRetries?: number;
+
+  /**
    * Maximum duration in seconds for each simulation
    */
   maxSimulationDurationSeconds?: number;
@@ -1957,6 +2065,12 @@ export interface SimulationRunPlanUpdateParams {
    * Name of the run plan
    */
   name?: string;
+
+  /**
+   * Seconds a retry waits before it dials (30-600). Only used when
+   * `maxNoResponseRetries` is above 0.
+   */
+  noResponseRetryBackoffSeconds?: number;
 
   /**
    * Personas to include in this run plan

@@ -58,6 +58,13 @@ export namespace SimulationJobGetByIDResponse {
     agentEndpoint: Data.AgentEndpoint;
 
     /**
+     * This simulation’s place among its test case’s attempts: 1 for the first, 2 for
+     * the first retry. Above 1 only when the plan retries simulations your agent never
+     * spoke on.
+     */
+    attemptNumber: number;
+
+    /**
      * The background noise the call actually ran with. `persona.backgroundNoise` is
      * only what the persona was set to; a flow’s environment overrides it, and on a
      * background-noise sweep every arm’s persona says NONE while the arms differ here.
@@ -107,6 +114,12 @@ export namespace SimulationJobGetByIDResponse {
      */
     queuePosition: number | null;
 
+    /**
+     * The simulation this one retries, because your agent never spoke on it. Null on a
+     * test case’s first attempt.
+     */
+    retryOfSimulationJobId: string | null;
+
     runPlan: Data.RunPlan;
 
     /**
@@ -115,12 +128,18 @@ export namespace SimulationJobGetByIDResponse {
     scenario: Data.Scenario;
 
     /**
+     * When a `RETRY_SCHEDULED` retry dials, ISO 8601. Null on a first attempt.
+     */
+    scheduledAt: string | null;
+
+    /**
      * Simulation job ID
      */
     simulationJobId: string;
 
     /**
-     * Job status
+     * Job status. `RETRY_SCHEDULED` is a retry of a simulation your agent never spoke
+     * on, waiting out the plan’s `noResponseRetryBackoffSeconds` before it dials.
      */
     status: string;
 
@@ -599,6 +618,13 @@ export namespace SimulationJobLookupResponse {
     agentEndpoint: Data.AgentEndpoint;
 
     /**
+     * This simulation’s place among its test case’s attempts: 1 for the first, 2 for
+     * the first retry. Above 1 only when the plan retries simulations your agent never
+     * spoke on.
+     */
+    attemptNumber: number;
+
+    /**
      * The background noise the call actually ran with. `persona.backgroundNoise` is
      * only what the persona was set to; a flow’s environment overrides it, and on a
      * background-noise sweep every arm’s persona says NONE while the arms differ here.
@@ -648,6 +674,12 @@ export namespace SimulationJobLookupResponse {
      */
     queuePosition: number | null;
 
+    /**
+     * The simulation this one retries, because your agent never spoke on it. Null on a
+     * test case’s first attempt.
+     */
+    retryOfSimulationJobId: string | null;
+
     runPlan: Data.RunPlan;
 
     /**
@@ -656,12 +688,18 @@ export namespace SimulationJobLookupResponse {
     scenario: Data.Scenario;
 
     /**
+     * When a `RETRY_SCHEDULED` retry dials, ISO 8601. Null on a first attempt.
+     */
+    scheduledAt: string | null;
+
+    /**
      * Simulation job ID
      */
     simulationJobId: string;
 
     /**
-     * Job status
+     * Job status. `RETRY_SCHEDULED` is a retry of a simulation your agent never spoke
+     * on, waiting out the plan’s `noResponseRetryBackoffSeconds` before it dials.
      */
     status: string;
 
