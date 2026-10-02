@@ -58,7 +58,6 @@ export class Simulation extends APIResource {
    *     ],
    *     direction: 'INBOUND',
    *     maxSimulationDurationSeconds: 300,
-   *     metrics: [{}],
    *   },
    * });
    * ```
@@ -270,12 +269,6 @@ export declare namespace SimulationRunParams {
       maxSimulationDurationSeconds: number;
 
       /**
-       * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
-       * `slug`.
-       */
-      metrics: Array<Plan.Metric>;
-
-      /**
        * The reference value of `comparisonProperty`, for example `NONE` for
        * `BACKGROUND_NOISE` or `NORMAL` for `SPEECH_PACE`: shown first in the results.
        * Must be a value that property can take. Whether a value did significantly worse
@@ -418,6 +411,17 @@ export declare namespace SimulationRunParams {
       maxConcurrentJobs?: number;
 
       /**
+       * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
+       * `slug`.
+       *
+       * Optional when the attached `flows` carry the grading: metrics a flow declares
+       * itself (with `includeFlowMetrics`), or the Agent Expectations and Keypad Entry
+       * metrics a run adds for flows with expectations or expected keypad entries (with
+       * `includeAutomaticMetrics`). A plan with nothing to grade is rejected with a 400.
+       */
+      metrics?: Array<Plan.Metric>;
+
+      /**
        * What to call this. Generated from the date when omitted, and required with
        * `saveAsPlan`.
        */
@@ -444,47 +448,6 @@ export declare namespace SimulationRunParams {
     export namespace Plan {
       export interface AgentEndpoint {
         id: string;
-      }
-
-      export interface Metric {
-        /**
-         * Metric definition UUID. Provide either this or `slug`, not both.
-         */
-        id?: string;
-
-        /**
-         * Which side of an enriched run this metric is scored on. Only meaningful with
-         * `enrichWithLiveConversation: true`, where a run has both a simulated
-         * conversation and the customer's own live recording of it.
-         *
-         * Defaults to `SIMULATED`. Use `LIVE` for a metric that must be measured against
-         * the real recording (audio quality, provider latency) rather than the simulated
-         * leg. `null` means the same as omitting it, so a plan read back from GET can be
-         * sent straight to PUT.
-         */
-        conversationSource?: 'SIMULATED' | 'LIVE' | null;
-
-        /**
-         * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
-         * integrations.
-         */
-        metricId?: string;
-
-        /**
-         * THE BAR, and the only thing that decides pass/fail. The share of the run's
-         * simulations that must pass this check, 0-100.
-         *
-         * Applied to this check alone and never pooled: silence duration at 40 and word
-         * count at 80 means the run fails unless 40% of sims clear silence AND 80% clear
-         * word count. Omit or `null` for the 80% default.
-         */
-        minPassRate?: number | null;
-
-        /**
-         * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
-         * not both.
-         */
-        slug?: string;
       }
 
       /**
@@ -590,6 +553,47 @@ export declare namespace SimulationRunParams {
 
           value: string;
         }
+      }
+
+      export interface Metric {
+        /**
+         * Metric definition UUID. Provide either this or `slug`, not both.
+         */
+        id?: string;
+
+        /**
+         * Which side of an enriched run this metric is scored on. Only meaningful with
+         * `enrichWithLiveConversation: true`, where a run has both a simulated
+         * conversation and the customer's own live recording of it.
+         *
+         * Defaults to `SIMULATED`. Use `LIVE` for a metric that must be measured against
+         * the real recording (audio quality, provider latency) rather than the simulated
+         * leg. `null` means the same as omitting it, so a plan read back from GET can be
+         * sent straight to PUT.
+         */
+        conversationSource?: 'SIMULATED' | 'LIVE' | null;
+
+        /**
+         * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+         * integrations.
+         */
+        metricId?: string;
+
+        /**
+         * THE BAR, and the only thing that decides pass/fail. The share of the run's
+         * simulations that must pass this check, 0-100.
+         *
+         * Applied to this check alone and never pooled: silence duration at 40 and word
+         * count at 80 means the run fails unless 40% of sims clear silence AND 80% clear
+         * word count. Omit or `null` for the 80% default.
+         */
+        minPassRate?: number | null;
+
+        /**
+         * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+         * not both.
+         */
+        slug?: string;
       }
 
       export interface Persona {
