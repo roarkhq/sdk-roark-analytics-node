@@ -50,7 +50,7 @@ describe('resource metric', () => {
       scaleMin: 0,
       scope: 'GLOBAL',
       slug: 'customer_satisfaction',
-      supportedContexts: ['CALL'],
+      supportedContexts: ['CALL', 'TURN'],
     });
   });
 

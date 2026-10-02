@@ -2238,7 +2238,12 @@ export declare namespace MetricCreateDefinitionParams {
     slug?: string;
 
     /**
-     * Which levels this metric can produce values at (default: ["CALL"])
+     * What the judge grades (default: ["CALL"], the whole conversation). ["CALL",
+     * "SEGMENT"] also grades each utterance of `participantRole`; ["CALL", "TURN"]
+     * also grades each agent reply to the caller (requires `participantRole: AGENT`).
+     * Per-utterance and per-reply grading needs `scope: PER_PARTICIPANT` and a
+     * BOOLEAN, SCALE, NUMERIC or COUNT output; the CALL value stays the graded result
+     * and the per-unit values are its evidence.
      */
     supportedContexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
   }
@@ -2558,7 +2563,9 @@ export interface MetricUpdateDefinitionParams {
   sources?: Array<MetricUpdateDefinitionParams.Source>;
 
   /**
-   * Replacement set of supported contexts. Omit to leave unchanged.
+   * Replacement set of supported contexts. Omit to leave unchanged. Scope and
+   * participantRole cannot change after create, so moving to SEGMENT or TURN grading
+   * only works on a PER_PARTICIPANT metric (see create).
    */
   supportedContexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
 
