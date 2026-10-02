@@ -463,6 +463,10 @@ export namespace Bundle {
 
     maxConcurrentJobs?: number;
 
+    maxNoResponseRetries?: number;
+
+    noResponseRetryBackoffSeconds?: number;
+
     silenceTimeoutSeconds?: number;
 
     template?: 'manual';
@@ -529,7 +533,11 @@ export namespace Bundle {
 
     maxConcurrentJobs?: number;
 
+    maxNoResponseRetries?: number;
+
     metrics?: Array<string>;
+
+    noResponseRetryBackoffSeconds?: number;
 
     silenceTimeoutSeconds?: number;
   }
@@ -1106,6 +1114,10 @@ export namespace Bundle {
 
       maxConcurrentJobs?: number;
 
+      maxNoResponseRetries?: number;
+
+      noResponseRetryBackoffSeconds?: number;
+
       silenceTimeoutSeconds?: number;
 
       template?: 'manual';
@@ -1172,7 +1184,11 @@ export namespace Bundle {
 
       maxConcurrentJobs?: number;
 
+      maxNoResponseRetries?: number;
+
       metrics?: Array<string>;
+
+      noResponseRetryBackoffSeconds?: number;
 
       silenceTimeoutSeconds?: number;
     }
@@ -1894,6 +1910,10 @@ export namespace ConfigApplyParams {
 
     maxConcurrentJobs?: number;
 
+    maxNoResponseRetries?: number;
+
+    noResponseRetryBackoffSeconds?: number;
+
     silenceTimeoutSeconds?: number;
 
     template?: 'manual';
@@ -1960,7 +1980,11 @@ export namespace ConfigApplyParams {
 
     maxConcurrentJobs?: number;
 
+    maxNoResponseRetries?: number;
+
     metrics?: Array<string>;
+
+    noResponseRetryBackoffSeconds?: number;
 
     silenceTimeoutSeconds?: number;
   }
@@ -2537,6 +2561,10 @@ export namespace ConfigApplyParams {
 
       maxConcurrentJobs?: number;
 
+      maxNoResponseRetries?: number;
+
+      noResponseRetryBackoffSeconds?: number;
+
       silenceTimeoutSeconds?: number;
 
       template?: 'manual';
@@ -2603,7 +2631,11 @@ export namespace ConfigApplyParams {
 
       maxConcurrentJobs?: number;
 
+      maxNoResponseRetries?: number;
+
       metrics?: Array<string>;
+
+      noResponseRetryBackoffSeconds?: number;
 
       silenceTimeoutSeconds?: number;
     }
@@ -3156,6 +3188,10 @@ export namespace ConfigDiffParams {
 
     maxConcurrentJobs?: number;
 
+    maxNoResponseRetries?: number;
+
+    noResponseRetryBackoffSeconds?: number;
+
     silenceTimeoutSeconds?: number;
 
     template?: 'manual';
@@ -3222,7 +3258,11 @@ export namespace ConfigDiffParams {
 
     maxConcurrentJobs?: number;
 
+    maxNoResponseRetries?: number;
+
     metrics?: Array<string>;
+
+    noResponseRetryBackoffSeconds?: number;
 
     silenceTimeoutSeconds?: number;
   }
@@ -3799,6 +3839,10 @@ export namespace ConfigDiffParams {
 
       maxConcurrentJobs?: number;
 
+      maxNoResponseRetries?: number;
+
+      noResponseRetryBackoffSeconds?: number;
+
       silenceTimeoutSeconds?: number;
 
       template?: 'manual';
@@ -3865,7 +3909,11 @@ export namespace ConfigDiffParams {
 
       maxConcurrentJobs?: number;
 
+      maxNoResponseRetries?: number;
+
       metrics?: Array<string>;
+
+      noResponseRetryBackoffSeconds?: number;
 
       silenceTimeoutSeconds?: number;
     }

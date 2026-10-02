@@ -213,12 +213,26 @@ export namespace SimulationRunPlanJobGetByIDResponse {
    */
   export interface Data {
     /**
+     * The run’s simulations against its test cases. Differs from a plain job count
+     * only when the plan retries simulations your agent never spoke on.
+     */
+    attemptSummary: Data.AttemptSummary;
+
+    /**
      * When the job was created
      */
     createdAt: string;
 
     /**
-     * List of simulation jobs (calls) in this run plan job
+     * Retries waiting out their backoff, soonest first. While this is not empty the
+     * run is waiting, not stuck: it settles only once every test case has a final
+     * attempt. Empty when nothing is scheduled.
+     */
+    pendingRetries: Array<Data.PendingRetry>;
+
+    /**
+     * List of simulation jobs (calls) in this run plan job, every attempt included: a
+     * simulation your agent never spoke on stays listed after a retry replaces it.
      */
     simulationJobs: Array<Data.SimulationJob>;
 
@@ -280,11 +294,79 @@ export namespace SimulationRunPlanJobGetByIDResponse {
   }
 
   export namespace Data {
+    /**
+     * The run’s simulations against its test cases. Differs from a plain job count
+     * only when the plan retries simulations your agent never spoke on.
+     */
+    export interface AttemptSummary {
+      /**
+       * Every simulation placed, retries included. Each is a separate, billed call.
+       */
+      attemptCount: number;
+
+      /**
+       * Simulations placed as a retry of one your agent never spoke on.
+       */
+      retryCount: number;
+
+      /**
+       * Simulations your agent never spoke on, including the ones a retry replaced.
+       */
+      silentAttemptCount: number;
+
+      /**
+       * Test cases whose final attempt your agent still never spoke on. This is what the
+       * `AGENT_NEVER_SPOKE` verdict failure counts.
+       */
+      stillSilentTestCaseCount: number;
+
+      /**
+       * Test cases in the run. Each one has a single final attempt that its result is
+       * read from.
+       */
+      testCaseCount: number;
+    }
+
+    /**
+     * A retry of a simulation your agent never spoke on, waiting out its backoff
+     * before it dials.
+     */
+    export interface PendingRetry {
+      /**
+       * Its place among its test case’s attempts, 2 for the first retry.
+       */
+      attemptNumber: number;
+
+      /**
+       * The most attempts a test case can get on this run: the plan’s
+       * `maxNoResponseRetries` plus 1.
+       */
+      maxAttempts: number;
+
+      /**
+       * When the retry dials, ISO 8601. It may wait longer behind the run’s concurrency
+       * limit.
+       */
+      scheduledAt: string | null;
+
+      /**
+       * The scheduled retry.
+       */
+      simulationJobId: string;
+    }
+
     export interface SimulationJob {
       /**
        * Agent endpoint used in a simulation
        */
       agentEndpoint: SimulationJob.AgentEndpoint;
+
+      /**
+       * This simulation’s place among its test case’s attempts: 1 for the first, 2 for
+       * the first retry. Above 1 only when the plan retries simulations your agent never
+       * spoke on.
+       */
+      attemptNumber: number;
 
       /**
        * The background noise the call actually ran with. `persona.backgroundNoise` is
@@ -326,9 +408,20 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         | 'COMPLETED';
 
       /**
+       * The simulation this one retries, because your agent never spoke on it. Null on a
+       * test case’s first attempt.
+       */
+      retryOfSimulationJobId: string | null;
+
+      /**
        * Scenario used in a simulation
        */
       scenario: SimulationJob.Scenario;
+
+      /**
+       * When a `RETRY_SCHEDULED` retry dials, ISO 8601. Null on a first attempt.
+       */
+      scheduledAt: string | null;
 
       /**
        * Simulation job ID
@@ -336,7 +429,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       simulationJobId: string;
 
       /**
-       * Job status
+       * Job status. `RETRY_SCHEDULED` is a retry of a simulation your agent never spoke
+       * on, waiting out the plan’s `noResponseRetryBackoffSeconds` before it dials.
        */
       status:
         | 'PENDING'
@@ -346,7 +440,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         | 'FAILED'
         | 'TIMED_OUT'
         | 'CANCELLED'
-        | 'CANCELLING';
+        | 'CANCELLING'
+        | 'RETRY_SCHEDULED';
 
       /**
        * ID of the call created for this simulation job. Null if the call has not been
@@ -790,6 +885,13 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       minimumDetectableGap: number | null;
 
       /**
+       * The values your agent never spoke on significantly more often than the rest of
+       * the run, most significant first, tested the same way as `worseValues`. Empty on
+       * a run with no silent simulations.
+       */
+      neverSpokeValues: Array<SweepAttribution.NeverSpokeValue>;
+
+      /**
        * How many values had enough counted simulations to be compared.
        */
       testableValueCount: number;
@@ -883,6 +985,47 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       }
 
       /**
+       * A value your agent never spoke on significantly more often than the rest of the
+       * run.
+       */
+      export interface NeverSpokeValue {
+        /**
+         * How likely a difference at least this large would be by chance alone, after
+         * correcting across the values (Benjamini-Hochberg).
+         */
+        adjustedPValue: number;
+
+        /**
+         * Simulations run at this value.
+         */
+        attempted: number;
+
+        label: string;
+
+        /**
+         * Simulations run across every other value combined.
+         */
+        restAttempted: number;
+
+        /**
+         * Simulations your agent never spoke on across every other value combined.
+         */
+        restSilentAttempts: number;
+
+        /**
+         * Retries placed at this value because your agent never spoke.
+         */
+        retries: number;
+
+        /**
+         * Simulations at this value your agent never spoke on, retried or not.
+         */
+        silentAttempts: number;
+
+        value: string;
+      }
+
+      /**
        * One value of the swept property.
        */
       export interface Value {
@@ -909,11 +1052,23 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         label: string;
 
         /**
+         * Of `attempted`, the retries of simulations your agent never spoke on. Zero
+         * unless the plan retries silent simulations.
+         */
+        retries: number;
+
+        /**
          * The mean of each check's pass rate at this value, 0-100, the same rule as the
          * run's `score`. Descriptive only: a lower score alone never makes a value worse.
          * Null when nothing counted.
          */
         score: number | null;
+
+        /**
+         * Of `attempted`, the simulations your agent never spoke on, whether or not a
+         * retry followed. They are invalidated, so they are never in `counted`.
+         */
+        silentAttempts: number;
 
         /**
          * Whether this value had at least `minArmCalls` counted simulations. A value below
@@ -1063,12 +1218,13 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         maxShare: number;
 
         /**
-         * Simulations your agent answered and never spoke on.
+         * Test cases your agent never spoke on, judged on each test case’s last attempt: a
+         * silent simulation a retry later reached your agent on does not count here.
          */
         neverSpokeCalls: number;
 
         /**
-         * Every simulation of the run that reached your agent.
+         * Every test case of the run whose last attempt reached your agent.
          */
         totalCalls: number;
 
@@ -1079,6 +1235,13 @@ export namespace SimulationRunPlanJobGetByIDResponse {
          * agent.
          */
         agentName?: string | null;
+
+        /**
+         * Every simulation your agent never spoke on, including the ones a retry replaced.
+         * Above `neverSpokeCalls` only when the plan retries silent simulations
+         * (`maxNoResponseRetries`).
+         */
+        silentAttempts?: number;
       }
 
       export interface UnionMember3 {

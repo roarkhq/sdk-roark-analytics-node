@@ -177,8 +177,9 @@ export namespace BenchmarkGetLeaderboardResponse {
       ciLow: number | null;
 
       /**
-       * The flow variant these numbers were measured under. The empty string is the
-       * overall rollup across all conditions.
+       * What these numbers were measured under: from suite v1.3 an industry scenario
+       * (`healthcare`, `home-services`, `insurance`, `customer-support`), before that a
+       * flow variant. The empty string is the overall rollup across all conditions.
        */
       conditionKey: string;
 
@@ -331,8 +332,9 @@ export namespace BenchmarkGetTargetResponse {
       ciLow: number | null;
 
       /**
-       * The flow variant these numbers were measured under. The empty string is the
-       * overall rollup across all conditions.
+       * What these numbers were measured under: from suite v1.3 an industry scenario
+       * (`healthcare`, `home-services`, `insurance`, `customer-support`), before that a
+       * flow variant. The empty string is the overall rollup across all conditions.
        */
       conditionKey: string;
 

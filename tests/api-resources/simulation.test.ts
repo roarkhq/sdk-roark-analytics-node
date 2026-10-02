@@ -82,6 +82,7 @@ describe('resource simulation', () => {
         includeFlowMetrics: true,
         iterationCount: 1,
         maxConcurrentJobs: 5,
+        maxNoResponseRetries: 2,
         metrics: [
           {
             conversationSource: 'SIMULATED',
@@ -92,6 +93,7 @@ describe('resource simulation', () => {
           },
         ],
         name: 'Billing regression',
+        noResponseRetryBackoffSeconds: 90,
         personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
         scenarios: [
           {
