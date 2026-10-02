@@ -1010,6 +1010,12 @@ export namespace CustomerFlowCreateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -1358,6 +1364,12 @@ export namespace CustomerFlowCreateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1826,6 +1838,12 @@ export namespace CustomerFlowCreateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -2068,6 +2086,12 @@ export namespace CustomerFlowCreateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -2423,6 +2447,12 @@ export namespace CustomerFlowCreateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -2665,6 +2695,12 @@ export namespace CustomerFlowCreateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -3098,6 +3134,12 @@ export namespace CustomerFlowCreateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -3439,6 +3481,12 @@ export namespace CustomerFlowCreateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -3933,6 +3981,12 @@ export namespace CustomerFlowUpdateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -4281,6 +4335,12 @@ export namespace CustomerFlowUpdateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -4749,6 +4809,12 @@ export namespace CustomerFlowUpdateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -4991,6 +5057,12 @@ export namespace CustomerFlowUpdateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -5346,6 +5418,12 @@ export namespace CustomerFlowUpdateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -5588,6 +5666,12 @@ export namespace CustomerFlowUpdateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -6021,6 +6105,12 @@ export namespace CustomerFlowUpdateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -6362,6 +6452,12 @@ export namespace CustomerFlowUpdateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -6859,6 +6955,12 @@ export namespace CustomerFlowListResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -7207,6 +7309,12 @@ export namespace CustomerFlowListResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -7675,6 +7783,12 @@ export namespace CustomerFlowListResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -7917,6 +8031,12 @@ export namespace CustomerFlowListResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -8272,6 +8392,12 @@ export namespace CustomerFlowListResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -8514,6 +8640,12 @@ export namespace CustomerFlowListResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -8947,6 +9079,12 @@ export namespace CustomerFlowListResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -9288,6 +9426,12 @@ export namespace CustomerFlowListResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -9812,6 +9956,12 @@ export namespace CustomerFlowDuplicateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -10160,6 +10310,12 @@ export namespace CustomerFlowDuplicateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -10628,6 +10784,12 @@ export namespace CustomerFlowDuplicateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -10870,6 +11032,12 @@ export namespace CustomerFlowDuplicateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -11225,6 +11393,12 @@ export namespace CustomerFlowDuplicateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -11467,6 +11641,12 @@ export namespace CustomerFlowDuplicateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -11900,6 +12080,12 @@ export namespace CustomerFlowDuplicateResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -12241,6 +12427,12 @@ export namespace CustomerFlowDuplicateResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -12735,6 +12927,12 @@ export namespace CustomerFlowGetByIDResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -13083,6 +13281,12 @@ export namespace CustomerFlowGetByIDResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -13551,6 +13755,12 @@ export namespace CustomerFlowGetByIDResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -13793,6 +14003,12 @@ export namespace CustomerFlowGetByIDResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -14148,6 +14364,12 @@ export namespace CustomerFlowGetByIDResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -14390,6 +14612,12 @@ export namespace CustomerFlowGetByIDResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -14823,6 +15051,12 @@ export namespace CustomerFlowGetByIDResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -15164,6 +15398,12 @@ export namespace CustomerFlowGetByIDResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -15546,6 +15786,12 @@ export namespace CustomerFlowReplaceGraphResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -15899,6 +16145,12 @@ export namespace CustomerFlowReplaceGraphResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -16141,6 +16393,12 @@ export namespace CustomerFlowReplaceGraphResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -16484,6 +16742,12 @@ export namespace CustomerFlowReplaceGraphResponse {
          * or set null to display the name itself.
          */
         displayName?: string | null;
+
+        /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
 
         /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -16849,6 +17113,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       displayName?: string | null;
 
       /**
+       * The E.164 number every call with this persona uses, when Roark has pinned one
+       * for your project. Present only when set; read-only.
+       */
+      phoneNumber?: string;
+
+      /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
@@ -17202,6 +17472,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       displayName?: string | null;
 
       /**
+       * The E.164 number every call with this persona uses, when Roark has pinned one
+       * for your project. Present only when set; read-only.
+       */
+      phoneNumber?: string;
+
+      /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
        */
       secondaryLanguage?: 'EN' | null;
@@ -17444,6 +17720,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        * or set null to display the name itself.
        */
       displayName?: string | null;
+
+      /**
+       * The E.164 number every call with this persona uses, when Roark has pinned one
+       * for your project. Present only when set; read-only.
+       */
+      phoneNumber?: string;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -17787,6 +18069,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        * or set null to display the name itself.
        */
       displayName?: string | null;
+
+      /**
+       * The E.164 number every call with this persona uses, when Roark has pinned one
+       * for your project. Present only when set; read-only.
+       */
+      phoneNumber?: string;
 
       /**
        * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)

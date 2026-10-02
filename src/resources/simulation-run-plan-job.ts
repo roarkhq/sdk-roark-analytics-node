@@ -713,6 +713,12 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         displayName?: string | null;
 
         /**
+         * The E.164 number every call with this persona uses, when Roark has pinned one
+         * for your project. Present only when set; read-only.
+         */
+        phoneNumber?: string;
+
+        /**
          * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
          */
         secondaryLanguage?: 'EN' | null;
@@ -941,7 +947,11 @@ export namespace SimulationRunPlanJobGetByIDResponse {
        * Every criterion the run missed. Empty when it passed.
        */
       failures: Array<
-        Verdict.UnionMember0 | Verdict.UnionMember1 | Verdict.UnionMember2 | Verdict.UnionMember3
+        | Verdict.UnionMember0
+        | Verdict.UnionMember1
+        | Verdict.UnionMember2
+        | Verdict.UnionMember3
+        | Verdict.UnionMember4
       >;
 
       /**
@@ -1040,7 +1050,38 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         type: 'INCOMPLETE_COVERAGE';
       }
 
+      /**
+       * Your agent never spoke on more than `maxShare` percent of the run. Those
+       * simulations are left out of every check, so the run fails on them whatever the
+       * checks say.
+       */
       export interface UnionMember2 {
+        /**
+         * The largest share of simulations, 0-100, your agent may never speak on while the
+         * run can pass.
+         */
+        maxShare: number;
+
+        /**
+         * Simulations your agent answered and never spoke on.
+         */
+        neverSpokeCalls: number;
+
+        /**
+         * Every simulation of the run that reached your agent.
+         */
+        totalCalls: number;
+
+        type: 'AGENT_NEVER_SPOKE';
+
+        /**
+         * The agent as the run tested it. Null when the simulations tested more than one
+         * agent.
+         */
+        agentName?: string | null;
+      }
+
+      export interface UnionMember3 {
         metricDefinitionId: string;
 
         type: 'METRIC_NOT_EVALUATED';
@@ -1051,7 +1092,7 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         metricName?: string | null;
       }
 
-      export interface UnionMember3 {
+      export interface UnionMember4 {
         /**
          * Whether the missed minimum was the 80% default (`true`) or this metric's own.
          */

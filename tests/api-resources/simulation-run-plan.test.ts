@@ -13,7 +13,6 @@ describe('resource simulationRunPlan', () => {
       agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       direction: 'INBOUND',
       maxSimulationDurationSeconds: 300,
-      metrics: [{}],
       name: 'My Run Plan',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -30,15 +29,6 @@ describe('resource simulationRunPlan', () => {
       agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       direction: 'INBOUND',
       maxSimulationDurationSeconds: 300,
-      metrics: [
-        {
-          conversationSource: 'SIMULATED',
-          id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-          metricId: 'x',
-          minPassRate: 80,
-          slug: 'x',
-        },
-      ],
       name: 'My Run Plan',
       autoRun: false,
       comparisonBaseline: 'NONE',
@@ -67,6 +57,15 @@ describe('resource simulationRunPlan', () => {
       includeFlowMetrics: true,
       iterationCount: 1,
       maxConcurrentJobs: 5,
+      metrics: [
+        {
+          conversationSource: 'SIMULATED',
+          id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          metricId: 'x',
+          minPassRate: 80,
+          slug: 'x',
+        },
+      ],
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       scenarios: [
         {

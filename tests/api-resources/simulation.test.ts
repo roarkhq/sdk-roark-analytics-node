@@ -39,7 +39,6 @@ describe('resource simulation', () => {
         agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
         direction: 'INBOUND',
         maxSimulationDurationSeconds: 300,
-        metrics: [{}],
       },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -57,15 +56,6 @@ describe('resource simulation', () => {
         agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
         direction: 'INBOUND',
         maxSimulationDurationSeconds: 300,
-        metrics: [
-          {
-            conversationSource: 'SIMULATED',
-            id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-            metricId: 'x',
-            minPassRate: 80,
-            slug: 'x',
-          },
-        ],
         comparisonBaseline: 'NONE',
         comparisonProperty: 'BACKGROUND_NOISE',
         comparisonValues: ['NONE', 'CITY', 'TRAIN'],
@@ -92,6 +82,15 @@ describe('resource simulation', () => {
         includeFlowMetrics: true,
         iterationCount: 1,
         maxConcurrentJobs: 5,
+        metrics: [
+          {
+            conversationSource: 'SIMULATED',
+            id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            metricId: 'x',
+            minPassRate: 80,
+            slug: 'x',
+          },
+        ],
         name: 'Billing regression',
         personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
         scenarios: [

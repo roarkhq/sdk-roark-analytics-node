@@ -315,6 +315,12 @@ export namespace SimulationPersonaCreateResponse {
     displayName?: string | null;
 
     /**
+     * The E.164 number every call with this persona uses, when Roark has pinned one
+     * for your project. Present only when set; read-only.
+     */
+    phoneNumber?: string;
+
+    /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
      */
     secondaryLanguage?: 'EN' | null;
@@ -560,6 +566,12 @@ export namespace SimulationPersonaUpdateResponse {
      * or set null to display the name itself.
      */
     displayName?: string | null;
+
+    /**
+     * The E.164 number every call with this persona uses, when Roark has pinned one
+     * for your project. Present only when set; read-only.
+     */
+    phoneNumber?: string;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -809,6 +821,12 @@ export namespace SimulationPersonaListResponse {
      * or set null to display the name itself.
      */
     displayName?: string | null;
+
+    /**
+     * The E.164 number every call with this persona uses, when Roark has pinned one
+     * for your project. Present only when set; read-only.
+     */
+    phoneNumber?: string;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
@@ -1073,6 +1091,12 @@ export namespace SimulationPersonaGetByIDResponse {
      * or set null to display the name itself.
      */
     displayName?: string | null;
+
+    /**
+     * The E.164 number every call with this persona uses, when Roark has pinned one
+     * for your project. Present only when set; read-only.
+     */
+    phoneNumber?: string;
 
     /**
      * Secondary language ISO 639-1 code for code-switching (e.g., Hinglish, Spanglish)
