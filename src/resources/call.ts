@@ -904,6 +904,13 @@ export namespace CallListMetricsResponse {
       errorMessage?: string;
 
       /**
+       * For CALL-context values of LLM judge metrics that cited where their evidence is:
+       * the transcript spans that decided the value, most decisive first. Omitted
+       * otherwise.
+       */
+      evidenceSpans?: Array<StandardMetricValue.EvidenceSpan>;
+
+      /**
        * Starting segment information (for SEGMENT_RANGE context metrics)
        */
       fromSegment?: StandardMetricValue.FromSegment;
@@ -941,6 +948,75 @@ export namespace CallListMetricsResponse {
     }
 
     export namespace StandardMetricValue {
+      export interface EvidenceSpan {
+        /**
+         * First segment of the span
+         */
+        fromSegment: EvidenceSpan.FromSegment;
+
+        /**
+         * Last segment of the span (the same as fromSegment for one line)
+         */
+        toSegment: EvidenceSpan.ToSegment;
+
+        /**
+         * The judge's one-line account of what happens here
+         */
+        reason?: string;
+      }
+
+      export namespace EvidenceSpan {
+        /**
+         * First segment of the span
+         */
+        export interface FromSegment {
+          /**
+           * Segment ID
+           */
+          id: string;
+
+          /**
+           * End time offset in milliseconds
+           */
+          endOffsetMs: number;
+
+          /**
+           * Start time offset in milliseconds
+           */
+          startOffsetMs: number;
+
+          /**
+           * Segment text content
+           */
+          text: string;
+        }
+
+        /**
+         * Last segment of the span (the same as fromSegment for one line)
+         */
+        export interface ToSegment {
+          /**
+           * Segment ID
+           */
+          id: string;
+
+          /**
+           * End time offset in milliseconds
+           */
+          endOffsetMs: number;
+
+          /**
+           * Start time offset in milliseconds
+           */
+          startOffsetMs: number;
+
+          /**
+           * Segment text content
+           */
+          text: string;
+        }
+      }
+
       /**
        * Starting segment information (for SEGMENT_RANGE context metrics)
        */
@@ -1065,6 +1141,13 @@ export namespace CallListMetricsResponse {
       errorMessage?: string;
 
       /**
+       * For CALL-context values of LLM judge metrics that cited where their evidence is:
+       * the transcript spans that decided the value, most decisive first. Omitted
+       * otherwise.
+       */
+      evidenceSpans?: Array<PropertyVerificationMetricValue.EvidenceSpan>;
+
+      /**
        * Starting segment information (for SEGMENT_RANGE context metrics)
        */
       fromSegment?: PropertyVerificationMetricValue.FromSegment;
@@ -1108,6 +1191,75 @@ export namespace CallListMetricsResponse {
     }
 
     export namespace PropertyVerificationMetricValue {
+      export interface EvidenceSpan {
+        /**
+         * First segment of the span
+         */
+        fromSegment: EvidenceSpan.FromSegment;
+
+        /**
+         * Last segment of the span (the same as fromSegment for one line)
+         */
+        toSegment: EvidenceSpan.ToSegment;
+
+        /**
+         * The judge's one-line account of what happens here
+         */
+        reason?: string;
+      }
+
+      export namespace EvidenceSpan {
+        /**
+         * First segment of the span
+         */
+        export interface FromSegment {
+          /**
+           * Segment ID
+           */
+          id: string;
+
+          /**
+           * End time offset in milliseconds
+           */
+          endOffsetMs: number;
+
+          /**
+           * Start time offset in milliseconds
+           */
+          startOffsetMs: number;
+
+          /**
+           * Segment text content
+           */
+          text: string;
+        }
+
+        /**
+         * Last segment of the span (the same as fromSegment for one line)
+         */
+        export interface ToSegment {
+          /**
+           * Segment ID
+           */
+          id: string;
+
+          /**
+           * End time offset in milliseconds
+           */
+          endOffsetMs: number;
+
+          /**
+           * Start time offset in milliseconds
+           */
+          startOffsetMs: number;
+
+          /**
+           * Segment text content
+           */
+          text: string;
+        }
+      }
+
       /**
        * Starting segment information (for SEGMENT_RANGE context metrics)
        */
