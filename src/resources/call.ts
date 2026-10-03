@@ -1924,6 +1924,20 @@ export interface CallListParams {
   after?: string;
 
   /**
+   * true: only simulated calls their run's results count (not invalidated, for
+   * example because the agent never spoke). false: only the simulated calls the
+   * results leave out, each invalidated. Live calls, and calls removed from their
+   * run, match neither.
+   */
+  countedInResults?: 'true' | 'false';
+
+  /**
+   * true: leave out calls from runs hidden from the runs list. Live calls stay in.
+   * false is the same as leaving it out.
+   */
+  excludeHiddenRuns?: 'true' | 'false';
+
+  /**
    * Maximum number of calls to return (default: 20, max: 100)
    */
   limit?: number;
@@ -1934,10 +1948,21 @@ export interface CallListParams {
   searchText?: string;
 
   /**
+   * Calls from every run of any of these run plans, comma-separated, at most 100
+   */
+  simulationRunPlanIds?: string;
+
+  /**
    * Filter by simulation run plan job ID to get all calls from a specific simulation
    * batch
    */
   simulationRunPlanJobId?: string;
+
+  /**
+   * Calls from any of these simulation runs (run plan job ids), comma-separated, at
+   * most 100
+   */
+  simulationRunPlanJobIds?: string;
 
   /**
    * Field to sort by (default: createdAt)

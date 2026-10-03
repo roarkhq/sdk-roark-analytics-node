@@ -93,9 +93,14 @@ describe('resource call', () => {
         {
           after:
             'eyJzb3J0VmFsdWUiOiIyMDI1LTAxLTE1VDEwOjAwOjAwLjAwMDAwMFoiLCJpZCI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCJ9',
+          countedInResults: 'true',
+          excludeHiddenRuns: 'true',
           limit: 20,
           searchText: 'billing inquiry',
+          simulationRunPlanIds: '770e8400-e29b-41d4-a716-446655440002',
           simulationRunPlanJobId: '550e8400-e29b-41d4-a716-446655440000',
+          simulationRunPlanJobIds:
+            '550e8400-e29b-41d4-a716-446655440000,660e8400-e29b-41d4-a716-446655440001',
           sortBy: 'createdAt',
           sortDirection: 'desc',
           status: 'ENDED',
