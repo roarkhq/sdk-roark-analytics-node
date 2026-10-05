@@ -135,7 +135,15 @@ export {
   type HTTPRequestDefinitionListParams,
 } from './http-request-definition';
 export { Health, type HealthGetResponse } from './health';
-export { Me, type MeGetResponse } from './me';
+export {
+  Me,
+  type MeCreateAPIKeyResponse,
+  type MeGetResponse,
+  type MeListAPIKeysResponse,
+  type MeRevokeAPIKeyResponse,
+  type MeCreateAPIKeyParams,
+  type MeListAPIKeysParams,
+} from './me';
 export {
   Metric,
   type MetricCreateDefinitionResponse,
