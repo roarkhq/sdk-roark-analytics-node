@@ -12,11 +12,17 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/me.ts">MeCreateAPIKeyResponse</a></code>
 - <code><a href="./src/resources/me.ts">MeGetResponse</a></code>
+- <code><a href="./src/resources/me.ts">MeListAPIKeysResponse</a></code>
+- <code><a href="./src/resources/me.ts">MeRevokeAPIKeyResponse</a></code>
 
 Methods:
 
+- <code title="post /v1/me/api-keys">client.me.<a href="./src/resources/me.ts">createAPIKey</a>({ ...params }) -> MeCreateAPIKeyResponse</code>
 - <code title="get /v1/me">client.me.<a href="./src/resources/me.ts">get</a>() -> MeGetResponse</code>
+- <code title="get /v1/me/api-keys">client.me.<a href="./src/resources/me.ts">listAPIKeys</a>({ ...params }) -> MeListAPIKeysResponse</code>
+- <code title="delete /v1/me/api-keys/{id}">client.me.<a href="./src/resources/me.ts">revokeAPIKey</a>(id) -> MeRevokeAPIKeyResponse</code>
 
 # Project
 
