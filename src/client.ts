@@ -152,7 +152,15 @@ import {
   HTTPRequestDefinitionUpdateParams,
   HTTPRequestDefinitionUpdateResponse,
 } from './resources/http-request-definition';
-import { Me, MeGetResponse } from './resources/me';
+import {
+  Me,
+  MeCreateAPIKeyParams,
+  MeCreateAPIKeyResponse,
+  MeGetResponse,
+  MeListAPIKeysParams,
+  MeListAPIKeysResponse,
+  MeRevokeAPIKeyResponse,
+} from './resources/me';
 import {
   Metric,
   MetricCreateDefinitionParams,
@@ -1082,7 +1090,15 @@ export declare namespace Roark {
 
   export { Health as Health, type HealthGetResponse as HealthGetResponse };
 
-  export { Me as Me, type MeGetResponse as MeGetResponse };
+  export {
+    Me as Me,
+    type MeCreateAPIKeyResponse as MeCreateAPIKeyResponse,
+    type MeGetResponse as MeGetResponse,
+    type MeListAPIKeysResponse as MeListAPIKeysResponse,
+    type MeRevokeAPIKeyResponse as MeRevokeAPIKeyResponse,
+    type MeCreateAPIKeyParams as MeCreateAPIKeyParams,
+    type MeListAPIKeysParams as MeListAPIKeysParams,
+  };
 
   export { Project as Project, type ProjectListResponse as ProjectListResponse };
 
