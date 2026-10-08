@@ -58,7 +58,12 @@ describe('resource simulation', () => {
         maxSimulationDurationSeconds: 300,
         comparisonBaseline: 'NONE',
         comparisonProperty: 'BACKGROUND_NOISE',
-        comparisonValues: ['NONE', 'CITY', 'TRAIN'],
+        comparisonValues: [
+          'NONE',
+          { value: 'OFFICE', backgroundNoiseVolume: 0.6 },
+          { value: 'DRIVING', backgroundNoiseVolume: 0.7 },
+          { value: 'DRIVING', backgroundNoiseVolume: 1 },
+        ],
         description: 'A run plan for testing inbound calls',
         endCallPhrases: ['goodbye'],
         endCallReasons: ['Order has been confirmed by the agent'],

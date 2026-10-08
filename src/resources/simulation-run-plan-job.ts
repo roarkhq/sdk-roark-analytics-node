@@ -972,6 +972,14 @@ export namespace SimulationRunPlanJobGetByIDResponse {
            */
           failureRate: number | null;
 
+          /**
+           * The arm's identity: the override signature its calls ran with, e.g.
+           * `BACKGROUND_NOISE=DRIVING;BACKGROUND_NOISE_VOLUME=0.7`. Join on this rather than
+           * on `value`: a sweep can run one value as several arms (Driving at 70% and at
+           * 100%), and those share a value.
+           */
+          key: string;
+
           label: string;
 
           /**
@@ -999,6 +1007,14 @@ export namespace SimulationRunPlanJobGetByIDResponse {
          * Simulations run at this value.
          */
         attempted: number;
+
+        /**
+         * The arm's identity: the override signature its calls ran with, e.g.
+         * `BACKGROUND_NOISE=DRIVING;BACKGROUND_NOISE_VOLUME=0.7`. Join on this rather than
+         * on `value`: a sweep can run one value as several arms (Driving at 70% and at
+         * 100%), and those share a value.
+         */
+        key: string;
 
         label: string;
 
@@ -1047,7 +1063,16 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         isBaseline: boolean;
 
         /**
-         * The value in words, e.g. `American`.
+         * The arm's identity: the override signature its calls ran with, e.g.
+         * `BACKGROUND_NOISE=DRIVING;BACKGROUND_NOISE_VOLUME=0.7`. Join on this rather than
+         * on `value`: a sweep can run one value as several arms (Driving at 70% and at
+         * 100%), and those share a value.
+         */
+        key: string;
+
+        /**
+         * The value in words, with what else the arm pinned, e.g. `American` or
+         * `Driving (70% noise)`.
          */
         label: string;
 
