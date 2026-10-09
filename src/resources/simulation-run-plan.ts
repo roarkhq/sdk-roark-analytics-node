@@ -13,6 +13,13 @@ export class SimulationRunPlan extends APIResource {
    * plan or from an inline configuration, and takes runtime variables. Create a plan
    * here when you want a reusable, named one to run later.
    *
+   * Send `template` instead of a full configuration to save one of the built-in
+   * templates as a plan. It takes the same fields as the template variant of POST
+   * /v1/simulation/run, builds the same plan, and never starts it.
+   *
+   * To compare one property, attach the flow once and send `comparisonProperty` with
+   * the `comparisonValues` to run: the plan attaches the flow once per value.
+   *
    * @example
    * ```ts
    * const simulationRunPlan =
@@ -287,6 +294,13 @@ export namespace SimulationRunPlanCreateResponse {
        * Timeout in seconds for silence detection
        */
       silenceTimeoutSeconds: number;
+
+      /**
+       * The built-in template this plan was created from, as listed by GET
+       * /v1/simulation/template. `null` for a plan described field by field. Recorded
+       * once at creation: the plan does not follow later changes to the template.
+       */
+      template: string | null;
 
       /**
        * Total number of test cases generated from the plan configuration
@@ -662,6 +676,13 @@ export namespace SimulationRunPlanUpdateResponse {
     silenceTimeoutSeconds: number;
 
     /**
+     * The built-in template this plan was created from, as listed by GET
+     * /v1/simulation/template. `null` for a plan described field by field. Recorded
+     * once at creation: the plan does not follow later changes to the template.
+     */
+    template: string | null;
+
+    /**
      * Total number of test cases generated from the plan configuration
      */
     testCaseCount: number;
@@ -997,6 +1018,13 @@ export namespace SimulationRunPlanListResponse {
      * Timeout in seconds for silence detection
      */
     silenceTimeoutSeconds: number;
+
+    /**
+     * The built-in template this plan was created from, as listed by GET
+     * /v1/simulation/template. `null` for a plan described field by field. Recorded
+     * once at creation: the plan does not follow later changes to the template.
+     */
+    template: string | null;
 
     /**
      * Total number of test cases generated from the plan configuration
@@ -1364,6 +1392,13 @@ export namespace SimulationRunPlanGetByIDResponse {
     silenceTimeoutSeconds: number;
 
     /**
+     * The built-in template this plan was created from, as listed by GET
+     * /v1/simulation/template. `null` for a plan described field by field. Recorded
+     * once at creation: the plan does not follow later changes to the template.
+     */
+    template: string | null;
+
+    /**
      * Total number of test cases generated from the plan configuration
      */
     testCaseCount: number;
@@ -1525,390 +1560,789 @@ export namespace SimulationRunPlanGetByIDResponse {
   }
 }
 
-export interface SimulationRunPlanCreateParams {
-  /**
-   * Agent endpoints to include in this run plan
-   */
-  agentEndpoints: Array<SimulationRunPlanCreateParams.AgentEndpoint>;
+export type SimulationRunPlanCreateParams =
+  | SimulationRunPlanCreateParams.CreateRunPlanFromConfig
+  | SimulationRunPlanCreateParams.CreateRunPlanFromTemplate;
 
-  /**
-   * Direction of the simulation (INBOUND or OUTBOUND)
-   */
-  direction: 'INBOUND' | 'OUTBOUND';
-
-  /**
-   * Maximum duration in seconds for each simulation
-   */
-  maxSimulationDurationSeconds: number;
-
-  /**
-   * Name of the run plan
-   */
-  name: string;
-
-  /**
-   * @deprecated Deprecated: use POST /v1/simulation/run, which starts a run and
-   * accepts runtime `variables` as well. This flag runs the plan with only the
-   * values pinned on it.
-   */
-  autoRun?: boolean;
-
-  /**
-   * The reference value of `comparisonProperty`, for example `NONE` for
-   * `BACKGROUND_NOISE` or `NORMAL` for `SPEECH_PACE`: shown first in the results.
-   * Must be a value that property can take. Whether a value did significantly worse
-   * does not depend on it: that is decided against every other value combined (see
-   * `sweepAttribution`).
-   *
-   * Stored rather than assumed, so the report can say "compared against US accent"
-   * instead of implying Roark decided which value is normal. Most properties have an
-   * obvious baseline and the dashboard prefills it; `GENDER` has none, so choose the
-   * one you are testing against.
-   */
-  comparisonBaseline?: string | null;
-
-  /**
-   * The property this run plan investigates: the one thing its arms differ by.
-   *
-   * Set it and the run report compares the arms on that property, so a run answers
-   * "what did background noise cost" rather than just "what did each arm score".
-   * Every value is a field already recorded on each call, so the report can label an
-   * arm `CRYING_BABY` rather than repeating a flow variant's title.
-   *
-   * Omit it and the report still compares when it can: it detects which property
-   * varies across the arms. Setting it is what tells the written summary what you
-   * were trying to find out, which detection cannot infer.
-   */
-  comparisonProperty?:
-    | 'ACCENT'
-    | 'AGE'
-    | 'BACKGROUND_NOISE'
-    | 'BACKGROUND_NOISE_VOLUME'
-    | 'BASE_EMOTION'
-    | 'CONFIRMATION_STYLE'
-    | 'GENDER'
-    | 'INTENT_CLARITY'
-    | 'LANGUAGE'
-    | 'INTERRUPTION'
-    | 'MEMORY_RELIABILITY'
-    | 'RESPONSE_TIMING'
-    | 'SPEECH_CLARITY'
-    | 'SPEECH_PACE'
-    | null;
-
-  /**
-   * Which values of `comparisonProperty` to run. This is what the plan costs: the
-   * flow is attached once per value, so ten values is ten times the calls of one.
-   *
-   * Omit it to run every value the property has, which for `ACCENT` is more than
-   * twenty. Send a subset to narrow the sweep, for example three accents you
-   * actually serve. A `comparisonBaseline` outside this set is rejected, because it
-   * would anchor every difference to an arm the run never made.
-   *
-   * Not stored as a field: the arms are the values. Reading the plan back returns
-   * them as its flow attachments.
-   */
-  comparisonValues?: Array<string>;
-
-  /**
-   * Description of the run plan
-   */
-  description?: string;
-
-  /**
-   * Phrases that trigger end of call. Empty array disables the feature.
-   */
-  endCallPhrases?: Array<string>;
-
-  /**
-   * Semantic conditions that trigger end of call. The LLM evaluates the conversation
-   * against these conditions. Empty array disables the feature.
-   */
-  endCallReasons?: Array<string>;
-
-  /**
-   * Merge the customer's own recording of the real call into each simulation, so
-   * metrics can be scored against the live leg as well as the simulated one. This is
-   * the API equivalent of the dashboard's live-enrichment toggle.
-   *
-   * With this on, the run provisions a phone number and holds each call open for up
-   * to 15 minutes waiting for a matching call to be posted to POST /v1/call. A call
-   * matches on the provisioned number (`roarkPhoneNumber` on the job) with a start
-   * time inside the simulation window. If nothing arrives, the simulation still
-   * completes and any `LIVE`-sourced metric produces no value.
-   *
-   * Required by any metric whose `requiresLiveConversation` is true: without it that
-   * metric is silently skipped.
-   */
-  enrichWithLiveConversation?: boolean;
-
-  /**
-   * Execution mode (PARALLEL or SEQUENTIAL)
-   */
-  executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
-
-  /**
-   * Customer flows to include in this run plan. The same flow can appear more than
-   * once with a different persona override, different variables, or different
-   * `overrides`: attaching it once per value of one property is how you compare that
-   * property without a template.
-   */
-  flows?: Array<SimulationRunPlanCreateParams.Flow>;
-
-  /**
-   * Let the run add metrics by itself off the attached flows, on top of the
-   * `metrics` named here.
-   *
-   * Two attach this way today: Agent Expectations wherever an attached flow has
-   * agent expectations written on it, and Keypad Entry wherever one has steps where
-   * the agent is expected to press keys. Both grade something authored on the flow
-   * that nothing else measures, which is why it is on by default.
-   *
-   * Set false when the `metrics` list is meant to be exhaustive: a plan testing only
-   * whether the caller can complete the flow may not want the agent graded on its
-   * expectations as well. False also pins the plan against any automatic metric
-   * Roark adds later.
-   */
-  includeAutomaticMetrics?: boolean;
-
-  /**
-   * Also collect each attached flow's own metrics, on top of the `metrics` named
-   * here.
-   *
-   * Default true, which is what you want when you brought your own flows and their
-   * graders. Set false for a run whose metric list is meant to be exhaustive: a
-   * template like Load Testing or Voicemail deliberately grades a narrow set, and
-   * inheriting every flow metric on top multiplies analysis cost across the volume
-   * without adding signal.
-   *
-   * GET /v1/simulation/template returns the value each template expects.
-   */
-  includeFlowMetrics?: boolean;
-
-  /**
-   * Number of iterations to run for each test case (1-10000)
-   */
-  iterationCount?: number;
-
-  /**
-   * Maximum number of concurrent simulation jobs
-   */
-  maxConcurrentJobs?: number;
-
-  /**
-   * How many more times to run a test case when the agent under test never responds:
-   * it never speaks on a call or never replies in a chat (0-10). 0 turns retries
-   * off. Failed checks and failures on Roark’s side are never retried.
-   *
-   * Each retry is a separate attempt, billed like any other, so a plan retrying N
-   * times can place up to N + 1 calls per test case. Every silent attempt stays on
-   * the run with its own call; the run settles once each test case has a final
-   * attempt, and the agent never spoke verdict is judged on each test case’s last
-   * attempt.
-   */
-  maxNoResponseRetries?: number;
-
-  /**
-   * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
-   * `slug`.
-   *
-   * Optional when the attached `flows` carry the grading: metrics a flow declares
-   * itself (with `includeFlowMetrics`), or the Agent Expectations and Keypad Entry
-   * metrics a run adds for flows with expectations or expected keypad entries (with
-   * `includeAutomaticMetrics`). A plan with nothing to grade is rejected with a 400.
-   */
-  metrics?: Array<SimulationRunPlanCreateParams.Metric>;
-
-  /**
-   * Seconds a retry waits before it dials (30-600). Only used when
-   * `maxNoResponseRetries` is above 0.
-   */
-  noResponseRetryBackoffSeconds?: number;
-
-  /**
-   * Personas to include in this run plan. Required with `scenarios`; ignored with
-   * `flows`, where each variant carries its own persona.
-   */
-  personas?: Array<SimulationRunPlanCreateParams.Persona>;
-
-  /**
-   * @deprecated Deprecated: use `flows` instead. Scenarios to include in this run
-   * plan. The same scenario ID can appear multiple times with different variables.
-   */
-  scenarios?: Array<SimulationRunPlanCreateParams.Scenario>;
-
-  /**
-   * Timeout in seconds for silence detection
-   */
-  silenceTimeoutSeconds?: number;
-}
-
-export namespace SimulationRunPlanCreateParams {
-  export interface AgentEndpoint {
-    id: string;
-  }
-
-  /**
-   * One customer flow attached to a run plan, and which of its ways of running you
-   * cover.
-   *
-   * Attaching the same flow more than once with different overrides is how you fan
-   * it out across personas or values.
-   */
-  export interface Flow {
+export declare namespace SimulationRunPlanCreateParams {
+  export interface CreateRunPlanFromConfig {
     /**
-     * The customer flow to run.
+     * Agent endpoints to include in this run plan
      */
-    id?: string;
+    agentEndpoints: Array<CreateRunPlanFromConfig.AgentEndpoint>;
 
     /**
-     * `"ALL"` runs every edge case the flow has when the run starts, so one added
-     * later is covered. An array runs only the ones you name, each able to carry its
-     * own persona override and values.
+     * Direction of the simulation (INBOUND or OUTBOUND)
      */
-    edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+    direction: 'INBOUND' | 'OUTBOUND';
 
     /**
-     * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+     * Maximum duration in seconds for each simulation
      */
-    happyPath?: boolean;
+    maxSimulationDurationSeconds: number;
 
     /**
-     * Persona and environment properties to change for this attachment only, without
-     * editing the persona or the environment themselves. Each entry patches the
-     * per-run snapshot this attachment records, so the flow runs as a caller with that
-     * accent, or over that background noise, and everything else stays as authored.
+     * Name of the run plan
+     */
+    name: string;
+
+    /**
+     * @deprecated Deprecated: use POST /v1/simulation/run, which starts a run and
+     * accepts runtime `variables` as well. This flag runs the plan with only the
+     * values pinned on it.
+     */
+    autoRun?: boolean;
+
+    /**
+     * The reference value of `comparisonProperty`, for example `NONE` for
+     * `BACKGROUND_NOISE` or `NORMAL` for `SPEECH_PACE`: shown first in the results.
+     * Must be a value that property can take. Whether a value did significantly worse
+     * does not depend on it: that is decided against every other value combined (see
+     * `sweepAttribution`).
      *
-     * This is how you attach the same flow twice and vary one thing between them,
-     * which is what a sweep template builds for you. One value per property; a
-     * property named twice is rejected.
+     * Stored rather than assumed, so the report can say "compared against US accent"
+     * instead of implying Roark decided which value is normal. Omit it and the
+     * property's own norm is used, as the dashboard prefills it, or none when your
+     * `comparisonValues` leave the norm out. `GENDER` has no norm, so choose the one
+     * you are testing against.
      */
-    overrides?: Array<Flow.Override>;
+    comparisonBaseline?: string | null;
 
     /**
-     * Runs everything this attachment resolves as that persona instead of its own.
+     * The property this run plan investigates: the one thing its arms differ by.
+     *
+     * Set it and the run report compares the arms on that property, so a run answers
+     * "what did background noise cost" rather than just "what did each arm score".
+     * Every value is a field already recorded on each call, so the report can label an
+     * arm `CRYING_BABY` rather than repeating a flow variant's title.
+     *
+     * Omit it and the report still compares when it can: it detects which property
+     * varies across the arms. Setting it is what tells the written summary what you
+     * were trying to find out, which detection cannot infer.
      */
-    personaOverrideId?: string | null;
+    comparisonProperty?:
+      | 'ACCENT'
+      | 'AGE'
+      | 'BACKGROUND_NOISE'
+      | 'BACKGROUND_NOISE_VOLUME'
+      | 'BASE_EMOTION'
+      | 'CONFIRMATION_STYLE'
+      | 'GENDER'
+      | 'INTENT_CLARITY'
+      | 'LANGUAGE'
+      | 'INTERRUPTION'
+      | 'MEMORY_RELIABILITY'
+      | 'RESPONSE_TIMING'
+      | 'SPEECH_CLARITY'
+      | 'SPEECH_PACE'
+      | null;
 
     /**
-     * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
-     * you keep in version control: a curated flow’s id differs between deployments,
-     * its slug does not. Your own flows have no slug and are named by `id`.
+     * The arms to run, for a plan that sweeps `comparisonProperty`. This is what the
+     * plan costs: the flow is attached once per arm, so ten arms is ten times the
+     * calls of one.
+     *
+     * Attach each flow once, as you would without a comparison: the plan builds the
+     * arms, running the happy path or edge cases you selected under every arm. Built
+     * arms need at least 5 calls per arm (`iterationCount` times the test cases per
+     * arm), or the plan is refused with `400`. Flows that all carry `overrides` on
+     * `comparisonProperty` already are the arms and are kept as you wrote them; a mix
+     * of flows with and without one is refused.
+     *
+     * Each entry is one arm. A bare value runs it plain: `"CITY"`. An object runs the
+     * value with something pinned on that arm only, such as a noise level per bed:
+     * `{ "value": "OFFICE", "backgroundNoiseVolume": 0.6 }` plays OFFICE at 60% while
+     * the other beds keep the default. List a value more than once with different pins
+     * to run it as several arms: DRIVING at 0.7 and DRIVING at 1 are two arms,
+     * reported as `Driving (70% noise)` and `Driving (100% noise)`, and `"DRIVING"`
+     * beside them keeps the plain arm too. The sweep still varies one property; what
+     * an arm pins is part of "everything else" for that arm only, so the report still
+     * compares the arms on `comparisonProperty`.
+     *
+     * Omit it to run every value the property has, plain, which for `ACCENT` is more
+     * than twenty. A `comparisonBaseline` outside the values listed is rejected,
+     * because it would anchor every difference to an arm the run never made. A value
+     * the property cannot take, a pin the sweep cannot account for, or the same arm
+     * listed twice is rejected with `400`.
+     *
+     * Not stored as a field: the arms are the values. Reading the plan back returns
+     * them as its flow attachments, each with its pins as `overrides`.
      */
-    slug?: string;
+    comparisonValues?: Array<string | CreateRunPlanFromConfig.ComparisonArm>;
 
     /**
-     * Values for everything it resolves.
+     * Description of the run plan
      */
-    variables?: { [key: string]: string };
+    description?: string;
+
+    /**
+     * Phrases that trigger end of call. Empty array disables the feature.
+     */
+    endCallPhrases?: Array<string>;
+
+    /**
+     * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+     * against these conditions. Empty array disables the feature.
+     */
+    endCallReasons?: Array<string>;
+
+    /**
+     * Merge the customer's own recording of the real call into each simulation, so
+     * metrics can be scored against the live leg as well as the simulated one. This is
+     * the API equivalent of the dashboard's live-enrichment toggle.
+     *
+     * With this on, the run provisions a phone number and holds each call open for up
+     * to 15 minutes waiting for a matching call to be posted to POST /v1/call. A call
+     * matches on the provisioned number (`roarkPhoneNumber` on the job) with a start
+     * time inside the simulation window. If nothing arrives, the simulation still
+     * completes and any `LIVE`-sourced metric produces no value.
+     *
+     * Required by any metric whose `requiresLiveConversation` is true: without it that
+     * metric is silently skipped.
+     */
+    enrichWithLiveConversation?: boolean;
+
+    /**
+     * Execution mode (PARALLEL or SEQUENTIAL)
+     */
+    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    /**
+     * Customer flows to include in this run plan. The same flow can appear more than
+     * once with a different persona override, different variables, or different
+     * `overrides`: attaching it once per value of one property is how you compare that
+     * property without a template.
+     */
+    flows?: Array<CreateRunPlanFromConfig.Flow>;
+
+    /**
+     * Let the run add metrics by itself off the attached flows, on top of the
+     * `metrics` named here.
+     *
+     * Two attach this way today: Agent Expectations wherever an attached flow has
+     * agent expectations written on it, and Keypad Entry wherever one has steps where
+     * the agent is expected to press keys. Both grade something authored on the flow
+     * that nothing else measures, which is why it is on by default.
+     *
+     * Set false when the `metrics` list is meant to be exhaustive: a plan testing only
+     * whether the caller can complete the flow may not want the agent graded on its
+     * expectations as well. False also pins the plan against any automatic metric
+     * Roark adds later.
+     */
+    includeAutomaticMetrics?: boolean;
+
+    /**
+     * Also collect each attached flow's own metrics, on top of the `metrics` named
+     * here.
+     *
+     * Default true, which is what you want when you brought your own flows and their
+     * graders. Set false for a run whose metric list is meant to be exhaustive: a
+     * template like Load Testing or Voicemail deliberately grades a narrow set, and
+     * inheriting every flow metric on top multiplies analysis cost across the volume
+     * without adding signal.
+     *
+     * GET /v1/simulation/template returns the value each template expects.
+     */
+    includeFlowMetrics?: boolean;
+
+    /**
+     * Number of iterations to run for each test case (1-10000)
+     */
+    iterationCount?: number;
+
+    /**
+     * Maximum number of concurrent simulation jobs
+     */
+    maxConcurrentJobs?: number;
+
+    /**
+     * How many more times to run a test case when the agent under test never responds:
+     * it never speaks on a call or never replies in a chat (0-10). 0 turns retries
+     * off. Failed checks and failures on Roark’s side are never retried.
+     *
+     * Each retry is a separate attempt, billed like any other, so a plan retrying N
+     * times can place up to N + 1 calls per test case. Every silent attempt stays on
+     * the run with its own call; the run settles once each test case has a final
+     * attempt, and the agent never spoke verdict is judged on each test case’s last
+     * attempt.
+     */
+    maxNoResponseRetries?: number;
+
+    /**
+     * Metric definitions to include in this run plan. Reference each by `id` (UUID) or
+     * `slug`.
+     *
+     * Optional when the attached `flows` carry the grading: metrics a flow declares
+     * itself (with `includeFlowMetrics`), or the Agent Expectations and Keypad Entry
+     * metrics a run adds for flows with expectations or expected keypad entries (with
+     * `includeAutomaticMetrics`). A plan with nothing to grade is rejected with a 400.
+     */
+    metrics?: Array<CreateRunPlanFromConfig.Metric>;
+
+    /**
+     * Seconds a retry waits before it dials (30-600). Only used when
+     * `maxNoResponseRetries` is above 0.
+     */
+    noResponseRetryBackoffSeconds?: number;
+
+    /**
+     * Personas to include in this run plan. Required with `scenarios`; ignored with
+     * `flows`, where each variant carries its own persona.
+     */
+    personas?: Array<CreateRunPlanFromConfig.Persona>;
+
+    /**
+     * @deprecated Deprecated: use `flows` instead. Scenarios to include in this run
+     * plan. The same scenario ID can appear multiple times with different variables.
+     */
+    scenarios?: Array<CreateRunPlanFromConfig.Scenario>;
+
+    /**
+     * Timeout in seconds for silence detection
+     */
+    silenceTimeoutSeconds?: number;
   }
 
-  export namespace Flow {
-    export interface UnionMember1 {
+  export namespace CreateRunPlanFromConfig {
+    export interface AgentEndpoint {
+      id: string;
+    }
+
+    /**
+     * One arm of a sweep: the swept value it runs, and what it pins besides that
+     * value. The OFFICE arm of a BACKGROUND_NOISE sweep playing at 60% while the other
+     * beds keep their level is `{ "value": "OFFICE", "backgroundNoiseVolume": 0.6 }`.
+     * The report compares the arms on the swept property only, so each sweep may pin
+     * just what its experiment calls for: a BACKGROUND_NOISE sweep may pin
+     * `backgroundNoiseVolume`, and no other sweep pins anything yet. A pin the sweep
+     * cannot account for is rejected with `400`.
+     */
+    export interface ComparisonArm {
       /**
-       * The edge case to run.
+       * The swept value this arm runs, a value of `comparisonProperty`.
+       */
+      value: string;
+
+      /**
+       * The noise level this arm plays at, 0 to 1. The environment default is 0.1. Only
+       * a `BACKGROUND_NOISE` sweep may pin it.
+       */
+      backgroundNoiseVolume?: number;
+    }
+
+    /**
+     * One customer flow attached to a run plan, and which of its ways of running you
+     * cover.
+     *
+     * Attaching the same flow more than once with different overrides is how you fan
+     * it out across personas or values.
+     */
+    export interface Flow {
+      /**
+       * The customer flow to run.
        */
       id?: string;
 
       /**
-       * Run this one as that persona instead of its own.
+       * `"ALL"` runs every edge case the flow has when the run starts, so one added
+       * later is covered. An array runs only the ones you name, each able to carry its
+       * own persona override and values.
+       */
+      edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+
+      /**
+       * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+       */
+      happyPath?: boolean;
+
+      /**
+       * Persona and environment properties to change for this attachment only, without
+       * editing the persona or the environment themselves. Each entry patches the
+       * per-run snapshot this attachment records, so the flow runs as a caller with that
+       * accent, or over that background noise, and everything else stays as authored.
+       *
+       * This is how you attach the same flow twice and vary one thing between them,
+       * which is what a sweep template builds for you. One value per property; a
+       * property named twice is rejected.
+       */
+      overrides?: Array<Flow.Override>;
+
+      /**
+       * Runs everything this attachment resolves as that persona instead of its own.
        */
       personaOverrideId?: string | null;
 
       /**
-       * The edge case to run, by its stable slug, matched within this flow. Use instead
-       * of `id` for a run you keep in version control: a curated edge case’s id differs
-       * between deployments and changes outright if it is renamed. Your own edge cases
-       * have no slug and are named by `id`.
+       * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+       * you keep in version control: a curated flow’s id differs between deployments,
+       * its slug does not. Your own flows have no slug and are named by `id`.
        */
       slug?: string;
 
       /**
-       * Values for this one only.
+       * Values for everything it resolves.
        */
       variables?: { [key: string]: string };
     }
 
-    /**
-     * One persona or environment property, changed for this flow attachment only.
-     */
-    export interface Override {
-      property:
-        | 'ACCENT'
-        | 'AGE'
-        | 'BACKGROUND_NOISE'
-        | 'BACKGROUND_NOISE_VOLUME'
-        | 'BASE_EMOTION'
-        | 'CONFIRMATION_STYLE'
-        | 'GENDER'
-        | 'INTENT_CLARITY'
-        | 'LANGUAGE'
-        | 'INTERRUPTION'
-        | 'MEMORY_RELIABILITY'
-        | 'RESPONSE_TIMING'
-        | 'SPEECH_CLARITY'
-        | 'SPEECH_PACE';
+    export namespace Flow {
+      export interface UnionMember1 {
+        /**
+         * The edge case to run.
+         */
+        id?: string;
 
-      value: string;
+        /**
+         * Run this one as that persona instead of its own.
+         */
+        personaOverrideId?: string | null;
+
+        /**
+         * The edge case to run, by its stable slug, matched within this flow. Use instead
+         * of `id` for a run you keep in version control: a curated edge case’s id differs
+         * between deployments and changes outright if it is renamed. Your own edge cases
+         * have no slug and are named by `id`.
+         */
+        slug?: string;
+
+        /**
+         * Values for this one only.
+         */
+        variables?: { [key: string]: string };
+      }
+
+      /**
+       * One persona or environment property, changed for this flow attachment only.
+       */
+      export interface Override {
+        property:
+          | 'ACCENT'
+          | 'AGE'
+          | 'BACKGROUND_NOISE'
+          | 'BACKGROUND_NOISE_VOLUME'
+          | 'BASE_EMOTION'
+          | 'CONFIRMATION_STYLE'
+          | 'GENDER'
+          | 'INTENT_CLARITY'
+          | 'LANGUAGE'
+          | 'INTERRUPTION'
+          | 'MEMORY_RELIABILITY'
+          | 'RESPONSE_TIMING'
+          | 'SPEECH_CLARITY'
+          | 'SPEECH_PACE';
+
+        value: string;
+      }
+    }
+
+    export interface Metric {
+      /**
+       * Metric definition UUID. Provide either this or `slug`, not both.
+       */
+      id?: string;
+
+      /**
+       * Which side of an enriched run this metric is scored on. Only meaningful with
+       * `enrichWithLiveConversation: true`, where a run has both a simulated
+       * conversation and the customer's own live recording of it.
+       *
+       * Defaults to `SIMULATED`. Use `LIVE` for a metric that must be measured against
+       * the real recording (audio quality, provider latency) rather than the simulated
+       * leg. `null` means the same as omitting it, so a plan read back from GET can be
+       * sent straight to PUT.
+       */
+      conversationSource?: 'SIMULATED' | 'LIVE' | null;
+
+      /**
+       * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+       * integrations.
+       */
+      metricId?: string;
+
+      /**
+       * THE BAR, and the only thing that decides pass/fail. The share of the run's
+       * simulations that must pass this check, 0-100.
+       *
+       * Applied to this check alone and never pooled: silence duration at 40 and word
+       * count at 80 means the run fails unless 40% of sims clear silence AND 80% clear
+       * word count. Omit or `null` for the 80% default.
+       */
+      minPassRate?: number | null;
+
+      /**
+       * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+       * not both.
+       */
+      slug?: string;
+    }
+
+    export interface Persona {
+      id: string;
+    }
+
+    export interface Scenario {
+      /**
+       * Scenario ID
+       */
+      id: string;
+
+      /**
+       * Template variables for this scenario instance. The same scenario can appear
+       * multiple times with different variables.
+       */
+      variables?: { [key: string]: string };
     }
   }
 
-  export interface Metric {
+  export interface CreateRunPlanFromTemplate {
     /**
-     * Metric definition UUID. Provide either this or `slug`, not both.
+     * The agent endpoints to call. No template can know these.
      */
-    id?: string;
+    agentEndpoints: Array<CreateRunPlanFromTemplate.AgentEndpoint>;
 
     /**
-     * Which side of an enriched run this metric is scored on. Only meaningful with
-     * `enrichWithLiveConversation: true`, where a run has both a simulated
-     * conversation and the customer's own live recording of it.
+     * Direction of the simulation (INBOUND or OUTBOUND)
+     */
+    direction: 'INBOUND' | 'OUTBOUND';
+
+    /**
+     * The template to run, as listed by GET /v1/simulation/template.
+     */
+    template: string;
+
+    /**
+     * Metrics to collect on top of the template's own, referenced by `id` or `slug`
+     * like a plan's `metrics`. The template's metrics and checks always run; naming
+     * one of them here again keeps it once, with the success criteria you set on it.
+     */
+    additionalMetrics?: Array<CreateRunPlanFromTemplate.AdditionalMetric>;
+
+    /**
+     * The sweep's reference value, shown first in the results. Defaults to the
+     * template's own baseline, as returned by GET /v1/simulation/template. Whether a
+     * value did significantly worse does not depend on it: that is decided against
+     * every other value combined.
      *
-     * Defaults to `SIMULATED`. Use `LIVE` for a metric that must be measured against
-     * the real recording (audio quality, provider latency) rather than the simulated
-     * leg. `null` means the same as omitting it, so a plan read back from GET can be
-     * sent straight to PUT.
+     * Send it with `comparisonValues` and it must be one of them, or the request is
+     * rejected: anchoring every difference to an arm the run never made would measure
+     * it against nothing. Leave it out and the template's own baseline is used, and
+     * quietly dropped if your narrowing excluded it, since that one you did not
+     * choose.
      */
-    conversationSource?: 'SIMULATED' | 'LIVE' | null;
+    comparisonBaseline?: string | null;
 
     /**
-     * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
-     * integrations.
-     */
-    metricId?: string;
-
-    /**
-     * THE BAR, and the only thing that decides pass/fail. The share of the run's
-     * simulations that must pass this check, 0-100.
+     * The arms of the sweep to run, for a template that sweeps one (GET
+     * /v1/simulation/template returns `sweep.property` for those that do). This is
+     * what the run costs: the flow is called once per arm, so ten arms is ten times
+     * the calls of one.
      *
-     * Applied to this check alone and never pooled: silence duration at 40 and word
-     * count at 80 means the run fails unless 40% of sims clear silence AND 80% clear
-     * word count. Omit or `null` for the 80% default.
+     * Omit it to run every value the property has, plain, which for `accent-handling`
+     * is more than twenty. Send a subset to narrow it, for example the three accents
+     * you actually serve. An object entry pins something on that arm only, such as a
+     * noise level per bed on `background-noise-robustness`:
+     * `{ "value": "OFFICE", "backgroundNoiseVolume": 0.6 }` plays OFFICE at 60% while
+     * the other beds keep the default. See `POST /v1/simulation/plan`.
      */
-    minPassRate?: number | null;
+    comparisonValues?: Array<string | CreateRunPlanFromTemplate.ComparisonArm>;
 
     /**
-     * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
-     * not both.
+     * Phrases that trigger end of call. Empty array disables the feature.
      */
-    slug?: string;
+    endCallPhrases?: Array<string>;
+
+    /**
+     * Semantic conditions that trigger end of call. The LLM evaluates the conversation
+     * against these conditions. Defaults to the template's `defaultEndCallReasons`, as
+     * returned by GET /v1/simulation/template. Pass an empty array to run with none.
+     */
+    endCallReasons?: Array<string>;
+
+    /**
+     * Merge the customer's own recording of the real call into each simulation, so
+     * metrics can be scored against the live leg as well as the simulated one. This is
+     * the API equivalent of the dashboard's live-enrichment toggle.
+     *
+     * With this on, the run provisions a phone number and holds each call open for up
+     * to 15 minutes waiting for a matching call to be posted to POST /v1/call. A call
+     * matches on the provisioned number (`roarkPhoneNumber` on the job) with a start
+     * time inside the simulation window. If nothing arrives, the simulation still
+     * completes and any `LIVE`-sourced metric produces no value.
+     *
+     * Required by any metric whose `requiresLiveConversation` is true: without it that
+     * metric is silently skipped.
+     */
+    enrichWithLiveConversation?: boolean;
+
+    /**
+     * For `question-answer-check`: the environment the calls run in.
+     */
+    environmentId?: string;
+
+    /**
+     * Execution mode (PARALLEL or SEQUENTIAL)
+     */
+    executionMode?: 'PARALLEL' | 'SEQUENTIAL_SAME_RUN_PLAN' | 'SEQUENTIAL_PROJECT';
+
+    /**
+     * The flows to run, in the same shape a run plan takes them.
+     *
+     * Required when the template lists no flows of its own: it presets what to
+     * measure, and this says what to measure it on. Optional when it does, where these
+     * REPLACE the ones it would have run, so you can narrow a suite to the cases you
+     * care about. Either way, GET /v1/simulation/template lists the flows and variant
+     * ids each template covers.
+     *
+     * On a template that sweeps a property, every value runs exactly what you select
+     * here: the happy path, the edge cases you name, or `edgeCases: "ALL"`. Each
+     * selected case is a call per value per iteration, so naming three edge cases
+     * triples the run.
+     */
+    flows?: Array<CreateRunPlanFromTemplate.Flow>;
+
+    /**
+     * Runs per test case (1-10000). Defaults to 1, or to 6 for a template that sweeps
+     * a property. A sweep needs at least 5 calls per value (test cases per value times
+     * iterations) to compare its values, and a lower count is refused with 400.
+     */
+    iterationCount?: number;
+
+    /**
+     * Maximum number of concurrent simulation jobs
+     */
+    maxConcurrentJobs?: number;
+
+    /**
+     * How many more times to run a test case when the agent under test never responds:
+     * it never speaks on a call or never replies in a chat (0-10). 0 turns retries
+     * off. Failed checks and failures on Roark’s side are never retried.
+     *
+     * Each retry is a separate attempt, billed like any other, so a plan retrying N
+     * times can place up to N + 1 calls per test case. Every silent attempt stays on
+     * the run with its own call; the run settles once each test case has a final
+     * attempt, and the agent never spoke verdict is judged on each test case’s last
+     * attempt.
+     */
+    maxNoResponseRetries?: number;
+
+    /**
+     * Defaults to the template's `defaultMaxSimulationDurationSeconds`, as returned by
+     * GET /v1/simulation/template.
+     */
+    maxSimulationDurationSeconds?: number;
+
+    /**
+     * Name of the run plan. Defaults to the template's name and the date.
+     */
+    name?: string;
+
+    /**
+     * Seconds a retry waits before it dials (30-600). Only used when
+     * `maxNoResponseRetries` is above 0.
+     */
+    noResponseRetryBackoffSeconds?: number;
+
+    /**
+     * For `question-answer-check`: the persona that asks the questions.
+     */
+    personaId?: string;
+
+    /**
+     * For the `question-answer-check` template: the questions to ask and the answer
+     * expected for each. Every question runs as its own graded call.
+     */
+    questions?: Array<CreateRunPlanFromTemplate.Question>;
+
+    /**
+     * Timeout in seconds for silence detection
+     */
+    silenceTimeoutSeconds?: number;
   }
 
-  export interface Persona {
-    id: string;
-  }
+  export namespace CreateRunPlanFromTemplate {
+    export interface AgentEndpoint {
+      id: string;
+    }
 
-  export interface Scenario {
-    /**
-     * Scenario ID
-     */
-    id: string;
+    export interface AdditionalMetric {
+      /**
+       * Metric definition UUID. Provide either this or `slug`, not both.
+       */
+      id?: string;
+
+      /**
+       * Which side of an enriched run this metric is scored on. Only meaningful with
+       * `enrichWithLiveConversation: true`, where a run has both a simulated
+       * conversation and the customer's own live recording of it.
+       *
+       * Defaults to `SIMULATED`. Use `LIVE` for a metric that must be measured against
+       * the real recording (audio quality, provider latency) rather than the simulated
+       * leg. `null` means the same as omitting it, so a plan read back from GET can be
+       * sent straight to PUT.
+       */
+      conversationSource?: 'SIMULATED' | 'LIVE' | null;
+
+      /**
+       * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+       * integrations.
+       */
+      metricId?: string;
+
+      /**
+       * THE BAR, and the only thing that decides pass/fail. The share of the run's
+       * simulations that must pass this check, 0-100.
+       *
+       * Applied to this check alone and never pooled: silence duration at 40 and word
+       * count at 80 means the run fails unless 40% of sims clear silence AND 80% clear
+       * word count. Omit or `null` for the 80% default.
+       */
+      minPassRate?: number | null;
+
+      /**
+       * Stable metric slug (e.g. `customer_satisfaction`). Provide either this or `id`,
+       * not both.
+       */
+      slug?: string;
+    }
 
     /**
-     * Template variables for this scenario instance. The same scenario can appear
-     * multiple times with different variables.
+     * One arm of a sweep: the swept value it runs, and what it pins besides that
+     * value. The OFFICE arm of a BACKGROUND_NOISE sweep playing at 60% while the other
+     * beds keep their level is `{ "value": "OFFICE", "backgroundNoiseVolume": 0.6 }`.
+     * The report compares the arms on the swept property only, so each sweep may pin
+     * just what its experiment calls for: a BACKGROUND_NOISE sweep may pin
+     * `backgroundNoiseVolume`, and no other sweep pins anything yet. A pin the sweep
+     * cannot account for is rejected with `400`.
      */
-    variables?: { [key: string]: string };
+    export interface ComparisonArm {
+      /**
+       * The swept value this arm runs, a value of `comparisonProperty`.
+       */
+      value: string;
+
+      /**
+       * The noise level this arm plays at, 0 to 1. The environment default is 0.1. Only
+       * a `BACKGROUND_NOISE` sweep may pin it.
+       */
+      backgroundNoiseVolume?: number;
+    }
+
+    /**
+     * One customer flow attached to a run plan, and which of its ways of running you
+     * cover.
+     *
+     * Attaching the same flow more than once with different overrides is how you fan
+     * it out across personas or values.
+     */
+    export interface Flow {
+      /**
+       * The customer flow to run.
+       */
+      id?: string;
+
+      /**
+       * `"ALL"` runs every edge case the flow has when the run starts, so one added
+       * later is covered. An array runs only the ones you name, each able to carry its
+       * own persona override and values.
+       */
+      edgeCases?: 'ALL' | Array<Flow.UnionMember1>;
+
+      /**
+       * Run the flow's happy path. Resolved when the run starts, so it follows the flow.
+       */
+      happyPath?: boolean;
+
+      /**
+       * Persona and environment properties to change for this attachment only, without
+       * editing the persona or the environment themselves. Each entry patches the
+       * per-run snapshot this attachment records, so the flow runs as a caller with that
+       * accent, or over that background noise, and everything else stays as authored.
+       *
+       * This is how you attach the same flow twice and vary one thing between them,
+       * which is what a sweep template builds for you. One value per property; a
+       * property named twice is rejected.
+       */
+      overrides?: Array<Flow.Override>;
+
+      /**
+       * Runs everything this attachment resolves as that persona instead of its own.
+       */
+      personaOverrideId?: string | null;
+
+      /**
+       * The Roark-curated flow to run, by its stable slug. Use instead of `id` for a run
+       * you keep in version control: a curated flow’s id differs between deployments,
+       * its slug does not. Your own flows have no slug and are named by `id`.
+       */
+      slug?: string;
+
+      /**
+       * Values for everything it resolves.
+       */
+      variables?: { [key: string]: string };
+    }
+
+    export namespace Flow {
+      export interface UnionMember1 {
+        /**
+         * The edge case to run.
+         */
+        id?: string;
+
+        /**
+         * Run this one as that persona instead of its own.
+         */
+        personaOverrideId?: string | null;
+
+        /**
+         * The edge case to run, by its stable slug, matched within this flow. Use instead
+         * of `id` for a run you keep in version control: a curated edge case’s id differs
+         * between deployments and changes outright if it is renamed. Your own edge cases
+         * have no slug and are named by `id`.
+         */
+        slug?: string;
+
+        /**
+         * Values for this one only.
+         */
+        variables?: { [key: string]: string };
+      }
+
+      /**
+       * One persona or environment property, changed for this flow attachment only.
+       */
+      export interface Override {
+        property:
+          | 'ACCENT'
+          | 'AGE'
+          | 'BACKGROUND_NOISE'
+          | 'BACKGROUND_NOISE_VOLUME'
+          | 'BASE_EMOTION'
+          | 'CONFIRMATION_STYLE'
+          | 'GENDER'
+          | 'INTENT_CLARITY'
+          | 'LANGUAGE'
+          | 'INTERRUPTION'
+          | 'MEMORY_RELIABILITY'
+          | 'RESPONSE_TIMING'
+          | 'SPEECH_CLARITY'
+          | 'SPEECH_PACE';
+
+        value: string;
+      }
+    }
+
+    export interface Question {
+      /**
+       * The question the caller asks the agent.
+       */
+      ask: string;
+
+      /**
+       * The answer the agent must give, judged against the transcript.
+       */
+      expect: string;
+    }
   }
 }
 
@@ -1937,10 +2371,11 @@ export interface SimulationRunPlanUpdateParams {
    * The property this plan investigates. Send `null` to clear the comparison; omit
    * the field to leave it unchanged. See `POST /v1/simulation/plan`.
    *
-   * The pair moves together. Sending `comparisonProperty` also sets
-   * `comparisonBaseline` to whatever this request carries, or to `null` if it
-   * carries none, because a baseline is a value of one specific property and keeping
-   * the old one would store a pair that is not valid.
+   * The pair moves together. Sending `comparisonProperty` without
+   * `comparisonBaseline` keeps the stored baseline when the property is unchanged
+   * and the baseline is still one of the values being run. Otherwise it becomes the
+   * new property's norm, or `null` when that norm is not being run either, because a
+   * baseline is a value of one specific property.
    */
   comparisonProperty?:
     | 'ACCENT'
@@ -1960,13 +2395,14 @@ export interface SimulationRunPlanUpdateParams {
     | null;
 
   /**
-   * Which values of `comparisonProperty` to run. See `POST /v1/simulation/plan`.
+   * The arms to run. See `POST /v1/simulation/plan`.
    *
-   * Omitting it keeps the arms the plan already has, so an edit that only renames
-   * the plan never widens a sweep you deliberately narrowed, and never multiplies
-   * what it costs.
+   * Omitting it keeps the arms the plan already has, pins included, so an edit that
+   * only renames the plan never widens a sweep you deliberately narrowed, and never
+   * multiplies what it costs. Send it with `comparisonProperty` and `flows`, which
+   * the arms are rebuilt from.
    */
-  comparisonValues?: Array<string>;
+  comparisonValues?: Array<string | SimulationRunPlanUpdateParams.ComparisonArm>;
 
   /**
    * Description of the run plan
@@ -2093,6 +2529,28 @@ export interface SimulationRunPlanUpdateParams {
 export namespace SimulationRunPlanUpdateParams {
   export interface AgentEndpoint {
     id: string;
+  }
+
+  /**
+   * One arm of a sweep: the swept value it runs, and what it pins besides that
+   * value. The OFFICE arm of a BACKGROUND_NOISE sweep playing at 60% while the other
+   * beds keep their level is `{ "value": "OFFICE", "backgroundNoiseVolume": 0.6 }`.
+   * The report compares the arms on the swept property only, so each sweep may pin
+   * just what its experiment calls for: a BACKGROUND_NOISE sweep may pin
+   * `backgroundNoiseVolume`, and no other sweep pins anything yet. A pin the sweep
+   * cannot account for is rejected with `400`.
+   */
+  export interface ComparisonArm {
+    /**
+     * The swept value this arm runs, a value of `comparisonProperty`.
+     */
+    value: string;
+
+    /**
+     * The noise level this arm plays at, 0 to 1. The environment default is 0.1. Only
+     * a `BACKGROUND_NOISE` sweep may pin it.
+     */
+    backgroundNoiseVolume?: number;
   }
 
   /**
