@@ -194,14 +194,18 @@ Types:
 
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobListResponse</a></code>
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobCancelResponse</a></code>
+- <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobCreateDebriefResponse</a></code>
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobGetByIDResponse</a></code>
+- <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobGetResultsResponse</a></code>
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobStartResponse</a></code>
 
 Methods:
 
 - <code title="get /v1/simulation/plan/jobs">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">list</a>({ ...params }) -> SimulationRunPlanJobListResponse</code>
 - <code title="post /v1/simulation/plan/job/{jobId}/cancel">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">cancel</a>(jobID) -> SimulationRunPlanJobCancelResponse</code>
+- <code title="post /v1/simulation/plan/job/{jobId}/debrief">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">createDebrief</a>(jobID, { ...params }) -> SimulationRunPlanJobCreateDebriefResponse</code>
 - <code title="get /v1/simulation/plan/job/{jobId}">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">getByID</a>(jobID) -> SimulationRunPlanJobGetByIDResponse</code>
+- <code title="get /v1/simulation/plan/job/{jobId}/results">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">getResults</a>(jobID, { ...params }) -> SimulationRunPlanJobGetResultsResponse</code>
 - <code title="post /v1/simulation/plan/{planId}/job">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">start</a>(planID, { ...params }) -> SimulationRunPlanJobStartResponse</code>
 
 # SimulationPersona

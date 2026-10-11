@@ -254,7 +254,11 @@ import {
 import {
   SimulationRunPlanJob,
   SimulationRunPlanJobCancelResponse,
+  SimulationRunPlanJobCreateDebriefParams,
+  SimulationRunPlanJobCreateDebriefResponse,
   SimulationRunPlanJobGetByIDResponse,
+  SimulationRunPlanJobGetResultsParams,
+  SimulationRunPlanJobGetResultsResponse,
   SimulationRunPlanJobListParams,
   SimulationRunPlanJobListResponse,
   SimulationRunPlanJobStartParams,
@@ -1209,9 +1213,13 @@ export declare namespace Roark {
     SimulationRunPlanJob as SimulationRunPlanJob,
     type SimulationRunPlanJobListResponse as SimulationRunPlanJobListResponse,
     type SimulationRunPlanJobCancelResponse as SimulationRunPlanJobCancelResponse,
+    type SimulationRunPlanJobCreateDebriefResponse as SimulationRunPlanJobCreateDebriefResponse,
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
+    type SimulationRunPlanJobGetResultsResponse as SimulationRunPlanJobGetResultsResponse,
     type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
     type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,
+    type SimulationRunPlanJobCreateDebriefParams as SimulationRunPlanJobCreateDebriefParams,
+    type SimulationRunPlanJobGetResultsParams as SimulationRunPlanJobGetResultsParams,
     type SimulationRunPlanJobStartParams as SimulationRunPlanJobStartParams,
   };
 

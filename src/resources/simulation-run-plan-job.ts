@@ -41,6 +41,32 @@ export class SimulationRunPlanJob extends APIResource {
   }
 
   /**
+   * Request the written debrief for a settled run: executive summary, failure themes
+   * and recommendations. Runs with graded calls get one automatically, so this is
+   * for regenerating one (`regenerate: true`) or retrying one that failed.
+   *
+   * Returns immediately. Generation takes a few minutes: poll GET
+   * /v1/simulation/plan/job/{jobId}/results until `debrief.status` is READY or
+   * FAILED. Without `regenerate`, a debrief that is ready or already being written
+   * is returned as-is.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulationRunPlanJob.createDebrief(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
+   */
+  createDebrief(
+    jobID: string,
+    body: SimulationRunPlanJobCreateDebriefParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<SimulationRunPlanJobCreateDebriefResponse> {
+    return this._client.post(path`/v1/simulation/plan/job/${jobID}/debrief`, { body, ...options });
+  }
+
+  /**
    * Retrieve details of a simulation plan job including all associated simulation
    * jobs (calls)
    *
@@ -53,6 +79,33 @@ export class SimulationRunPlanJob extends APIResource {
    */
   getByID(jobID: string, options?: RequestOptions): APIPromise<SimulationRunPlanJobGetByIDResponse> {
     return this._client.get(path`/v1/simulation/plan/job/${jobID}`, options);
+  }
+
+  /**
+   * Everything the run report shows, in one request: the summary and score, the
+   * pass/fail verdict, per-metric aggregates, every simulation with its check
+   * results, breakdowns by agent and persona, the comparison against the previous
+   * run (or `compareToJobId`), the sweep attribution, and the written debrief with
+   * its executive summary, failure themes and recommendations.
+   *
+   * Safe to call while the run is in progress: counts reflect what has landed so
+   * far. `verdict` and `sweepAttribution` stay null until the run ends. The debrief
+   * is generated automatically a few minutes after a run with graded calls settles;
+   * poll until `debrief.status` is READY, or request one with POST
+   * /v1/simulation/plan/job/{jobId}/debrief.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulationRunPlanJob.getResults('jobId');
+   * ```
+   */
+  getResults(
+    jobID: string,
+    query: SimulationRunPlanJobGetResultsParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<SimulationRunPlanJobGetResultsResponse> {
+    return this._client.get(path`/v1/simulation/plan/job/${jobID}/results`, { query, ...options });
   }
 
   /**
@@ -197,6 +250,202 @@ export namespace SimulationRunPlanJobCancelResponse {
       | 'CANCELLED'
       | 'CANCELLING'
       | 'ENDING_SIMULATIONS';
+  }
+}
+
+export interface SimulationRunPlanJobCreateDebriefResponse {
+  /**
+   * The run’s written debrief: executive summary, failure themes and
+   * recommendations. Generated automatically when a run with graded calls settles.
+   */
+  data: SimulationRunPlanJobCreateDebriefResponse.Data;
+}
+
+export namespace SimulationRunPlanJobCreateDebriefResponse {
+  /**
+   * The run’s written debrief: executive summary, failure themes and
+   * recommendations. Generated automatically when a run with graded calls settles.
+   */
+  export interface Data {
+    completedAt: string | null;
+
+    createdAt: string;
+
+    debriefId: string;
+
+    errorMessage: string | null;
+
+    /**
+     * Present once READY.
+     */
+    report: Data.Report | null;
+
+    /**
+     * PENDING and GENERATING while it is written (usually a few minutes), then READY
+     * or FAILED.
+     */
+    status: 'PENDING' | 'GENERATING' | 'READY' | 'FAILED';
+  }
+
+  export namespace Data {
+    /**
+     * Present once READY.
+     */
+    export interface Report {
+      executiveSummary: Report.ExecutiveSummary;
+
+      generatedAt: string;
+
+      keyFindings: Array<Report.KeyFinding>;
+
+      recommendations: Array<Report.Recommendation>;
+
+      /**
+       * Failure themes, clustered across the run’s failing calls.
+       */
+      themes: Array<Report.Theme>;
+
+      /**
+       * The checks against the previous run, as of generation.
+       */
+      trend: Report.Trend | null;
+
+      verdict: 'PASSED' | 'THRESHOLD_FAILED';
+
+      /**
+       * One-paragraph verdict, e.g. "Not ready to promote. ..."
+       */
+      verdictSummary: string;
+
+      wentWell: Array<Report.WentWell>;
+    }
+
+    export namespace Report {
+      export interface ExecutiveSummary {
+        paragraphs: Array<string>;
+
+        sections: Array<ExecutiveSummary.Section>;
+      }
+
+      export namespace ExecutiveSummary {
+        export interface Section {
+          body: string;
+
+          heading: string | null;
+        }
+      }
+
+      export interface KeyFinding {
+        body: string;
+
+        /**
+         * The calls the finding is about.
+         */
+        callIds: Array<string>;
+
+        title: string;
+      }
+
+      export interface Recommendation {
+        body: string;
+
+        channel:
+          | 'PROMPT'
+          | 'VOICE_CONFIG'
+          | 'STT'
+          | 'SPEECH_MODEL'
+          | 'LLM_MODEL'
+          | 'INFRA'
+          | 'EXTERNAL'
+          | null;
+
+        /**
+         * For a prompt fix: the text to replace.
+         */
+        currentText: string | null;
+
+        order: number;
+
+        severity: 'HIGH' | 'MEDIUM' | 'LOW' | null;
+
+        /**
+         * For a prompt fix: the replacement.
+         */
+        suggestedText: string | null;
+
+        themeSlugs: Array<string>;
+
+        title: string;
+      }
+
+      export interface Theme {
+        affectedCallCount: number;
+
+        analysis: string;
+
+        callIds: Array<string>;
+
+        checkNames: Array<string>;
+
+        impact: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | null;
+
+        lifecycle: 'NEW' | 'PERSISTENT' | 'IMPROVING' | 'FIXED' | null;
+
+        prevalence: 'WIDESPREAD' | 'RECURRING' | 'ISOLATED' | null;
+
+        rootCauseChannel:
+          | 'PROMPT'
+          | 'VOICE_CONFIG'
+          | 'STT'
+          | 'SPEECH_MODEL'
+          | 'LLM_MODEL'
+          | 'INFRA'
+          | 'EXTERNAL'
+          | null;
+
+        severity: 'HIGH' | 'MEDIUM' | 'LOW';
+
+        slug: string;
+
+        title: string;
+
+        totalCallCount: number;
+      }
+
+      /**
+       * The checks against the previous run, as of generation.
+       */
+      export interface Trend {
+        baselineRunNumber: number | null;
+
+        baselineRunPlanJobId: string;
+
+        rows: Array<Trend.Row>;
+      }
+
+      export namespace Trend {
+        export interface Row {
+          checkName: string;
+
+          currentPassRate: number | null;
+
+          lifecycle: 'NEW' | 'PERSISTENT' | 'IMPROVING' | 'FIXED' | null;
+
+          previousPassRate: number | null;
+        }
+      }
+
+      export interface WentWell {
+        body: string;
+
+        /**
+         * The calls the finding is about.
+         */
+        callIds: Array<string>;
+
+        title: string;
+      }
+    }
   }
 }
 
@@ -1303,6 +1552,1151 @@ export namespace SimulationRunPlanJobGetByIDResponse {
   }
 }
 
+export interface SimulationRunPlanJobGetResultsResponse {
+  /**
+   * Everything the run report shows, in one response.
+   */
+  data: SimulationRunPlanJobGetResultsResponse.Data;
+}
+
+export namespace SimulationRunPlanJobGetResultsResponse {
+  /**
+   * Everything the run report shows, in one response.
+   */
+  export interface Data {
+    /**
+     * The run’s simulations against its test cases. Differs from a plain job count
+     * only when the plan retries simulations your agent never spoke on.
+     */
+    attemptSummary: Data.AttemptSummary;
+
+    breakdowns: Data.Breakdowns;
+
+    calls: Array<Data.Call>;
+
+    /**
+     * Null when there is no earlier run of the plan to compare against.
+     */
+    comparison: Data.Comparison | null;
+
+    /**
+     * The run’s written debrief: executive summary, failure themes and
+     * recommendations. Generated automatically when a run with graded calls settles.
+     */
+    debrief: Data.Debrief | null;
+
+    /**
+     * Checks first, then other metrics.
+     */
+    metrics: Array<Data.Metric>;
+
+    run: Data.Run;
+
+    summary: Data.Summary;
+
+    /**
+     * For a run that swept a property (accent, background noise, speech pace and so
+     * on): which check failures the property caused.
+     *
+     * Each value is compared with every other value combined using a one-sided Fisher
+     * exact test, and every comparison in the run is corrected together with
+     * Benjamini-Hochberg. A value is only called worse when the difference is
+     * statistically significant, so a value that happened to fail a few more
+     * simulations by chance is not reported as a problem. Invalidated simulations and
+     * simulations that failed on the Roark platform are left out.
+     */
+    sweepAttribution: Data.SweepAttribution | null;
+
+    /**
+     * Pass/fail verdict for the run, judged against the success criteria pinned on the
+     * run plan when the run started.
+     */
+    verdict: Data.Verdict | null;
+  }
+
+  export namespace Data {
+    /**
+     * The run’s simulations against its test cases. Differs from a plain job count
+     * only when the plan retries simulations your agent never spoke on.
+     */
+    export interface AttemptSummary {
+      /**
+       * Every simulation placed, retries included. Each is a separate, billed call.
+       */
+      attemptCount: number;
+
+      /**
+       * Simulations placed as a retry of one your agent never spoke on.
+       */
+      retryCount: number;
+
+      /**
+       * Simulations your agent never spoke on, including the ones a retry replaced.
+       */
+      silentAttemptCount: number;
+
+      /**
+       * Test cases whose final attempt your agent still never spoke on. This is what the
+       * `AGENT_NEVER_SPOKE` verdict failure counts.
+       */
+      stillSilentTestCaseCount: number;
+
+      /**
+       * Test cases in the run. Each one has a single final attempt that its result is
+       * read from.
+       */
+      testCaseCount: number;
+    }
+
+    export interface Breakdowns {
+      byAgent: Array<Breakdowns.ByAgent>;
+
+      byPersona: Array<Breakdowns.ByPersona>;
+    }
+
+    export namespace Breakdowns {
+      export interface ByAgent {
+        /**
+         * 0-100. Null when nothing was evaluated.
+         */
+        callPassRate: number | null;
+
+        /**
+         * Counted simulations in the group.
+         */
+        calls: number;
+
+        evaluatedCalls: number;
+
+        /**
+         * The agent or persona ID.
+         */
+        key: string;
+
+        label: string;
+
+        passedCalls: number;
+
+        /**
+         * The group’s own score. 0-100. Null when nothing was evaluated.
+         */
+        score: number | null;
+      }
+
+      export interface ByPersona {
+        /**
+         * 0-100. Null when nothing was evaluated.
+         */
+        callPassRate: number | null;
+
+        /**
+         * Counted simulations in the group.
+         */
+        calls: number;
+
+        evaluatedCalls: number;
+
+        /**
+         * The agent or persona ID.
+         */
+        key: string;
+
+        label: string;
+
+        passedCalls: number;
+
+        /**
+         * The group’s own score. 0-100. Null when nothing was evaluated.
+         */
+        score: number | null;
+      }
+    }
+
+    export interface Call {
+      agentName: string | null;
+
+      attemptNumber: number;
+
+      /**
+       * Use with GET /v1/call/{callId} for the transcript, recording and every metric
+       * value.
+       */
+      callId: string | null;
+
+      checks: Array<Call.Check>;
+
+      /**
+       * False for an invalidated simulation: listed, never scored.
+       */
+      counted: boolean;
+
+      durationMs: number | null;
+
+      /**
+       * Passed every check that graded it. Null when no check graded it, or it does not
+       * count.
+       */
+      passed: boolean | null;
+
+      personaName: string | null;
+
+      retryOfSimulationJobId: string | null;
+
+      simulationJobId: string;
+
+      /**
+       * QUEUED, CONNECTING, IN_CALL and PROCESSING while the simulation runs. Once
+       * settled: COMPLETED, TIMED_OUT (ran to the maximum duration, still graded), ERROR
+       * (failed on the agent’s side), NOT_RUN (failed on Roark’s side), CANCELLED, or
+       * INVALIDATED (ran, but does not count).
+       */
+      status:
+        | 'QUEUED'
+        | 'CONNECTING'
+        | 'IN_CALL'
+        | 'PROCESSING'
+        | 'COMPLETED'
+        | 'ERROR'
+        | 'TIMED_OUT'
+        | 'CANCELLED'
+        | 'INVALIDATED'
+        | 'NOT_RUN';
+
+      /**
+       * Call-level values of the run’s other metrics. Empty without the `metric:read`
+       * permission. Per-turn values are on GET /v1/call/{callId}/metrics.
+       */
+      values: Array<Call.Value>;
+    }
+
+    export namespace Call {
+      export interface Check {
+        metricDefinitionId: string;
+
+        metricName: string;
+
+        passed: boolean;
+      }
+
+      export interface Value {
+        metricDefinitionId: string;
+
+        metricName: string;
+
+        outputType: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+        participantRole: 'AGENT' | 'CUSTOMER' | 'SIMULATED_CUSTOMER' | 'BACKGROUND_SPEAKER' | null;
+
+        reasoning: string | null;
+
+        value: number | boolean | string | null;
+      }
+    }
+
+    /**
+     * Null when there is no earlier run of the plan to compare against.
+     */
+    export interface Comparison {
+      baselineCallPassRate: number | null;
+
+      baselineRun: Comparison.BaselineRun;
+
+      baselineScore: number | null;
+
+      /**
+       * REQUESTED when `compareToJobId` picked the baseline, PREVIOUS_RUN otherwise.
+       */
+      baselineSource: 'PREVIOUS_RUN' | 'REQUESTED';
+
+      callPassRateDelta: number | null;
+
+      /**
+       * Every check either run was graded on. A side that did not grade it reads null.
+       */
+      checks: Array<Comparison.Check>;
+
+      currentCallPassRate: number | null;
+
+      currentScore: number | null;
+
+      /**
+       * Current minus baseline, in points.
+       */
+      scoreDelta: number | null;
+    }
+
+    export namespace Comparison {
+      export interface BaselineRun {
+        endedAt: string | null;
+
+        runNumber: number | null;
+
+        simulationRunPlanJobId: string;
+
+        status:
+          | 'PENDING'
+          | 'QUEUED'
+          | 'CREATING_SNAPSHOTS'
+          | 'CREATING_SIMULATIONS'
+          | 'PREPARING_CAPACITY'
+          | 'RUNNING_SIMULATIONS'
+          | 'COMPLETED'
+          | 'FAILED'
+          | 'TIMED_OUT'
+          | 'CANCELLED'
+          | 'CANCELLING'
+          | 'ENDING_SIMULATIONS';
+      }
+
+      export interface Check {
+        baselinePassRate: number | null;
+
+        currentPassRate: number | null;
+
+        delta: number | null;
+
+        metricDefinitionId: string;
+
+        metricName: string;
+      }
+    }
+
+    /**
+     * The run’s written debrief: executive summary, failure themes and
+     * recommendations. Generated automatically when a run with graded calls settles.
+     */
+    export interface Debrief {
+      completedAt: string | null;
+
+      createdAt: string;
+
+      debriefId: string;
+
+      errorMessage: string | null;
+
+      /**
+       * Present once READY.
+       */
+      report: Debrief.Report | null;
+
+      /**
+       * PENDING and GENERATING while it is written (usually a few minutes), then READY
+       * or FAILED.
+       */
+      status: 'PENDING' | 'GENERATING' | 'READY' | 'FAILED';
+    }
+
+    export namespace Debrief {
+      /**
+       * Present once READY.
+       */
+      export interface Report {
+        executiveSummary: Report.ExecutiveSummary;
+
+        generatedAt: string;
+
+        keyFindings: Array<Report.KeyFinding>;
+
+        recommendations: Array<Report.Recommendation>;
+
+        /**
+         * Failure themes, clustered across the run’s failing calls.
+         */
+        themes: Array<Report.Theme>;
+
+        /**
+         * The checks against the previous run, as of generation.
+         */
+        trend: Report.Trend | null;
+
+        verdict: 'PASSED' | 'THRESHOLD_FAILED';
+
+        /**
+         * One-paragraph verdict, e.g. "Not ready to promote. ..."
+         */
+        verdictSummary: string;
+
+        wentWell: Array<Report.WentWell>;
+      }
+
+      export namespace Report {
+        export interface ExecutiveSummary {
+          paragraphs: Array<string>;
+
+          sections: Array<ExecutiveSummary.Section>;
+        }
+
+        export namespace ExecutiveSummary {
+          export interface Section {
+            body: string;
+
+            heading: string | null;
+          }
+        }
+
+        export interface KeyFinding {
+          body: string;
+
+          /**
+           * The calls the finding is about.
+           */
+          callIds: Array<string>;
+
+          title: string;
+        }
+
+        export interface Recommendation {
+          body: string;
+
+          channel:
+            | 'PROMPT'
+            | 'VOICE_CONFIG'
+            | 'STT'
+            | 'SPEECH_MODEL'
+            | 'LLM_MODEL'
+            | 'INFRA'
+            | 'EXTERNAL'
+            | null;
+
+          /**
+           * For a prompt fix: the text to replace.
+           */
+          currentText: string | null;
+
+          order: number;
+
+          severity: 'HIGH' | 'MEDIUM' | 'LOW' | null;
+
+          /**
+           * For a prompt fix: the replacement.
+           */
+          suggestedText: string | null;
+
+          themeSlugs: Array<string>;
+
+          title: string;
+        }
+
+        export interface Theme {
+          affectedCallCount: number;
+
+          analysis: string;
+
+          callIds: Array<string>;
+
+          checkNames: Array<string>;
+
+          impact: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | null;
+
+          lifecycle: 'NEW' | 'PERSISTENT' | 'IMPROVING' | 'FIXED' | null;
+
+          prevalence: 'WIDESPREAD' | 'RECURRING' | 'ISOLATED' | null;
+
+          rootCauseChannel:
+            | 'PROMPT'
+            | 'VOICE_CONFIG'
+            | 'STT'
+            | 'SPEECH_MODEL'
+            | 'LLM_MODEL'
+            | 'INFRA'
+            | 'EXTERNAL'
+            | null;
+
+          severity: 'HIGH' | 'MEDIUM' | 'LOW';
+
+          slug: string;
+
+          title: string;
+
+          totalCallCount: number;
+        }
+
+        /**
+         * The checks against the previous run, as of generation.
+         */
+        export interface Trend {
+          baselineRunNumber: number | null;
+
+          baselineRunPlanJobId: string;
+
+          rows: Array<Trend.Row>;
+        }
+
+        export namespace Trend {
+          export interface Row {
+            checkName: string;
+
+            currentPassRate: number | null;
+
+            lifecycle: 'NEW' | 'PERSISTENT' | 'IMPROVING' | 'FIXED' | null;
+
+            previousPassRate: number | null;
+          }
+        }
+
+        export interface WentWell {
+          body: string;
+
+          /**
+           * The calls the finding is about.
+           */
+          callIds: Array<string>;
+
+          title: string;
+        }
+      }
+    }
+
+    export interface Metric {
+      /**
+       * The check’s tally. Null for a metric that is not a check.
+       */
+      check: Metric.Check | null;
+
+      /**
+       * How many values took each reading, for BOOLEAN, SCALE and CLASSIFICATION
+       * metrics. Null without the `metric:read` permission.
+       */
+      distribution: Array<Metric.Distribution> | null;
+
+      /**
+       * Counted simulations with at least one value.
+       */
+      evaluatedCalls: number;
+
+      /**
+       * A threshold: one of the checks the run is judged on.
+       */
+      isCheck: boolean;
+
+      metricDefinitionId: string;
+
+      /**
+       * The metric’s slug.
+       */
+      metricId: string;
+
+      name: string;
+
+      /**
+       * For NUMERIC, SCALE, COUNT and OFFSET metrics. Null when nothing was captured, or
+       * without the `metric:read` permission.
+       */
+      numeric: Metric.Numeric | null;
+
+      outputType: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+      /**
+       * Values across those simulations. A per-turn metric has several per call.
+       */
+      sampleSize: number;
+
+      /**
+       * Unit of `numeric`, e.g. `ms`.
+       */
+      unitSymbol: string | null;
+    }
+
+    export namespace Metric {
+      /**
+       * The check’s tally. Null for a metric that is not a check.
+       */
+      export interface Check {
+        evaluatedCalls: number;
+
+        failedCalls: number;
+
+        /**
+         * 0-100. Null when nothing was evaluated.
+         */
+        passRate: number | null;
+
+        passedCalls: number;
+      }
+
+      export interface Distribution {
+        count: number;
+
+        value: string;
+      }
+
+      /**
+       * For NUMERIC, SCALE, COUNT and OFFSET metrics. Null when nothing was captured, or
+       * without the `metric:read` permission.
+       */
+      export interface Numeric {
+        average: number;
+
+        max: number;
+
+        median: number;
+
+        min: number;
+
+        p95: number;
+      }
+    }
+
+    export interface Run {
+      createdAt: string;
+
+      /**
+       * Wall-clock run time. Null until the run ends.
+       */
+      durationMs: number | null;
+
+      endedAt: string | null;
+
+      /**
+       * Per-project run number, shown as SR-42 in the app.
+       */
+      runNumber: number | null;
+
+      simulationRunPlanId: string;
+
+      simulationRunPlanJobId: string;
+
+      /**
+       * The run plan’s name. Null when the plan has since been deleted.
+       */
+      simulationRunPlanName: string | null;
+
+      startedAt: string | null;
+
+      status:
+        | 'PENDING'
+        | 'QUEUED'
+        | 'CREATING_SNAPSHOTS'
+        | 'CREATING_SIMULATIONS'
+        | 'PREPARING_CAPACITY'
+        | 'RUNNING_SIMULATIONS'
+        | 'COMPLETED'
+        | 'FAILED'
+        | 'TIMED_OUT'
+        | 'CANCELLED'
+        | 'CANCELLING'
+        | 'ENDING_SIMULATIONS';
+
+      triggeredBy: 'SCHEDULED' | 'USER_TRIGGERED_FROM_UI' | 'RE_RUN' | 'TRIGGERED_FROM_API' | 'SYSTEM';
+    }
+
+    export interface Summary {
+      /**
+       * passedCalls / evaluatedCalls, 0-100. Null when nothing was evaluated.
+       */
+      callPassRate: number | null;
+
+      /**
+       * Every (check, simulation) verdict pooled. 0-100. Null when nothing was
+       * evaluated.
+       */
+      checkPassRate: number | null;
+
+      /**
+       * Counted simulations that connected and produced a conversation.
+       */
+      completedCalls: number;
+
+      /**
+       * Simulations whose results count: all but the invalidated ones.
+       */
+      countedCalls: number;
+
+      /**
+       * Counted simulations at least one check graded.
+       */
+      evaluatedCalls: number;
+
+      /**
+       * Evaluated simulations that failed at least one check.
+       */
+      failedCalls: number;
+
+      /**
+       * Evaluated simulations that passed every check.
+       */
+      passedCalls: number;
+
+      /**
+       * The run’s score: the mean of each check’s pass rate, the same number as
+       * `verdict.score`. 0-100. Null when nothing was evaluated.
+       */
+      score: number | null;
+
+      /**
+       * Every simulation of the run, retries included.
+       */
+      totalCalls: number;
+    }
+
+    /**
+     * For a run that swept a property (accent, background noise, speech pace and so
+     * on): which check failures the property caused.
+     *
+     * Each value is compared with every other value combined using a one-sided Fisher
+     * exact test, and every comparison in the run is corrected together with
+     * Benjamini-Hochberg. A value is only called worse when the difference is
+     * statistically significant, so a value that happened to fail a few more
+     * simulations by chance is not reported as a problem. Invalidated simulations and
+     * simulations that failed on the Roark platform are left out.
+     */
+    export interface SweepAttribution {
+      /**
+       * Plain sentences on what this run could not see, ready to show to a reader.
+       */
+      caveats: Array<string>;
+
+      /**
+       * Every check the run was graded on: `PROPERTY_ATTRIBUTABLE` first, then
+       * `FOUND_UNATTRIBUTED`, then `WITHIN_NOISE`.
+       */
+      checks: Array<SweepAttribution.Check>;
+
+      /**
+       * The Benjamini-Hochberg false discovery rate the comparisons are held to.
+       */
+      falseDiscoveryRate: number;
+
+      /**
+       * The overall failure rate, 0-100, at which a check with no standout value is
+       * reported as `FOUND_UNATTRIBUTED`.
+       */
+      foundUnattributedFailureRate: number;
+
+      /**
+       * Counted simulations a value needs before it is compared.
+       */
+      minArmCalls: number;
+
+      /**
+       * Roughly how many percentage points more often a value would need to fail than
+       * the rest of the run to be flagged at this sample size. Optimistic: it uses
+       * simulation counts rather than the verdicts on each check and ignores the
+       * correction, so checks graded on fewer simulations need larger gaps. Large when
+       * few simulations ran per value: finding no significant difference then means the
+       * run could not see one, not that none exists.
+       */
+      minimumDetectableGap: number | null;
+
+      /**
+       * The values your agent never spoke on significantly more often than the rest of
+       * the run, most significant first, tested the same way as `worseValues`. Empty on
+       * a run with no silent simulations.
+       */
+      neverSpokeValues: Array<SweepAttribution.NeverSpokeValue>;
+
+      /**
+       * How many values had enough counted simulations to be compared.
+       */
+      testableValueCount: number;
+
+      /**
+       * How many value and check pairs were actually tested. A value can have enough
+       * simulations and still go untested (no other value graded that check, or too few
+       * verdicts on it). When this is 0 no comparison ran, so an empty `worseValues`
+       * everywhere means nothing was tested, not that no value did worse.
+       */
+      testedComparisonCount: number;
+
+      /**
+       * Every value of the swept property, baseline first.
+       */
+      values: Array<SweepAttribution.Value>;
+    }
+
+    export namespace SweepAttribution {
+      /**
+       * How one check's failures relate to the swept property.
+       */
+      export interface Check {
+        /**
+         * How this check relates to the swept property:
+         *
+         * - `PROPERTY_ATTRIBUTABLE`: at least one value failed it significantly more often
+         *   than every other value combined. `worseValues` names them. This is the only
+         *   case in which a value is called worse.
+         * - `FOUND_UNATTRIBUTED`: no value stands out, but the check failed on at least
+         *   `foundUnattributedFailureRate`% of counted simulations overall. A real issue
+         *   with the agent on which no value stood out, so the run cannot tie it to the
+         *   property. It does not show the property had no effect: a small run may be
+         *   unable to see one.
+         * - `WITHIN_NOISE`: neither. Any differences between values are within what chance
+         *   produces.
+         */
+        attribution: 'PROPERTY_ATTRIBUTABLE' | 'FOUND_UNATTRIBUTED' | 'WITHIN_NOISE';
+
+        evaluated: number;
+
+        failed: number;
+
+        /**
+         * Share of counted simulations across every value that failed the check, 0-100.
+         */
+        failureRate: number | null;
+
+        metricDefinitionId: string;
+
+        metricName: string;
+
+        /**
+         * The values significantly worse than the rest, most significant first. Empty
+         * unless `attribution` is `PROPERTY_ATTRIBUTABLE`.
+         */
+        worseValues: Array<Check.WorseValue>;
+      }
+
+      export namespace Check {
+        /**
+         * A value that failed a check significantly more often than the rest of the run.
+         */
+        export interface WorseValue {
+          /**
+           * How likely a difference at least this large would be by chance alone, after
+           * correcting for every comparison in the run (Benjamini-Hochberg). The value is
+           * called worse only when this is at most `falseDiscoveryRate`.
+           */
+          adjustedPValue: number;
+
+          evaluated: number;
+
+          failed: number;
+
+          /**
+           * Share of the counted simulations at this value that failed the check, 0-100.
+           */
+          failureRate: number | null;
+
+          /**
+           * The arm's identity: the override signature its calls ran with, e.g.
+           * `BACKGROUND_NOISE=DRIVING;BACKGROUND_NOISE_VOLUME=0.7`. Join on this rather than
+           * on `value`: a sweep can run one value as several arms (Driving at 70% and at
+           * 100%), and those share a value.
+           */
+          key: string;
+
+          label: string;
+
+          /**
+           * The same share across every other value combined, 0-100. This is what the value
+           * is compared with.
+           */
+          restFailureRate: number | null;
+
+          value: string;
+        }
+      }
+
+      /**
+       * A value your agent never spoke on significantly more often than the rest of the
+       * run.
+       */
+      export interface NeverSpokeValue {
+        /**
+         * How likely a difference at least this large would be by chance alone, after
+         * correcting across the values (Benjamini-Hochberg).
+         */
+        adjustedPValue: number;
+
+        /**
+         * Simulations run at this value.
+         */
+        attempted: number;
+
+        /**
+         * The arm's identity: the override signature its calls ran with, e.g.
+         * `BACKGROUND_NOISE=DRIVING;BACKGROUND_NOISE_VOLUME=0.7`. Join on this rather than
+         * on `value`: a sweep can run one value as several arms (Driving at 70% and at
+         * 100%), and those share a value.
+         */
+        key: string;
+
+        label: string;
+
+        /**
+         * Simulations run across every other value combined.
+         */
+        restAttempted: number;
+
+        /**
+         * Simulations your agent never spoke on across every other value combined.
+         */
+        restSilentAttempts: number;
+
+        /**
+         * Retries placed at this value because your agent never spoke.
+         */
+        retries: number;
+
+        /**
+         * Simulations at this value your agent never spoke on, retried or not.
+         */
+        silentAttempts: number;
+
+        value: string;
+      }
+
+      /**
+       * One value of the swept property.
+       */
+      export interface Value {
+        /**
+         * Simulations run at this value. Simulations that failed on the Roark platform are
+         * left out, since they say nothing about your agent.
+         */
+        attempted: number;
+
+        /**
+         * Simulations that actually tested the property: not invalidated, and graded by at
+         * least one check. Only these are used in the comparison.
+         */
+        counted: number;
+
+        /**
+         * Whether this is the baseline the plan named.
+         */
+        isBaseline: boolean;
+
+        /**
+         * The arm's identity: the override signature its calls ran with, e.g.
+         * `BACKGROUND_NOISE=DRIVING;BACKGROUND_NOISE_VOLUME=0.7`. Join on this rather than
+         * on `value`: a sweep can run one value as several arms (Driving at 70% and at
+         * 100%), and those share a value.
+         */
+        key: string;
+
+        /**
+         * The value in words, with what else the arm pinned, e.g. `American` or
+         * `Driving (70% noise)`.
+         */
+        label: string;
+
+        /**
+         * Of `attempted`, the retries of simulations your agent never spoke on. Zero
+         * unless the plan retries silent simulations.
+         */
+        retries: number;
+
+        /**
+         * The mean of each check's pass rate at this value, 0-100, the same rule as the
+         * run's `score`. Descriptive only: a lower score alone never makes a value worse.
+         * Null when nothing counted.
+         */
+        score: number | null;
+
+        /**
+         * Of `attempted`, the simulations your agent never spoke on, whether or not a
+         * retry followed. They are invalidated, so they are never in `counted`.
+         */
+        silentAttempts: number;
+
+        /**
+         * Whether this value had at least `minArmCalls` counted simulations. A value below
+         * that is "insufficient data": it is reported with its numbers but never compared
+         * or ranked, because a rate from one or two calls cannot be told apart from luck.
+         */
+        testable: boolean;
+
+        /**
+         * The stored value of the swept property, e.g. `US`.
+         */
+        value: string;
+      }
+    }
+
+    /**
+     * Pass/fail verdict for the run, judged against the success criteria pinned on the
+     * run plan when the run started.
+     */
+    export interface Verdict {
+      /**
+       * Every check the run was judged on, with its rate and the minimum it had to
+       * reach.
+       *
+       * Thresholds and authored yes/no metrics only. See `SimulationRunPlanJobCheck` for
+       * why a provider reading is not one.
+       */
+      checks: Array<Verdict.Check>;
+
+      /**
+       * Every criterion the run missed. Empty when it passed.
+       */
+      failures: Array<
+        | Verdict.UnionMember0
+        | Verdict.UnionMember1
+        | Verdict.UnionMember2
+        | Verdict.UnionMember3
+        | Verdict.UnionMember4
+      >;
+
+      /**
+       * Whether every check cleared its own `minPassRate` (and the run completed with
+       * full coverage). Use this as the CI exit status.
+       *
+       * Never derived from `score`: a run can score 95 and still fail, or score 40 and
+       * still pass.
+       */
+      passed: boolean;
+
+      /**
+       * The run's headline quality number, 0-100: the mean of each check's own pass
+       * rate.
+       *
+       * Every check weighs the same, however many simulations it evaluated, which is the
+       * same way `passed` treats them. It is the number the Roark dashboard shows for
+       * this run.
+       *
+       * REPORTING ONLY, for dashboards and trend lines. Nothing is judged against it.
+       * Null when nothing was evaluated.
+       */
+      score: number | null;
+    }
+
+    export namespace Verdict {
+      /**
+       * How one check did. Present for every check the run was judged on, passing or
+       * not.
+       *
+       * A check is a metric that yields a pass/fail: a threshold
+       * (`Silence Duration <= 2s`) or a yes/no metric you authored. Provider readings
+       * such as `Comprehension Failure` are observations, not checks: their `true` is
+       * whatever the underlying field happens to mean, so they carry no passing side and
+       * never appear here. Put a threshold on one to judge it.
+       */
+      export interface Check {
+        evaluatedSims: number;
+
+        /**
+         * Whether `minPassRate` is the 80% default (`true`) or a minimum this metric set
+         * for itself.
+         */
+        inherited: boolean;
+
+        metricDefinitionId: string;
+
+        /**
+         * THE BAR it was judged against: the share of the run's simulations it had to
+         * pass.
+         */
+        minPassRate: number;
+
+        /**
+         * This check's own pass rate, 0-100: the share of sims it evaluated that passed
+         * it. Null when it evaluated nothing.
+         */
+        passRate: number | null;
+
+        /**
+         * `passRate >= minPassRate`.
+         */
+        passed: boolean;
+
+        passedSims: number;
+
+        metricName?: string | null;
+      }
+
+      export interface UnionMember0 {
+        /**
+         * The status the run actually ended in.
+         */
+        status:
+          | 'PENDING'
+          | 'QUEUED'
+          | 'CREATING_SNAPSHOTS'
+          | 'CREATING_SIMULATIONS'
+          | 'PREPARING_CAPACITY'
+          | 'RUNNING_SIMULATIONS'
+          | 'COMPLETED'
+          | 'FAILED'
+          | 'TIMED_OUT'
+          | 'CANCELLED'
+          | 'CANCELLING'
+          | 'ENDING_SIMULATIONS';
+
+        type: 'RUN_NOT_COMPLETED';
+      }
+
+      export interface UnionMember1 {
+        evaluatedCalls: number;
+
+        expectedCalls: number;
+
+        type: 'INCOMPLETE_COVERAGE';
+      }
+
+      /**
+       * Your agent never spoke on more than `maxShare` percent of the run. Those
+       * simulations are left out of every check, so the run fails on them whatever the
+       * checks say.
+       */
+      export interface UnionMember2 {
+        /**
+         * The largest share of simulations, 0-100, your agent may never speak on while the
+         * run can pass.
+         */
+        maxShare: number;
+
+        /**
+         * Test cases your agent never spoke on, judged on each test case’s last attempt: a
+         * silent simulation a retry later reached your agent on does not count here.
+         */
+        neverSpokeCalls: number;
+
+        /**
+         * Every test case of the run whose last attempt reached your agent.
+         */
+        totalCalls: number;
+
+        type: 'AGENT_NEVER_SPOKE';
+
+        /**
+         * The agent as the run tested it. Null when the simulations tested more than one
+         * agent.
+         */
+        agentName?: string | null;
+
+        /**
+         * Every simulation your agent never spoke on, including the ones a retry replaced.
+         * Above `neverSpokeCalls` only when the plan retries silent simulations
+         * (`maxNoResponseRetries`).
+         */
+        silentAttempts?: number;
+      }
+
+      export interface UnionMember3 {
+        metricDefinitionId: string;
+
+        type: 'METRIC_NOT_EVALUATED';
+
+        /**
+         * The check’s name, for rendering the failure.
+         */
+        metricName?: string | null;
+      }
+
+      export interface UnionMember4 {
+        /**
+         * Whether the missed minimum was the 80% default (`true`) or this metric's own.
+         */
+        inherited: boolean;
+
+        metricDefinitionId: string;
+
+        minPassRate: number;
+
+        passRate: number;
+
+        type: 'METRIC_BELOW_MIN_PASS_RATE';
+
+        /**
+         * The check’s name, for rendering the failure.
+         */
+        metricName?: string | null;
+      }
+    }
+  }
+}
+
 export interface SimulationRunPlanJobStartResponse {
   /**
    * Response when triggering a simulation run plan
@@ -1396,6 +2790,24 @@ export interface SimulationRunPlanJobListParams {
     | 'ENDING_SIMULATIONS';
 }
 
+export interface SimulationRunPlanJobCreateDebriefParams {
+  /**
+   * Generate a new debrief even when a ready one exists. Without it, an existing
+   * ready or in-progress debrief is returned as-is.
+   */
+  regenerate?: boolean;
+}
+
+export interface SimulationRunPlanJobGetResultsParams {
+  /**
+   * Simulation run plan job to compare this run against, e.g. the last run on your
+   * main branch. Defaults to the plan's previous settled run. Any run in the project
+   * works, including another plan's: checks are matched by metric, and a check only
+   * one run graded reads null on the other side.
+   */
+  compareToJobId?: string;
+}
+
 export interface SimulationRunPlanJobStartParams {
   /**
    * Values for the {{variables}} the run resolves, overriding whatever the plan has
@@ -1468,9 +2880,13 @@ export declare namespace SimulationRunPlanJob {
   export {
     type SimulationRunPlanJobListResponse as SimulationRunPlanJobListResponse,
     type SimulationRunPlanJobCancelResponse as SimulationRunPlanJobCancelResponse,
+    type SimulationRunPlanJobCreateDebriefResponse as SimulationRunPlanJobCreateDebriefResponse,
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
+    type SimulationRunPlanJobGetResultsResponse as SimulationRunPlanJobGetResultsResponse,
     type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
     type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,
+    type SimulationRunPlanJobCreateDebriefParams as SimulationRunPlanJobCreateDebriefParams,
+    type SimulationRunPlanJobGetResultsParams as SimulationRunPlanJobGetResultsParams,
     type SimulationRunPlanJobStartParams as SimulationRunPlanJobStartParams,
   };
 }
