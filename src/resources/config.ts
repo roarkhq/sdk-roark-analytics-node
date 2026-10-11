@@ -467,6 +467,14 @@ export namespace Bundle {
 
     noResponseRetryBackoffSeconds?: number;
 
+    schedule?:
+      | SimulationPlanConfig.UnionMember0
+      | SimulationPlanConfig.UnionMember1
+      | SimulationPlanConfig.UnionMember2
+      | SimulationPlanConfig.UnionMember3
+      | SimulationPlanConfig.UnionMember4
+      | SimulationPlanConfig.UnionMember5;
+
     silenceTimeoutSeconds?: number;
 
     template?: 'manual';
@@ -491,6 +499,90 @@ export namespace Bundle {
       personaOverride?: string;
 
       system?: string;
+    }
+
+    export interface UnionMember0 {
+      type: 'hourly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      minute?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember1 {
+      everyMinutes: number;
+
+      type: 'interval';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember2 {
+      time: string;
+
+      type: 'daily';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember3 {
+      days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+      time: string;
+
+      type: 'weekly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember4 {
+      dayOfMonth: number;
+
+      time: string;
+
+      type: 'monthly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember5 {
+      at: string;
+
+      type: 'once';
+
+      enabled?: boolean;
+
+      timezone?: string;
     }
   }
 
@@ -539,6 +631,14 @@ export namespace Bundle {
 
     noResponseRetryBackoffSeconds?: number;
 
+    schedule?:
+      | QaSimulationPlanConfig.UnionMember0
+      | QaSimulationPlanConfig.UnionMember1
+      | QaSimulationPlanConfig.UnionMember2
+      | QaSimulationPlanConfig.UnionMember3
+      | QaSimulationPlanConfig.UnionMember4
+      | QaSimulationPlanConfig.UnionMember5;
+
     silenceTimeoutSeconds?: number;
   }
 
@@ -557,6 +657,90 @@ export namespace Bundle {
       expect?: string;
 
       name?: string;
+    }
+
+    export interface UnionMember0 {
+      type: 'hourly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      minute?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember1 {
+      everyMinutes: number;
+
+      type: 'interval';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember2 {
+      time: string;
+
+      type: 'daily';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember3 {
+      days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+      time: string;
+
+      type: 'weekly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember4 {
+      dayOfMonth: number;
+
+      time: string;
+
+      type: 'monthly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember5 {
+      at: string;
+
+      type: 'once';
+
+      enabled?: boolean;
+
+      timezone?: string;
     }
   }
 
@@ -1118,6 +1302,14 @@ export namespace Bundle {
 
       noResponseRetryBackoffSeconds?: number;
 
+      schedule?:
+        | SimulationPlanConfig.UnionMember0
+        | SimulationPlanConfig.UnionMember1
+        | SimulationPlanConfig.UnionMember2
+        | SimulationPlanConfig.UnionMember3
+        | SimulationPlanConfig.UnionMember4
+        | SimulationPlanConfig.UnionMember5;
+
       silenceTimeoutSeconds?: number;
 
       template?: 'manual';
@@ -1142,6 +1334,90 @@ export namespace Bundle {
         personaOverride?: string;
 
         system?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'hourly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        minute?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember1 {
+        everyMinutes: number;
+
+        type: 'interval';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember2 {
+        time: string;
+
+        type: 'daily';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember3 {
+        days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+        time: string;
+
+        type: 'weekly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember4 {
+        dayOfMonth: number;
+
+        time: string;
+
+        type: 'monthly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember5 {
+        at: string;
+
+        type: 'once';
+
+        enabled?: boolean;
+
+        timezone?: string;
       }
     }
 
@@ -1190,6 +1466,14 @@ export namespace Bundle {
 
       noResponseRetryBackoffSeconds?: number;
 
+      schedule?:
+        | QaSimulationPlanConfig.UnionMember0
+        | QaSimulationPlanConfig.UnionMember1
+        | QaSimulationPlanConfig.UnionMember2
+        | QaSimulationPlanConfig.UnionMember3
+        | QaSimulationPlanConfig.UnionMember4
+        | QaSimulationPlanConfig.UnionMember5;
+
       silenceTimeoutSeconds?: number;
     }
 
@@ -1208,6 +1492,90 @@ export namespace Bundle {
         expect?: string;
 
         name?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'hourly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        minute?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember1 {
+        everyMinutes: number;
+
+        type: 'interval';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember2 {
+        time: string;
+
+        type: 'daily';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember3 {
+        days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+        time: string;
+
+        type: 'weekly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember4 {
+        dayOfMonth: number;
+
+        time: string;
+
+        type: 'monthly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember5 {
+        at: string;
+
+        type: 'once';
+
+        enabled?: boolean;
+
+        timezone?: string;
       }
     }
 
@@ -1914,6 +2282,14 @@ export namespace ConfigApplyParams {
 
     noResponseRetryBackoffSeconds?: number;
 
+    schedule?:
+      | SimulationPlanConfig.UnionMember0
+      | SimulationPlanConfig.UnionMember1
+      | SimulationPlanConfig.UnionMember2
+      | SimulationPlanConfig.UnionMember3
+      | SimulationPlanConfig.UnionMember4
+      | SimulationPlanConfig.UnionMember5;
+
     silenceTimeoutSeconds?: number;
 
     template?: 'manual';
@@ -1938,6 +2314,90 @@ export namespace ConfigApplyParams {
       personaOverride?: string;
 
       system?: string;
+    }
+
+    export interface UnionMember0 {
+      type: 'hourly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      minute?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember1 {
+      everyMinutes: number;
+
+      type: 'interval';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember2 {
+      time: string;
+
+      type: 'daily';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember3 {
+      days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+      time: string;
+
+      type: 'weekly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember4 {
+      dayOfMonth: number;
+
+      time: string;
+
+      type: 'monthly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember5 {
+      at: string;
+
+      type: 'once';
+
+      enabled?: boolean;
+
+      timezone?: string;
     }
   }
 
@@ -1986,6 +2446,14 @@ export namespace ConfigApplyParams {
 
     noResponseRetryBackoffSeconds?: number;
 
+    schedule?:
+      | QaSimulationPlanConfig.UnionMember0
+      | QaSimulationPlanConfig.UnionMember1
+      | QaSimulationPlanConfig.UnionMember2
+      | QaSimulationPlanConfig.UnionMember3
+      | QaSimulationPlanConfig.UnionMember4
+      | QaSimulationPlanConfig.UnionMember5;
+
     silenceTimeoutSeconds?: number;
   }
 
@@ -2004,6 +2472,90 @@ export namespace ConfigApplyParams {
       expect?: string;
 
       name?: string;
+    }
+
+    export interface UnionMember0 {
+      type: 'hourly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      minute?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember1 {
+      everyMinutes: number;
+
+      type: 'interval';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember2 {
+      time: string;
+
+      type: 'daily';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember3 {
+      days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+      time: string;
+
+      type: 'weekly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember4 {
+      dayOfMonth: number;
+
+      time: string;
+
+      type: 'monthly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember5 {
+      at: string;
+
+      type: 'once';
+
+      enabled?: boolean;
+
+      timezone?: string;
     }
   }
 
@@ -2565,6 +3117,14 @@ export namespace ConfigApplyParams {
 
       noResponseRetryBackoffSeconds?: number;
 
+      schedule?:
+        | SimulationPlanConfig.UnionMember0
+        | SimulationPlanConfig.UnionMember1
+        | SimulationPlanConfig.UnionMember2
+        | SimulationPlanConfig.UnionMember3
+        | SimulationPlanConfig.UnionMember4
+        | SimulationPlanConfig.UnionMember5;
+
       silenceTimeoutSeconds?: number;
 
       template?: 'manual';
@@ -2589,6 +3149,90 @@ export namespace ConfigApplyParams {
         personaOverride?: string;
 
         system?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'hourly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        minute?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember1 {
+        everyMinutes: number;
+
+        type: 'interval';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember2 {
+        time: string;
+
+        type: 'daily';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember3 {
+        days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+        time: string;
+
+        type: 'weekly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember4 {
+        dayOfMonth: number;
+
+        time: string;
+
+        type: 'monthly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember5 {
+        at: string;
+
+        type: 'once';
+
+        enabled?: boolean;
+
+        timezone?: string;
       }
     }
 
@@ -2637,6 +3281,14 @@ export namespace ConfigApplyParams {
 
       noResponseRetryBackoffSeconds?: number;
 
+      schedule?:
+        | QaSimulationPlanConfig.UnionMember0
+        | QaSimulationPlanConfig.UnionMember1
+        | QaSimulationPlanConfig.UnionMember2
+        | QaSimulationPlanConfig.UnionMember3
+        | QaSimulationPlanConfig.UnionMember4
+        | QaSimulationPlanConfig.UnionMember5;
+
       silenceTimeoutSeconds?: number;
     }
 
@@ -2655,6 +3307,90 @@ export namespace ConfigApplyParams {
         expect?: string;
 
         name?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'hourly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        minute?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember1 {
+        everyMinutes: number;
+
+        type: 'interval';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember2 {
+        time: string;
+
+        type: 'daily';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember3 {
+        days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+        time: string;
+
+        type: 'weekly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember4 {
+        dayOfMonth: number;
+
+        time: string;
+
+        type: 'monthly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember5 {
+        at: string;
+
+        type: 'once';
+
+        enabled?: boolean;
+
+        timezone?: string;
       }
     }
 
@@ -3192,6 +3928,14 @@ export namespace ConfigDiffParams {
 
     noResponseRetryBackoffSeconds?: number;
 
+    schedule?:
+      | SimulationPlanConfig.UnionMember0
+      | SimulationPlanConfig.UnionMember1
+      | SimulationPlanConfig.UnionMember2
+      | SimulationPlanConfig.UnionMember3
+      | SimulationPlanConfig.UnionMember4
+      | SimulationPlanConfig.UnionMember5;
+
     silenceTimeoutSeconds?: number;
 
     template?: 'manual';
@@ -3216,6 +3960,90 @@ export namespace ConfigDiffParams {
       personaOverride?: string;
 
       system?: string;
+    }
+
+    export interface UnionMember0 {
+      type: 'hourly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      minute?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember1 {
+      everyMinutes: number;
+
+      type: 'interval';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember2 {
+      time: string;
+
+      type: 'daily';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember3 {
+      days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+      time: string;
+
+      type: 'weekly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember4 {
+      dayOfMonth: number;
+
+      time: string;
+
+      type: 'monthly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember5 {
+      at: string;
+
+      type: 'once';
+
+      enabled?: boolean;
+
+      timezone?: string;
     }
   }
 
@@ -3264,6 +4092,14 @@ export namespace ConfigDiffParams {
 
     noResponseRetryBackoffSeconds?: number;
 
+    schedule?:
+      | QaSimulationPlanConfig.UnionMember0
+      | QaSimulationPlanConfig.UnionMember1
+      | QaSimulationPlanConfig.UnionMember2
+      | QaSimulationPlanConfig.UnionMember3
+      | QaSimulationPlanConfig.UnionMember4
+      | QaSimulationPlanConfig.UnionMember5;
+
     silenceTimeoutSeconds?: number;
   }
 
@@ -3282,6 +4118,90 @@ export namespace ConfigDiffParams {
       expect?: string;
 
       name?: string;
+    }
+
+    export interface UnionMember0 {
+      type: 'hourly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      minute?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember1 {
+      everyMinutes: number;
+
+      type: 'interval';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember2 {
+      time: string;
+
+      type: 'daily';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember3 {
+      days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+      time: string;
+
+      type: 'weekly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember4 {
+      dayOfMonth: number;
+
+      time: string;
+
+      type: 'monthly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember5 {
+      at: string;
+
+      type: 'once';
+
+      enabled?: boolean;
+
+      timezone?: string;
     }
   }
 
@@ -3843,6 +4763,14 @@ export namespace ConfigDiffParams {
 
       noResponseRetryBackoffSeconds?: number;
 
+      schedule?:
+        | SimulationPlanConfig.UnionMember0
+        | SimulationPlanConfig.UnionMember1
+        | SimulationPlanConfig.UnionMember2
+        | SimulationPlanConfig.UnionMember3
+        | SimulationPlanConfig.UnionMember4
+        | SimulationPlanConfig.UnionMember5;
+
       silenceTimeoutSeconds?: number;
 
       template?: 'manual';
@@ -3867,6 +4795,90 @@ export namespace ConfigDiffParams {
         personaOverride?: string;
 
         system?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'hourly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        minute?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember1 {
+        everyMinutes: number;
+
+        type: 'interval';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember2 {
+        time: string;
+
+        type: 'daily';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember3 {
+        days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+        time: string;
+
+        type: 'weekly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember4 {
+        dayOfMonth: number;
+
+        time: string;
+
+        type: 'monthly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember5 {
+        at: string;
+
+        type: 'once';
+
+        enabled?: boolean;
+
+        timezone?: string;
       }
     }
 
@@ -3915,6 +4927,14 @@ export namespace ConfigDiffParams {
 
       noResponseRetryBackoffSeconds?: number;
 
+      schedule?:
+        | QaSimulationPlanConfig.UnionMember0
+        | QaSimulationPlanConfig.UnionMember1
+        | QaSimulationPlanConfig.UnionMember2
+        | QaSimulationPlanConfig.UnionMember3
+        | QaSimulationPlanConfig.UnionMember4
+        | QaSimulationPlanConfig.UnionMember5;
+
       silenceTimeoutSeconds?: number;
     }
 
@@ -3933,6 +4953,90 @@ export namespace ConfigDiffParams {
         expect?: string;
 
         name?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'hourly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        minute?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember1 {
+        everyMinutes: number;
+
+        type: 'interval';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember2 {
+        time: string;
+
+        type: 'daily';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember3 {
+        days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+        time: string;
+
+        type: 'weekly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember4 {
+        dayOfMonth: number;
+
+        time: string;
+
+        type: 'monthly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember5 {
+        at: string;
+
+        type: 'once';
+
+        enabled?: boolean;
+
+        timezone?: string;
       }
     }
 
