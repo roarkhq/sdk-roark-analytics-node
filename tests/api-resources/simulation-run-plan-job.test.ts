@@ -47,6 +47,30 @@ describe('resource simulationRunPlanJob', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
+  test('createDebrief', async () => {
+    const responsePromise = client.simulationRunPlanJob.createDebrief('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('createDebrief: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.simulationRunPlanJob.createDebrief(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          regenerate: true,
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
+
   test('getByID', async () => {
     const responsePromise = client.simulationRunPlanJob.getByID('7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f');
     const rawResponse = await responsePromise.asResponse();
@@ -56,6 +80,30 @@ describe('resource simulationRunPlanJob', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('getResults', async () => {
+    const responsePromise = client.simulationRunPlanJob.getResults('jobId');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('getResults: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.simulationRunPlanJob.getResults(
+        'jobId',
+        {
+          compareToJobId: '9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
   });
 
   test('start', async () => {

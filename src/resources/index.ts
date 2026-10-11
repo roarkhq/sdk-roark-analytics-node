@@ -235,9 +235,13 @@ export {
   SimulationRunPlanJob,
   type SimulationRunPlanJobListResponse,
   type SimulationRunPlanJobCancelResponse,
+  type SimulationRunPlanJobCreateDebriefResponse,
   type SimulationRunPlanJobGetByIDResponse,
+  type SimulationRunPlanJobGetResultsResponse,
   type SimulationRunPlanJobStartResponse,
   type SimulationRunPlanJobListParams,
+  type SimulationRunPlanJobCreateDebriefParams,
+  type SimulationRunPlanJobGetResultsParams,
   type SimulationRunPlanJobStartParams,
 } from './simulation-run-plan-job';
 export { SimulationTemplate, type SimulationTemplateListResponse } from './simulation-template';
