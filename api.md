@@ -170,6 +170,24 @@ Methods:
 - <code title="get /v1/simulation/tool-fixture">client.simulationToolFixture.<a href="./src/resources/simulation-tool-fixture.ts">list</a>({ ...params }) -> SimulationToolFixtureListResponse</code>
 - <code title="delete /v1/simulation/tool-fixture/{fixtureId}">client.simulationToolFixture.<a href="./src/resources/simulation-tool-fixture.ts">delete</a>(fixtureID) -> SimulationToolFixtureDeleteResponse</code>
 
+# SimulationRunGroup
+
+Types:
+
+- <code><a href="./src/resources/simulation-run-group.ts">SimulationRunGroupCreateResponse</a></code>
+- <code><a href="./src/resources/simulation-run-group.ts">SimulationRunGroupListResponse</a></code>
+- <code><a href="./src/resources/simulation-run-group.ts">SimulationRunGroupDeleteResponse</a></code>
+- <code><a href="./src/resources/simulation-run-group.ts">SimulationRunGroupGetByIDResponse</a></code>
+- <code><a href="./src/resources/simulation-run-group.ts">SimulationRunGroupRegenerateReportResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/simulation/run-group">client.simulationRunGroup.<a href="./src/resources/simulation-run-group.ts">create</a>({ ...params }) -> SimulationRunGroupCreateResponse</code>
+- <code title="get /v1/simulation/run-group">client.simulationRunGroup.<a href="./src/resources/simulation-run-group.ts">list</a>({ ...params }) -> SimulationRunGroupListResponse</code>
+- <code title="delete /v1/simulation/run-group/{groupId}">client.simulationRunGroup.<a href="./src/resources/simulation-run-group.ts">delete</a>(groupID) -> SimulationRunGroupDeleteResponse</code>
+- <code title="get /v1/simulation/run-group/{groupId}">client.simulationRunGroup.<a href="./src/resources/simulation-run-group.ts">getByID</a>(groupID) -> SimulationRunGroupGetByIDResponse</code>
+- <code title="post /v1/simulation/run-group/{groupId}/report">client.simulationRunGroup.<a href="./src/resources/simulation-run-group.ts">regenerateReport</a>(groupID) -> SimulationRunGroupRegenerateReportResponse</code>
+
 # SimulationRunPlan
 
 Types:

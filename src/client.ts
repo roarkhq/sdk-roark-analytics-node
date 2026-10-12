@@ -241,6 +241,16 @@ import {
   SimulationPersonaUpdateResponse,
 } from './resources/simulation-persona';
 import {
+  SimulationRunGroup,
+  SimulationRunGroupCreateParams,
+  SimulationRunGroupCreateResponse,
+  SimulationRunGroupDeleteResponse,
+  SimulationRunGroupGetByIDResponse,
+  SimulationRunGroupListParams,
+  SimulationRunGroupListResponse,
+  SimulationRunGroupRegenerateReportResponse,
+} from './resources/simulation-run-group';
+import {
   SimulationRunPlan,
   SimulationRunPlanCreateParams,
   SimulationRunPlanCreateResponse,
@@ -1042,6 +1052,7 @@ export class Roark {
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
   simulationJobToolMock: API.SimulationJobToolMock = new API.SimulationJobToolMock(this);
   simulationToolFixture: API.SimulationToolFixture = new API.SimulationToolFixture(this);
+  simulationRunGroup: API.SimulationRunGroup = new API.SimulationRunGroup(this);
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
@@ -1072,6 +1083,7 @@ Roark.Simulation = Simulation;
 Roark.SimulationJob = SimulationJob;
 Roark.SimulationJobToolMock = SimulationJobToolMock;
 Roark.SimulationToolFixture = SimulationToolFixture;
+Roark.SimulationRunGroup = SimulationRunGroup;
 Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationPersona = SimulationPersona;
@@ -1195,6 +1207,17 @@ export declare namespace Roark {
     type SimulationToolFixtureCreateParams as SimulationToolFixtureCreateParams,
     type SimulationToolFixtureUpdateParams as SimulationToolFixtureUpdateParams,
     type SimulationToolFixtureListParams as SimulationToolFixtureListParams,
+  };
+
+  export {
+    SimulationRunGroup as SimulationRunGroup,
+    type SimulationRunGroupCreateResponse as SimulationRunGroupCreateResponse,
+    type SimulationRunGroupListResponse as SimulationRunGroupListResponse,
+    type SimulationRunGroupDeleteResponse as SimulationRunGroupDeleteResponse,
+    type SimulationRunGroupGetByIDResponse as SimulationRunGroupGetByIDResponse,
+    type SimulationRunGroupRegenerateReportResponse as SimulationRunGroupRegenerateReportResponse,
+    type SimulationRunGroupCreateParams as SimulationRunGroupCreateParams,
+    type SimulationRunGroupListParams as SimulationRunGroupListParams,
   };
 
   export {
