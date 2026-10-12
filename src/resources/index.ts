@@ -221,6 +221,16 @@ export {
   type SimulationPersonaListParams,
 } from './simulation-persona';
 export {
+  SimulationRunGroup,
+  type SimulationRunGroupCreateResponse,
+  type SimulationRunGroupListResponse,
+  type SimulationRunGroupDeleteResponse,
+  type SimulationRunGroupGetByIDResponse,
+  type SimulationRunGroupRegenerateReportResponse,
+  type SimulationRunGroupCreateParams,
+  type SimulationRunGroupListParams,
+} from './simulation-run-group';
+export {
   SimulationRunPlan,
   type SimulationRunPlanCreateResponse,
   type SimulationRunPlanUpdateResponse,
