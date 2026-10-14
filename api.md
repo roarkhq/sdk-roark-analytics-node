@@ -170,6 +170,26 @@ Methods:
 - <code title="get /v1/simulation/tool-fixture">client.simulationToolFixture.<a href="./src/resources/simulation-tool-fixture.ts">list</a>({ ...params }) -> SimulationToolFixtureListResponse</code>
 - <code title="delete /v1/simulation/tool-fixture/{fixtureId}">client.simulationToolFixture.<a href="./src/resources/simulation-tool-fixture.ts">delete</a>(fixtureID) -> SimulationToolFixtureDeleteResponse</code>
 
+# SimulationGroup
+
+Types:
+
+- <code><a href="./src/resources/simulation-group.ts">SimulationGroupCreateResponse</a></code>
+- <code><a href="./src/resources/simulation-group.ts">SimulationGroupUpdateResponse</a></code>
+- <code><a href="./src/resources/simulation-group.ts">SimulationGroupListResponse</a></code>
+- <code><a href="./src/resources/simulation-group.ts">SimulationGroupDeleteResponse</a></code>
+- <code><a href="./src/resources/simulation-group.ts">SimulationGroupGetByIDResponse</a></code>
+- <code><a href="./src/resources/simulation-group.ts">SimulationGroupRunResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/simulation/group">client.simulationGroup.<a href="./src/resources/simulation-group.ts">create</a>({ ...params }) -> SimulationGroupCreateResponse</code>
+- <code title="put /v1/simulation/group/{groupId}">client.simulationGroup.<a href="./src/resources/simulation-group.ts">update</a>(groupID, { ...params }) -> SimulationGroupUpdateResponse</code>
+- <code title="get /v1/simulation/group">client.simulationGroup.<a href="./src/resources/simulation-group.ts">list</a>({ ...params }) -> SimulationGroupListResponse</code>
+- <code title="delete /v1/simulation/group/{groupId}">client.simulationGroup.<a href="./src/resources/simulation-group.ts">delete</a>(groupID) -> SimulationGroupDeleteResponse</code>
+- <code title="get /v1/simulation/group/{groupId}">client.simulationGroup.<a href="./src/resources/simulation-group.ts">getByID</a>(groupID) -> SimulationGroupGetByIDResponse</code>
+- <code title="post /v1/simulation/group/{groupId}/run">client.simulationGroup.<a href="./src/resources/simulation-group.ts">run</a>(groupID) -> SimulationGroupRunResponse</code>
+
 # SimulationRunGroup
 
 Types:

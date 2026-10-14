@@ -53,6 +53,7 @@ export interface Bundle {
     | Bundle.MetricConfig
     | Bundle.SimulationPlanConfig
     | Bundle.QaSimulationPlanConfig
+    | Bundle.SimulationGroupConfig
     | Bundle.AlertConfig
     | Bundle.ToolConfig
     | Bundle.ProjectConfig
@@ -744,6 +745,126 @@ export namespace Bundle {
     }
   }
 
+  export interface SimulationGroupConfig {
+    kind: 'simulationGroup';
+
+    name: string;
+
+    plans: Array<string>;
+
+    description?: string | null;
+
+    notify?: SimulationGroupConfig.Notify;
+
+    schedule?:
+      | SimulationGroupConfig.UnionMember0
+      | SimulationGroupConfig.UnionMember1
+      | SimulationGroupConfig.UnionMember2
+      | SimulationGroupConfig.UnionMember3
+      | SimulationGroupConfig.UnionMember4
+      | SimulationGroupConfig.UnionMember5;
+  }
+
+  export namespace SimulationGroupConfig {
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
+    }
+
+    export interface UnionMember0 {
+      type: 'hourly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      minute?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember1 {
+      everyMinutes: number;
+
+      type: 'interval';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember2 {
+      time: string;
+
+      type: 'daily';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember3 {
+      days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+      time: string;
+
+      type: 'weekly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember4 {
+      dayOfMonth: number;
+
+      time: string;
+
+      type: 'monthly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember5 {
+      at: string;
+
+      type: 'once';
+
+      enabled?: boolean;
+
+      timezone?: string;
+    }
+  }
+
   export interface AlertConfig {
     kind: 'alert';
 
@@ -885,6 +1006,7 @@ export namespace Bundle {
       | ProjectConfig.MetricConfig
       | ProjectConfig.SimulationPlanConfig
       | ProjectConfig.QaSimulationPlanConfig
+      | ProjectConfig.SimulationGroupConfig
       | ProjectConfig.AlertConfig
       | ProjectConfig.ToolConfig
     >;
@@ -1579,6 +1701,126 @@ export namespace Bundle {
       }
     }
 
+    export interface SimulationGroupConfig {
+      kind: 'simulationGroup';
+
+      name: string;
+
+      plans: Array<string>;
+
+      description?: string | null;
+
+      notify?: SimulationGroupConfig.Notify;
+
+      schedule?:
+        | SimulationGroupConfig.UnionMember0
+        | SimulationGroupConfig.UnionMember1
+        | SimulationGroupConfig.UnionMember2
+        | SimulationGroupConfig.UnionMember3
+        | SimulationGroupConfig.UnionMember4
+        | SimulationGroupConfig.UnionMember5;
+    }
+
+    export namespace SimulationGroupConfig {
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
+      }
+
+      export interface UnionMember0 {
+        type: 'hourly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        minute?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember1 {
+        everyMinutes: number;
+
+        type: 'interval';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember2 {
+        time: string;
+
+        type: 'daily';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember3 {
+        days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+        time: string;
+
+        type: 'weekly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember4 {
+        dayOfMonth: number;
+
+        time: string;
+
+        type: 'monthly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember5 {
+        at: string;
+
+        type: 'once';
+
+        enabled?: boolean;
+
+        timezone?: string;
+      }
+    }
+
     export interface AlertConfig {
       kind: 'alert';
 
@@ -1772,6 +2014,7 @@ export namespace ConfigApplyResponse {
         | 'collector'
         | 'metric'
         | 'simulationPlan'
+        | 'simulationGroup'
         | 'alert'
         | 'tool'
         | 'project'
@@ -1831,6 +2074,7 @@ export namespace ConfigDiffResponse {
         | 'collector'
         | 'metric'
         | 'simulationPlan'
+        | 'simulationGroup'
         | 'alert'
         | 'tool'
         | 'project'
@@ -1868,6 +2112,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.MetricConfig
     | ConfigApplyParams.SimulationPlanConfig
     | ConfigApplyParams.QaSimulationPlanConfig
+    | ConfigApplyParams.SimulationGroupConfig
     | ConfigApplyParams.AlertConfig
     | ConfigApplyParams.ToolConfig
     | ConfigApplyParams.ProjectConfig
@@ -2559,6 +2804,126 @@ export namespace ConfigApplyParams {
     }
   }
 
+  export interface SimulationGroupConfig {
+    kind: 'simulationGroup';
+
+    name: string;
+
+    plans: Array<string>;
+
+    description?: string | null;
+
+    notify?: SimulationGroupConfig.Notify;
+
+    schedule?:
+      | SimulationGroupConfig.UnionMember0
+      | SimulationGroupConfig.UnionMember1
+      | SimulationGroupConfig.UnionMember2
+      | SimulationGroupConfig.UnionMember3
+      | SimulationGroupConfig.UnionMember4
+      | SimulationGroupConfig.UnionMember5;
+  }
+
+  export namespace SimulationGroupConfig {
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
+    }
+
+    export interface UnionMember0 {
+      type: 'hourly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      minute?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember1 {
+      everyMinutes: number;
+
+      type: 'interval';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember2 {
+      time: string;
+
+      type: 'daily';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember3 {
+      days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+      time: string;
+
+      type: 'weekly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember4 {
+      dayOfMonth: number;
+
+      time: string;
+
+      type: 'monthly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember5 {
+      at: string;
+
+      type: 'once';
+
+      enabled?: boolean;
+
+      timezone?: string;
+    }
+  }
+
   export interface AlertConfig {
     kind: 'alert';
 
@@ -2700,6 +3065,7 @@ export namespace ConfigApplyParams {
       | ProjectConfig.MetricConfig
       | ProjectConfig.SimulationPlanConfig
       | ProjectConfig.QaSimulationPlanConfig
+      | ProjectConfig.SimulationGroupConfig
       | ProjectConfig.AlertConfig
       | ProjectConfig.ToolConfig
     >;
@@ -3394,6 +3760,126 @@ export namespace ConfigApplyParams {
       }
     }
 
+    export interface SimulationGroupConfig {
+      kind: 'simulationGroup';
+
+      name: string;
+
+      plans: Array<string>;
+
+      description?: string | null;
+
+      notify?: SimulationGroupConfig.Notify;
+
+      schedule?:
+        | SimulationGroupConfig.UnionMember0
+        | SimulationGroupConfig.UnionMember1
+        | SimulationGroupConfig.UnionMember2
+        | SimulationGroupConfig.UnionMember3
+        | SimulationGroupConfig.UnionMember4
+        | SimulationGroupConfig.UnionMember5;
+    }
+
+    export namespace SimulationGroupConfig {
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
+      }
+
+      export interface UnionMember0 {
+        type: 'hourly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        minute?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember1 {
+        everyMinutes: number;
+
+        type: 'interval';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember2 {
+        time: string;
+
+        type: 'daily';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember3 {
+        days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+        time: string;
+
+        type: 'weekly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember4 {
+        dayOfMonth: number;
+
+        time: string;
+
+        type: 'monthly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember5 {
+        at: string;
+
+        type: 'once';
+
+        enabled?: boolean;
+
+        timezone?: string;
+      }
+    }
+
     export interface AlertConfig {
       kind: 'alert';
 
@@ -3514,6 +4000,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.MetricConfig
     | ConfigDiffParams.SimulationPlanConfig
     | ConfigDiffParams.QaSimulationPlanConfig
+    | ConfigDiffParams.SimulationGroupConfig
     | ConfigDiffParams.AlertConfig
     | ConfigDiffParams.ToolConfig
     | ConfigDiffParams.ProjectConfig
@@ -4205,6 +4692,126 @@ export namespace ConfigDiffParams {
     }
   }
 
+  export interface SimulationGroupConfig {
+    kind: 'simulationGroup';
+
+    name: string;
+
+    plans: Array<string>;
+
+    description?: string | null;
+
+    notify?: SimulationGroupConfig.Notify;
+
+    schedule?:
+      | SimulationGroupConfig.UnionMember0
+      | SimulationGroupConfig.UnionMember1
+      | SimulationGroupConfig.UnionMember2
+      | SimulationGroupConfig.UnionMember3
+      | SimulationGroupConfig.UnionMember4
+      | SimulationGroupConfig.UnionMember5;
+  }
+
+  export namespace SimulationGroupConfig {
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
+    }
+
+    export interface UnionMember0 {
+      type: 'hourly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      minute?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember1 {
+      everyMinutes: number;
+
+      type: 'interval';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember2 {
+      time: string;
+
+      type: 'daily';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember3 {
+      days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+      time: string;
+
+      type: 'weekly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember4 {
+      dayOfMonth: number;
+
+      time: string;
+
+      type: 'monthly';
+
+      enabled?: boolean;
+
+      endDate?: string;
+
+      maxRuns?: number;
+
+      timezone?: string;
+    }
+
+    export interface UnionMember5 {
+      at: string;
+
+      type: 'once';
+
+      enabled?: boolean;
+
+      timezone?: string;
+    }
+  }
+
   export interface AlertConfig {
     kind: 'alert';
 
@@ -4346,6 +4953,7 @@ export namespace ConfigDiffParams {
       | ProjectConfig.MetricConfig
       | ProjectConfig.SimulationPlanConfig
       | ProjectConfig.QaSimulationPlanConfig
+      | ProjectConfig.SimulationGroupConfig
       | ProjectConfig.AlertConfig
       | ProjectConfig.ToolConfig
     >;
@@ -4953,6 +5561,126 @@ export namespace ConfigDiffParams {
         expect?: string;
 
         name?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'hourly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        minute?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember1 {
+        everyMinutes: number;
+
+        type: 'interval';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember2 {
+        time: string;
+
+        type: 'daily';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember3 {
+        days: Array<'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'>;
+
+        time: string;
+
+        type: 'weekly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember4 {
+        dayOfMonth: number;
+
+        time: string;
+
+        type: 'monthly';
+
+        enabled?: boolean;
+
+        endDate?: string;
+
+        maxRuns?: number;
+
+        timezone?: string;
+      }
+
+      export interface UnionMember5 {
+        at: string;
+
+        type: 'once';
+
+        enabled?: boolean;
+
+        timezone?: string;
+      }
+    }
+
+    export interface SimulationGroupConfig {
+      kind: 'simulationGroup';
+
+      name: string;
+
+      plans: Array<string>;
+
+      description?: string | null;
+
+      notify?: SimulationGroupConfig.Notify;
+
+      schedule?:
+        | SimulationGroupConfig.UnionMember0
+        | SimulationGroupConfig.UnionMember1
+        | SimulationGroupConfig.UnionMember2
+        | SimulationGroupConfig.UnionMember3
+        | SimulationGroupConfig.UnionMember4
+        | SimulationGroupConfig.UnionMember5;
+    }
+
+    export namespace SimulationGroupConfig {
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
       }
 
       export interface UnionMember0 {

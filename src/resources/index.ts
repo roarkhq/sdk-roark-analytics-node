@@ -204,6 +204,18 @@ export {
   type SimulationEnvironmentListParams,
 } from './simulation-environment';
 export {
+  SimulationGroup,
+  type SimulationGroupCreateResponse,
+  type SimulationGroupUpdateResponse,
+  type SimulationGroupListResponse,
+  type SimulationGroupDeleteResponse,
+  type SimulationGroupGetByIDResponse,
+  type SimulationGroupRunResponse,
+  type SimulationGroupCreateParams,
+  type SimulationGroupUpdateParams,
+  type SimulationGroupListParams,
+} from './simulation-group';
+export {
   SimulationJob,
   type SimulationJobGetByIDResponse,
   type SimulationJobLookupResponse,
