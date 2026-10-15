@@ -137,6 +137,13 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      */
     environment: ScriptedFlowVariant.Environment | null;
 
+    /**
+     * Whether this variant is graded on the flow's agentExpectations as well as its
+     * additionalExpectations. False grades it on its additionalExpectations only.
+     * Always true on the happy path.
+     */
+    includeFlowExpectations: boolean;
+
     isGenerated: boolean;
 
     /**
@@ -497,6 +504,13 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      * when the brief inherits the happy path's: read the happy path's list.
      */
     handoffPersonas: Array<ImprovFlowVariant.HandoffPersona>;
+
+    /**
+     * Whether this variant is graded on the flow's agentExpectations as well as its
+     * additionalExpectations. False grades it on its additionalExpectations only.
+     * Always true on the happy path.
+     */
+    includeFlowExpectations: boolean;
 
     isGenerated: boolean;
 
@@ -1100,6 +1114,13 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      * project.
      */
     environment: VoicemailFlowVariant.Environment | null;
+
+    /**
+     * Whether this variant is graded on the flow's agentExpectations as well as its
+     * additionalExpectations. False grades it on its additionalExpectations only.
+     * Always true on the happy path.
+     */
+    includeFlowExpectations: boolean;
 
     isGenerated: boolean;
 
@@ -1463,6 +1484,13 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      */
     environment: ScriptedFlowVariant.Environment | null;
 
+    /**
+     * Whether this variant is graded on the flow's agentExpectations as well as its
+     * additionalExpectations. False grades it on its additionalExpectations only.
+     * Always true on the happy path.
+     */
+    includeFlowExpectations: boolean;
+
     isGenerated: boolean;
 
     /**
@@ -1823,6 +1851,13 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      * when the brief inherits the happy path's: read the happy path's list.
      */
     handoffPersonas: Array<ImprovFlowVariant.HandoffPersona>;
+
+    /**
+     * Whether this variant is graded on the flow's agentExpectations as well as its
+     * additionalExpectations. False grades it on its additionalExpectations only.
+     * Always true on the happy path.
+     */
+    includeFlowExpectations: boolean;
 
     isGenerated: boolean;
 
@@ -2426,6 +2461,13 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      * project.
      */
     environment: VoicemailFlowVariant.Environment | null;
+
+    /**
+     * Whether this variant is graded on the flow's agentExpectations as well as its
+     * additionalExpectations. False grades it on its additionalExpectations only.
+     * Always true on the happy path.
+     */
+    includeFlowExpectations: boolean;
 
     isGenerated: boolean;
 
@@ -2789,6 +2831,13 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      */
     environment: ScriptedFlowVariant.Environment | null;
 
+    /**
+     * Whether this variant is graded on the flow's agentExpectations as well as its
+     * additionalExpectations. False grades it on its additionalExpectations only.
+     * Always true on the happy path.
+     */
+    includeFlowExpectations: boolean;
+
     isGenerated: boolean;
 
     /**
@@ -3149,6 +3198,13 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      * when the brief inherits the happy path's: read the happy path's list.
      */
     handoffPersonas: Array<ImprovFlowVariant.HandoffPersona>;
+
+    /**
+     * Whether this variant is graded on the flow's agentExpectations as well as its
+     * additionalExpectations. False grades it on its additionalExpectations only.
+     * Always true on the happy path.
+     */
+    includeFlowExpectations: boolean;
 
     isGenerated: boolean;
 
@@ -3753,6 +3809,13 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      */
     environment: VoicemailFlowVariant.Environment | null;
 
+    /**
+     * Whether this variant is graded on the flow's agentExpectations as well as its
+     * additionalExpectations. False grades it on its additionalExpectations only.
+     * Always true on the happy path.
+     */
+    includeFlowExpectations: boolean;
+
     isGenerated: boolean;
 
     /**
@@ -4114,6 +4177,13 @@ export interface CustomerFlowEdgeCaseUpdateParams {
   environmentId?: string | null;
 
   /**
+   * Body param: Whether this edge case is graded on the flow's agentExpectations as
+   * well as its own additionalExpectations. Defaults to true; false grades it on its
+   * additionalExpectations only.
+   */
+  includeFlowExpectations?: boolean;
+
+  /**
    * Body param: The persona this runs as. Null on an edge case inherits the happy
    * path's.
    */
@@ -4162,6 +4232,13 @@ export interface CustomerFlowEdgeCaseAddParams {
   additionalExpectations?: Array<CustomerFlowEdgeCaseAddParams.AdditionalExpectation>;
 
   environmentId?: string | null;
+
+  /**
+   * Whether this edge case is graded on the flow's agentExpectations as well as its
+   * own additionalExpectations. Defaults to true; false grades it on its
+   * additionalExpectations only.
+   */
+  includeFlowExpectations?: boolean;
 
   /**
    * The persona this runs as. Omit to inherit the happy path's.
