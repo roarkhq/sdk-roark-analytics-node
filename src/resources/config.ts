@@ -287,6 +287,8 @@ export namespace Bundle {
 
       expectations?: Array<string>;
 
+      includeFlowExpectations?: boolean;
+
       persona?: string;
 
       prompt?: string;
@@ -1242,6 +1244,8 @@ export namespace Bundle {
         environment?: string;
 
         expectations?: Array<string>;
+
+        includeFlowExpectations?: boolean;
 
         persona?: string;
 
@@ -2346,6 +2350,8 @@ export namespace ConfigApplyParams {
 
       expectations?: Array<string>;
 
+      includeFlowExpectations?: boolean;
+
       persona?: string;
 
       prompt?: string;
@@ -3301,6 +3307,8 @@ export namespace ConfigApplyParams {
         environment?: string;
 
         expectations?: Array<string>;
+
+        includeFlowExpectations?: boolean;
 
         persona?: string;
 
@@ -4234,6 +4242,8 @@ export namespace ConfigDiffParams {
 
       expectations?: Array<string>;
 
+      includeFlowExpectations?: boolean;
+
       persona?: string;
 
       prompt?: string;
@@ -5189,6 +5199,8 @@ export namespace ConfigDiffParams {
         environment?: string;
 
         expectations?: Array<string>;
+
+        includeFlowExpectations?: boolean;
 
         persona?: string;
 
