@@ -80,11 +80,13 @@ export {
   type CallGetTranscriptResponse,
   type CallListMetricsResponse,
   type CallListSentimentRunsResponse,
+  type CallUpdatePropertiesResponse,
   type CallCreateParams,
   type CallListParams,
   type CallAppendToolInvocationsParams,
   type CallGetTranscriptParams,
   type CallListMetricsParams,
+  type CallUpdatePropertiesParams,
 } from './call';
 export {
   Config,
