@@ -140,6 +140,40 @@ export class Call extends APIResource {
   listSentimentRuns(callID: string, options?: RequestOptions): APIPromise<CallListSentimentRunsResponse> {
     return this._client.get(path`/v1/call/${callID}/sentiment-run`, options);
   }
+
+  /**
+   * Add, overwrite or remove custom properties on an already-existing call. Use this
+   * for data that becomes available after the call was created, e.g. an outcome your
+   * system validates a few minutes later. Merge semantics: a value adds or
+   * overwrites the property, null removes it, and properties left out are untouched.
+   * The patch is applied whole or not at all: a property Roark sets itself, or a
+   * value whose type differs from the type the project already stores that property
+   * as, rejects the request with a 400 and nothing is written. A 409 means another
+   * request created one of the properties with a different value type at the same
+   * moment; nothing was written. Optionally pass `metrics` to (re)score metrics over
+   * the updated properties, which triggers a billed metric collection job and
+   * requires the `metric:create` permission.
+   *
+   * @example
+   * ```ts
+   * const response = await client.call.updateProperties(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     properties: {
+   *       partner_outcome: 'apr_returned',
+   *       delivered_apr: '21.99',
+   *     },
+   *   },
+   * );
+   * ```
+   */
+  updateProperties(
+    callID: string,
+    body: CallUpdatePropertiesParams,
+    options?: RequestOptions,
+  ): APIPromise<CallUpdatePropertiesResponse> {
+    return this._client.patch(path`/v1/call/${callID}/properties`, { body, ...options });
+  }
 }
 
 export interface CallCreateResponse {
@@ -1453,6 +1487,126 @@ export namespace CallListSentimentRunsResponse {
   }
 }
 
+export interface CallUpdatePropertiesResponse {
+  /**
+   * Result of updating the properties of a call.
+   */
+  data: CallUpdatePropertiesResponse.Data;
+}
+
+export namespace CallUpdatePropertiesResponse {
+  /**
+   * Result of updating the properties of a call.
+   */
+  export interface Data {
+    /**
+     * The call whose properties were updated
+     */
+    callId: string;
+
+    /**
+     * Present (non-null) only when `metrics` were requested but the collection job
+     * could not be started (e.g. insufficient credits, or an unknown metric id). The
+     * properties were still written. Retry scoring via POST
+     * /v1/metric/collection-jobs, or re-send this request (writing the same values
+     * again is harmless). Null on success or when no metrics were requested.
+     */
+    metricCollectionError: string | null;
+
+    /**
+     * A metric collection job that processes metrics for calls or chats
+     */
+    metricCollectionJob: Data.MetricCollectionJob | null;
+
+    /**
+     * All of the call's properties after the update, including the ones Roark sets,
+     * when the key also has the 'call:read' permission. A key without it gets back
+     * only the properties this request wrote. Values are returned as strings, as on
+     * GET /v1/call/:callId.
+     */
+    properties: { [key: string]: string };
+
+    /**
+     * Stored names of the properties removed by this request. A property sent as null
+     * that was not on the call is not listed.
+     */
+    removed: Array<string>;
+
+    /**
+     * Stored (snake_case) names of the properties written by this request, including
+     * ones sent with the value they already had
+     */
+    updated: Array<string>;
+  }
+
+  export namespace Data {
+    /**
+     * A metric collection job that processes metrics for calls or chats
+     */
+    export interface MetricCollectionJob {
+      /**
+       * Unique identifier of the metric collection job
+       */
+      id: string;
+
+      /**
+       * When the job completed
+       */
+      completedAt: string | null;
+
+      /**
+       * Number of successfully completed items
+       */
+      completedItems: number;
+
+      /**
+       * When the job was created
+       */
+      createdAt: string;
+
+      /**
+       * Error message if the job failed
+       */
+      errorMessage: string | null;
+
+      /**
+       * Number of failed items
+       */
+      failedItems: number;
+
+      /**
+       * IDs of the metric policies that triggered this job
+       */
+      policyIds: Array<string>;
+
+      /**
+       * When the job started processing
+       */
+      startedAt: string | null;
+
+      /**
+       * Current status of the job
+       */
+      status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED';
+
+      /**
+       * Total number of call-metric pairs to process
+       */
+      totalItems: number;
+
+      /**
+       * What triggered this job
+       */
+      triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION';
+
+      /**
+       * When the job was last updated
+       */
+      updatedAt: string;
+    }
+  }
+}
+
 export interface CallCreateParams {
   /**
    * Direction of the call (INBOUND or OUTBOUND)
@@ -2097,6 +2251,32 @@ export interface CallListMetricsParams {
   status?: 'success' | 'all';
 }
 
+export interface CallUpdatePropertiesParams {
+  /**
+   * Properties to change on the call. A string, number or boolean value adds the
+   * property or overwrites it; null removes it. Properties left out are untouched.
+   * Keys are stored in snake_case, as on POST /v1/call. A property keeps the value
+   * type it was first stored with in the project, so a value of another type is
+   * rejected. Properties Roark sets itself (direction, duration_seconds, agent_id,
+   * ...) can't be changed. Max 100 per request.
+   */
+  properties: { [key: string]: string | number | boolean | null };
+
+  /**
+   * Optional. Metric definitions to (re)score on this call once the properties are
+   * written, e.g. metrics that read the call's properties. Triggers a metric
+   * collection job (billed, credit-gated) and requires the 'metric:create'
+   * permission. Omit to update properties without scoring. Max 20.
+   */
+  metrics?: Array<CallUpdatePropertiesParams.Metric>;
+}
+
+export namespace CallUpdatePropertiesParams {
+  export interface Metric {
+    id: string;
+  }
+}
+
 export declare namespace Call {
   export {
     type CallCreateResponse as CallCreateResponse,
@@ -2106,10 +2286,12 @@ export declare namespace Call {
     type CallGetTranscriptResponse as CallGetTranscriptResponse,
     type CallListMetricsResponse as CallListMetricsResponse,
     type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
+    type CallUpdatePropertiesResponse as CallUpdatePropertiesResponse,
     type CallCreateParams as CallCreateParams,
     type CallListParams as CallListParams,
     type CallAppendToolInvocationsParams as CallAppendToolInvocationsParams,
     type CallGetTranscriptParams as CallGetTranscriptParams,
     type CallListMetricsParams as CallListMetricsParams,
+    type CallUpdatePropertiesParams as CallUpdatePropertiesParams,
   };
 }
