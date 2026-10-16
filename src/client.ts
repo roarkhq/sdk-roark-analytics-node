@@ -102,6 +102,8 @@ import {
   CallListParams,
   CallListResponse,
   CallListSentimentRunsResponse,
+  CallUpdatePropertiesParams,
+  CallUpdatePropertiesResponse,
 } from './resources/call';
 import {
   Bundle,
@@ -1141,11 +1143,13 @@ export declare namespace Roark {
     type CallGetTranscriptResponse as CallGetTranscriptResponse,
     type CallListMetricsResponse as CallListMetricsResponse,
     type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
+    type CallUpdatePropertiesResponse as CallUpdatePropertiesResponse,
     type CallCreateParams as CallCreateParams,
     type CallListParams as CallListParams,
     type CallAppendToolInvocationsParams as CallAppendToolInvocationsParams,
     type CallGetTranscriptParams as CallGetTranscriptParams,
     type CallListMetricsParams as CallListMetricsParams,
+    type CallUpdatePropertiesParams as CallUpdatePropertiesParams,
   };
 
   export {

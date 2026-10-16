@@ -45,6 +45,7 @@ Types:
 - <code><a href="./src/resources/call.ts">CallGetTranscriptResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListMetricsResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListSentimentRunsResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallUpdatePropertiesResponse</a></code>
 
 Methods:
 
@@ -55,6 +56,7 @@ Methods:
 - <code title="get /v1/call/{callId}/transcript">client.call.<a href="./src/resources/call.ts">getTranscript</a>(callID, { ...params }) -> CallGetTranscriptResponse</code>
 - <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">listMetrics</a>(callID, { ...params }) -> CallListMetricsResponse</code>
 - <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">listSentimentRuns</a>(callID) -> CallListSentimentRunsResponse</code>
+- <code title="patch /v1/call/{callId}/properties">client.call.<a href="./src/resources/call.ts">updateProperties</a>(callID, { ...params }) -> CallUpdatePropertiesResponse</code>
 
 # Metric
 
