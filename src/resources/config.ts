@@ -338,7 +338,7 @@ export namespace Bundle {
   export interface CollectorConfig {
     kind: 'collector';
 
-    metrics: Array<string>;
+    metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
     modality: 'call' | 'chat';
 
@@ -352,6 +352,18 @@ export namespace Bundle {
   }
 
   export namespace CollectorConfig {
+    export interface CollectorMetricConfig {
+      metric: string;
+
+      excludedPhrases?: Array<string>;
+
+      screeningBrief?: string;
+
+      verifiedProperties?: Array<string>;
+
+      voicemailScript?: string;
+    }
+
     export interface Filter {
       conditions: Array<Filter.Condition>;
     }
@@ -1296,7 +1308,7 @@ export namespace Bundle {
     export interface CollectorConfig {
       kind: 'collector';
 
-      metrics: Array<string>;
+      metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
       modality: 'call' | 'chat';
 
@@ -1310,6 +1322,18 @@ export namespace Bundle {
     }
 
     export namespace CollectorConfig {
+      export interface CollectorMetricConfig {
+        metric: string;
+
+        excludedPhrases?: Array<string>;
+
+        screeningBrief?: string;
+
+        verifiedProperties?: Array<string>;
+
+        voicemailScript?: string;
+      }
+
       export interface Filter {
         conditions: Array<Filter.Condition>;
       }
@@ -2401,7 +2425,7 @@ export namespace ConfigApplyParams {
   export interface CollectorConfig {
     kind: 'collector';
 
-    metrics: Array<string>;
+    metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
     modality: 'call' | 'chat';
 
@@ -2415,6 +2439,18 @@ export namespace ConfigApplyParams {
   }
 
   export namespace CollectorConfig {
+    export interface CollectorMetricConfig {
+      metric: string;
+
+      excludedPhrases?: Array<string>;
+
+      screeningBrief?: string;
+
+      verifiedProperties?: Array<string>;
+
+      voicemailScript?: string;
+    }
+
     export interface Filter {
       conditions: Array<Filter.Condition>;
     }
@@ -3359,7 +3395,7 @@ export namespace ConfigApplyParams {
     export interface CollectorConfig {
       kind: 'collector';
 
-      metrics: Array<string>;
+      metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
       modality: 'call' | 'chat';
 
@@ -3373,6 +3409,18 @@ export namespace ConfigApplyParams {
     }
 
     export namespace CollectorConfig {
+      export interface CollectorMetricConfig {
+        metric: string;
+
+        excludedPhrases?: Array<string>;
+
+        screeningBrief?: string;
+
+        verifiedProperties?: Array<string>;
+
+        voicemailScript?: string;
+      }
+
       export interface Filter {
         conditions: Array<Filter.Condition>;
       }
@@ -4293,7 +4341,7 @@ export namespace ConfigDiffParams {
   export interface CollectorConfig {
     kind: 'collector';
 
-    metrics: Array<string>;
+    metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
     modality: 'call' | 'chat';
 
@@ -4307,6 +4355,18 @@ export namespace ConfigDiffParams {
   }
 
   export namespace CollectorConfig {
+    export interface CollectorMetricConfig {
+      metric: string;
+
+      excludedPhrases?: Array<string>;
+
+      screeningBrief?: string;
+
+      verifiedProperties?: Array<string>;
+
+      voicemailScript?: string;
+    }
+
     export interface Filter {
       conditions: Array<Filter.Condition>;
     }
@@ -5251,7 +5311,7 @@ export namespace ConfigDiffParams {
     export interface CollectorConfig {
       kind: 'collector';
 
-      metrics: Array<string>;
+      metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
       modality: 'call' | 'chat';
 
@@ -5265,6 +5325,18 @@ export namespace ConfigDiffParams {
     }
 
     export namespace CollectorConfig {
+      export interface CollectorMetricConfig {
+        metric: string;
+
+        excludedPhrases?: Array<string>;
+
+        screeningBrief?: string;
+
+        verifiedProperties?: Array<string>;
+
+        voicemailScript?: string;
+      }
+
       export interface Filter {
         conditions: Array<Filter.Condition>;
       }

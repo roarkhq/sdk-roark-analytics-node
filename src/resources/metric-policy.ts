@@ -181,6 +181,63 @@ export namespace MetricPolicyCreateResponse {
 
     export interface Metric {
       id: string;
+
+      /**
+       * The metric's per-collector setting. A metric takes at most one field, and which
+       * one depends on the metric: verifiedProperties for Property Verification,
+       * excludedPhrases for voice consistency, voicemailScript for voicemail,
+       * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+       * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+       * take is rejected with a 400.
+       */
+      settings: Metric.Settings | null;
+    }
+
+    export namespace Metric {
+      /**
+       * The metric's per-collector setting. A metric takes at most one field, and which
+       * one depends on the metric: verifiedProperties for Property Verification,
+       * excludedPhrases for voice consistency, voicemailScript for voicemail,
+       * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+       * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+       * take is rejected with a 400.
+       */
+      export interface Settings {
+        /**
+         * Voice consistency metrics: phrases whose agent lines are not judged, such as a
+         * recorded prompt in a different voice.
+         */
+        excludedPhrases?: Array<string>;
+
+        /**
+         * Knowledge grounding metrics: the knowledge base documents to ground against, in
+         * priority order. Empty or omitted uses every knowledge base in the project.
+         */
+        knowledgeBaseDocumentIds?: Array<string>;
+
+        /**
+         * Call screening metrics: what the agent should say when a screener asks who is
+         * calling and why.
+         */
+        screeningBrief?: string;
+
+        /**
+         * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
+         * every tool the agent has.
+         */
+        toolDefinitionIds?: Array<string>;
+
+        /**
+         * Property Verification metrics: the conversation properties to check against the
+         * transcript. Empty or omitted checks every custom property.
+         */
+        verifiedProperties?: Array<string>;
+
+        /**
+         * Voicemail metrics: the message the agent is expected to leave on voicemail.
+         */
+        voicemailScript?: string;
+      }
     }
   }
 }
@@ -280,6 +337,63 @@ export namespace MetricPolicyUpdateResponse {
 
     export interface Metric {
       id: string;
+
+      /**
+       * The metric's per-collector setting. A metric takes at most one field, and which
+       * one depends on the metric: verifiedProperties for Property Verification,
+       * excludedPhrases for voice consistency, voicemailScript for voicemail,
+       * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+       * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+       * take is rejected with a 400.
+       */
+      settings: Metric.Settings | null;
+    }
+
+    export namespace Metric {
+      /**
+       * The metric's per-collector setting. A metric takes at most one field, and which
+       * one depends on the metric: verifiedProperties for Property Verification,
+       * excludedPhrases for voice consistency, voicemailScript for voicemail,
+       * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+       * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+       * take is rejected with a 400.
+       */
+      export interface Settings {
+        /**
+         * Voice consistency metrics: phrases whose agent lines are not judged, such as a
+         * recorded prompt in a different voice.
+         */
+        excludedPhrases?: Array<string>;
+
+        /**
+         * Knowledge grounding metrics: the knowledge base documents to ground against, in
+         * priority order. Empty or omitted uses every knowledge base in the project.
+         */
+        knowledgeBaseDocumentIds?: Array<string>;
+
+        /**
+         * Call screening metrics: what the agent should say when a screener asks who is
+         * calling and why.
+         */
+        screeningBrief?: string;
+
+        /**
+         * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
+         * every tool the agent has.
+         */
+        toolDefinitionIds?: Array<string>;
+
+        /**
+         * Property Verification metrics: the conversation properties to check against the
+         * transcript. Empty or omitted checks every custom property.
+         */
+        verifiedProperties?: Array<string>;
+
+        /**
+         * Voicemail metrics: the message the agent is expected to leave on voicemail.
+         */
+        voicemailScript?: string;
+      }
     }
   }
 }
@@ -381,6 +495,63 @@ export namespace MetricPolicyListResponse {
 
     export interface Metric {
       id: string;
+
+      /**
+       * The metric's per-collector setting. A metric takes at most one field, and which
+       * one depends on the metric: verifiedProperties for Property Verification,
+       * excludedPhrases for voice consistency, voicemailScript for voicemail,
+       * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+       * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+       * take is rejected with a 400.
+       */
+      settings: Metric.Settings | null;
+    }
+
+    export namespace Metric {
+      /**
+       * The metric's per-collector setting. A metric takes at most one field, and which
+       * one depends on the metric: verifiedProperties for Property Verification,
+       * excludedPhrases for voice consistency, voicemailScript for voicemail,
+       * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+       * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+       * take is rejected with a 400.
+       */
+      export interface Settings {
+        /**
+         * Voice consistency metrics: phrases whose agent lines are not judged, such as a
+         * recorded prompt in a different voice.
+         */
+        excludedPhrases?: Array<string>;
+
+        /**
+         * Knowledge grounding metrics: the knowledge base documents to ground against, in
+         * priority order. Empty or omitted uses every knowledge base in the project.
+         */
+        knowledgeBaseDocumentIds?: Array<string>;
+
+        /**
+         * Call screening metrics: what the agent should say when a screener asks who is
+         * calling and why.
+         */
+        screeningBrief?: string;
+
+        /**
+         * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
+         * every tool the agent has.
+         */
+        toolDefinitionIds?: Array<string>;
+
+        /**
+         * Property Verification metrics: the conversation properties to check against the
+         * transcript. Empty or omitted checks every custom property.
+         */
+        verifiedProperties?: Array<string>;
+
+        /**
+         * Voicemail metrics: the message the agent is expected to leave on voicemail.
+         */
+        voicemailScript?: string;
+      }
     }
   }
 
@@ -510,13 +681,71 @@ export namespace MetricPolicyGetByIDResponse {
 
     export interface Metric {
       id: string;
+
+      /**
+       * The metric's per-collector setting. A metric takes at most one field, and which
+       * one depends on the metric: verifiedProperties for Property Verification,
+       * excludedPhrases for voice consistency, voicemailScript for voicemail,
+       * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+       * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+       * take is rejected with a 400.
+       */
+      settings: Metric.Settings | null;
+    }
+
+    export namespace Metric {
+      /**
+       * The metric's per-collector setting. A metric takes at most one field, and which
+       * one depends on the metric: verifiedProperties for Property Verification,
+       * excludedPhrases for voice consistency, voicemailScript for voicemail,
+       * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+       * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+       * take is rejected with a 400.
+       */
+      export interface Settings {
+        /**
+         * Voice consistency metrics: phrases whose agent lines are not judged, such as a
+         * recorded prompt in a different voice.
+         */
+        excludedPhrases?: Array<string>;
+
+        /**
+         * Knowledge grounding metrics: the knowledge base documents to ground against, in
+         * priority order. Empty or omitted uses every knowledge base in the project.
+         */
+        knowledgeBaseDocumentIds?: Array<string>;
+
+        /**
+         * Call screening metrics: what the agent should say when a screener asks who is
+         * calling and why.
+         */
+        screeningBrief?: string;
+
+        /**
+         * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
+         * every tool the agent has.
+         */
+        toolDefinitionIds?: Array<string>;
+
+        /**
+         * Property Verification metrics: the conversation properties to check against the
+         * transcript. Empty or omitted checks every custom property.
+         */
+        verifiedProperties?: Array<string>;
+
+        /**
+         * Voicemail metrics: the message the agent is expected to leave on voicemail.
+         */
+        voicemailScript?: string;
+      }
     }
   }
 }
 
 export interface MetricPolicyCreateParams {
   /**
-   * Metric definitions to collect when this policy matches
+   * Metric definitions to collect when this policy matches, each with an optional
+   * setting
    */
   metrics: Array<MetricPolicyCreateParams.Metric>;
 
@@ -544,7 +773,67 @@ export interface MetricPolicyCreateParams {
 
 export namespace MetricPolicyCreateParams {
   export interface Metric {
+    /**
+     * The metric definition to collect
+     */
     id: string;
+
+    /**
+     * The metric's per-collector setting. A metric takes at most one field, and which
+     * one depends on the metric: verifiedProperties for Property Verification,
+     * excludedPhrases for voice consistency, voicemailScript for voicemail,
+     * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+     * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+     * take is rejected with a 400.
+     */
+    settings?: Metric.Settings | null;
+  }
+
+  export namespace Metric {
+    /**
+     * The metric's per-collector setting. A metric takes at most one field, and which
+     * one depends on the metric: verifiedProperties for Property Verification,
+     * excludedPhrases for voice consistency, voicemailScript for voicemail,
+     * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+     * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+     * take is rejected with a 400.
+     */
+    export interface Settings {
+      /**
+       * Voice consistency metrics: phrases whose agent lines are not judged, such as a
+       * recorded prompt in a different voice.
+       */
+      excludedPhrases?: Array<string>;
+
+      /**
+       * Knowledge grounding metrics: the knowledge base documents to ground against, in
+       * priority order. Empty or omitted uses every knowledge base in the project.
+       */
+      knowledgeBaseDocumentIds?: Array<string>;
+
+      /**
+       * Call screening metrics: what the agent should say when a screener asks who is
+       * calling and why.
+       */
+      screeningBrief?: string;
+
+      /**
+       * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
+       * every tool the agent has.
+       */
+      toolDefinitionIds?: Array<string>;
+
+      /**
+       * Property Verification metrics: the conversation properties to check against the
+       * transcript. Empty or omitted checks every custom property.
+       */
+      verifiedProperties?: Array<string>;
+
+      /**
+       * Voicemail metrics: the message the agent is expected to leave on voicemail.
+       */
+      voicemailScript?: string;
+    }
   }
 
   export interface Condition {
@@ -595,7 +884,9 @@ export interface MetricPolicyUpdateParams {
   conditions?: Array<MetricPolicyUpdateParams.Condition>;
 
   /**
-   * Metric definitions to collect when this policy matches
+   * Metric definitions to collect when this policy matches. Replaces the policy's
+   * whole metric list: a metric sent without settings goes back to its default, so
+   * resend a metric's settings to keep them. Omit to keep the current metrics.
    */
   metrics?: Array<MetricPolicyUpdateParams.Metric>;
 
@@ -651,7 +942,67 @@ export namespace MetricPolicyUpdateParams {
   }
 
   export interface Metric {
+    /**
+     * The metric definition to collect
+     */
     id: string;
+
+    /**
+     * The metric's per-collector setting. A metric takes at most one field, and which
+     * one depends on the metric: verifiedProperties for Property Verification,
+     * excludedPhrases for voice consistency, voicemailScript for voicemail,
+     * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+     * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+     * take is rejected with a 400.
+     */
+    settings?: Metric.Settings | null;
+  }
+
+  export namespace Metric {
+    /**
+     * The metric's per-collector setting. A metric takes at most one field, and which
+     * one depends on the metric: verifiedProperties for Property Verification,
+     * excludedPhrases for voice consistency, voicemailScript for voicemail,
+     * screeningBrief for call screening, toolDefinitionIds for tool invocation,
+     * knowledgeBaseDocumentIds for knowledge grounding. A field the metric doesn't
+     * take is rejected with a 400.
+     */
+    export interface Settings {
+      /**
+       * Voice consistency metrics: phrases whose agent lines are not judged, such as a
+       * recorded prompt in a different voice.
+       */
+      excludedPhrases?: Array<string>;
+
+      /**
+       * Knowledge grounding metrics: the knowledge base documents to ground against, in
+       * priority order. Empty or omitted uses every knowledge base in the project.
+       */
+      knowledgeBaseDocumentIds?: Array<string>;
+
+      /**
+       * Call screening metrics: what the agent should say when a screener asks who is
+       * calling and why.
+       */
+      screeningBrief?: string;
+
+      /**
+       * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
+       * every tool the agent has.
+       */
+      toolDefinitionIds?: Array<string>;
+
+      /**
+       * Property Verification metrics: the conversation properties to check against the
+       * transcript. Empty or omitted checks every custom property.
+       */
+      verifiedProperties?: Array<string>;
+
+      /**
+       * Voicemail metrics: the message the agent is expected to leave on voicemail.
+       */
+      voicemailScript?: string;
+    }
   }
 }
 
