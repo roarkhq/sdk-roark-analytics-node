@@ -8,20 +8,19 @@ import { path } from '../internal/utils/path';
 export class MetricCollectionJob extends APIResource {
   /**
    * Creates a metric collection job for the specified calls or chats and metrics,
-   * then triggers processing. Provide exactly one of callIds or chatIds.
+   * then triggers processing. Provide exactly one of callIds or chatIds. Pass
+   * policyId to score with a metric policy’s settings (for example to re-score past
+   * calls after changing which properties Property Verification checks); metrics
+   * then defaults to every metric that policy collects.
    *
    * @example
    * ```ts
    * const metricCollectionJob =
-   *   await client.metricCollectionJob.create({
-   *     metrics: [
-   *       { id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' },
-   *     ],
-   *   });
+   *   await client.metricCollectionJob.create();
    * ```
    */
   create(
-    body: MetricCollectionJobCreateParams,
+    body: MetricCollectionJobCreateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<MetricCollectionJobCreateResponse> {
     return this._client.post('/v1/metric/collection-jobs', { body, ...options });
@@ -301,11 +300,6 @@ export namespace MetricCollectionJobGetByIDResponse {
 
 export interface MetricCollectionJobCreateParams {
   /**
-   * Metric definitions to collect. Max 20 per request.
-   */
-  metrics: Array<MetricCollectionJobCreateParams.Metric>;
-
-  /**
    * Call IDs to collect metrics for. Mutually exclusive with chatIds. Max 500 per
    * request.
    */
@@ -316,6 +310,23 @@ export interface MetricCollectionJobCreateParams {
    * request.
    */
   chatIds?: Array<string>;
+
+  /**
+   * Metric definitions to collect. Max 20 per request. Required unless policyId is
+   * given; with policyId, defaults to every metric that policy collects, and each
+   * one listed must be in it.
+   */
+  metrics?: Array<MetricCollectionJobCreateParams.Metric>;
+
+  /**
+   * Optional. A metric policy (collector) whose settings to score with: each metric
+   * runs at the version that policy runs it at, with its per-collector setting (such
+   * as the properties Property Verification checks), instead of the metric's
+   * default. A metric the policy runs at its default runs at its default here too.
+   * The policy's conditions are not applied: the listed conversations are scored as
+   * given. Use it to re-score past conversations after changing a policy's settings.
+   */
+  policyId?: string;
 }
 
 export namespace MetricCollectionJobCreateParams {
