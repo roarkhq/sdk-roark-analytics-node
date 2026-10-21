@@ -82,6 +82,24 @@ export class SimulationRunPlanJob extends APIResource {
   }
 
   /**
+   * The billable spend for one simulation run (run plan job), split by cost type,
+   * with the spend of each simulated call in it. Safe to call while the run is in
+   * progress: totals reflect the costs recorded so far. Amounts are billable spend
+   * only, in exact micro-dollars (`\*UsdMicros`) and dollars (`\*Usd`, for display).
+   * Requires an API key with the `billing:read` permission.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulationRunPlanJob.getCost(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  getCost(jobID: string, options?: RequestOptions): APIPromise<SimulationRunPlanJobGetCostResponse> {
+    return this._client.get(path`/v1/simulation/plan/job/${jobID}/cost`, options);
+  }
+
+  /**
    * Everything the run report shows, in one request: the summary and score, the
    * pass/fail verdict, per-metric aggregates, every simulation with its check
    * results, breakdowns by agent and persona, the comparison against the previous
@@ -1552,6 +1570,128 @@ export namespace SimulationRunPlanJobGetByIDResponse {
   }
 }
 
+export interface SimulationRunPlanJobGetCostResponse {
+  data: SimulationRunPlanJobGetCostResponse.Data;
+}
+
+export namespace SimulationRunPlanJobGetCostResponse {
+  export interface Data {
+    /**
+     * Spend by cost type. Sums to totalUsdMicros.
+     */
+    breakdown: Array<Data.Breakdown>;
+
+    /**
+     * Spend per simulated call in the run.
+     */
+    calls: Array<Data.Call>;
+
+    currency: 'usd';
+
+    jobId: string;
+
+    totalUsd: number;
+
+    /**
+     * Total billable spend for the run, in micro-dollars.
+     */
+    totalUsdMicros: number;
+  }
+
+  export namespace Data {
+    export interface Breakdown {
+      /**
+       * The same figure in US dollars.
+       */
+      amountUsd: number;
+
+      /**
+       * Billable spend for this type, in micro-dollars.
+       */
+      amountUsdMicros: number;
+
+      /**
+       * Units billed (see the line items for the unit).
+       */
+      quantity: number;
+
+      /**
+       * The cost source, e.g. SIM_PLATFORM_FEE, SIM_LLM, METRIC.
+       */
+      source:
+        | 'SIM_PLATFORM_FEE'
+        | 'SIM_TTS'
+        | 'SIM_STT'
+        | 'SIM_LLM'
+        | 'SIM_TELEPHONY'
+        | 'METRIC'
+        | 'TRANSCRIPTION'
+        | 'INTERNAL_LLM'
+        | 'INTERNAL_STT';
+
+      /**
+       * SIMULATION or POST_CALL.
+       */
+      surface: 'SIMULATION' | 'POST_CALL';
+    }
+
+    export interface Call {
+      amountUsd: number;
+
+      amountUsdMicros: number;
+
+      breakdown: Array<Call.Breakdown>;
+
+      /**
+       * The call (voice runs) or chat (chat runs) the spend is attributed to. Null for
+       * costs incurred before the conversation existed; use simulationJobId to join
+       * those.
+       */
+      conversationId: string | null;
+
+      simulationJobId: string | null;
+    }
+
+    export namespace Call {
+      export interface Breakdown {
+        /**
+         * The same figure in US dollars.
+         */
+        amountUsd: number;
+
+        /**
+         * Billable spend for this type, in micro-dollars.
+         */
+        amountUsdMicros: number;
+
+        /**
+         * Units billed (see the line items for the unit).
+         */
+        quantity: number;
+
+        /**
+         * The cost source, e.g. SIM_PLATFORM_FEE, SIM_LLM, METRIC.
+         */
+        source:
+          | 'SIM_PLATFORM_FEE'
+          | 'SIM_TTS'
+          | 'SIM_STT'
+          | 'SIM_LLM'
+          | 'SIM_TELEPHONY'
+          | 'METRIC'
+          | 'TRANSCRIPTION'
+          | 'INTERNAL_LLM'
+          | 'INTERNAL_STT';
+
+        /**
+         * SIMULATION or POST_CALL.
+         */
+        surface: 'SIMULATION' | 'POST_CALL';
+      }
+    }
+  }
+}
+
 export interface SimulationRunPlanJobGetResultsResponse {
   /**
    * Everything the run report shows, in one response.
@@ -2882,6 +3022,7 @@ export declare namespace SimulationRunPlanJob {
     type SimulationRunPlanJobCancelResponse as SimulationRunPlanJobCancelResponse,
     type SimulationRunPlanJobCreateDebriefResponse as SimulationRunPlanJobCreateDebriefResponse,
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
+    type SimulationRunPlanJobGetCostResponse as SimulationRunPlanJobGetCostResponse,
     type SimulationRunPlanJobGetResultsResponse as SimulationRunPlanJobGetResultsResponse,
     type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
     type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,
