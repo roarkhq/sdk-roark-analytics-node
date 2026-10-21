@@ -34,6 +34,16 @@ Methods:
 
 - <code title="get /v1/projects">client.project.<a href="./src/resources/project.ts">list</a>() -> ProjectListResponse</code>
 
+# Usage
+
+Types:
+
+- <code><a href="./src/resources/usage.ts">UsageGetResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/usage">client.usage.<a href="./src/resources/usage.ts">get</a>({ ...params }) -> UsageGetResponse</code>
+
 # Call
 
 Types:
