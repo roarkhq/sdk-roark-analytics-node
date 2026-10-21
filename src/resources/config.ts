@@ -56,6 +56,7 @@ export interface Bundle {
     | Bundle.SimulationGroupConfig
     | Bundle.AlertConfig
     | Bundle.ToolConfig
+    | Bundle.DashboardConfig
     | Bundle.ProjectConfig
   >;
 
@@ -986,6 +987,238 @@ export namespace Bundle {
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
   }
 
+  export interface DashboardConfig {
+    kind: 'dashboard';
+
+    name: string;
+
+    description?: string;
+
+    displayName?: string;
+
+    filters?: Array<DashboardConfig.Filter>;
+
+    isDefault?: boolean;
+
+    timeRange?:
+      | DashboardConfig.UnionMember0
+      | DashboardConfig.UnionMember1
+      | DashboardConfig.UnionMember2
+      | DashboardConfig.UnionMember3;
+
+    widgets?: Array<DashboardConfig.Widget>;
+  }
+
+  export namespace DashboardConfig {
+    export interface Filter {
+      type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+      value: string | number | boolean;
+
+      operator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUAL_TO'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUAL_TO'
+        | 'CONTAINS'
+        | 'STARTS_WITH';
+
+      property?: string;
+    }
+
+    export interface UnionMember0 {
+      type: 'LAST';
+
+      unit: 'DAYS' | 'WEEKS' | 'MONTHS';
+
+      value: number;
+    }
+
+    export interface UnionMember1 {
+      period:
+        | 'TODAY'
+        | 'YESTERDAY'
+        | 'THIS_WEEK'
+        | 'LAST_WEEK'
+        | 'THIS_MONTH'
+        | 'LAST_MONTH'
+        | 'THIS_YEAR'
+        | 'LAST_YEAR';
+
+      type: 'CALENDAR_ALIGNED';
+    }
+
+    export interface UnionMember2 {
+      from: string;
+
+      to: string;
+
+      type: 'FIXED';
+    }
+
+    export interface UnionMember3 {
+      from: string;
+
+      type: 'SINCE';
+    }
+
+    export interface Widget {
+      measures: Array<Widget.Measure>;
+
+      name: string;
+
+      comparisonGroups?: Array<Widget.ComparisonGroup>;
+
+      comparisonMode?: 'NONE' | 'PREVIOUS_PERIOD';
+
+      description?: string;
+
+      display?: 'LINE' | 'NUMBER' | 'RADAR' | 'STACKED_BAR' | 'TABLE';
+
+      filters?: Array<Widget.Filter>;
+
+      interval?: 'HOUR' | 'DAY' | 'WEEK' | 'MONTH';
+
+      size?: 'SMALL' | 'MEDIUM' | 'LARGE' | 'EXTRA_LARGE';
+    }
+
+    export namespace Widget {
+      export interface Measure {
+        aggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+        breakdown?: Measure.Breakdown;
+
+        color?:
+          | 'GREEN'
+          | 'RED'
+          | 'ORANGE'
+          | 'PURPLE'
+          | 'GREY'
+          | 'BLUE'
+          | 'PEACH'
+          | 'TEAL'
+          | 'INDIGO'
+          | 'AMBER'
+          | 'ROSE'
+          | 'CYAN';
+
+        distinctBy?: 'NONE' | 'CALL';
+
+        filters?: Array<Measure.Filter>;
+
+        isBaseline?: boolean;
+
+        metric?: string;
+
+        nestedAggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+        nestedAggregationPercentile?: number;
+
+        passOperator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH';
+
+        passValue?: string | number | boolean;
+
+        percentile?: number;
+
+        type?: 'METRIC' | 'CONVERSATION' | 'UPTIME';
+      }
+
+      export namespace Measure {
+        export interface Breakdown {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'DATASET';
+
+          property?: string;
+        }
+
+        export interface Filter {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+          value: string | number | boolean;
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          property?: string;
+        }
+      }
+
+      export interface ComparisonGroup {
+        filters: Array<ComparisonGroup.Filter>;
+
+        name: string;
+
+        color?:
+          | 'GREEN'
+          | 'RED'
+          | 'ORANGE'
+          | 'PURPLE'
+          | 'GREY'
+          | 'BLUE'
+          | 'PEACH'
+          | 'TEAL'
+          | 'INDIGO'
+          | 'AMBER'
+          | 'ROSE'
+          | 'CYAN';
+      }
+
+      export namespace ComparisonGroup {
+        export interface Filter {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+          value: string | number | boolean;
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          property?: string;
+        }
+      }
+
+      export interface Filter {
+        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+        value: string | number | boolean;
+
+        operator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH';
+
+        property?: string;
+      }
+    }
+  }
+
   export interface ProjectConfig {
     kind: 'project';
 
@@ -1023,6 +1256,7 @@ export namespace Bundle {
       | ProjectConfig.SimulationGroupConfig
       | ProjectConfig.AlertConfig
       | ProjectConfig.ToolConfig
+      | ProjectConfig.DashboardConfig
     >;
   }
 
@@ -1955,6 +2189,238 @@ export namespace Bundle {
 
       parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
     }
+
+    export interface DashboardConfig {
+      kind: 'dashboard';
+
+      name: string;
+
+      description?: string;
+
+      displayName?: string;
+
+      filters?: Array<DashboardConfig.Filter>;
+
+      isDefault?: boolean;
+
+      timeRange?:
+        | DashboardConfig.UnionMember0
+        | DashboardConfig.UnionMember1
+        | DashboardConfig.UnionMember2
+        | DashboardConfig.UnionMember3;
+
+      widgets?: Array<DashboardConfig.Widget>;
+    }
+
+    export namespace DashboardConfig {
+      export interface Filter {
+        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+        value: string | number | boolean;
+
+        operator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH';
+
+        property?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'LAST';
+
+        unit: 'DAYS' | 'WEEKS' | 'MONTHS';
+
+        value: number;
+      }
+
+      export interface UnionMember1 {
+        period:
+          | 'TODAY'
+          | 'YESTERDAY'
+          | 'THIS_WEEK'
+          | 'LAST_WEEK'
+          | 'THIS_MONTH'
+          | 'LAST_MONTH'
+          | 'THIS_YEAR'
+          | 'LAST_YEAR';
+
+        type: 'CALENDAR_ALIGNED';
+      }
+
+      export interface UnionMember2 {
+        from: string;
+
+        to: string;
+
+        type: 'FIXED';
+      }
+
+      export interface UnionMember3 {
+        from: string;
+
+        type: 'SINCE';
+      }
+
+      export interface Widget {
+        measures: Array<Widget.Measure>;
+
+        name: string;
+
+        comparisonGroups?: Array<Widget.ComparisonGroup>;
+
+        comparisonMode?: 'NONE' | 'PREVIOUS_PERIOD';
+
+        description?: string;
+
+        display?: 'LINE' | 'NUMBER' | 'RADAR' | 'STACKED_BAR' | 'TABLE';
+
+        filters?: Array<Widget.Filter>;
+
+        interval?: 'HOUR' | 'DAY' | 'WEEK' | 'MONTH';
+
+        size?: 'SMALL' | 'MEDIUM' | 'LARGE' | 'EXTRA_LARGE';
+      }
+
+      export namespace Widget {
+        export interface Measure {
+          aggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+          breakdown?: Measure.Breakdown;
+
+          color?:
+            | 'GREEN'
+            | 'RED'
+            | 'ORANGE'
+            | 'PURPLE'
+            | 'GREY'
+            | 'BLUE'
+            | 'PEACH'
+            | 'TEAL'
+            | 'INDIGO'
+            | 'AMBER'
+            | 'ROSE'
+            | 'CYAN';
+
+          distinctBy?: 'NONE' | 'CALL';
+
+          filters?: Array<Measure.Filter>;
+
+          isBaseline?: boolean;
+
+          metric?: string;
+
+          nestedAggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+          nestedAggregationPercentile?: number;
+
+          passOperator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          passValue?: string | number | boolean;
+
+          percentile?: number;
+
+          type?: 'METRIC' | 'CONVERSATION' | 'UPTIME';
+        }
+
+        export namespace Measure {
+          export interface Breakdown {
+            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'DATASET';
+
+            property?: string;
+          }
+
+          export interface Filter {
+            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+            value: string | number | boolean;
+
+            operator?:
+              | 'EQUALS'
+              | 'NOT_EQUALS'
+              | 'GREATER_THAN'
+              | 'GREATER_THAN_OR_EQUAL_TO'
+              | 'LESS_THAN'
+              | 'LESS_THAN_OR_EQUAL_TO'
+              | 'CONTAINS'
+              | 'STARTS_WITH';
+
+            property?: string;
+          }
+        }
+
+        export interface ComparisonGroup {
+          filters: Array<ComparisonGroup.Filter>;
+
+          name: string;
+
+          color?:
+            | 'GREEN'
+            | 'RED'
+            | 'ORANGE'
+            | 'PURPLE'
+            | 'GREY'
+            | 'BLUE'
+            | 'PEACH'
+            | 'TEAL'
+            | 'INDIGO'
+            | 'AMBER'
+            | 'ROSE'
+            | 'CYAN';
+        }
+
+        export namespace ComparisonGroup {
+          export interface Filter {
+            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+            value: string | number | boolean;
+
+            operator?:
+              | 'EQUALS'
+              | 'NOT_EQUALS'
+              | 'GREATER_THAN'
+              | 'GREATER_THAN_OR_EQUAL_TO'
+              | 'LESS_THAN'
+              | 'LESS_THAN_OR_EQUAL_TO'
+              | 'CONTAINS'
+              | 'STARTS_WITH';
+
+            property?: string;
+          }
+        }
+
+        export interface Filter {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+          value: string | number | boolean;
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          property?: string;
+        }
+      }
+    }
   }
 }
 
@@ -2045,6 +2511,7 @@ export namespace ConfigApplyResponse {
         | 'simulationGroup'
         | 'alert'
         | 'tool'
+        | 'dashboard'
         | 'project'
         | 'member';
 
@@ -2105,6 +2572,7 @@ export namespace ConfigDiffResponse {
         | 'simulationGroup'
         | 'alert'
         | 'tool'
+        | 'dashboard'
         | 'project'
         | 'member';
 
@@ -2143,6 +2611,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.SimulationGroupConfig
     | ConfigApplyParams.AlertConfig
     | ConfigApplyParams.ToolConfig
+    | ConfigApplyParams.DashboardConfig
     | ConfigApplyParams.ProjectConfig
   >;
 
@@ -3073,6 +3542,238 @@ export namespace ConfigApplyParams {
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
   }
 
+  export interface DashboardConfig {
+    kind: 'dashboard';
+
+    name: string;
+
+    description?: string;
+
+    displayName?: string;
+
+    filters?: Array<DashboardConfig.Filter>;
+
+    isDefault?: boolean;
+
+    timeRange?:
+      | DashboardConfig.UnionMember0
+      | DashboardConfig.UnionMember1
+      | DashboardConfig.UnionMember2
+      | DashboardConfig.UnionMember3;
+
+    widgets?: Array<DashboardConfig.Widget>;
+  }
+
+  export namespace DashboardConfig {
+    export interface Filter {
+      type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+      value: string | number | boolean;
+
+      operator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUAL_TO'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUAL_TO'
+        | 'CONTAINS'
+        | 'STARTS_WITH';
+
+      property?: string;
+    }
+
+    export interface UnionMember0 {
+      type: 'LAST';
+
+      unit: 'DAYS' | 'WEEKS' | 'MONTHS';
+
+      value: number;
+    }
+
+    export interface UnionMember1 {
+      period:
+        | 'TODAY'
+        | 'YESTERDAY'
+        | 'THIS_WEEK'
+        | 'LAST_WEEK'
+        | 'THIS_MONTH'
+        | 'LAST_MONTH'
+        | 'THIS_YEAR'
+        | 'LAST_YEAR';
+
+      type: 'CALENDAR_ALIGNED';
+    }
+
+    export interface UnionMember2 {
+      from: string;
+
+      to: string;
+
+      type: 'FIXED';
+    }
+
+    export interface UnionMember3 {
+      from: string;
+
+      type: 'SINCE';
+    }
+
+    export interface Widget {
+      measures: Array<Widget.Measure>;
+
+      name: string;
+
+      comparisonGroups?: Array<Widget.ComparisonGroup>;
+
+      comparisonMode?: 'NONE' | 'PREVIOUS_PERIOD';
+
+      description?: string;
+
+      display?: 'LINE' | 'NUMBER' | 'RADAR' | 'STACKED_BAR' | 'TABLE';
+
+      filters?: Array<Widget.Filter>;
+
+      interval?: 'HOUR' | 'DAY' | 'WEEK' | 'MONTH';
+
+      size?: 'SMALL' | 'MEDIUM' | 'LARGE' | 'EXTRA_LARGE';
+    }
+
+    export namespace Widget {
+      export interface Measure {
+        aggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+        breakdown?: Measure.Breakdown;
+
+        color?:
+          | 'GREEN'
+          | 'RED'
+          | 'ORANGE'
+          | 'PURPLE'
+          | 'GREY'
+          | 'BLUE'
+          | 'PEACH'
+          | 'TEAL'
+          | 'INDIGO'
+          | 'AMBER'
+          | 'ROSE'
+          | 'CYAN';
+
+        distinctBy?: 'NONE' | 'CALL';
+
+        filters?: Array<Measure.Filter>;
+
+        isBaseline?: boolean;
+
+        metric?: string;
+
+        nestedAggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+        nestedAggregationPercentile?: number;
+
+        passOperator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH';
+
+        passValue?: string | number | boolean;
+
+        percentile?: number;
+
+        type?: 'METRIC' | 'CONVERSATION' | 'UPTIME';
+      }
+
+      export namespace Measure {
+        export interface Breakdown {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'DATASET';
+
+          property?: string;
+        }
+
+        export interface Filter {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+          value: string | number | boolean;
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          property?: string;
+        }
+      }
+
+      export interface ComparisonGroup {
+        filters: Array<ComparisonGroup.Filter>;
+
+        name: string;
+
+        color?:
+          | 'GREEN'
+          | 'RED'
+          | 'ORANGE'
+          | 'PURPLE'
+          | 'GREY'
+          | 'BLUE'
+          | 'PEACH'
+          | 'TEAL'
+          | 'INDIGO'
+          | 'AMBER'
+          | 'ROSE'
+          | 'CYAN';
+      }
+
+      export namespace ComparisonGroup {
+        export interface Filter {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+          value: string | number | boolean;
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          property?: string;
+        }
+      }
+
+      export interface Filter {
+        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+        value: string | number | boolean;
+
+        operator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH';
+
+        property?: string;
+      }
+    }
+  }
+
   export interface ProjectConfig {
     kind: 'project';
 
@@ -3110,6 +3811,7 @@ export namespace ConfigApplyParams {
       | ProjectConfig.SimulationGroupConfig
       | ProjectConfig.AlertConfig
       | ProjectConfig.ToolConfig
+      | ProjectConfig.DashboardConfig
     >;
   }
 
@@ -4042,6 +4744,238 @@ export namespace ConfigApplyParams {
 
       parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
     }
+
+    export interface DashboardConfig {
+      kind: 'dashboard';
+
+      name: string;
+
+      description?: string;
+
+      displayName?: string;
+
+      filters?: Array<DashboardConfig.Filter>;
+
+      isDefault?: boolean;
+
+      timeRange?:
+        | DashboardConfig.UnionMember0
+        | DashboardConfig.UnionMember1
+        | DashboardConfig.UnionMember2
+        | DashboardConfig.UnionMember3;
+
+      widgets?: Array<DashboardConfig.Widget>;
+    }
+
+    export namespace DashboardConfig {
+      export interface Filter {
+        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+        value: string | number | boolean;
+
+        operator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH';
+
+        property?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'LAST';
+
+        unit: 'DAYS' | 'WEEKS' | 'MONTHS';
+
+        value: number;
+      }
+
+      export interface UnionMember1 {
+        period:
+          | 'TODAY'
+          | 'YESTERDAY'
+          | 'THIS_WEEK'
+          | 'LAST_WEEK'
+          | 'THIS_MONTH'
+          | 'LAST_MONTH'
+          | 'THIS_YEAR'
+          | 'LAST_YEAR';
+
+        type: 'CALENDAR_ALIGNED';
+      }
+
+      export interface UnionMember2 {
+        from: string;
+
+        to: string;
+
+        type: 'FIXED';
+      }
+
+      export interface UnionMember3 {
+        from: string;
+
+        type: 'SINCE';
+      }
+
+      export interface Widget {
+        measures: Array<Widget.Measure>;
+
+        name: string;
+
+        comparisonGroups?: Array<Widget.ComparisonGroup>;
+
+        comparisonMode?: 'NONE' | 'PREVIOUS_PERIOD';
+
+        description?: string;
+
+        display?: 'LINE' | 'NUMBER' | 'RADAR' | 'STACKED_BAR' | 'TABLE';
+
+        filters?: Array<Widget.Filter>;
+
+        interval?: 'HOUR' | 'DAY' | 'WEEK' | 'MONTH';
+
+        size?: 'SMALL' | 'MEDIUM' | 'LARGE' | 'EXTRA_LARGE';
+      }
+
+      export namespace Widget {
+        export interface Measure {
+          aggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+          breakdown?: Measure.Breakdown;
+
+          color?:
+            | 'GREEN'
+            | 'RED'
+            | 'ORANGE'
+            | 'PURPLE'
+            | 'GREY'
+            | 'BLUE'
+            | 'PEACH'
+            | 'TEAL'
+            | 'INDIGO'
+            | 'AMBER'
+            | 'ROSE'
+            | 'CYAN';
+
+          distinctBy?: 'NONE' | 'CALL';
+
+          filters?: Array<Measure.Filter>;
+
+          isBaseline?: boolean;
+
+          metric?: string;
+
+          nestedAggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+          nestedAggregationPercentile?: number;
+
+          passOperator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          passValue?: string | number | boolean;
+
+          percentile?: number;
+
+          type?: 'METRIC' | 'CONVERSATION' | 'UPTIME';
+        }
+
+        export namespace Measure {
+          export interface Breakdown {
+            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'DATASET';
+
+            property?: string;
+          }
+
+          export interface Filter {
+            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+            value: string | number | boolean;
+
+            operator?:
+              | 'EQUALS'
+              | 'NOT_EQUALS'
+              | 'GREATER_THAN'
+              | 'GREATER_THAN_OR_EQUAL_TO'
+              | 'LESS_THAN'
+              | 'LESS_THAN_OR_EQUAL_TO'
+              | 'CONTAINS'
+              | 'STARTS_WITH';
+
+            property?: string;
+          }
+        }
+
+        export interface ComparisonGroup {
+          filters: Array<ComparisonGroup.Filter>;
+
+          name: string;
+
+          color?:
+            | 'GREEN'
+            | 'RED'
+            | 'ORANGE'
+            | 'PURPLE'
+            | 'GREY'
+            | 'BLUE'
+            | 'PEACH'
+            | 'TEAL'
+            | 'INDIGO'
+            | 'AMBER'
+            | 'ROSE'
+            | 'CYAN';
+        }
+
+        export namespace ComparisonGroup {
+          export interface Filter {
+            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+            value: string | number | boolean;
+
+            operator?:
+              | 'EQUALS'
+              | 'NOT_EQUALS'
+              | 'GREATER_THAN'
+              | 'GREATER_THAN_OR_EQUAL_TO'
+              | 'LESS_THAN'
+              | 'LESS_THAN_OR_EQUAL_TO'
+              | 'CONTAINS'
+              | 'STARTS_WITH';
+
+            property?: string;
+          }
+        }
+
+        export interface Filter {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+          value: string | number | boolean;
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          property?: string;
+        }
+      }
+    }
   }
 }
 
@@ -4059,6 +4993,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.SimulationGroupConfig
     | ConfigDiffParams.AlertConfig
     | ConfigDiffParams.ToolConfig
+    | ConfigDiffParams.DashboardConfig
     | ConfigDiffParams.ProjectConfig
   >;
 
@@ -4989,6 +5924,238 @@ export namespace ConfigDiffParams {
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
   }
 
+  export interface DashboardConfig {
+    kind: 'dashboard';
+
+    name: string;
+
+    description?: string;
+
+    displayName?: string;
+
+    filters?: Array<DashboardConfig.Filter>;
+
+    isDefault?: boolean;
+
+    timeRange?:
+      | DashboardConfig.UnionMember0
+      | DashboardConfig.UnionMember1
+      | DashboardConfig.UnionMember2
+      | DashboardConfig.UnionMember3;
+
+    widgets?: Array<DashboardConfig.Widget>;
+  }
+
+  export namespace DashboardConfig {
+    export interface Filter {
+      type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+      value: string | number | boolean;
+
+      operator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUAL_TO'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUAL_TO'
+        | 'CONTAINS'
+        | 'STARTS_WITH';
+
+      property?: string;
+    }
+
+    export interface UnionMember0 {
+      type: 'LAST';
+
+      unit: 'DAYS' | 'WEEKS' | 'MONTHS';
+
+      value: number;
+    }
+
+    export interface UnionMember1 {
+      period:
+        | 'TODAY'
+        | 'YESTERDAY'
+        | 'THIS_WEEK'
+        | 'LAST_WEEK'
+        | 'THIS_MONTH'
+        | 'LAST_MONTH'
+        | 'THIS_YEAR'
+        | 'LAST_YEAR';
+
+      type: 'CALENDAR_ALIGNED';
+    }
+
+    export interface UnionMember2 {
+      from: string;
+
+      to: string;
+
+      type: 'FIXED';
+    }
+
+    export interface UnionMember3 {
+      from: string;
+
+      type: 'SINCE';
+    }
+
+    export interface Widget {
+      measures: Array<Widget.Measure>;
+
+      name: string;
+
+      comparisonGroups?: Array<Widget.ComparisonGroup>;
+
+      comparisonMode?: 'NONE' | 'PREVIOUS_PERIOD';
+
+      description?: string;
+
+      display?: 'LINE' | 'NUMBER' | 'RADAR' | 'STACKED_BAR' | 'TABLE';
+
+      filters?: Array<Widget.Filter>;
+
+      interval?: 'HOUR' | 'DAY' | 'WEEK' | 'MONTH';
+
+      size?: 'SMALL' | 'MEDIUM' | 'LARGE' | 'EXTRA_LARGE';
+    }
+
+    export namespace Widget {
+      export interface Measure {
+        aggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+        breakdown?: Measure.Breakdown;
+
+        color?:
+          | 'GREEN'
+          | 'RED'
+          | 'ORANGE'
+          | 'PURPLE'
+          | 'GREY'
+          | 'BLUE'
+          | 'PEACH'
+          | 'TEAL'
+          | 'INDIGO'
+          | 'AMBER'
+          | 'ROSE'
+          | 'CYAN';
+
+        distinctBy?: 'NONE' | 'CALL';
+
+        filters?: Array<Measure.Filter>;
+
+        isBaseline?: boolean;
+
+        metric?: string;
+
+        nestedAggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+        nestedAggregationPercentile?: number;
+
+        passOperator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH';
+
+        passValue?: string | number | boolean;
+
+        percentile?: number;
+
+        type?: 'METRIC' | 'CONVERSATION' | 'UPTIME';
+      }
+
+      export namespace Measure {
+        export interface Breakdown {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'DATASET';
+
+          property?: string;
+        }
+
+        export interface Filter {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+          value: string | number | boolean;
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          property?: string;
+        }
+      }
+
+      export interface ComparisonGroup {
+        filters: Array<ComparisonGroup.Filter>;
+
+        name: string;
+
+        color?:
+          | 'GREEN'
+          | 'RED'
+          | 'ORANGE'
+          | 'PURPLE'
+          | 'GREY'
+          | 'BLUE'
+          | 'PEACH'
+          | 'TEAL'
+          | 'INDIGO'
+          | 'AMBER'
+          | 'ROSE'
+          | 'CYAN';
+      }
+
+      export namespace ComparisonGroup {
+        export interface Filter {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+          value: string | number | boolean;
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          property?: string;
+        }
+      }
+
+      export interface Filter {
+        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+        value: string | number | boolean;
+
+        operator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH';
+
+        property?: string;
+      }
+    }
+  }
+
   export interface ProjectConfig {
     kind: 'project';
 
@@ -5026,6 +6193,7 @@ export namespace ConfigDiffParams {
       | ProjectConfig.SimulationGroupConfig
       | ProjectConfig.AlertConfig
       | ProjectConfig.ToolConfig
+      | ProjectConfig.DashboardConfig
     >;
   }
 
@@ -5957,6 +7125,238 @@ export namespace ConfigDiffParams {
       invocationCriteria?: string | null;
 
       parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+    }
+
+    export interface DashboardConfig {
+      kind: 'dashboard';
+
+      name: string;
+
+      description?: string;
+
+      displayName?: string;
+
+      filters?: Array<DashboardConfig.Filter>;
+
+      isDefault?: boolean;
+
+      timeRange?:
+        | DashboardConfig.UnionMember0
+        | DashboardConfig.UnionMember1
+        | DashboardConfig.UnionMember2
+        | DashboardConfig.UnionMember3;
+
+      widgets?: Array<DashboardConfig.Widget>;
+    }
+
+    export namespace DashboardConfig {
+      export interface Filter {
+        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+        value: string | number | boolean;
+
+        operator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH';
+
+        property?: string;
+      }
+
+      export interface UnionMember0 {
+        type: 'LAST';
+
+        unit: 'DAYS' | 'WEEKS' | 'MONTHS';
+
+        value: number;
+      }
+
+      export interface UnionMember1 {
+        period:
+          | 'TODAY'
+          | 'YESTERDAY'
+          | 'THIS_WEEK'
+          | 'LAST_WEEK'
+          | 'THIS_MONTH'
+          | 'LAST_MONTH'
+          | 'THIS_YEAR'
+          | 'LAST_YEAR';
+
+        type: 'CALENDAR_ALIGNED';
+      }
+
+      export interface UnionMember2 {
+        from: string;
+
+        to: string;
+
+        type: 'FIXED';
+      }
+
+      export interface UnionMember3 {
+        from: string;
+
+        type: 'SINCE';
+      }
+
+      export interface Widget {
+        measures: Array<Widget.Measure>;
+
+        name: string;
+
+        comparisonGroups?: Array<Widget.ComparisonGroup>;
+
+        comparisonMode?: 'NONE' | 'PREVIOUS_PERIOD';
+
+        description?: string;
+
+        display?: 'LINE' | 'NUMBER' | 'RADAR' | 'STACKED_BAR' | 'TABLE';
+
+        filters?: Array<Widget.Filter>;
+
+        interval?: 'HOUR' | 'DAY' | 'WEEK' | 'MONTH';
+
+        size?: 'SMALL' | 'MEDIUM' | 'LARGE' | 'EXTRA_LARGE';
+      }
+
+      export namespace Widget {
+        export interface Measure {
+          aggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+          breakdown?: Measure.Breakdown;
+
+          color?:
+            | 'GREEN'
+            | 'RED'
+            | 'ORANGE'
+            | 'PURPLE'
+            | 'GREY'
+            | 'BLUE'
+            | 'PEACH'
+            | 'TEAL'
+            | 'INDIGO'
+            | 'AMBER'
+            | 'ROSE'
+            | 'CYAN';
+
+          distinctBy?: 'NONE' | 'CALL';
+
+          filters?: Array<Measure.Filter>;
+
+          isBaseline?: boolean;
+
+          metric?: string;
+
+          nestedAggregation?: 'COUNT' | 'AVG' | 'MIN' | 'MAX' | 'SUM' | 'MEDIAN' | 'PERCENTILE' | 'PASS_RATE';
+
+          nestedAggregationPercentile?: number;
+
+          passOperator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          passValue?: string | number | boolean;
+
+          percentile?: number;
+
+          type?: 'METRIC' | 'CONVERSATION' | 'UPTIME';
+        }
+
+        export namespace Measure {
+          export interface Breakdown {
+            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'DATASET';
+
+            property?: string;
+          }
+
+          export interface Filter {
+            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+            value: string | number | boolean;
+
+            operator?:
+              | 'EQUALS'
+              | 'NOT_EQUALS'
+              | 'GREATER_THAN'
+              | 'GREATER_THAN_OR_EQUAL_TO'
+              | 'LESS_THAN'
+              | 'LESS_THAN_OR_EQUAL_TO'
+              | 'CONTAINS'
+              | 'STARTS_WITH';
+
+            property?: string;
+          }
+        }
+
+        export interface ComparisonGroup {
+          filters: Array<ComparisonGroup.Filter>;
+
+          name: string;
+
+          color?:
+            | 'GREEN'
+            | 'RED'
+            | 'ORANGE'
+            | 'PURPLE'
+            | 'GREY'
+            | 'BLUE'
+            | 'PEACH'
+            | 'TEAL'
+            | 'INDIGO'
+            | 'AMBER'
+            | 'ROSE'
+            | 'CYAN';
+        }
+
+        export namespace ComparisonGroup {
+          export interface Filter {
+            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+            value: string | number | boolean;
+
+            operator?:
+              | 'EQUALS'
+              | 'NOT_EQUALS'
+              | 'GREATER_THAN'
+              | 'GREATER_THAN_OR_EQUAL_TO'
+              | 'LESS_THAN'
+              | 'LESS_THAN_OR_EQUAL_TO'
+              | 'CONTAINS'
+              | 'STARTS_WITH';
+
+            property?: string;
+          }
+        }
+
+        export interface Filter {
+          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+
+          value: string | number | boolean;
+
+          operator?:
+            | 'EQUALS'
+            | 'NOT_EQUALS'
+            | 'GREATER_THAN'
+            | 'GREATER_THAN_OR_EQUAL_TO'
+            | 'LESS_THAN'
+            | 'LESS_THAN_OR_EQUAL_TO'
+            | 'CONTAINS'
+            | 'STARTS_WITH';
+
+          property?: string;
+        }
+      }
     }
   }
 }

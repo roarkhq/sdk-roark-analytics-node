@@ -43,6 +43,12 @@ export {
   type AgentPromptListVersionsParams,
 } from './agent-prompt';
 export {
+  Analytics,
+  type AnalyticsGetSchemaResponse,
+  type AnalyticsQueryResponse,
+  type AnalyticsQueryParams,
+} from './analytics';
+export {
   AutoimproveJob,
   type AutoimproveLogEntry,
   type AutoimproveJobCreateResponse,
@@ -126,6 +132,26 @@ export {
   type CustomerFlowEdgeCasePromoteParams,
   type CustomerFlowEdgeCaseRemoveParams,
 } from './customer-flow-edge-case';
+export {
+  Dashboard,
+  type DashboardCreateResponse,
+  type DashboardUpdateResponse,
+  type DashboardListResponse,
+  type DashboardDeleteResponse,
+  type DashboardCreateWidgetResponse,
+  type DashboardDeleteWidgetResponse,
+  type DashboardGetByIDResponse,
+  type DashboardGetDataResponse,
+  type DashboardGetWidgetDataResponse,
+  type DashboardUpdateWidgetResponse,
+  type DashboardCreateParams,
+  type DashboardUpdateParams,
+  type DashboardCreateWidgetParams,
+  type DashboardDeleteWidgetParams,
+  type DashboardGetDataParams,
+  type DashboardGetWidgetDataParams,
+  type DashboardUpdateWidgetParams,
+} from './dashboard';
 export {
   HTTPRequestDefinition,
   type HTTPRequestDefinitionCreateResponse,
