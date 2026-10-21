@@ -1013,8 +1013,6 @@ export namespace Bundle {
     export interface Filter {
       type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-      value: string | number | boolean;
-
       operator?:
         | 'EQUALS'
         | 'NOT_EQUALS'
@@ -1023,9 +1021,13 @@ export namespace Bundle {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       property?: string;
+
+      value?: string | number | boolean;
     }
 
     export interface UnionMember0 {
@@ -1143,8 +1145,6 @@ export namespace Bundle {
         export interface Filter {
           type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-          value: string | number | boolean;
-
           operator?:
             | 'EQUALS'
             | 'NOT_EQUALS'
@@ -1153,9 +1153,13 @@ export namespace Bundle {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           property?: string;
+
+          value?: string | number | boolean;
         }
       }
 
@@ -1183,8 +1187,6 @@ export namespace Bundle {
         export interface Filter {
           type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-          value: string | number | boolean;
-
           operator?:
             | 'EQUALS'
             | 'NOT_EQUALS'
@@ -1193,16 +1195,18 @@ export namespace Bundle {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           property?: string;
+
+          value?: string | number | boolean;
         }
       }
 
       export interface Filter {
         type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
-
-        value: string | number | boolean;
 
         operator?:
           | 'EQUALS'
@@ -1212,9 +1216,13 @@ export namespace Bundle {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         property?: string;
+
+        value?: string | number | boolean;
       }
     }
   }
@@ -2216,8 +2224,6 @@ export namespace Bundle {
       export interface Filter {
         type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-        value: string | number | boolean;
-
         operator?:
           | 'EQUALS'
           | 'NOT_EQUALS'
@@ -2226,9 +2232,13 @@ export namespace Bundle {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         property?: string;
+
+        value?: string | number | boolean;
       }
 
       export interface UnionMember0 {
@@ -2346,8 +2356,6 @@ export namespace Bundle {
           export interface Filter {
             type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-            value: string | number | boolean;
-
             operator?:
               | 'EQUALS'
               | 'NOT_EQUALS'
@@ -2356,9 +2364,13 @@ export namespace Bundle {
               | 'LESS_THAN'
               | 'LESS_THAN_OR_EQUAL_TO'
               | 'CONTAINS'
-              | 'STARTS_WITH';
+              | 'STARTS_WITH'
+              | 'IS_SET'
+              | 'IS_NOT_SET';
 
             property?: string;
+
+            value?: string | number | boolean;
           }
         }
 
@@ -2386,8 +2398,6 @@ export namespace Bundle {
           export interface Filter {
             type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-            value: string | number | boolean;
-
             operator?:
               | 'EQUALS'
               | 'NOT_EQUALS'
@@ -2396,16 +2406,18 @@ export namespace Bundle {
               | 'LESS_THAN'
               | 'LESS_THAN_OR_EQUAL_TO'
               | 'CONTAINS'
-              | 'STARTS_WITH';
+              | 'STARTS_WITH'
+              | 'IS_SET'
+              | 'IS_NOT_SET';
 
             property?: string;
+
+            value?: string | number | boolean;
           }
         }
 
         export interface Filter {
           type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
-
-          value: string | number | boolean;
 
           operator?:
             | 'EQUALS'
@@ -2415,9 +2427,13 @@ export namespace Bundle {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           property?: string;
+
+          value?: string | number | boolean;
         }
       }
     }
@@ -3568,8 +3584,6 @@ export namespace ConfigApplyParams {
     export interface Filter {
       type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-      value: string | number | boolean;
-
       operator?:
         | 'EQUALS'
         | 'NOT_EQUALS'
@@ -3578,9 +3592,13 @@ export namespace ConfigApplyParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       property?: string;
+
+      value?: string | number | boolean;
     }
 
     export interface UnionMember0 {
@@ -3698,8 +3716,6 @@ export namespace ConfigApplyParams {
         export interface Filter {
           type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-          value: string | number | boolean;
-
           operator?:
             | 'EQUALS'
             | 'NOT_EQUALS'
@@ -3708,9 +3724,13 @@ export namespace ConfigApplyParams {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           property?: string;
+
+          value?: string | number | boolean;
         }
       }
 
@@ -3738,8 +3758,6 @@ export namespace ConfigApplyParams {
         export interface Filter {
           type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-          value: string | number | boolean;
-
           operator?:
             | 'EQUALS'
             | 'NOT_EQUALS'
@@ -3748,16 +3766,18 @@ export namespace ConfigApplyParams {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           property?: string;
+
+          value?: string | number | boolean;
         }
       }
 
       export interface Filter {
         type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
-
-        value: string | number | boolean;
 
         operator?:
           | 'EQUALS'
@@ -3767,9 +3787,13 @@ export namespace ConfigApplyParams {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         property?: string;
+
+        value?: string | number | boolean;
       }
     }
   }
@@ -4771,8 +4795,6 @@ export namespace ConfigApplyParams {
       export interface Filter {
         type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-        value: string | number | boolean;
-
         operator?:
           | 'EQUALS'
           | 'NOT_EQUALS'
@@ -4781,9 +4803,13 @@ export namespace ConfigApplyParams {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         property?: string;
+
+        value?: string | number | boolean;
       }
 
       export interface UnionMember0 {
@@ -4901,8 +4927,6 @@ export namespace ConfigApplyParams {
           export interface Filter {
             type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-            value: string | number | boolean;
-
             operator?:
               | 'EQUALS'
               | 'NOT_EQUALS'
@@ -4911,9 +4935,13 @@ export namespace ConfigApplyParams {
               | 'LESS_THAN'
               | 'LESS_THAN_OR_EQUAL_TO'
               | 'CONTAINS'
-              | 'STARTS_WITH';
+              | 'STARTS_WITH'
+              | 'IS_SET'
+              | 'IS_NOT_SET';
 
             property?: string;
+
+            value?: string | number | boolean;
           }
         }
 
@@ -4941,8 +4969,6 @@ export namespace ConfigApplyParams {
           export interface Filter {
             type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-            value: string | number | boolean;
-
             operator?:
               | 'EQUALS'
               | 'NOT_EQUALS'
@@ -4951,16 +4977,18 @@ export namespace ConfigApplyParams {
               | 'LESS_THAN'
               | 'LESS_THAN_OR_EQUAL_TO'
               | 'CONTAINS'
-              | 'STARTS_WITH';
+              | 'STARTS_WITH'
+              | 'IS_SET'
+              | 'IS_NOT_SET';
 
             property?: string;
+
+            value?: string | number | boolean;
           }
         }
 
         export interface Filter {
           type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
-
-          value: string | number | boolean;
 
           operator?:
             | 'EQUALS'
@@ -4970,9 +4998,13 @@ export namespace ConfigApplyParams {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           property?: string;
+
+          value?: string | number | boolean;
         }
       }
     }
@@ -5950,8 +5982,6 @@ export namespace ConfigDiffParams {
     export interface Filter {
       type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-      value: string | number | boolean;
-
       operator?:
         | 'EQUALS'
         | 'NOT_EQUALS'
@@ -5960,9 +5990,13 @@ export namespace ConfigDiffParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       property?: string;
+
+      value?: string | number | boolean;
     }
 
     export interface UnionMember0 {
@@ -6080,8 +6114,6 @@ export namespace ConfigDiffParams {
         export interface Filter {
           type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-          value: string | number | boolean;
-
           operator?:
             | 'EQUALS'
             | 'NOT_EQUALS'
@@ -6090,9 +6122,13 @@ export namespace ConfigDiffParams {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           property?: string;
+
+          value?: string | number | boolean;
         }
       }
 
@@ -6120,8 +6156,6 @@ export namespace ConfigDiffParams {
         export interface Filter {
           type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-          value: string | number | boolean;
-
           operator?:
             | 'EQUALS'
             | 'NOT_EQUALS'
@@ -6130,16 +6164,18 @@ export namespace ConfigDiffParams {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           property?: string;
+
+          value?: string | number | boolean;
         }
       }
 
       export interface Filter {
         type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
-
-        value: string | number | boolean;
 
         operator?:
           | 'EQUALS'
@@ -6149,9 +6185,13 @@ export namespace ConfigDiffParams {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         property?: string;
+
+        value?: string | number | boolean;
       }
     }
   }
@@ -7153,8 +7193,6 @@ export namespace ConfigDiffParams {
       export interface Filter {
         type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-        value: string | number | boolean;
-
         operator?:
           | 'EQUALS'
           | 'NOT_EQUALS'
@@ -7163,9 +7201,13 @@ export namespace ConfigDiffParams {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         property?: string;
+
+        value?: string | number | boolean;
       }
 
       export interface UnionMember0 {
@@ -7283,8 +7325,6 @@ export namespace ConfigDiffParams {
           export interface Filter {
             type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-            value: string | number | boolean;
-
             operator?:
               | 'EQUALS'
               | 'NOT_EQUALS'
@@ -7293,9 +7333,13 @@ export namespace ConfigDiffParams {
               | 'LESS_THAN'
               | 'LESS_THAN_OR_EQUAL_TO'
               | 'CONTAINS'
-              | 'STARTS_WITH';
+              | 'STARTS_WITH'
+              | 'IS_SET'
+              | 'IS_NOT_SET';
 
             property?: string;
+
+            value?: string | number | boolean;
           }
         }
 
@@ -7323,8 +7367,6 @@ export namespace ConfigDiffParams {
           export interface Filter {
             type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
 
-            value: string | number | boolean;
-
             operator?:
               | 'EQUALS'
               | 'NOT_EQUALS'
@@ -7333,16 +7375,18 @@ export namespace ConfigDiffParams {
               | 'LESS_THAN'
               | 'LESS_THAN_OR_EQUAL_TO'
               | 'CONTAINS'
-              | 'STARTS_WITH';
+              | 'STARTS_WITH'
+              | 'IS_SET'
+              | 'IS_NOT_SET';
 
             property?: string;
+
+            value?: string | number | boolean;
           }
         }
 
         export interface Filter {
           type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
-
-          value: string | number | boolean;
 
           operator?:
             | 'EQUALS'
@@ -7352,9 +7396,13 @@ export namespace ConfigDiffParams {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           property?: string;
+
+          value?: string | number | boolean;
         }
       }
     }

@@ -252,12 +252,9 @@ export namespace DashboardCreateResponse {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -267,13 +264,21 @@ export namespace DashboardCreateResponse {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
 
     export interface UnionMember0 {
@@ -434,7 +439,9 @@ export namespace DashboardCreateResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * PASS_RATE condition value, e.g. 4 or "resolved".
@@ -482,12 +489,9 @@ export namespace DashboardCreateResponse {
             | 'METRIC_VALUE';
 
           /**
-           * The value to compare against (an agent id, "call" / "chat", a property value).
-           */
-          value: string | number | boolean;
-
-          /**
-           * Defaults to EQUALS.
+           * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+           * where the property is set, whatever the value, or missing (never sent, sent as
+           * null, or removed); they take no value.
            */
           operator?:
             | 'EQUALS'
@@ -497,13 +501,21 @@ export namespace DashboardCreateResponse {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           /**
            * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
            * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
            */
           property?: string;
+
+          /**
+           * The value to compare against (an agent id, "call" / "chat", a property value).
+           * Required except with IS_SET / IS_NOT_SET.
+           */
+          value?: string | number | boolean;
         }
       }
 
@@ -545,12 +557,9 @@ export namespace DashboardCreateResponse {
             | 'METRIC_VALUE';
 
           /**
-           * The value to compare against (an agent id, "call" / "chat", a property value).
-           */
-          value: string | number | boolean;
-
-          /**
-           * Defaults to EQUALS.
+           * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+           * where the property is set, whatever the value, or missing (never sent, sent as
+           * null, or removed); they take no value.
            */
           operator?:
             | 'EQUALS'
@@ -560,13 +569,21 @@ export namespace DashboardCreateResponse {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           /**
            * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
            * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
            */
           property?: string;
+
+          /**
+           * The value to compare against (an agent id, "call" / "chat", a property value).
+           * Required except with IS_SET / IS_NOT_SET.
+           */
+          value?: string | number | boolean;
         }
       }
 
@@ -584,12 +601,9 @@ export namespace DashboardCreateResponse {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -599,13 +613,21 @@ export namespace DashboardCreateResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
   }
@@ -662,12 +684,9 @@ export namespace DashboardUpdateResponse {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -677,13 +696,21 @@ export namespace DashboardUpdateResponse {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
 
     export interface UnionMember0 {
@@ -844,7 +871,9 @@ export namespace DashboardUpdateResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * PASS_RATE condition value, e.g. 4 or "resolved".
@@ -892,12 +921,9 @@ export namespace DashboardUpdateResponse {
             | 'METRIC_VALUE';
 
           /**
-           * The value to compare against (an agent id, "call" / "chat", a property value).
-           */
-          value: string | number | boolean;
-
-          /**
-           * Defaults to EQUALS.
+           * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+           * where the property is set, whatever the value, or missing (never sent, sent as
+           * null, or removed); they take no value.
            */
           operator?:
             | 'EQUALS'
@@ -907,13 +933,21 @@ export namespace DashboardUpdateResponse {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           /**
            * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
            * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
            */
           property?: string;
+
+          /**
+           * The value to compare against (an agent id, "call" / "chat", a property value).
+           * Required except with IS_SET / IS_NOT_SET.
+           */
+          value?: string | number | boolean;
         }
       }
 
@@ -955,12 +989,9 @@ export namespace DashboardUpdateResponse {
             | 'METRIC_VALUE';
 
           /**
-           * The value to compare against (an agent id, "call" / "chat", a property value).
-           */
-          value: string | number | boolean;
-
-          /**
-           * Defaults to EQUALS.
+           * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+           * where the property is set, whatever the value, or missing (never sent, sent as
+           * null, or removed); they take no value.
            */
           operator?:
             | 'EQUALS'
@@ -970,13 +1001,21 @@ export namespace DashboardUpdateResponse {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           /**
            * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
            * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
            */
           property?: string;
+
+          /**
+           * The value to compare against (an agent id, "call" / "chat", a property value).
+           * Required except with IS_SET / IS_NOT_SET.
+           */
+          value?: string | number | boolean;
         }
       }
 
@@ -994,12 +1033,9 @@ export namespace DashboardUpdateResponse {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -1009,13 +1045,21 @@ export namespace DashboardUpdateResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
   }
@@ -1231,7 +1275,9 @@ export namespace DashboardCreateWidgetResponse {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * PASS_RATE condition value, e.g. 4 or "resolved".
@@ -1279,12 +1325,9 @@ export namespace DashboardCreateWidgetResponse {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -1294,13 +1337,21 @@ export namespace DashboardCreateWidgetResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
 
@@ -1342,12 +1393,9 @@ export namespace DashboardCreateWidgetResponse {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -1357,13 +1405,21 @@ export namespace DashboardCreateWidgetResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
 
@@ -1381,12 +1437,9 @@ export namespace DashboardCreateWidgetResponse {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -1396,13 +1449,21 @@ export namespace DashboardCreateWidgetResponse {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
   }
 }
@@ -1470,12 +1531,9 @@ export namespace DashboardGetByIDResponse {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -1485,13 +1543,21 @@ export namespace DashboardGetByIDResponse {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
 
     export interface UnionMember0 {
@@ -1652,7 +1718,9 @@ export namespace DashboardGetByIDResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * PASS_RATE condition value, e.g. 4 or "resolved".
@@ -1700,12 +1768,9 @@ export namespace DashboardGetByIDResponse {
             | 'METRIC_VALUE';
 
           /**
-           * The value to compare against (an agent id, "call" / "chat", a property value).
-           */
-          value: string | number | boolean;
-
-          /**
-           * Defaults to EQUALS.
+           * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+           * where the property is set, whatever the value, or missing (never sent, sent as
+           * null, or removed); they take no value.
            */
           operator?:
             | 'EQUALS'
@@ -1715,13 +1780,21 @@ export namespace DashboardGetByIDResponse {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           /**
            * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
            * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
            */
           property?: string;
+
+          /**
+           * The value to compare against (an agent id, "call" / "chat", a property value).
+           * Required except with IS_SET / IS_NOT_SET.
+           */
+          value?: string | number | boolean;
         }
       }
 
@@ -1763,12 +1836,9 @@ export namespace DashboardGetByIDResponse {
             | 'METRIC_VALUE';
 
           /**
-           * The value to compare against (an agent id, "call" / "chat", a property value).
-           */
-          value: string | number | boolean;
-
-          /**
-           * Defaults to EQUALS.
+           * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+           * where the property is set, whatever the value, or missing (never sent, sent as
+           * null, or removed); they take no value.
            */
           operator?:
             | 'EQUALS'
@@ -1778,13 +1848,21 @@ export namespace DashboardGetByIDResponse {
             | 'LESS_THAN'
             | 'LESS_THAN_OR_EQUAL_TO'
             | 'CONTAINS'
-            | 'STARTS_WITH';
+            | 'STARTS_WITH'
+            | 'IS_SET'
+            | 'IS_NOT_SET';
 
           /**
            * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
            * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
            */
           property?: string;
+
+          /**
+           * The value to compare against (an agent id, "call" / "chat", a property value).
+           * Required except with IS_SET / IS_NOT_SET.
+           */
+          value?: string | number | boolean;
         }
       }
 
@@ -1802,12 +1880,9 @@ export namespace DashboardGetByIDResponse {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -1817,13 +1892,21 @@ export namespace DashboardGetByIDResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
   }
@@ -2118,7 +2201,9 @@ export namespace DashboardUpdateWidgetResponse {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * PASS_RATE condition value, e.g. 4 or "resolved".
@@ -2166,12 +2251,9 @@ export namespace DashboardUpdateWidgetResponse {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -2181,13 +2263,21 @@ export namespace DashboardUpdateWidgetResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
 
@@ -2229,12 +2319,9 @@ export namespace DashboardUpdateWidgetResponse {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -2244,13 +2331,21 @@ export namespace DashboardUpdateWidgetResponse {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
 
@@ -2268,12 +2363,9 @@ export namespace DashboardUpdateWidgetResponse {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -2283,13 +2375,21 @@ export namespace DashboardUpdateWidgetResponse {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
   }
 }
@@ -2332,12 +2432,9 @@ export namespace DashboardCreateParams {
       | 'METRIC_VALUE';
 
     /**
-     * The value to compare against (an agent id, "call" / "chat", a property value).
-     */
-    value: string | number | boolean;
-
-    /**
-     * Defaults to EQUALS.
+     * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+     * where the property is set, whatever the value, or missing (never sent, sent as
+     * null, or removed); they take no value.
      */
     operator?:
       | 'EQUALS'
@@ -2347,13 +2444,21 @@ export namespace DashboardCreateParams {
       | 'LESS_THAN'
       | 'LESS_THAN_OR_EQUAL_TO'
       | 'CONTAINS'
-      | 'STARTS_WITH';
+      | 'STARTS_WITH'
+      | 'IS_SET'
+      | 'IS_NOT_SET';
 
     /**
      * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
      * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
      */
     property?: string;
+
+    /**
+     * The value to compare against (an agent id, "call" / "chat", a property value).
+     * Required except with IS_SET / IS_NOT_SET.
+     */
+    value?: string | number | boolean;
   }
 
   export interface UnionMember0 {
@@ -2512,7 +2617,9 @@ export namespace DashboardCreateParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * PASS_RATE condition value, e.g. 4 or "resolved".
@@ -2560,12 +2667,9 @@ export namespace DashboardCreateParams {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -2575,13 +2679,21 @@ export namespace DashboardCreateParams {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
 
@@ -2623,12 +2735,9 @@ export namespace DashboardCreateParams {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -2638,13 +2747,21 @@ export namespace DashboardCreateParams {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
 
@@ -2662,12 +2779,9 @@ export namespace DashboardCreateParams {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -2677,13 +2791,21 @@ export namespace DashboardCreateParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
   }
 }
@@ -2726,12 +2848,9 @@ export namespace DashboardUpdateParams {
       | 'METRIC_VALUE';
 
     /**
-     * The value to compare against (an agent id, "call" / "chat", a property value).
-     */
-    value: string | number | boolean;
-
-    /**
-     * Defaults to EQUALS.
+     * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+     * where the property is set, whatever the value, or missing (never sent, sent as
+     * null, or removed); they take no value.
      */
     operator?:
       | 'EQUALS'
@@ -2741,13 +2860,21 @@ export namespace DashboardUpdateParams {
       | 'LESS_THAN'
       | 'LESS_THAN_OR_EQUAL_TO'
       | 'CONTAINS'
-      | 'STARTS_WITH';
+      | 'STARTS_WITH'
+      | 'IS_SET'
+      | 'IS_NOT_SET';
 
     /**
      * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
      * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
      */
     property?: string;
+
+    /**
+     * The value to compare against (an agent id, "call" / "chat", a property value).
+     * Required except with IS_SET / IS_NOT_SET.
+     */
+    value?: string | number | boolean;
   }
 
   export interface UnionMember0 {
@@ -2906,7 +3033,9 @@ export namespace DashboardUpdateParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * PASS_RATE condition value, e.g. 4 or "resolved".
@@ -2954,12 +3083,9 @@ export namespace DashboardUpdateParams {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -2969,13 +3095,21 @@ export namespace DashboardUpdateParams {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
 
@@ -3017,12 +3151,9 @@ export namespace DashboardUpdateParams {
           | 'METRIC_VALUE';
 
         /**
-         * The value to compare against (an agent id, "call" / "chat", a property value).
-         */
-        value: string | number | boolean;
-
-        /**
-         * Defaults to EQUALS.
+         * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+         * where the property is set, whatever the value, or missing (never sent, sent as
+         * null, or removed); they take no value.
          */
         operator?:
           | 'EQUALS'
@@ -3032,13 +3163,21 @@ export namespace DashboardUpdateParams {
           | 'LESS_THAN'
           | 'LESS_THAN_OR_EQUAL_TO'
           | 'CONTAINS'
-          | 'STARTS_WITH';
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
 
         /**
          * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
          * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
          */
         property?: string;
+
+        /**
+         * The value to compare against (an agent id, "call" / "chat", a property value).
+         * Required except with IS_SET / IS_NOT_SET.
+         */
+        value?: string | number | boolean;
       }
     }
 
@@ -3056,12 +3195,9 @@ export namespace DashboardUpdateParams {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -3071,13 +3207,21 @@ export namespace DashboardUpdateParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
   }
 }
@@ -3202,7 +3346,9 @@ export namespace DashboardCreateWidgetParams {
       | 'LESS_THAN'
       | 'LESS_THAN_OR_EQUAL_TO'
       | 'CONTAINS'
-      | 'STARTS_WITH';
+      | 'STARTS_WITH'
+      | 'IS_SET'
+      | 'IS_NOT_SET';
 
     /**
      * PASS_RATE condition value, e.g. 4 or "resolved".
@@ -3250,12 +3396,9 @@ export namespace DashboardCreateWidgetParams {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -3265,13 +3408,21 @@ export namespace DashboardCreateWidgetParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
   }
 
@@ -3313,12 +3464,9 @@ export namespace DashboardCreateWidgetParams {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -3328,13 +3476,21 @@ export namespace DashboardCreateWidgetParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
   }
 
@@ -3352,12 +3508,9 @@ export namespace DashboardCreateWidgetParams {
       | 'METRIC_VALUE';
 
     /**
-     * The value to compare against (an agent id, "call" / "chat", a property value).
-     */
-    value: string | number | boolean;
-
-    /**
-     * Defaults to EQUALS.
+     * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+     * where the property is set, whatever the value, or missing (never sent, sent as
+     * null, or removed); they take no value.
      */
     operator?:
       | 'EQUALS'
@@ -3367,13 +3520,21 @@ export namespace DashboardCreateWidgetParams {
       | 'LESS_THAN'
       | 'LESS_THAN_OR_EQUAL_TO'
       | 'CONTAINS'
-      | 'STARTS_WITH';
+      | 'STARTS_WITH'
+      | 'IS_SET'
+      | 'IS_NOT_SET';
 
     /**
      * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
      * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
      */
     property?: string;
+
+    /**
+     * The value to compare against (an agent id, "call" / "chat", a property value).
+     * Required except with IS_SET / IS_NOT_SET.
+     */
+    value?: string | number | boolean;
   }
 }
 
@@ -3554,7 +3715,9 @@ export namespace DashboardUpdateWidgetParams {
       | 'LESS_THAN'
       | 'LESS_THAN_OR_EQUAL_TO'
       | 'CONTAINS'
-      | 'STARTS_WITH';
+      | 'STARTS_WITH'
+      | 'IS_SET'
+      | 'IS_NOT_SET';
 
     /**
      * PASS_RATE condition value, e.g. 4 or "resolved".
@@ -3602,12 +3765,9 @@ export namespace DashboardUpdateWidgetParams {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -3617,13 +3777,21 @@ export namespace DashboardUpdateWidgetParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
   }
 
@@ -3665,12 +3833,9 @@ export namespace DashboardUpdateWidgetParams {
         | 'METRIC_VALUE';
 
       /**
-       * The value to compare against (an agent id, "call" / "chat", a property value).
-       */
-      value: string | number | boolean;
-
-      /**
-       * Defaults to EQUALS.
+       * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+       * where the property is set, whatever the value, or missing (never sent, sent as
+       * null, or removed); they take no value.
        */
       operator?:
         | 'EQUALS'
@@ -3680,13 +3845,21 @@ export namespace DashboardUpdateWidgetParams {
         | 'LESS_THAN'
         | 'LESS_THAN_OR_EQUAL_TO'
         | 'CONTAINS'
-        | 'STARTS_WITH';
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
 
       /**
        * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
        * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
        */
       property?: string;
+
+      /**
+       * The value to compare against (an agent id, "call" / "chat", a property value).
+       * Required except with IS_SET / IS_NOT_SET.
+       */
+      value?: string | number | boolean;
     }
   }
 
@@ -3704,12 +3877,9 @@ export namespace DashboardUpdateWidgetParams {
       | 'METRIC_VALUE';
 
     /**
-     * The value to compare against (an agent id, "call" / "chat", a property value).
-     */
-    value: string | number | boolean;
-
-    /**
-     * Defaults to EQUALS.
+     * Defaults to EQUALS. IS_SET / IS_NOT_SET (CALL_PROPERTY only) keep conversations
+     * where the property is set, whatever the value, or missing (never sent, sent as
+     * null, or removed); they take no value.
      */
     operator?:
       | 'EQUALS'
@@ -3719,13 +3889,21 @@ export namespace DashboardUpdateWidgetParams {
       | 'LESS_THAN'
       | 'LESS_THAN_OR_EQUAL_TO'
       | 'CONTAINS'
-      | 'STARTS_WITH';
+      | 'STARTS_WITH'
+      | 'IS_SET'
+      | 'IS_NOT_SET';
 
     /**
      * The property to compare. Required for CALL_PROPERTY and METRIC_PROPERTY; may be
      * omitted for AGENT_PROPERTY, DATASET, MODALITY and CALL_ID.
      */
     property?: string;
+
+    /**
+     * The value to compare against (an agent id, "call" / "chat", a property value).
+     * Required except with IS_SET / IS_NOT_SET.
+     */
+    value?: string | number | boolean;
   }
 }
 
