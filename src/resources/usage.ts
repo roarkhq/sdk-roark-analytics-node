@@ -9,8 +9,10 @@ export class Usage extends APIResource {
    * Report billable usage and cost for the organization over a time window, broken
    * down by project (highest spend first). Pass `from`/`to` as ISO 8601 timestamps;
    * optionally pass `projectId` to scope the report to one project. Amounts are
-   * billable spend only (what we absorb is never included). Authenticated by an
-   * organization API key with the `usage:read` permission.
+   * billable spend only (what we absorb is never included). Authenticated by either
+   * an organization API key with the `usage:read` permission (any project in the
+   * organization), or a project API key with the `billing:read` permission (that
+   * key's own project only; any other `projectId` is a 403).
    *
    * @example
    * ```ts

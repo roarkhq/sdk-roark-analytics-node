@@ -52,6 +52,7 @@ Types:
 - <code><a href="./src/resources/call.ts">CallListResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallAppendToolInvocationsResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetByIDResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallGetCostResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetTranscriptResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListMetricsResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListSentimentRunsResponse</a></code>
@@ -63,6 +64,7 @@ Methods:
 - <code title="get /v1/call">client.call.<a href="./src/resources/call.ts">list</a>({ ...params }) -> CallListResponse</code>
 - <code title="post /v1/call/{callId}/tool-invocations">client.call.<a href="./src/resources/call.ts">appendToolInvocations</a>(callID, { ...params }) -> CallAppendToolInvocationsResponse</code>
 - <code title="get /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">getByID</a>(callID) -> CallGetByIDResponse</code>
+- <code title="get /v1/call/{callId}/cost">client.call.<a href="./src/resources/call.ts">getCost</a>(callID) -> CallGetCostResponse</code>
 - <code title="get /v1/call/{callId}/transcript">client.call.<a href="./src/resources/call.ts">getTranscript</a>(callID, { ...params }) -> CallGetTranscriptResponse</code>
 - <code title="get /v1/call/{callId}/metrics">client.call.<a href="./src/resources/call.ts">listMetrics</a>(callID, { ...params }) -> CallListMetricsResponse</code>
 - <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">listSentimentRuns</a>(callID) -> CallListSentimentRunsResponse</code>
@@ -286,6 +288,7 @@ Types:
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobCancelResponse</a></code>
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobCreateDebriefResponse</a></code>
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobGetByIDResponse</a></code>
+- <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobGetCostResponse</a></code>
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobGetResultsResponse</a></code>
 - <code><a href="./src/resources/simulation-run-plan-job.ts">SimulationRunPlanJobStartResponse</a></code>
 
@@ -295,6 +298,7 @@ Methods:
 - <code title="post /v1/simulation/plan/job/{jobId}/cancel">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">cancel</a>(jobID) -> SimulationRunPlanJobCancelResponse</code>
 - <code title="post /v1/simulation/plan/job/{jobId}/debrief">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">createDebrief</a>(jobID, { ...params }) -> SimulationRunPlanJobCreateDebriefResponse</code>
 - <code title="get /v1/simulation/plan/job/{jobId}">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">getByID</a>(jobID) -> SimulationRunPlanJobGetByIDResponse</code>
+- <code title="get /v1/simulation/plan/job/{jobId}/cost">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">getCost</a>(jobID) -> SimulationRunPlanJobGetCostResponse</code>
 - <code title="get /v1/simulation/plan/job/{jobId}/results">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">getResults</a>(jobID, { ...params }) -> SimulationRunPlanJobGetResultsResponse</code>
 - <code title="post /v1/simulation/plan/{planId}/job">client.simulationRunPlanJob.<a href="./src/resources/simulation-run-plan-job.ts">start</a>(planID, { ...params }) -> SimulationRunPlanJobStartResponse</code>
 
