@@ -23,7 +23,7 @@ describe('resource dashboard', () => {
     const response = await client.dashboard.create({
       name: 'x',
       description: 'description',
-      filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+      filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
       isDefault: true,
       timeRange: { type: 'LAST', unit: 'DAYS', value: 1 },
       widgets: [
@@ -35,7 +35,7 @@ describe('resource dashboard', () => {
               color: 'GREEN',
               distinctBy: 'NONE',
               filters: [
-                { type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' },
+                { type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' },
               ],
               isBaseline: true,
               metric: 'x',
@@ -51,14 +51,14 @@ describe('resource dashboard', () => {
           comparisonGroups: [
             {
               filters: [
-                { type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' },
+                { type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' },
               ],
               name: 'x',
               color: 'GREEN',
             },
             {
               filters: [
-                { type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' },
+                { type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' },
               ],
               name: 'x',
               color: 'GREEN',
@@ -67,7 +67,7 @@ describe('resource dashboard', () => {
           comparisonMode: 'NONE',
           description: 'description',
           display: 'LINE',
-          filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+          filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
           interval: 'HOUR',
           size: 'SMALL',
         },
@@ -93,7 +93,7 @@ describe('resource dashboard', () => {
         '6f1d2c3b-4a5e-4f60-8b71-9c0d1e2f3a4b',
         {
           description: 'description',
-          filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+          filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
           isDefault: true,
           name: 'x',
           timeRange: { type: 'LAST', unit: 'DAYS', value: 1 },
@@ -106,7 +106,7 @@ describe('resource dashboard', () => {
                   color: 'GREEN',
                   distinctBy: 'NONE',
                   filters: [
-                    { type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' },
+                    { type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' },
                   ],
                   isBaseline: true,
                   metric: 'x',
@@ -122,14 +122,14 @@ describe('resource dashboard', () => {
               comparisonGroups: [
                 {
                   filters: [
-                    { type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' },
+                    { type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' },
                   ],
                   name: 'x',
                   color: 'GREEN',
                 },
                 {
                   filters: [
-                    { type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' },
+                    { type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' },
                   ],
                   name: 'x',
                   color: 'GREEN',
@@ -139,7 +139,7 @@ describe('resource dashboard', () => {
               description: 'description',
               display: 'LINE',
               filters: [
-                { type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' },
+                { type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' },
               ],
               interval: 'HOUR',
               size: 'SMALL',
@@ -195,7 +195,7 @@ describe('resource dashboard', () => {
           breakdown: { type: 'METRIC_PROPERTY', property: 'property' },
           color: 'GREEN',
           distinctBy: 'NONE',
-          filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+          filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
           isBaseline: true,
           metric: 'x',
           nestedAggregation: 'COUNT',
@@ -209,12 +209,12 @@ describe('resource dashboard', () => {
       name: 'x',
       comparisonGroups: [
         {
-          filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+          filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
           name: 'x',
           color: 'GREEN',
         },
         {
-          filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+          filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
           name: 'x',
           color: 'GREEN',
         },
@@ -222,7 +222,7 @@ describe('resource dashboard', () => {
       comparisonMode: 'NONE',
       description: 'description',
       display: 'LINE',
-      filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+      filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
       interval: 'HOUR',
       size: 'SMALL',
     });
@@ -328,7 +328,7 @@ describe('resource dashboard', () => {
           breakdown: { type: 'METRIC_PROPERTY', property: 'property' },
           color: 'GREEN',
           distinctBy: 'NONE',
-          filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+          filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
           isBaseline: true,
           metric: 'x',
           nestedAggregation: 'COUNT',
@@ -342,12 +342,12 @@ describe('resource dashboard', () => {
       name: 'x',
       comparisonGroups: [
         {
-          filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+          filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
           name: 'x',
           color: 'GREEN',
         },
         {
-          filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+          filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
           name: 'x',
           color: 'GREEN',
         },
@@ -355,7 +355,7 @@ describe('resource dashboard', () => {
       comparisonMode: 'NONE',
       description: 'description',
       display: 'LINE',
-      filters: [{ type: 'METRIC_PROPERTY', value: 'string', operator: 'EQUALS', property: 'property' }],
+      filters: [{ type: 'METRIC_PROPERTY', operator: 'EQUALS', property: 'property', value: 'string' }],
       interval: 'HOUR',
       size: 'SMALL',
     });

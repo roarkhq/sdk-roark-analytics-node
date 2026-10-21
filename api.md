@@ -50,7 +50,9 @@ Types:
 
 - <code><a href="./src/resources/call.ts">CallCreateResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallListResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallDeleteResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallAppendToolInvocationsResponse</a></code>
+- <code><a href="./src/resources/call.ts">CallBatchDeleteResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetByIDResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetCostResponse</a></code>
 - <code><a href="./src/resources/call.ts">CallGetTranscriptResponse</a></code>
@@ -62,7 +64,9 @@ Methods:
 
 - <code title="post /v1/call">client.call.<a href="./src/resources/call.ts">create</a>({ ...params }) -> CallCreateResponse</code>
 - <code title="get /v1/call">client.call.<a href="./src/resources/call.ts">list</a>({ ...params }) -> CallListResponse</code>
+- <code title="delete /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">delete</a>(callID) -> CallDeleteResponse</code>
 - <code title="post /v1/call/{callId}/tool-invocations">client.call.<a href="./src/resources/call.ts">appendToolInvocations</a>(callID, { ...params }) -> CallAppendToolInvocationsResponse</code>
+- <code title="post /v1/call/batch-delete">client.call.<a href="./src/resources/call.ts">batchDelete</a>({ ...params }) -> CallBatchDeleteResponse</code>
 - <code title="get /v1/call/{callId}">client.call.<a href="./src/resources/call.ts">getByID</a>(callID) -> CallGetByIDResponse</code>
 - <code title="get /v1/call/{callId}/cost">client.call.<a href="./src/resources/call.ts">getCost</a>(callID) -> CallGetCostResponse</code>
 - <code title="get /v1/call/{callId}/transcript">client.call.<a href="./src/resources/call.ts">getTranscript</a>(callID, { ...params }) -> CallGetTranscriptResponse</code>

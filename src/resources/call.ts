@@ -39,6 +39,22 @@ export class Call extends APIResource {
   }
 
   /**
+   * Deletes a call by its ID. The call, its metrics and its analysis are hidden from
+   * every read, and any analysis still running on it is cancelled. Returns 404 when
+   * the call does not exist in this project or was already deleted.
+   *
+   * @example
+   * ```ts
+   * const call = await client.call.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  delete(callID: string, options?: RequestOptions): APIPromise<CallDeleteResponse> {
+    return this._client.delete(path`/v1/call/${callID}`, options);
+  }
+
+  /**
    * Attach tool invocations that fired during a call to an already-existing call,
    * asynchronously after the call was created. Use this when the tool-call data
    * becomes available later than the call itself (e.g. a Roark simulation, or a call
@@ -71,6 +87,27 @@ export class Call extends APIResource {
     options?: RequestOptions,
   ): APIPromise<CallAppendToolInvocationsResponse> {
     return this._client.post(path`/v1/call/${callID}/tool-invocations`, { body, ...options });
+  }
+
+  /**
+   * Deletes up to 100 calls by ID in one request. Each deleted call, its metrics and
+   * its analysis are hidden from every read, and any analysis still running on it is
+   * cancelled. IDs that do not exist in this project, or were already deleted, are
+   * returned in notFoundCallIds and left untouched. The request succeeds even when
+   * none of the calls are found. IDs are returned lowercase, each once.
+   *
+   * @example
+   * ```ts
+   * const response = await client.call.batchDelete({
+   *   callIds: [
+   *     '550e8400-e29b-41d4-a716-446655440000',
+   *     '660e8400-e29b-41d4-a716-446655440001',
+   *   ],
+   * });
+   * ```
+   */
+  batchDelete(body: CallBatchDeleteParams, options?: RequestOptions): APIPromise<CallBatchDeleteResponse> {
+    return this._client.post('/v1/call/batch-delete', { body, ...options });
   }
 
   /**
@@ -446,6 +483,24 @@ export namespace CallListResponse {
   }
 }
 
+export interface CallDeleteResponse {
+  data: CallDeleteResponse.Data;
+}
+
+export namespace CallDeleteResponse {
+  export interface Data {
+    /**
+     * ID of the deleted call
+     */
+    id: string;
+
+    /**
+     * Always true when the call was deleted
+     */
+    deleted: true;
+  }
+}
+
 export interface CallAppendToolInvocationsResponse {
   /**
    * Result of appending tool invocations to a call.
@@ -554,6 +609,25 @@ export namespace CallAppendToolInvocationsResponse {
        */
       updatedAt: string;
     }
+  }
+}
+
+export interface CallBatchDeleteResponse {
+  data: CallBatchDeleteResponse.Data;
+}
+
+export namespace CallBatchDeleteResponse {
+  export interface Data {
+    /**
+     * Calls this request deleted
+     */
+    deletedCallIds: Array<string>;
+
+    /**
+     * Requested calls that were not deleted because they do not exist in this project
+     * or were already deleted
+     */
+    notFoundCallIds: Array<string>;
   }
 }
 
@@ -2235,6 +2309,17 @@ export interface CallListParams {
   limit?: number;
 
   /**
+   * Filter on custom properties, one entry per property name:
+   * properties[<name>][exists]=true keeps calls that have the property set (whatever
+   * the value), properties[<name>][exists]=false keeps calls missing it (never sent,
+   * sent as null, or removed). A property the project has never seen is missing on
+   * every call. Names match the way properties are stored, so planTier and plan_tier
+   * are one property. At most 20 properties; a name taken by a built-in call filter,
+   * such as status, is rejected with 400.
+   */
+  properties?: { [key: string]: CallListParams.Property };
+
+  /**
    * Search text to filter calls by title, summary, or transcript
    */
   searchText?: string;
@@ -2270,6 +2355,24 @@ export interface CallListParams {
    * Filter by call status
    */
   status?: 'RINGING' | 'IN_PROGRESS' | 'ENDED';
+}
+
+export namespace CallListParams {
+  /**
+   * Filter on custom properties, one entry per property name:
+   * properties[<name>][exists]=true keeps calls that have the property set (whatever
+   * the value), properties[<name>][exists]=false keeps calls missing it (never sent,
+   * sent as null, or removed). A property the project has never seen is missing on
+   * every call. Names match the way properties are stored, so planTier and plan_tier
+   * are one property. At most 20 properties; a name taken by a built-in call filter,
+   * such as status, is rejected with 400.
+   */
+  export interface Property {
+    /**
+     * true: the property is set. false: the property is missing.
+     */
+    exists?: boolean;
+  }
 }
 
 export interface CallAppendToolInvocationsParams {
@@ -2360,6 +2463,13 @@ export namespace CallAppendToolInvocationsParams {
   }
 }
 
+export interface CallBatchDeleteParams {
+  /**
+   * IDs of the calls to delete, at most 100. Repeated IDs are counted once.
+   */
+  callIds: Array<string>;
+}
+
 export interface CallGetTranscriptParams {
   /**
    * Transcription source to fetch. When omitted, uses the preferred source based on
@@ -2416,7 +2526,9 @@ export declare namespace Call {
   export {
     type CallCreateResponse as CallCreateResponse,
     type CallListResponse as CallListResponse,
+    type CallDeleteResponse as CallDeleteResponse,
     type CallAppendToolInvocationsResponse as CallAppendToolInvocationsResponse,
+    type CallBatchDeleteResponse as CallBatchDeleteResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
     type CallGetCostResponse as CallGetCostResponse,
     type CallGetTranscriptResponse as CallGetTranscriptResponse,
@@ -2426,6 +2538,7 @@ export declare namespace Call {
     type CallCreateParams as CallCreateParams,
     type CallListParams as CallListParams,
     type CallAppendToolInvocationsParams as CallAppendToolInvocationsParams,
+    type CallBatchDeleteParams as CallBatchDeleteParams,
     type CallGetTranscriptParams as CallGetTranscriptParams,
     type CallListMetricsParams as CallListMetricsParams,
     type CallUpdatePropertiesParams as CallUpdatePropertiesParams,
