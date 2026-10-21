@@ -305,6 +305,7 @@ export {
   type SimulationToolFixtureUpdateParams,
   type SimulationToolFixtureListParams,
 } from './simulation-tool-fixture';
+export { Usage, type UsageGetResponse, type UsageGetParams } from './usage';
 export {
   Webhook,
   type WebhookCreateResponse,

@@ -325,6 +325,7 @@ import {
   SimulationToolFixtureUpdateParams,
   SimulationToolFixtureUpdateResponse,
 } from './resources/simulation-tool-fixture';
+import { Usage, UsageGetParams, UsageGetResponse } from './resources/usage';
 import {
   Webhook,
   WebhookCreateParams,
@@ -1083,6 +1084,7 @@ export class Roark {
   health: API.Health = new API.Health(this);
   me: API.Me = new API.Me(this);
   project: API.Project = new API.Project(this);
+  usage: API.Usage = new API.Usage(this);
   call: API.Call = new API.Call(this);
   analytics: API.Analytics = new API.Analytics(this);
   dashboard: API.Dashboard = new API.Dashboard(this);
@@ -1117,6 +1119,7 @@ export class Roark {
 Roark.Health = Health;
 Roark.Me = Me;
 Roark.Project = Project;
+Roark.Usage = Usage;
 Roark.Call = Call;
 Roark.Analytics = Analytics;
 Roark.Dashboard = Dashboard;
@@ -1163,6 +1166,8 @@ export declare namespace Roark {
   };
 
   export { Project as Project, type ProjectListResponse as ProjectListResponse };
+
+  export { Usage as Usage, type UsageGetResponse as UsageGetResponse, type UsageGetParams as UsageGetParams };
 
   export {
     Call as Call,
