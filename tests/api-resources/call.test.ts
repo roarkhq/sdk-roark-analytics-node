@@ -96,6 +96,7 @@ describe('resource call', () => {
           countedInResults: 'true',
           excludeHiddenRuns: 'true',
           limit: 20,
+          properties: { plan_tier: { exists: false }, region: { exists: true } },
           searchText: 'billing inquiry',
           simulationRunPlanIds: '770e8400-e29b-41d4-a716-446655440002',
           simulationRunPlanJobId: '550e8400-e29b-41d4-a716-446655440000',
@@ -108,6 +109,17 @@ describe('resource call', () => {
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Roark.NotFoundError);
+  });
+
+  test('delete', async () => {
+    const responsePromise = client.call.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 
   test('appendToolInvocations: only required params', async () => {
@@ -137,6 +149,25 @@ describe('resource call', () => {
         },
       ],
       metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+    });
+  });
+
+  test('batchDelete: only required params', async () => {
+    const responsePromise = client.call.batchDelete({
+      callIds: ['550e8400-e29b-41d4-a716-446655440000', '660e8400-e29b-41d4-a716-446655440001'],
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('batchDelete: required and optional params', async () => {
+    const response = await client.call.batchDelete({
+      callIds: ['550e8400-e29b-41d4-a716-446655440000', '660e8400-e29b-41d4-a716-446655440001'],
     });
   });
 
