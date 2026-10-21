@@ -88,6 +88,24 @@ export class Call extends APIResource {
   }
 
   /**
+   * The billable spend attributed to one call, split by cost type, with every cost
+   * line behind it. Simulated calls include the costs their simulation incurred
+   * before the call connected. Amounts are billable spend only, in exact
+   * micro-dollars (`\*UsdMicros`) and dollars (`\*Usd`, for display). Requires an
+   * API key with the `billing:read` permission.
+   *
+   * @example
+   * ```ts
+   * const response = await client.call.getCost(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  getCost(callID: string, options?: RequestOptions): APIPromise<CallGetCostResponse> {
+    return this._client.get(path`/v1/call/${callID}/cost`, options);
+  }
+
+  /**
    * Fetch the full transcript for a specific call. Optionally specify a
    * transcription source; otherwise the best available source is used automatically.
    *
@@ -703,6 +721,123 @@ export namespace CallGetByIDResponse {
       label?: string | null;
 
       phoneNumberE164?: string | null;
+    }
+  }
+}
+
+export interface CallGetCostResponse {
+  data: CallGetCostResponse.Data;
+}
+
+export namespace CallGetCostResponse {
+  export interface Data {
+    /**
+     * Spend by cost type. Sums to totalUsdMicros.
+     */
+    breakdown: Array<Data.Breakdown>;
+
+    callId: string;
+
+    currency: 'usd';
+
+    /**
+     * Every billable cost line attributed to the call.
+     */
+    items: Array<Data.Item>;
+
+    totalUsd: number;
+
+    /**
+     * Total billable spend for this call, in micro-dollars.
+     */
+    totalUsdMicros: number;
+  }
+
+  export namespace Data {
+    export interface Breakdown {
+      /**
+       * The same figure in US dollars.
+       */
+      amountUsd: number;
+
+      /**
+       * Billable spend for this type, in micro-dollars.
+       */
+      amountUsdMicros: number;
+
+      /**
+       * Units billed (see the line items for the unit).
+       */
+      quantity: number;
+
+      /**
+       * The cost source, e.g. SIM_PLATFORM_FEE, SIM_LLM, METRIC.
+       */
+      source:
+        | 'SIM_PLATFORM_FEE'
+        | 'SIM_TTS'
+        | 'SIM_STT'
+        | 'SIM_LLM'
+        | 'SIM_TELEPHONY'
+        | 'METRIC'
+        | 'TRANSCRIPTION'
+        | 'INTERNAL_LLM'
+        | 'INTERNAL_STT';
+
+      /**
+       * SIMULATION or POST_CALL.
+       */
+      surface: 'SIMULATION' | 'POST_CALL';
+    }
+
+    export interface Item {
+      amountUsd: number;
+
+      amountUsdMicros: number;
+
+      /**
+       * Stable id of the cost event. Use it to deduplicate.
+       */
+      eventId: string;
+
+      /**
+       * The grading pass a METRIC line paid for. A call graded twice carries one line
+       * per pass.
+       */
+      metricCollectionJobId: string | null;
+
+      /**
+       * The metric a METRIC line was charged for.
+       */
+      metricDefinitionId: string | null;
+
+      model: string | null;
+
+      /**
+       * When the cost was incurred, ISO 8601.
+       */
+      occurredAt: string;
+
+      provider: string | null;
+
+      quantity: number;
+
+      quantityUnit: 'MINUTES' | 'INPUT_TOKENS' | 'OUTPUT_TOKENS' | 'CHARACTERS' | 'AUDIO_SECONDS' | 'UNITS';
+
+      simulationJobId: string | null;
+
+      source:
+        | 'SIM_PLATFORM_FEE'
+        | 'SIM_TTS'
+        | 'SIM_STT'
+        | 'SIM_LLM'
+        | 'SIM_TELEPHONY'
+        | 'METRIC'
+        | 'TRANSCRIPTION'
+        | 'INTERNAL_LLM'
+        | 'INTERNAL_STT';
+
+      surface: 'SIMULATION' | 'POST_CALL';
     }
   }
 }
@@ -2283,6 +2418,7 @@ export declare namespace Call {
     type CallListResponse as CallListResponse,
     type CallAppendToolInvocationsResponse as CallAppendToolInvocationsResponse,
     type CallGetByIDResponse as CallGetByIDResponse,
+    type CallGetCostResponse as CallGetCostResponse,
     type CallGetTranscriptResponse as CallGetTranscriptResponse,
     type CallListMetricsResponse as CallListMetricsResponse,
     type CallListSentimentRunsResponse as CallListSentimentRunsResponse,
