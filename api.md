@@ -58,6 +58,46 @@ Methods:
 - <code title="get /v1/call/{callId}/sentiment-run">client.call.<a href="./src/resources/call.ts">listSentimentRuns</a>(callID) -> CallListSentimentRunsResponse</code>
 - <code title="patch /v1/call/{callId}/properties">client.call.<a href="./src/resources/call.ts">updateProperties</a>(callID, { ...params }) -> CallUpdatePropertiesResponse</code>
 
+# Analytics
+
+Types:
+
+- <code><a href="./src/resources/analytics.ts">AnalyticsGetSchemaResponse</a></code>
+- <code><a href="./src/resources/analytics.ts">AnalyticsQueryResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/analytics/schema">client.analytics.<a href="./src/resources/analytics.ts">getSchema</a>() -> AnalyticsGetSchemaResponse</code>
+- <code title="post /v1/analytics/query">client.analytics.<a href="./src/resources/analytics.ts">query</a>({ ...params }) -> AnalyticsQueryResponse</code>
+
+# Dashboard
+
+Types:
+
+- <code><a href="./src/resources/dashboard.ts">DashboardCreateResponse</a></code>
+- <code><a href="./src/resources/dashboard.ts">DashboardUpdateResponse</a></code>
+- <code><a href="./src/resources/dashboard.ts">DashboardListResponse</a></code>
+- <code><a href="./src/resources/dashboard.ts">DashboardDeleteResponse</a></code>
+- <code><a href="./src/resources/dashboard.ts">DashboardCreateWidgetResponse</a></code>
+- <code><a href="./src/resources/dashboard.ts">DashboardDeleteWidgetResponse</a></code>
+- <code><a href="./src/resources/dashboard.ts">DashboardGetByIDResponse</a></code>
+- <code><a href="./src/resources/dashboard.ts">DashboardGetDataResponse</a></code>
+- <code><a href="./src/resources/dashboard.ts">DashboardGetWidgetDataResponse</a></code>
+- <code><a href="./src/resources/dashboard.ts">DashboardUpdateWidgetResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/dashboard">client.dashboard.<a href="./src/resources/dashboard.ts">create</a>({ ...params }) -> DashboardCreateResponse</code>
+- <code title="put /v1/dashboard/{dashboardId}">client.dashboard.<a href="./src/resources/dashboard.ts">update</a>(dashboardID, { ...params }) -> DashboardUpdateResponse</code>
+- <code title="get /v1/dashboard">client.dashboard.<a href="./src/resources/dashboard.ts">list</a>() -> DashboardListResponse</code>
+- <code title="delete /v1/dashboard/{dashboardId}">client.dashboard.<a href="./src/resources/dashboard.ts">delete</a>(dashboardID) -> DashboardDeleteResponse</code>
+- <code title="post /v1/dashboard/{dashboardId}/widget">client.dashboard.<a href="./src/resources/dashboard.ts">createWidget</a>(dashboardID, { ...params }) -> DashboardCreateWidgetResponse</code>
+- <code title="delete /v1/dashboard/{dashboardId}/widget/{widgetId}">client.dashboard.<a href="./src/resources/dashboard.ts">deleteWidget</a>(widgetID, { ...params }) -> DashboardDeleteWidgetResponse</code>
+- <code title="get /v1/dashboard/{dashboardId}">client.dashboard.<a href="./src/resources/dashboard.ts">getByID</a>(dashboardID) -> DashboardGetByIDResponse</code>
+- <code title="get /v1/dashboard/{dashboardId}/data">client.dashboard.<a href="./src/resources/dashboard.ts">getData</a>(dashboardID, { ...params }) -> DashboardGetDataResponse</code>
+- <code title="get /v1/dashboard/{dashboardId}/widget/{widgetId}/data">client.dashboard.<a href="./src/resources/dashboard.ts">getWidgetData</a>(widgetID, { ...params }) -> DashboardGetWidgetDataResponse</code>
+- <code title="put /v1/dashboard/{dashboardId}/widget/{widgetId}">client.dashboard.<a href="./src/resources/dashboard.ts">updateWidget</a>(widgetID, { ...params }) -> DashboardUpdateWidgetResponse</code>
+
 # Metric
 
 Types:

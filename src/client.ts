@@ -60,6 +60,12 @@ import {
   AgentPromptUpdateResponse,
 } from './resources/agent-prompt';
 import {
+  Analytics,
+  AnalyticsGetSchemaResponse,
+  AnalyticsQueryParams,
+  AnalyticsQueryResponse,
+} from './resources/analytics';
+import {
   AutoimproveJob,
   AutoimproveJobAnswerQuestionParams,
   AutoimproveJobAnswerQuestionResponse,
@@ -143,6 +149,26 @@ import {
   CustomerFlowEdgeCaseUpdateParams,
   CustomerFlowEdgeCaseUpdateResponse,
 } from './resources/customer-flow-edge-case';
+import {
+  Dashboard,
+  DashboardCreateParams,
+  DashboardCreateResponse,
+  DashboardCreateWidgetParams,
+  DashboardCreateWidgetResponse,
+  DashboardDeleteResponse,
+  DashboardDeleteWidgetParams,
+  DashboardDeleteWidgetResponse,
+  DashboardGetByIDResponse,
+  DashboardGetDataParams,
+  DashboardGetDataResponse,
+  DashboardGetWidgetDataParams,
+  DashboardGetWidgetDataResponse,
+  DashboardListResponse,
+  DashboardUpdateParams,
+  DashboardUpdateResponse,
+  DashboardUpdateWidgetParams,
+  DashboardUpdateWidgetResponse,
+} from './resources/dashboard';
 import { Health, HealthGetResponse } from './resources/health';
 import {
   HTTPRequestDefinition,
@@ -1058,6 +1084,8 @@ export class Roark {
   me: API.Me = new API.Me(this);
   project: API.Project = new API.Project(this);
   call: API.Call = new API.Call(this);
+  analytics: API.Analytics = new API.Analytics(this);
+  dashboard: API.Dashboard = new API.Dashboard(this);
   metric: API.Metric = new API.Metric(this);
   metricPolicy: API.MetricPolicy = new API.MetricPolicy(this);
   metricCollectionJob: API.MetricCollectionJob = new API.MetricCollectionJob(this);
@@ -1090,6 +1118,8 @@ Roark.Health = Health;
 Roark.Me = Me;
 Roark.Project = Project;
 Roark.Call = Call;
+Roark.Analytics = Analytics;
+Roark.Dashboard = Dashboard;
 Roark.Metric = Metric;
 Roark.MetricPolicy = MetricPolicy;
 Roark.MetricCollectionJob = MetricCollectionJob;
@@ -1150,6 +1180,34 @@ export declare namespace Roark {
     type CallGetTranscriptParams as CallGetTranscriptParams,
     type CallListMetricsParams as CallListMetricsParams,
     type CallUpdatePropertiesParams as CallUpdatePropertiesParams,
+  };
+
+  export {
+    Analytics as Analytics,
+    type AnalyticsGetSchemaResponse as AnalyticsGetSchemaResponse,
+    type AnalyticsQueryResponse as AnalyticsQueryResponse,
+    type AnalyticsQueryParams as AnalyticsQueryParams,
+  };
+
+  export {
+    Dashboard as Dashboard,
+    type DashboardCreateResponse as DashboardCreateResponse,
+    type DashboardUpdateResponse as DashboardUpdateResponse,
+    type DashboardListResponse as DashboardListResponse,
+    type DashboardDeleteResponse as DashboardDeleteResponse,
+    type DashboardCreateWidgetResponse as DashboardCreateWidgetResponse,
+    type DashboardDeleteWidgetResponse as DashboardDeleteWidgetResponse,
+    type DashboardGetByIDResponse as DashboardGetByIDResponse,
+    type DashboardGetDataResponse as DashboardGetDataResponse,
+    type DashboardGetWidgetDataResponse as DashboardGetWidgetDataResponse,
+    type DashboardUpdateWidgetResponse as DashboardUpdateWidgetResponse,
+    type DashboardCreateParams as DashboardCreateParams,
+    type DashboardUpdateParams as DashboardUpdateParams,
+    type DashboardCreateWidgetParams as DashboardCreateWidgetParams,
+    type DashboardDeleteWidgetParams as DashboardDeleteWidgetParams,
+    type DashboardGetDataParams as DashboardGetDataParams,
+    type DashboardGetWidgetDataParams as DashboardGetWidgetDataParams,
+    type DashboardUpdateWidgetParams as DashboardUpdateWidgetParams,
   };
 
   export {
