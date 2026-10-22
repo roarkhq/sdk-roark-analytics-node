@@ -43,6 +43,28 @@ export class MetricCollectionJob extends APIResource {
   }
 
   /**
+   * Stops a metric collection job that has not finished. No further conversations
+   * are processed and the job ends in CANCELED.
+   *
+   * Items the job had not reached are marked SKIPPED. Metric values already produced
+   * are kept, and items that were mid-computation when the cancel arrived may still
+   * complete. Only the items that completed are billed.
+   *
+   * Safe to call more than once: a job that has already finished (COMPLETED, FAILED,
+   * or CANCELED) is returned unchanged.
+   *
+   * @example
+   * ```ts
+   * const response = await client.metricCollectionJob.cancel(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  cancel(jobID: string, options?: RequestOptions): APIPromise<MetricCollectionJobCancelResponse> {
+    return this._client.post(path`/v1/metric/collection-jobs/${jobID}/cancel`, options);
+  }
+
+  /**
    * Returns a specific metric collection job with progress information.
    *
    * @example
@@ -80,7 +102,8 @@ export namespace MetricCollectionJobCreateResponse {
     completedAt: string | null;
 
     /**
-     * Number of successfully completed items
+     * Number of items that finished without failing: a value was written, or the
+     * metric did not apply to the conversation
      */
     completedItems: number;
 
@@ -90,12 +113,14 @@ export namespace MetricCollectionJobCreateResponse {
     createdAt: string;
 
     /**
-     * Error message if the job failed
+     * Why the job failed or, on a COMPLETED job with failedItems above 0, why those
+     * items failed
      */
     errorMessage: string | null;
 
     /**
-     * Number of failed items
+     * Number of items that could not be computed, for example because an artifact the
+     * metric reads (such as diarization) failed to generate
      */
     failedItems: number;
 
@@ -156,7 +181,8 @@ export namespace MetricCollectionJobListResponse {
     completedAt: string | null;
 
     /**
-     * Number of successfully completed items
+     * Number of items that finished without failing: a value was written, or the
+     * metric did not apply to the conversation
      */
     completedItems: number;
 
@@ -166,12 +192,14 @@ export namespace MetricCollectionJobListResponse {
     createdAt: string;
 
     /**
-     * Error message if the job failed
+     * Why the job failed or, on a COMPLETED job with failedItems above 0, why those
+     * items failed
      */
     errorMessage: string | null;
 
     /**
-     * Number of failed items
+     * Number of items that could not be computed, for example because an artifact the
+     * metric reads (such as diarization) failed to generate
      */
     failedItems: number;
 
@@ -224,6 +252,83 @@ export namespace MetricCollectionJobListResponse {
   }
 }
 
+export interface MetricCollectionJobCancelResponse {
+  /**
+   * A metric collection job that processes metrics for calls or chats
+   */
+  data: MetricCollectionJobCancelResponse.Data;
+}
+
+export namespace MetricCollectionJobCancelResponse {
+  /**
+   * A metric collection job that processes metrics for calls or chats
+   */
+  export interface Data {
+    /**
+     * Unique identifier of the metric collection job
+     */
+    id: string;
+
+    /**
+     * When the job completed
+     */
+    completedAt: string | null;
+
+    /**
+     * Number of items that finished without failing: a value was written, or the
+     * metric did not apply to the conversation
+     */
+    completedItems: number;
+
+    /**
+     * When the job was created
+     */
+    createdAt: string;
+
+    /**
+     * Why the job failed or, on a COMPLETED job with failedItems above 0, why those
+     * items failed
+     */
+    errorMessage: string | null;
+
+    /**
+     * Number of items that could not be computed, for example because an artifact the
+     * metric reads (such as diarization) failed to generate
+     */
+    failedItems: number;
+
+    /**
+     * IDs of the metric policies that triggered this job
+     */
+    policyIds: Array<string>;
+
+    /**
+     * When the job started processing
+     */
+    startedAt: string | null;
+
+    /**
+     * Current status of the job
+     */
+    status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED';
+
+    /**
+     * Total number of call-metric pairs to process
+     */
+    totalItems: number;
+
+    /**
+     * What triggered this job
+     */
+    triggeredBy: 'USER_MANUAL' | 'USER_API' | 'METRIC_POLICY' | 'SIMULATION';
+
+    /**
+     * When the job was last updated
+     */
+    updatedAt: string;
+  }
+}
+
 export interface MetricCollectionJobGetByIDResponse {
   /**
    * A metric collection job that processes metrics for calls or chats
@@ -247,7 +352,8 @@ export namespace MetricCollectionJobGetByIDResponse {
     completedAt: string | null;
 
     /**
-     * Number of successfully completed items
+     * Number of items that finished without failing: a value was written, or the
+     * metric did not apply to the conversation
      */
     completedItems: number;
 
@@ -257,12 +363,14 @@ export namespace MetricCollectionJobGetByIDResponse {
     createdAt: string;
 
     /**
-     * Error message if the job failed
+     * Why the job failed or, on a COMPLETED job with failedItems above 0, why those
+     * items failed
      */
     errorMessage: string | null;
 
     /**
-     * Number of failed items
+     * Number of items that could not be computed, for example because an artifact the
+     * metric reads (such as diarization) failed to generate
      */
     failedItems: number;
 
@@ -356,6 +464,7 @@ export declare namespace MetricCollectionJob {
   export {
     type MetricCollectionJobCreateResponse as MetricCollectionJobCreateResponse,
     type MetricCollectionJobListResponse as MetricCollectionJobListResponse,
+    type MetricCollectionJobCancelResponse as MetricCollectionJobCancelResponse,
     type MetricCollectionJobGetByIDResponse as MetricCollectionJobGetByIDResponse,
     type MetricCollectionJobCreateParams as MetricCollectionJobCreateParams,
     type MetricCollectionJobListParams as MetricCollectionJobListParams,

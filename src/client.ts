@@ -204,6 +204,7 @@ import {
 } from './resources/metric';
 import {
   MetricCollectionJob,
+  MetricCollectionJobCancelResponse,
   MetricCollectionJobCreateParams,
   MetricCollectionJobCreateResponse,
   MetricCollectionJobGetByIDResponse,
@@ -1250,6 +1251,7 @@ export declare namespace Roark {
     MetricCollectionJob as MetricCollectionJob,
     type MetricCollectionJobCreateResponse as MetricCollectionJobCreateResponse,
     type MetricCollectionJobListResponse as MetricCollectionJobListResponse,
+    type MetricCollectionJobCancelResponse as MetricCollectionJobCancelResponse,
     type MetricCollectionJobGetByIDResponse as MetricCollectionJobGetByIDResponse,
     type MetricCollectionJobCreateParams as MetricCollectionJobCreateParams,
     type MetricCollectionJobListParams as MetricCollectionJobListParams,

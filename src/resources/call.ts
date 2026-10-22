@@ -560,7 +560,8 @@ export namespace CallAppendToolInvocationsResponse {
       completedAt: string | null;
 
       /**
-       * Number of successfully completed items
+       * Number of items that finished without failing: a value was written, or the
+       * metric did not apply to the conversation
        */
       completedItems: number;
 
@@ -570,12 +571,14 @@ export namespace CallAppendToolInvocationsResponse {
       createdAt: string;
 
       /**
-       * Error message if the job failed
+       * Why the job failed or, on a COMPLETED job with failedItems above 0, why those
+       * items failed
        */
       errorMessage: string | null;
 
       /**
-       * Number of failed items
+       * Number of items that could not be computed, for example because an artifact the
+       * metric reads (such as diarization) failed to generate
        */
       failedItems: number;
 
@@ -1764,7 +1767,8 @@ export namespace CallUpdatePropertiesResponse {
       completedAt: string | null;
 
       /**
-       * Number of successfully completed items
+       * Number of items that finished without failing: a value was written, or the
+       * metric did not apply to the conversation
        */
       completedItems: number;
 
@@ -1774,12 +1778,14 @@ export namespace CallUpdatePropertiesResponse {
       createdAt: string;
 
       /**
-       * Error message if the job failed
+       * Why the job failed or, on a COMPLETED job with failedItems above 0, why those
+       * items failed
        */
       errorMessage: string | null;
 
       /**
-       * Number of failed items
+       * Number of items that could not be computed, for example because an artifact the
+       * metric reads (such as diarization) failed to generate
        */
       failedItems: number;
 

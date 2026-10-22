@@ -189,6 +189,7 @@ export {
   MetricCollectionJob,
   type MetricCollectionJobCreateResponse,
   type MetricCollectionJobListResponse,
+  type MetricCollectionJobCancelResponse,
   type MetricCollectionJobGetByIDResponse,
   type MetricCollectionJobCreateParams,
   type MetricCollectionJobListParams,

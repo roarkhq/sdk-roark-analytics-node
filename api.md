@@ -152,12 +152,14 @@ Types:
 
 - <code><a href="./src/resources/metric-collection-job.ts">MetricCollectionJobCreateResponse</a></code>
 - <code><a href="./src/resources/metric-collection-job.ts">MetricCollectionJobListResponse</a></code>
+- <code><a href="./src/resources/metric-collection-job.ts">MetricCollectionJobCancelResponse</a></code>
 - <code><a href="./src/resources/metric-collection-job.ts">MetricCollectionJobGetByIDResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/metric/collection-jobs">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">create</a>({ ...params }) -> MetricCollectionJobCreateResponse</code>
 - <code title="get /v1/metric/collection-jobs">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">list</a>({ ...params }) -> MetricCollectionJobListResponse</code>
+- <code title="post /v1/metric/collection-jobs/{jobId}/cancel">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">cancel</a>(jobID) -> MetricCollectionJobCancelResponse</code>
 - <code title="get /v1/metric/collection-jobs/{jobId}">client.metricCollectionJob.<a href="./src/resources/metric-collection-job.ts">getByID</a>(jobID) -> MetricCollectionJobGetByIDResponse</code>
 
 # MetricVariant
