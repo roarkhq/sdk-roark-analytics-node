@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.13.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v5.12.0...v5.13.0) (2026-10-24)
+
+
+### Features
+
+* **lib:** code-first config authoring (defineAgent/defineTool/defineConfig) ([#1374](https://github.com/roarkhq/sdk-roark-analytics-node/issues/1374)) ([cd8c8ec](https://github.com/roarkhq/sdk-roark-analytics-node/commit/cd8c8ec55e33c795a0917dea47a0327d6df70904))
+
 ## [5.12.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v5.11.0...v5.12.0) (2026-10-22)
 
 
