@@ -982,9 +982,21 @@ export namespace Bundle {
 
     expectedResult?: string | null;
 
+    handler?: ToolConfig.Handler;
+
     invocationCriteria?: string | null;
 
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+  }
+
+  export namespace ToolConfig {
+    export interface Handler {
+      type: 'http';
+
+      url: string;
+
+      method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    }
   }
 
   export interface DashboardConfig {
@@ -2193,9 +2205,21 @@ export namespace Bundle {
 
       expectedResult?: string | null;
 
+      handler?: ToolConfig.Handler;
+
       invocationCriteria?: string | null;
 
       parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+    }
+
+    export namespace ToolConfig {
+      export interface Handler {
+        type: 'http';
+
+        url: string;
+
+        method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+      }
     }
 
     export interface DashboardConfig {
@@ -3553,9 +3577,21 @@ export namespace ConfigApplyParams {
 
     expectedResult?: string | null;
 
+    handler?: ToolConfig.Handler;
+
     invocationCriteria?: string | null;
 
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+  }
+
+  export namespace ToolConfig {
+    export interface Handler {
+      type: 'http';
+
+      url: string;
+
+      method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    }
   }
 
   export interface DashboardConfig {
@@ -4764,9 +4800,21 @@ export namespace ConfigApplyParams {
 
       expectedResult?: string | null;
 
+      handler?: ToolConfig.Handler;
+
       invocationCriteria?: string | null;
 
       parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+    }
+
+    export namespace ToolConfig {
+      export interface Handler {
+        type: 'http';
+
+        url: string;
+
+        method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+      }
     }
 
     export interface DashboardConfig {
@@ -5951,9 +5999,21 @@ export namespace ConfigDiffParams {
 
     expectedResult?: string | null;
 
+    handler?: ToolConfig.Handler;
+
     invocationCriteria?: string | null;
 
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+  }
+
+  export namespace ToolConfig {
+    export interface Handler {
+      type: 'http';
+
+      url: string;
+
+      method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    }
   }
 
   export interface DashboardConfig {
@@ -7162,9 +7222,21 @@ export namespace ConfigDiffParams {
 
       expectedResult?: string | null;
 
+      handler?: ToolConfig.Handler;
+
       invocationCriteria?: string | null;
 
       parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+    }
+
+    export namespace ToolConfig {
+      export interface Handler {
+        type: 'http';
+
+        url: string;
+
+        method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+      }
     }
 
     export interface DashboardConfig {
