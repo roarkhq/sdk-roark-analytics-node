@@ -992,7 +992,7 @@ export namespace SimulationGroupCreateParams {
   export namespace Notifications {
     export interface Email {
       /**
-       * Whether the group report of each run is emailed when it is ready.
+       * Whether each run's group report is emailed when it is ready.
        */
       enabled: boolean;
 
@@ -1053,7 +1053,7 @@ export namespace SimulationGroupUpdateParams {
   export namespace Notifications {
     export interface Email {
       /**
-       * Whether the group report of each run is emailed when it is ready.
+       * Whether each run's group report is emailed when it is ready.
        */
       enabled: boolean;
 

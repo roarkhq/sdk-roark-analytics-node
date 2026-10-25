@@ -73,6 +73,10 @@ describe('resource simulationRunPlan', () => {
         },
       ],
       noResponseRetryBackoffSeconds: 90,
+      notifications: {
+        email: { enabled: true, recipients: ['qa-lead@example.com'] },
+        slack: [{ channelId: 'C07ABCDEF12', channelName: 'qa-reports' }],
+      },
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
       scenarios: [
         {
@@ -148,6 +152,10 @@ describe('resource simulationRunPlan', () => {
           ],
           name: 'x',
           noResponseRetryBackoffSeconds: 30,
+          notifications: {
+            email: { enabled: true, recipients: ['qa-lead@example.com'] },
+            slack: [{ channelId: 'C07ABCDEF12', channelName: 'qa-reports' }],
+          },
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
           scenarios: [
             {
