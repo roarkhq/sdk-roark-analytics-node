@@ -483,6 +483,8 @@ export namespace Bundle {
 
     noResponseRetryBackoffSeconds?: number;
 
+    notify?: SimulationPlanConfig.Notify;
+
     schedule?:
       | SimulationPlanConfig.UnionMember0
       | SimulationPlanConfig.UnionMember1
@@ -515,6 +517,20 @@ export namespace Bundle {
       personaOverride?: string;
 
       system?: string;
+    }
+
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
 
     export interface UnionMember0 {
@@ -647,6 +663,8 @@ export namespace Bundle {
 
     noResponseRetryBackoffSeconds?: number;
 
+    notify?: QaSimulationPlanConfig.Notify;
+
     schedule?:
       | QaSimulationPlanConfig.UnionMember0
       | QaSimulationPlanConfig.UnionMember1
@@ -673,6 +691,20 @@ export namespace Bundle {
       expect?: string;
 
       name?: string;
+    }
+
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
 
     export interface UnionMember0 {
@@ -1706,6 +1738,8 @@ export namespace Bundle {
 
       noResponseRetryBackoffSeconds?: number;
 
+      notify?: SimulationPlanConfig.Notify;
+
       schedule?:
         | SimulationPlanConfig.UnionMember0
         | SimulationPlanConfig.UnionMember1
@@ -1738,6 +1772,20 @@ export namespace Bundle {
         personaOverride?: string;
 
         system?: string;
+      }
+
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
       }
 
       export interface UnionMember0 {
@@ -1870,6 +1918,8 @@ export namespace Bundle {
 
       noResponseRetryBackoffSeconds?: number;
 
+      notify?: QaSimulationPlanConfig.Notify;
+
       schedule?:
         | QaSimulationPlanConfig.UnionMember0
         | QaSimulationPlanConfig.UnionMember1
@@ -1896,6 +1946,20 @@ export namespace Bundle {
         expect?: string;
 
         name?: string;
+      }
+
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
       }
 
       export interface UnionMember0 {
@@ -3078,6 +3142,8 @@ export namespace ConfigApplyParams {
 
     noResponseRetryBackoffSeconds?: number;
 
+    notify?: SimulationPlanConfig.Notify;
+
     schedule?:
       | SimulationPlanConfig.UnionMember0
       | SimulationPlanConfig.UnionMember1
@@ -3110,6 +3176,20 @@ export namespace ConfigApplyParams {
       personaOverride?: string;
 
       system?: string;
+    }
+
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
 
     export interface UnionMember0 {
@@ -3242,6 +3322,8 @@ export namespace ConfigApplyParams {
 
     noResponseRetryBackoffSeconds?: number;
 
+    notify?: QaSimulationPlanConfig.Notify;
+
     schedule?:
       | QaSimulationPlanConfig.UnionMember0
       | QaSimulationPlanConfig.UnionMember1
@@ -3268,6 +3350,20 @@ export namespace ConfigApplyParams {
       expect?: string;
 
       name?: string;
+    }
+
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
 
     export interface UnionMember0 {
@@ -4301,6 +4397,8 @@ export namespace ConfigApplyParams {
 
       noResponseRetryBackoffSeconds?: number;
 
+      notify?: SimulationPlanConfig.Notify;
+
       schedule?:
         | SimulationPlanConfig.UnionMember0
         | SimulationPlanConfig.UnionMember1
@@ -4333,6 +4431,20 @@ export namespace ConfigApplyParams {
         personaOverride?: string;
 
         system?: string;
+      }
+
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
       }
 
       export interface UnionMember0 {
@@ -4465,6 +4577,8 @@ export namespace ConfigApplyParams {
 
       noResponseRetryBackoffSeconds?: number;
 
+      notify?: QaSimulationPlanConfig.Notify;
+
       schedule?:
         | QaSimulationPlanConfig.UnionMember0
         | QaSimulationPlanConfig.UnionMember1
@@ -4491,6 +4605,20 @@ export namespace ConfigApplyParams {
         expect?: string;
 
         name?: string;
+      }
+
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
       }
 
       export interface UnionMember0 {
@@ -5500,6 +5628,8 @@ export namespace ConfigDiffParams {
 
     noResponseRetryBackoffSeconds?: number;
 
+    notify?: SimulationPlanConfig.Notify;
+
     schedule?:
       | SimulationPlanConfig.UnionMember0
       | SimulationPlanConfig.UnionMember1
@@ -5532,6 +5662,20 @@ export namespace ConfigDiffParams {
       personaOverride?: string;
 
       system?: string;
+    }
+
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
 
     export interface UnionMember0 {
@@ -5664,6 +5808,8 @@ export namespace ConfigDiffParams {
 
     noResponseRetryBackoffSeconds?: number;
 
+    notify?: QaSimulationPlanConfig.Notify;
+
     schedule?:
       | QaSimulationPlanConfig.UnionMember0
       | QaSimulationPlanConfig.UnionMember1
@@ -5690,6 +5836,20 @@ export namespace ConfigDiffParams {
       expect?: string;
 
       name?: string;
+    }
+
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
 
     export interface UnionMember0 {
@@ -6723,6 +6883,8 @@ export namespace ConfigDiffParams {
 
       noResponseRetryBackoffSeconds?: number;
 
+      notify?: SimulationPlanConfig.Notify;
+
       schedule?:
         | SimulationPlanConfig.UnionMember0
         | SimulationPlanConfig.UnionMember1
@@ -6755,6 +6917,20 @@ export namespace ConfigDiffParams {
         personaOverride?: string;
 
         system?: string;
+      }
+
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
       }
 
       export interface UnionMember0 {
@@ -6887,6 +7063,8 @@ export namespace ConfigDiffParams {
 
       noResponseRetryBackoffSeconds?: number;
 
+      notify?: QaSimulationPlanConfig.Notify;
+
       schedule?:
         | QaSimulationPlanConfig.UnionMember0
         | QaSimulationPlanConfig.UnionMember1
@@ -6913,6 +7091,20 @@ export namespace ConfigDiffParams {
         expect?: string;
 
         name?: string;
+      }
+
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
       }
 
       export interface UnionMember0 {
