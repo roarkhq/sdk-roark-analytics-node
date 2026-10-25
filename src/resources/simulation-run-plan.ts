@@ -280,6 +280,12 @@ export namespace SimulationRunPlanCreateResponse {
       noResponseRetryBackoffSeconds: number;
 
       /**
+       * Where each run's report announces itself once it is ready. Email off and no
+       * Slack channels means the plan sends none.
+       */
+      notifications: RunPlan.Notifications;
+
+      /**
        * Personas included in this run plan. Only meaningful alongside `scenarios`.
        */
       personas: Array<RunPlan.Persona>;
@@ -446,6 +452,30 @@ export namespace SimulationRunPlanCreateResponse {
          * `null` means the 80% default.
          */
         minPassRate: number | null;
+      }
+
+      /**
+       * Where each run's report announces itself once it is ready. Email off and no
+       * Slack channels means the plan sends none.
+       */
+      export interface Notifications {
+        email: Notifications.Email;
+
+        slack: Array<Notifications.Slack>;
+      }
+
+      export namespace Notifications {
+        export interface Email {
+          enabled: boolean;
+
+          recipients: Array<string>;
+        }
+
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
       }
 
       export interface Persona {
@@ -660,6 +690,12 @@ export namespace SimulationRunPlanUpdateResponse {
     noResponseRetryBackoffSeconds: number;
 
     /**
+     * Where each run's report announces itself once it is ready. Email off and no
+     * Slack channels means the plan sends none.
+     */
+    notifications: Data.Notifications;
+
+    /**
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
@@ -826,6 +862,30 @@ export namespace SimulationRunPlanUpdateResponse {
        * `null` means the 80% default.
        */
       minPassRate: number | null;
+    }
+
+    /**
+     * Where each run's report announces itself once it is ready. Email off and no
+     * Slack channels means the plan sends none.
+     */
+    export interface Notifications {
+      email: Notifications.Email;
+
+      slack: Array<Notifications.Slack>;
+    }
+
+    export namespace Notifications {
+      export interface Email {
+        enabled: boolean;
+
+        recipients: Array<string>;
+      }
+
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
 
     export interface Persona {
@@ -1004,6 +1064,12 @@ export namespace SimulationRunPlanListResponse {
     noResponseRetryBackoffSeconds: number;
 
     /**
+     * Where each run's report announces itself once it is ready. Email off and no
+     * Slack channels means the plan sends none.
+     */
+    notifications: Data.Notifications;
+
+    /**
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
@@ -1170,6 +1236,30 @@ export namespace SimulationRunPlanListResponse {
        * `null` means the 80% default.
        */
       minPassRate: number | null;
+    }
+
+    /**
+     * Where each run's report announces itself once it is ready. Email off and no
+     * Slack channels means the plan sends none.
+     */
+    export interface Notifications {
+      email: Notifications.Email;
+
+      slack: Array<Notifications.Slack>;
+    }
+
+    export namespace Notifications {
+      export interface Email {
+        enabled: boolean;
+
+        recipients: Array<string>;
+      }
+
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
 
     export interface Persona {
@@ -1376,6 +1466,12 @@ export namespace SimulationRunPlanGetByIDResponse {
     noResponseRetryBackoffSeconds: number;
 
     /**
+     * Where each run's report announces itself once it is ready. Email off and no
+     * Slack channels means the plan sends none.
+     */
+    notifications: Data.Notifications;
+
+    /**
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
@@ -1542,6 +1638,30 @@ export namespace SimulationRunPlanGetByIDResponse {
        * `null` means the 80% default.
        */
       minPassRate: number | null;
+    }
+
+    /**
+     * Where each run's report announces itself once it is ready. Email off and no
+     * Slack channels means the plan sends none.
+     */
+    export interface Notifications {
+      email: Notifications.Email;
+
+      slack: Array<Notifications.Slack>;
+    }
+
+    export namespace Notifications {
+      export interface Email {
+        enabled: boolean;
+
+        recipients: Array<string>;
+      }
+
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
     }
 
     export interface Persona {
@@ -1786,6 +1906,13 @@ export declare namespace SimulationRunPlanCreateParams {
     noResponseRetryBackoffSeconds?: number;
 
     /**
+     * Email and/or Slack delivery of each run's report once it is ready, with the
+     * report PDF attached. Each run announces once, off its first report. Omitted: no
+     * notifications.
+     */
+    notifications?: CreateRunPlanFromConfig.Notifications;
+
+    /**
      * Personas to include in this run plan. Required with `scenarios`; ignored with
      * `flows`, where each variant carries its own persona.
      */
@@ -1976,6 +2103,48 @@ export declare namespace SimulationRunPlanCreateParams {
       slug?: string;
     }
 
+    /**
+     * Email and/or Slack delivery of each run's report once it is ready, with the
+     * report PDF attached. Each run announces once, off its first report. Omitted: no
+     * notifications.
+     */
+    export interface Notifications {
+      email?: Notifications.Email;
+
+      /**
+       * Channels in the project's connected Slack workspace to post the report to (at
+       * most 10). Slack must be connected to the project first.
+       */
+      slack?: Array<Notifications.Slack>;
+    }
+
+    export namespace Notifications {
+      export interface Email {
+        /**
+         * Whether each run's report is emailed when it is ready.
+         */
+        enabled: boolean;
+
+        /**
+         * Addresses to email (at most 50), Roark users or not: the email attaches the
+         * report PDF. Empty emails every member of the project.
+         */
+        recipients?: Array<string>;
+      }
+
+      export interface Slack {
+        /**
+         * The Slack channel id
+         */
+        channelId: string;
+
+        /**
+         * The channel name, shown in Roark
+         */
+        channelName: string;
+      }
+    }
+
     export interface Persona {
       id: string;
     }
@@ -2141,6 +2310,13 @@ export declare namespace SimulationRunPlanCreateParams {
      * `maxNoResponseRetries` is above 0.
      */
     noResponseRetryBackoffSeconds?: number;
+
+    /**
+     * Email and/or Slack delivery of each run's report once it is ready, with the
+     * report PDF attached. Each run announces once, off its first report. Omitted: no
+     * notifications.
+     */
+    notifications?: CreateRunPlanFromTemplate.Notifications;
 
     /**
      * For `question-answer-check`: the persona that asks the questions.
@@ -2332,6 +2508,48 @@ export declare namespace SimulationRunPlanCreateParams {
       }
     }
 
+    /**
+     * Email and/or Slack delivery of each run's report once it is ready, with the
+     * report PDF attached. Each run announces once, off its first report. Omitted: no
+     * notifications.
+     */
+    export interface Notifications {
+      email?: Notifications.Email;
+
+      /**
+       * Channels in the project's connected Slack workspace to post the report to (at
+       * most 10). Slack must be connected to the project first.
+       */
+      slack?: Array<Notifications.Slack>;
+    }
+
+    export namespace Notifications {
+      export interface Email {
+        /**
+         * Whether each run's report is emailed when it is ready.
+         */
+        enabled: boolean;
+
+        /**
+         * Addresses to email (at most 50), Roark users or not: the email attaches the
+         * report PDF. Empty emails every member of the project.
+         */
+        recipients?: Array<string>;
+      }
+
+      export interface Slack {
+        /**
+         * The Slack channel id
+         */
+        channelId: string;
+
+        /**
+         * The channel name, shown in Roark
+         */
+        channelName: string;
+      }
+    }
+
     export interface Question {
       /**
        * The question the caller asks the agent.
@@ -2507,6 +2725,11 @@ export interface SimulationRunPlanUpdateParams {
    * `maxNoResponseRetries` is above 0.
    */
   noResponseRetryBackoffSeconds?: number;
+
+  /**
+   * Where each run's report announces itself once it is ready.
+   */
+  notifications?: SimulationRunPlanUpdateParams.Notifications | null;
 
   /**
    * Personas to include in this run plan
@@ -2697,6 +2920,46 @@ export namespace SimulationRunPlanUpdateParams {
      * not both.
      */
     slug?: string;
+  }
+
+  /**
+   * Where each run's report announces itself once it is ready.
+   */
+  export interface Notifications {
+    email?: Notifications.Email;
+
+    /**
+     * Channels in the project's connected Slack workspace to post the report to (at
+     * most 10). Slack must be connected to the project first.
+     */
+    slack?: Array<Notifications.Slack>;
+  }
+
+  export namespace Notifications {
+    export interface Email {
+      /**
+       * Whether each run's report is emailed when it is ready.
+       */
+      enabled: boolean;
+
+      /**
+       * Addresses to email (at most 50), Roark users or not: the email attaches the
+       * report PDF. Empty emails every member of the project.
+       */
+      recipients?: Array<string>;
+    }
+
+    export interface Slack {
+      /**
+       * The Slack channel id
+       */
+      channelId: string;
+
+      /**
+       * The channel name, shown in Roark
+       */
+      channelName: string;
+    }
   }
 
   export interface Persona {
