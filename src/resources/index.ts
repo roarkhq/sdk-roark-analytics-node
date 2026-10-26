@@ -217,6 +217,19 @@ export {
   type MetricVariantDeleteParams,
   type MetricVariantGetByIDParams,
 } from './metric-variant';
+export {
+  PhoneNumber,
+  type PhoneNumberCreateResponse,
+  type PhoneNumberUpdateResponse,
+  type PhoneNumberListResponse,
+  type PhoneNumberDeleteResponse,
+  type PhoneNumberGetAllowanceResponse,
+  type PhoneNumberListAvailableResponse,
+  type PhoneNumberCreateParams,
+  type PhoneNumberUpdateParams,
+  type PhoneNumberListParams,
+  type PhoneNumberListAvailableParams,
+} from './phone-number';
 export { Project, type ProjectListResponse } from './project';
 export {
   Simulation,

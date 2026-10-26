@@ -859,7 +859,8 @@ export namespace CallGetCostResponse {
         | 'METRIC'
         | 'TRANSCRIPTION'
         | 'INTERNAL_LLM'
-        | 'INTERNAL_STT';
+        | 'INTERNAL_STT'
+        | 'PHONE_NUMBER';
 
       /**
        * SIMULATION or POST_CALL.
@@ -912,7 +913,8 @@ export namespace CallGetCostResponse {
         | 'METRIC'
         | 'TRANSCRIPTION'
         | 'INTERNAL_LLM'
-        | 'INTERNAL_STT';
+        | 'INTERNAL_STT'
+        | 'PHONE_NUMBER';
 
       surface: 'SIMULATION' | 'POST_CALL';
     }

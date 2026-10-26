@@ -80,7 +80,8 @@ export interface MetricCreateDefinitionResponse {
   data:
     | MetricCreateDefinitionResponse.LlmJudgeMetricResponse
     | MetricCreateDefinitionResponse.FormulaMetricResponse
-    | MetricCreateDefinitionResponse.PatternMetricResponse;
+    | MetricCreateDefinitionResponse.PatternMetricResponse
+    | MetricCreateDefinitionResponse.HTTPRequestMetricResponse;
 }
 
 export namespace MetricCreateDefinitionResponse {
@@ -171,10 +172,12 @@ export namespace MetricCreateDefinitionResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -314,10 +317,12 @@ export namespace MetricCreateDefinitionResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -474,10 +479,12 @@ export namespace MetricCreateDefinitionResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -599,6 +606,184 @@ export namespace MetricCreateDefinitionResponse {
       symbol: string | null;
     }
   }
+
+  export interface HTTPRequestMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * What a failed check is called
+     */
+    booleanFalseLabel: string | null;
+
+    /**
+     * What a passed check is called
+     */
+    booleanTrueLabel: string | null;
+
+    /**
+     * BOOLEAN metric answered by your own endpoint: Roark sends a request about each
+     * call and records the {"passed", "reason"} it answers with.
+     */
+    calculationType: 'HTTP_REQUEST';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: HTTPRequestMetricResponse.EvidenceSource | null;
+
+    /**
+     * The request this metric sends.
+     */
+    httpRequest: HTTPRequestMetricResponse.HTTPRequest | null;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
+     */
+    supportsVariants: boolean;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: HTTPRequestMetricResponse.Unit;
+  }
+
+  export namespace HTTPRequestMetricResponse {
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
+     * The request this metric sends.
+     */
+    export interface HTTPRequest {
+      /**
+       * The JSON body template, or null when the default payload is sent
+       */
+      body: string | null;
+
+      /**
+       * Request headers as key-value pairs
+       */
+      headers: { [key: string]: string };
+
+      method: 'GET' | 'POST';
+
+      /**
+       * The URL the request is sent to, placeholders included
+       */
+      url: string;
+    }
+
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
 }
 
 /**
@@ -611,6 +796,7 @@ export interface MetricListDefinitionsResponse {
     | MetricListDefinitionsResponse.ThresholdMetricResponse
     | MetricListDefinitionsResponse.FormulaMetricResponse
     | MetricListDefinitionsResponse.PatternMetricResponse
+    | MetricListDefinitionsResponse.HTTPRequestMetricResponse
   >;
 
   pagination: MetricListDefinitionsResponse.Pagination;
@@ -704,10 +890,12 @@ export namespace MetricListDefinitionsResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -842,10 +1030,12 @@ export namespace MetricListDefinitionsResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -980,10 +1170,12 @@ export namespace MetricListDefinitionsResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -1153,10 +1345,12 @@ export namespace MetricListDefinitionsResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -1313,10 +1507,12 @@ export namespace MetricListDefinitionsResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -1439,6 +1635,184 @@ export namespace MetricListDefinitionsResponse {
     }
   }
 
+  export interface HTTPRequestMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * What a failed check is called
+     */
+    booleanFalseLabel: string | null;
+
+    /**
+     * What a passed check is called
+     */
+    booleanTrueLabel: string | null;
+
+    /**
+     * BOOLEAN metric answered by your own endpoint: Roark sends a request about each
+     * call and records the {"passed", "reason"} it answers with.
+     */
+    calculationType: 'HTTP_REQUEST';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: HTTPRequestMetricResponse.EvidenceSource | null;
+
+    /**
+     * The request this metric sends.
+     */
+    httpRequest: HTTPRequestMetricResponse.HTTPRequest | null;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
+     */
+    supportsVariants: boolean;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: HTTPRequestMetricResponse.Unit;
+  }
+
+  export namespace HTTPRequestMetricResponse {
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
+     * The request this metric sends.
+     */
+    export interface HTTPRequest {
+      /**
+       * The JSON body template, or null when the default payload is sent
+       */
+      body: string | null;
+
+      /**
+       * Request headers as key-value pairs
+       */
+      headers: { [key: string]: string };
+
+      method: 'GET' | 'POST';
+
+      /**
+       * The URL the request is sent to, placeholders included
+       */
+      url: string;
+    }
+
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
+
   export interface Pagination {
     hasMore: boolean;
 
@@ -1456,7 +1830,8 @@ export interface MetricUpdateDefinitionResponse {
     | MetricUpdateDefinitionResponse.LlmJudgeMetricResponse
     | MetricUpdateDefinitionResponse.FormulaMetricResponse
     | MetricUpdateDefinitionResponse.PatternMetricResponse
-    | MetricUpdateDefinitionResponse.ThresholdMetricResponse;
+    | MetricUpdateDefinitionResponse.ThresholdMetricResponse
+    | MetricUpdateDefinitionResponse.HTTPRequestMetricResponse;
 }
 
 export namespace MetricUpdateDefinitionResponse {
@@ -1547,10 +1922,12 @@ export namespace MetricUpdateDefinitionResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -1690,10 +2067,12 @@ export namespace MetricUpdateDefinitionResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -1850,10 +2229,12 @@ export namespace MetricUpdateDefinitionResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -2045,10 +2426,12 @@ export namespace MetricUpdateDefinitionResponse {
     /**
      * Whether you can create a variant of this metric with POST
      * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
-     * configuration comes from the metric they derive from), for provider-computed
-     * metrics whose calculation lives in the collector rather than an editable prompt,
-     * and for metrics in a package that manages its own variants. Most of Roark’s own
-     * metrics are false, so read this rather than discovering it from a 403.
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
      */
     supportsVariants: boolean;
 
@@ -2143,12 +2526,191 @@ export namespace MetricUpdateDefinitionResponse {
       symbol: string | null;
     }
   }
+
+  export interface HTTPRequestMetricResponse {
+    /**
+     * Unique identifier for the metric definition
+     */
+    id: string;
+
+    /**
+     * What a failed check is called
+     */
+    booleanFalseLabel: string | null;
+
+    /**
+     * What a passed check is called
+     */
+    booleanTrueLabel: string | null;
+
+    /**
+     * BOOLEAN metric answered by your own endpoint: Roark sends a request about each
+     * call and records the {"passed", "reason"} it answers with.
+     */
+    calculationType: 'HTTP_REQUEST';
+
+    /**
+     * Description of what the metric measures
+     */
+    description: string;
+
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    evidenceSource: HTTPRequestMetricResponse.EvidenceSource | null;
+
+    /**
+     * The request this metric sends.
+     */
+    httpRequest: HTTPRequestMetricResponse.HTTPRequest | null;
+
+    /**
+     * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
+     */
+    metricId: string;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * True when this metric can only be scored from a live recording
+     * (`supportedConversationSources` is `["LIVE"]`). Selecting one of these on a
+     * simulation run forces live enrichment: the run waits for your recording and, if
+     * none arrives, the metric produces no value. Check this before a run rather than
+     * discovering the wait afterwards.
+     */
+    requiresLiveConversation: boolean;
+
+    /**
+     * Whether metric is global or per-participant
+     */
+    scope: 'GLOBAL' | 'PER_PARTICIPANT';
+
+    /**
+     * Stable metric slug (e.g. "call_reason", "customer_satisfaction")
+     */
+    slug: string;
+
+    /**
+     * Which levels this metric can produce values at
+     */
+    supportedContexts: Array<'CALL' | 'SEGMENT' | 'TURN'>;
+
+    /**
+     * Which kinds of conversation this metric can be scored on. `null` means both.
+     * `["LIVE"]` marks a metric that can only be scored from your own recording of a
+     * real call, and `["SIMULATED"]` one that only applies to simulations.
+     */
+    supportedConversationSources: Array<'SIMULATED' | 'LIVE'> | null;
+
+    /**
+     * Whether you can create a variant of this metric with POST
+     * /v1/metric/definitions/{idOrSlug}/variants. False for threshold metrics (their
+     * configuration comes from the metric they derive from), for HTTP request metrics
+     * (their configuration is the request, edited on the metric), for
+     * provider-computed metrics whose calculation lives in the collector rather than
+     * an editable prompt, and for metrics in a package that manages its own variants.
+     * Most of Roark’s own metrics are false, so read this rather than discovering it
+     * from a 403.
+     */
+    supportsVariants: boolean;
+
+    /**
+     * Type of value this metric produces
+     */
+    type: 'COUNT' | 'NUMERIC' | 'BOOLEAN' | 'SCALE' | 'TEXT' | 'CLASSIFICATION' | 'OFFSET';
+
+    /**
+     * The resolved variant this response reflects (org-scoped Default if the org has
+     * customized it, otherwise the system Default). Pass this as sourceVariantId when
+     * building a derived metric off this one to pin the exact config.
+     */
+    variantId: string;
+
+    /**
+     * The variant's current version. Immutable snapshot of the config — editing the
+     * metric produces a new versionId. Use it to detect config changes.
+     */
+    versionId: string;
+
+    /**
+     * Unit information if applicable
+     */
+    unit?: HTTPRequestMetricResponse.Unit;
+  }
+
+  export namespace HTTPRequestMetricResponse {
+    /**
+     * For a Roark count or rate summed from the per-turn verdicts of a sibling metric
+     * (for example `incorrect_barge_in_yield_count` over
+     * `barge_in_yield_appropriateness`): where the reasoning and transcript positions
+     * live. The count value itself carries neither. `null` for a metric that is its
+     * own evidence.
+     */
+    export interface EvidenceSource {
+      /**
+       * The per-turn value this metric tallies. `false` for an "incorrect" count over an
+       * appropriateness metric, `true` for a count of a boolean event.
+       */
+      countsWhen: boolean;
+
+      /**
+       * Slug of the metric whose per-turn values are the evidence behind this count or
+       * rate
+       */
+      metricId: string;
+    }
+
+    /**
+     * The request this metric sends.
+     */
+    export interface HTTPRequest {
+      /**
+       * The JSON body template, or null when the default payload is sent
+       */
+      body: string | null;
+
+      /**
+       * Request headers as key-value pairs
+       */
+      headers: { [key: string]: string };
+
+      method: 'GET' | 'POST';
+
+      /**
+       * The URL the request is sent to, placeholders included
+       */
+      url: string;
+    }
+
+    /**
+     * Unit information if applicable
+     */
+    export interface Unit {
+      /**
+       * Name of the unit
+       */
+      name: string;
+
+      /**
+       * Symbol for the unit
+       */
+      symbol: string | null;
+    }
+  }
 }
 
 export type MetricCreateDefinitionParams =
   | MetricCreateDefinitionParams.PromptMetricInput
   | MetricCreateDefinitionParams.FormulaMetricInput
-  | MetricCreateDefinitionParams.PatternMetricInput;
+  | MetricCreateDefinitionParams.PatternMetricInput
+  | MetricCreateDefinitionParams.HTTPRequestMetricInput;
 
 export declare namespace MetricCreateDefinitionParams {
   export interface PromptMetricInput {
@@ -2471,6 +3033,86 @@ export declare namespace MetricCreateDefinitionParams {
       sourceVariantId?: string;
     }
   }
+
+  export interface HTTPRequestMetricInput {
+    /**
+     * BOOLEAN metric answered by your own endpoint. Roark sends a request about each
+     * call, live or simulated, and your endpoint answers {"passed": true | false,
+     * "reason": "..."}.
+     */
+    calculationType: 'HTTP_REQUEST';
+
+    /**
+     * The request to send. With no body, Roark POSTs the default payload: { version,
+     * requestId, metric, call, simulation }.
+     */
+    httpRequest: HTTPRequestMetricInput.HTTPRequest;
+
+    /**
+     * Name of the metric
+     */
+    name: string;
+
+    /**
+     * ID of the analysis package to add this metric to. Optional: when omitted, the
+     * metric is added to a default "Custom Metrics" package for your project (created
+     * automatically the first time).
+     */
+    analysisPackageId?: string;
+
+    /**
+     * What a failed check is called (default: Fail)
+     */
+    booleanFalseLabel?: string;
+
+    /**
+     * What a passed check is called (default: Pass)
+     */
+    booleanTrueLabel?: string;
+
+    /**
+     * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
+     * integrations.
+     */
+    metricId?: string;
+
+    /**
+     * Stable slug for the metric. Auto-generated from name if omitted.
+     */
+    slug?: string;
+  }
+
+  export namespace HTTPRequestMetricInput {
+    /**
+     * The request to send. With no body, Roark POSTs the default payload: { version,
+     * requestId, metric, call, simulation }.
+     */
+    export interface HTTPRequest {
+      /**
+       * Public http(s) URL. May contain {{path}} placeholders into the request payload,
+       * which are URL-encoded.
+       */
+      url: string;
+
+      /**
+       * A JSON template with {{path}} placeholders into the request payload, such as
+       * {"cardId": "{{call.properties.cardId}}"}. Omit or pass null to send the default
+       * payload.
+       */
+      body?: string | null;
+
+      /**
+       * Request headers, for example your own Authorization header. Values may contain
+       * placeholders.
+       */
+      headers?: { [key: string]: string };
+
+      /**
+       * GET or POST (default POST). A GET request has no body.
+       */
+      method?: 'GET' | 'POST';
+    }
+  }
 }
 
 export interface MetricListDefinitionsParams {
@@ -2509,6 +3151,12 @@ export interface MetricUpdateDefinitionParams {
    * referenced metrics change.
    */
   formula?: string;
+
+  /**
+   * Replacement request (HTTP_REQUEST only). Send the whole request; omitted headers
+   * are removed.
+   */
+  httpRequest?: MetricUpdateDefinitionParams.HTTPRequest;
 
   /**
    * New LLM prompt (only for LLM_JUDGE metrics whose prompt is editable)
@@ -2588,6 +3236,36 @@ export namespace MetricUpdateDefinitionParams {
     displayOrder: number;
 
     label: string;
+  }
+
+  /**
+   * Replacement request (HTTP_REQUEST only). Send the whole request; omitted headers
+   * are removed.
+   */
+  export interface HTTPRequest {
+    /**
+     * Public http(s) URL. May contain {{path}} placeholders into the request payload,
+     * which are URL-encoded.
+     */
+    url: string;
+
+    /**
+     * A JSON template with {{path}} placeholders into the request payload, such as
+     * {"cardId": "{{call.properties.cardId}}"}. Omit or pass null to send the default
+     * payload.
+     */
+    body?: string | null;
+
+    /**
+     * Request headers, for example your own Authorization header. Values may contain
+     * placeholders.
+     */
+    headers?: { [key: string]: string };
+
+    /**
+     * GET or POST (default POST). A GET request has no body.
+     */
+    method?: 'GET' | 'POST';
   }
 
   export interface ScaleLabel {
