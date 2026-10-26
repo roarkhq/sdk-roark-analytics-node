@@ -96,6 +96,12 @@ describe('resource metric', () => {
           changeReason: 'changeReason',
           classificationOptions: [{ description: 'description', displayOrder: 0, label: 'label' }],
           formula: 'x',
+          httpRequest: {
+            url: 'https://api.example.com/roark/checks/pin-changed',
+            body: 'x',
+            headers: { Authorization: 'Bearer sk_live_...' },
+            method: 'GET',
+          },
           llmPrompt: 'llmPrompt',
           maxClassifications: 1,
           metricId: 'metricId',

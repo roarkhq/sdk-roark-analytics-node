@@ -1627,7 +1627,8 @@ export namespace SimulationRunPlanJobGetCostResponse {
         | 'METRIC'
         | 'TRANSCRIPTION'
         | 'INTERNAL_LLM'
-        | 'INTERNAL_STT';
+        | 'INTERNAL_STT'
+        | 'PHONE_NUMBER';
 
       /**
        * SIMULATION or POST_CALL.
@@ -1681,7 +1682,8 @@ export namespace SimulationRunPlanJobGetCostResponse {
           | 'METRIC'
           | 'TRANSCRIPTION'
           | 'INTERNAL_LLM'
-          | 'INTERNAL_STT';
+          | 'INTERNAL_STT'
+          | 'PHONE_NUMBER';
 
         /**
          * SIMULATION or POST_CALL.

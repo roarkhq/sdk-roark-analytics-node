@@ -115,7 +115,8 @@ export namespace UsageGetResponse {
           | 'METRIC'
           | 'TRANSCRIPTION'
           | 'INTERNAL_LLM'
-          | 'INTERNAL_STT';
+          | 'INTERNAL_STT'
+          | 'PHONE_NUMBER';
 
         /**
          * Whether this cost came from a SIMULATION or a production call (POST_CALL).
