@@ -234,6 +234,19 @@ import {
   MetricVariantUpdateParams,
   MetricVariantUpdateResponse,
 } from './resources/metric-variant';
+import {
+  PhoneNumber,
+  PhoneNumberCreateParams,
+  PhoneNumberCreateResponse,
+  PhoneNumberDeleteResponse,
+  PhoneNumberGetAllowanceResponse,
+  PhoneNumberListAvailableParams,
+  PhoneNumberListAvailableResponse,
+  PhoneNumberListParams,
+  PhoneNumberListResponse,
+  PhoneNumberUpdateParams,
+  PhoneNumberUpdateResponse,
+} from './resources/phone-number';
 import { Project, ProjectListResponse } from './resources/project';
 import {
   Simulation,
@@ -1115,6 +1128,7 @@ export class Roark {
   customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
   agent: API.Agent = new API.Agent(this);
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
+  phoneNumber: API.PhoneNumber = new API.PhoneNumber(this);
   agentPrompt: API.AgentPrompt = new API.AgentPrompt(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
   webhook: API.Webhook = new API.Webhook(this);
@@ -1150,6 +1164,7 @@ Roark.CustomerFlow = CustomerFlow;
 Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
 Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
+Roark.PhoneNumber = PhoneNumber;
 Roark.AgentPrompt = AgentPrompt;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
 Roark.Webhook = Webhook;
@@ -1462,6 +1477,20 @@ export declare namespace Roark {
     type AgentEndpointCreateParams as AgentEndpointCreateParams,
     type AgentEndpointUpdateParams as AgentEndpointUpdateParams,
     type AgentEndpointListParams as AgentEndpointListParams,
+  };
+
+  export {
+    PhoneNumber as PhoneNumber,
+    type PhoneNumberCreateResponse as PhoneNumberCreateResponse,
+    type PhoneNumberUpdateResponse as PhoneNumberUpdateResponse,
+    type PhoneNumberListResponse as PhoneNumberListResponse,
+    type PhoneNumberDeleteResponse as PhoneNumberDeleteResponse,
+    type PhoneNumberGetAllowanceResponse as PhoneNumberGetAllowanceResponse,
+    type PhoneNumberListAvailableResponse as PhoneNumberListAvailableResponse,
+    type PhoneNumberCreateParams as PhoneNumberCreateParams,
+    type PhoneNumberUpdateParams as PhoneNumberUpdateParams,
+    type PhoneNumberListParams as PhoneNumberListParams,
+    type PhoneNumberListAvailableParams as PhoneNumberListAvailableParams,
   };
 
   export {

@@ -473,6 +473,26 @@ Methods:
 - <code title="get /v1/agent/endpoint">client.agentEndpoint.<a href="./src/resources/agent-endpoint.ts">list</a>({ ...params }) -> AgentEndpointListResponse</code>
 - <code title="get /v1/agent/endpoint/{endpointId}">client.agentEndpoint.<a href="./src/resources/agent-endpoint.ts">getByID</a>(endpointID) -> AgentEndpointGetByIDResponse</code>
 
+# PhoneNumber
+
+Types:
+
+- <code><a href="./src/resources/phone-number.ts">PhoneNumberCreateResponse</a></code>
+- <code><a href="./src/resources/phone-number.ts">PhoneNumberUpdateResponse</a></code>
+- <code><a href="./src/resources/phone-number.ts">PhoneNumberListResponse</a></code>
+- <code><a href="./src/resources/phone-number.ts">PhoneNumberDeleteResponse</a></code>
+- <code><a href="./src/resources/phone-number.ts">PhoneNumberGetAllowanceResponse</a></code>
+- <code><a href="./src/resources/phone-number.ts">PhoneNumberListAvailableResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/phone-number">client.phoneNumber.<a href="./src/resources/phone-number.ts">create</a>({ ...params }) -> PhoneNumberCreateResponse</code>
+- <code title="put /v1/phone-number/{phoneNumberId}">client.phoneNumber.<a href="./src/resources/phone-number.ts">update</a>(phoneNumberID, { ...params }) -> PhoneNumberUpdateResponse</code>
+- <code title="get /v1/phone-number">client.phoneNumber.<a href="./src/resources/phone-number.ts">list</a>({ ...params }) -> PhoneNumberListResponse</code>
+- <code title="delete /v1/phone-number/{phoneNumberId}">client.phoneNumber.<a href="./src/resources/phone-number.ts">delete</a>(phoneNumberID) -> PhoneNumberDeleteResponse</code>
+- <code title="get /v1/phone-number/allowance">client.phoneNumber.<a href="./src/resources/phone-number.ts">getAllowance</a>() -> PhoneNumberGetAllowanceResponse</code>
+- <code title="get /v1/phone-number/available">client.phoneNumber.<a href="./src/resources/phone-number.ts">listAvailable</a>({ ...params }) -> PhoneNumberListAvailableResponse</code>
+
 # AgentPrompt
 
 Types:
