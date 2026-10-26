@@ -198,6 +198,7 @@ export interface SimulationMockToolParams {
 export type SimulationRunParams =
   | SimulationRunParams.RunSimulationFromConfig
   | SimulationRunParams.RunSimulationFromPlanID
+  | SimulationRunParams.RunSimulationFromConfigKey
   | SimulationRunParams.RunSimulationFromTemplate;
 
 export declare namespace SimulationRunParams {
@@ -749,6 +750,81 @@ export declare namespace SimulationRunParams {
   }
 
   export namespace RunSimulationFromPlanID {
+    export interface UnionMember1 {
+      /**
+       * A customer flow this plan runs.
+       */
+      flowId: string;
+
+      /**
+       * The values to apply.
+       */
+      variables: { [key: string]: string };
+
+      /**
+       * Narrow to one edge case of that flow.
+       */
+      edgeCaseId?: string;
+
+      /**
+       * Narrow to the flow's happy path.
+       */
+      happyPath?: true;
+    }
+
+    export interface UnionMember2 {
+      /**
+       * ID of the scenario to apply variables to
+       */
+      scenarioId: string;
+
+      /**
+       * Key-value pairs for this scenario
+       */
+      variables: { [key: string]: string };
+    }
+  }
+
+  export interface RunSimulationFromConfigKey {
+    /**
+     * The config key of a plan to run, as applied from config as code
+     * (`simulationPlan/<name>`). Runs a config-managed plan by name, with no id
+     * lookup. Unique per project.
+     */
+    planConfigKey: string;
+
+    /**
+     * Values for the {{variables}} the run resolves, overriding whatever the plan has
+     * pinned.
+     *
+     * An object applies them to the whole run:
+     *
+     * { "orderNumber": "12345", "tier": "gold" }
+     *
+     * An array applies them per flow, or to just its happy path or one of its edge
+     * cases, when a single set will not do. Each entry carries what it applies to:
+     *
+     * [ { "flowId": "550e8400-...", "variables": { "orderNumber": "12345" } }, {
+     * "flowId": "550e8400-...", "happyPath": true, "variables": { "orderNumber":
+     * "55555" } }, { "flowId": "550e8400-...", "edgeCaseId": "7a3d2e1f-...",
+     * "variables": { "orderNumber": "67890" } } ]
+     *
+     * An entry that narrows to neither covers everything that flow resolves. A flow
+     * this plan does not attach, or an edge case that does not belong to the flow, is
+     * rejected rather than ignored.
+     *
+     * A plan built on scenarios rather than customer flows targets them the same way,
+     * with `scenarioId` in place of `flowId`. That form is deprecated alongside
+     * scenarios themselves, and still accepted so runs against those plans keep
+     * working.
+     */
+    variables?:
+      | { [key: string]: string }
+      | Array<RunSimulationFromConfigKey.UnionMember1>
+      | Array<RunSimulationFromConfigKey.UnionMember2>;
+  }
+
+  export namespace RunSimulationFromConfigKey {
     export interface UnionMember1 {
       /**
        * A customer flow this plan runs.
