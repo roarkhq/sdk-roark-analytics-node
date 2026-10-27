@@ -89,7 +89,12 @@ describe('resource agent', () => {
   });
 
   test('build: required and optional params', async () => {
-    const response = await client.agent.build({ jobDescription: 'x', name: 'x', voice: 'voice' });
+    const response = await client.agent.build({
+      jobDescription: 'x',
+      name: 'x',
+      tts: { provider: 'x', voiceId: 'x' },
+      voice: 'voice',
+    });
   });
 
   test('getByID', async () => {
