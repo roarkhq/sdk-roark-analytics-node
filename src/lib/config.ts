@@ -31,6 +31,7 @@ export type ImprovFlowConfig = ConfigApplyParams.ImprovFlowConfig;
 export type ScriptedFlowConfig = ConfigApplyParams.ScriptedFlowConfig;
 export type CollectorConfig = ConfigApplyParams.CollectorConfig;
 export type MetricConfig = ConfigApplyParams.MetricConfig;
+export type APICheckMetricConfig = ConfigApplyParams.APICheckMetricConfig;
 export type SimulationPlanConfig = ConfigApplyParams.SimulationPlanConfig;
 export type QaSimulationPlanConfig = ConfigApplyParams.QaSimulationPlanConfig;
 export type SimulationGroupConfig = ConfigApplyParams.SimulationGroupConfig;
@@ -77,6 +78,14 @@ export const defineCollector = (collector: Omit<CollectorConfig, 'kind'>): Colle
 export const defineMetric = (metric: Omit<MetricConfig, 'kind'>): MetricConfig => ({
   kind: 'metric',
   ...metric,
+});
+
+export const defineApiCheck = (
+  check: Omit<APICheckMetricConfig, 'kind' | 'calculationType'>,
+): APICheckMetricConfig => ({
+  kind: 'metric',
+  calculationType: 'HTTP_REQUEST',
+  ...check,
 });
 
 export const defineSimulationPlan = (plan: Omit<SimulationPlanConfig, 'kind'>): SimulationPlanConfig => ({
