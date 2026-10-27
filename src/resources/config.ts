@@ -51,6 +51,7 @@ export interface Bundle {
     | Bundle.ScriptedFlowConfig
     | Bundle.CollectorConfig
     | Bundle.MetricConfig
+    | Bundle.APICheckMetricConfig
     | Bundle.SimulationPlanConfig
     | Bundle.QaSimulationPlanConfig
     | Bundle.SimulationGroupConfig
@@ -399,6 +400,8 @@ export namespace Bundle {
 
     type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
+    calculationType?: 'LLM_JUDGE';
+
     contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
 
     displayName?: string;
@@ -443,6 +446,34 @@ export namespace Bundle {
       colorHex?: string;
 
       description?: string;
+    }
+  }
+
+  export interface APICheckMetricConfig {
+    calculationType: 'HTTP_REQUEST';
+
+    httpRequest: APICheckMetricConfig.HTTPRequest;
+
+    kind: 'metric';
+
+    name: string;
+
+    displayName?: string;
+
+    falseLabel?: string;
+
+    trueLabel?: string;
+  }
+
+  export namespace APICheckMetricConfig {
+    export interface HTTPRequest {
+      url: string;
+
+      body?: string;
+
+      headers?: { [key: string]: string };
+
+      method?: 'GET' | 'POST';
     }
   }
 
@@ -1303,6 +1334,7 @@ export namespace Bundle {
       | ProjectConfig.ScriptedFlowConfig
       | ProjectConfig.CollectorConfig
       | ProjectConfig.MetricConfig
+      | ProjectConfig.APICheckMetricConfig
       | ProjectConfig.SimulationPlanConfig
       | ProjectConfig.QaSimulationPlanConfig
       | ProjectConfig.SimulationGroupConfig
@@ -1654,6 +1686,8 @@ export namespace Bundle {
 
       type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
+      calculationType?: 'LLM_JUDGE';
+
       contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
 
       displayName?: string;
@@ -1698,6 +1732,34 @@ export namespace Bundle {
         colorHex?: string;
 
         description?: string;
+      }
+    }
+
+    export interface APICheckMetricConfig {
+      calculationType: 'HTTP_REQUEST';
+
+      httpRequest: APICheckMetricConfig.HTTPRequest;
+
+      kind: 'metric';
+
+      name: string;
+
+      displayName?: string;
+
+      falseLabel?: string;
+
+      trueLabel?: string;
+    }
+
+    export namespace APICheckMetricConfig {
+      export interface HTTPRequest {
+        url: string;
+
+        body?: string;
+
+        headers?: { [key: string]: string };
+
+        method?: 'GET' | 'POST';
       }
     }
 
@@ -2710,6 +2772,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.ScriptedFlowConfig
     | ConfigApplyParams.CollectorConfig
     | ConfigApplyParams.MetricConfig
+    | ConfigApplyParams.APICheckMetricConfig
     | ConfigApplyParams.SimulationPlanConfig
     | ConfigApplyParams.QaSimulationPlanConfig
     | ConfigApplyParams.SimulationGroupConfig
@@ -3058,6 +3121,8 @@ export namespace ConfigApplyParams {
 
     type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
+    calculationType?: 'LLM_JUDGE';
+
     contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
 
     displayName?: string;
@@ -3102,6 +3167,34 @@ export namespace ConfigApplyParams {
       colorHex?: string;
 
       description?: string;
+    }
+  }
+
+  export interface APICheckMetricConfig {
+    calculationType: 'HTTP_REQUEST';
+
+    httpRequest: APICheckMetricConfig.HTTPRequest;
+
+    kind: 'metric';
+
+    name: string;
+
+    displayName?: string;
+
+    falseLabel?: string;
+
+    trueLabel?: string;
+  }
+
+  export namespace APICheckMetricConfig {
+    export interface HTTPRequest {
+      url: string;
+
+      body?: string;
+
+      headers?: { [key: string]: string };
+
+      method?: 'GET' | 'POST';
     }
   }
 
@@ -3962,6 +4055,7 @@ export namespace ConfigApplyParams {
       | ProjectConfig.ScriptedFlowConfig
       | ProjectConfig.CollectorConfig
       | ProjectConfig.MetricConfig
+      | ProjectConfig.APICheckMetricConfig
       | ProjectConfig.SimulationPlanConfig
       | ProjectConfig.QaSimulationPlanConfig
       | ProjectConfig.SimulationGroupConfig
@@ -4313,6 +4407,8 @@ export namespace ConfigApplyParams {
 
       type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
+      calculationType?: 'LLM_JUDGE';
+
       contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
 
       displayName?: string;
@@ -4357,6 +4453,34 @@ export namespace ConfigApplyParams {
         colorHex?: string;
 
         description?: string;
+      }
+    }
+
+    export interface APICheckMetricConfig {
+      calculationType: 'HTTP_REQUEST';
+
+      httpRequest: APICheckMetricConfig.HTTPRequest;
+
+      kind: 'metric';
+
+      name: string;
+
+      displayName?: string;
+
+      falseLabel?: string;
+
+      trueLabel?: string;
+    }
+
+    export namespace APICheckMetricConfig {
+      export interface HTTPRequest {
+        url: string;
+
+        body?: string;
+
+        headers?: { [key: string]: string };
+
+        method?: 'GET' | 'POST';
       }
     }
 
@@ -5196,6 +5320,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.ScriptedFlowConfig
     | ConfigDiffParams.CollectorConfig
     | ConfigDiffParams.MetricConfig
+    | ConfigDiffParams.APICheckMetricConfig
     | ConfigDiffParams.SimulationPlanConfig
     | ConfigDiffParams.QaSimulationPlanConfig
     | ConfigDiffParams.SimulationGroupConfig
@@ -5544,6 +5669,8 @@ export namespace ConfigDiffParams {
 
     type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
+    calculationType?: 'LLM_JUDGE';
+
     contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
 
     displayName?: string;
@@ -5588,6 +5715,34 @@ export namespace ConfigDiffParams {
       colorHex?: string;
 
       description?: string;
+    }
+  }
+
+  export interface APICheckMetricConfig {
+    calculationType: 'HTTP_REQUEST';
+
+    httpRequest: APICheckMetricConfig.HTTPRequest;
+
+    kind: 'metric';
+
+    name: string;
+
+    displayName?: string;
+
+    falseLabel?: string;
+
+    trueLabel?: string;
+  }
+
+  export namespace APICheckMetricConfig {
+    export interface HTTPRequest {
+      url: string;
+
+      body?: string;
+
+      headers?: { [key: string]: string };
+
+      method?: 'GET' | 'POST';
     }
   }
 
@@ -6448,6 +6603,7 @@ export namespace ConfigDiffParams {
       | ProjectConfig.ScriptedFlowConfig
       | ProjectConfig.CollectorConfig
       | ProjectConfig.MetricConfig
+      | ProjectConfig.APICheckMetricConfig
       | ProjectConfig.SimulationPlanConfig
       | ProjectConfig.QaSimulationPlanConfig
       | ProjectConfig.SimulationGroupConfig
@@ -6799,6 +6955,8 @@ export namespace ConfigDiffParams {
 
       type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
+      calculationType?: 'LLM_JUDGE';
+
       contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
 
       displayName?: string;
@@ -6843,6 +7001,34 @@ export namespace ConfigDiffParams {
         colorHex?: string;
 
         description?: string;
+      }
+    }
+
+    export interface APICheckMetricConfig {
+      calculationType: 'HTTP_REQUEST';
+
+      httpRequest: APICheckMetricConfig.HTTPRequest;
+
+      kind: 'metric';
+
+      name: string;
+
+      displayName?: string;
+
+      falseLabel?: string;
+
+      trueLabel?: string;
+    }
+
+    export namespace APICheckMetricConfig {
+      export interface HTTPRequest {
+        url: string;
+
+        body?: string;
+
+        headers?: { [key: string]: string };
+
+        method?: 'GET' | 'POST';
       }
     }
 
