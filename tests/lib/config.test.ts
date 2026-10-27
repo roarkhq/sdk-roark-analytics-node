@@ -22,7 +22,13 @@ import {
 // Every resource type the config endpoints accept has a define* helper. Codegen adds a new resource
 // type to ConfigApplyParams on its own, but the helpers in src/lib/config.ts are written by hand, so
 // a new kind, or a new variant of an existing kind (a second `kind: metric` shape), fails to
-// type-check here until it has one. Add the helper, then add it to this list.
+// type-check here until it has one. The error names the type with no helper, e.g.
+// `Type 'boolean' is not assignable to type 'ApiCheckMetricConfig'`. Add the helper, then add it to
+// this list.
+//
+// Limit: Exclude drops a new type that is assignable to an existing helper's return type, so a
+// variant that differs from one only by optional fields would pass. Variants told apart by a literal
+// discriminator (`kind`, `type`, `calculationType`, `template`) are always caught.
 type DefinedResource =
   | ReturnType<typeof defineAgent>
   | ReturnType<typeof defineHTTPRequestDefinition>
