@@ -116,7 +116,7 @@ describe('resource phoneNumber', () => {
       client.phoneNumber.listAvailable(
         {
           areaCode: '415',
-          contains: 'contains',
+          contains: '555',
           limit: 1,
         },
         { path: '/_stainless_unknown_path' },
