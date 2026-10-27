@@ -5,6 +5,7 @@ import {
   defineDashboard,
   defineHTTPRequestDefinition,
   defineMetric,
+  defineApiCheck,
   definePersona,
   defineProject,
   defineScriptedFlow,
@@ -38,6 +39,7 @@ type DefinedResource =
   | ReturnType<typeof defineScriptedFlow>
   | ReturnType<typeof defineCollector>
   | ReturnType<typeof defineMetric>
+  | ReturnType<typeof defineApiCheck>
   | ReturnType<typeof defineSimulationPlan>
   | ReturnType<typeof defineQaSimulationPlan>
   | ReturnType<typeof defineSimulationGroup>
@@ -87,6 +89,17 @@ describe('config builders', () => {
     const flow = defineImprovFlow({ name: 'greet' } as unknown as Omit<ImprovFlowConfig, 'kind' | 'type'>);
     expect(flow.kind).toBe('flow');
     expect(flow.type).toBe('improv');
+  });
+
+  test('defineApiCheck injects kind and the HTTP_REQUEST engine', () => {
+    expect(
+      defineApiCheck({ name: 'pin_changed', httpRequest: { url: 'https://example.com/checks/pin' } }),
+    ).toEqual({
+      kind: 'metric',
+      calculationType: 'HTTP_REQUEST',
+      name: 'pin_changed',
+      httpRequest: { url: 'https://example.com/checks/pin' },
+    });
   });
 
   test('defineQaSimulationPlan injects the qa template', () => {
