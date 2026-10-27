@@ -338,9 +338,33 @@ export interface AgentBuildParams {
   name: string;
 
   /**
-   * Optional voice label for the hosted agent
+   * Optional provider voice the hosted agent speaks with
+   */
+  tts?: AgentBuildParams.Tts | null;
+
+  /**
+   * Optional display name of the agent's voice. The authored prompt matches its
+   * delivery to it.
    */
   voice?: string | null;
+}
+
+export namespace AgentBuildParams {
+  /**
+   * Optional provider voice the hosted agent speaks with
+   */
+  export interface Tts {
+    /**
+     * Text-to-speech provider, for example ELEVENLABS. Not checked against a known
+     * list.
+     */
+    provider: string;
+
+    /**
+     * The provider's id for the voice
+     */
+    voiceId: string;
+  }
 }
 
 export declare namespace Agent {
