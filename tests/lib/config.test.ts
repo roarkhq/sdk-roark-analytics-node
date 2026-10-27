@@ -27,8 +27,9 @@ import {
 // this list.
 //
 // Limit: Exclude drops a new type that is assignable to an existing helper's return type, so a
-// variant that differs from one only by optional fields would pass. Variants told apart by a literal
-// discriminator (`kind`, `type`, `calculationType`, `template`) are always caught.
+// variant that differs from one only by optional or extra fields would pass. A variant is caught when
+// it sets a different literal on a property the existing type declares, as `kind`, flow `type`,
+// metric `calculationType` and plan `template` do.
 type DefinedResource =
   | ReturnType<typeof defineAgent>
   | ReturnType<typeof defineHTTPRequestDefinition>
