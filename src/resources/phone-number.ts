@@ -7,17 +7,20 @@ import { path } from '../internal/utils/path';
 
 export class PhoneNumber extends APIResource {
   /**
-   * Buys a number from the carrier for this project. Free inside the plan allowance;
-   * past it, the first month of rent is charged now and monthly after that.
+   * Buys a number from the carrier for this project: the one named by e164, or one
+   * Roark picks to match autoPick (trying the next match if the carrier has just
+   * sold one). Free inside the plan allowance; past it, the first month of rent is
+   * charged now and monthly after that.
    *
    * @example
    * ```ts
-   * const phoneNumber = await client.phoneNumber.create({
-   *   e164: '+14155550123',
-   * });
+   * const phoneNumber = await client.phoneNumber.create();
    * ```
    */
-  create(body: PhoneNumberCreateParams, options?: RequestOptions): APIPromise<PhoneNumberCreateResponse> {
+  create(
+    body: PhoneNumberCreateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PhoneNumberCreateResponse> {
     return this._client.post('/v1/phone-number', { body, ...options });
   }
 
@@ -85,8 +88,11 @@ export class PhoneNumber extends APIResource {
   }
 
   /**
-   * Returns US numbers the carrier has for sale, narrowed by area code or by digits
-   * the number must contain. Buy one with POST /v1/phone-number.
+   * Returns US or Canadian numbers the carrier has for sale, local or toll-free,
+   * narrowed by area code or by digits the number must contain. When an area code
+   * has no numbers, nearby ones are returned flagged bestEffort; an empty list means
+   * nothing matched. Buy one with POST /v1/phone-number, or let Roark pick with
+   * autoPick.
    *
    * @example
    * ```ts
@@ -375,6 +381,12 @@ export namespace PhoneNumberListAvailableResponse {
    */
   export interface Data {
     /**
+     * True when the area code asked for had no numbers and the carrier offered this
+     * nearby one instead
+     */
+    bestEffort: boolean;
+
+    /**
      * The number in E.164 format
      */
     e164: string;
@@ -393,14 +405,25 @@ export namespace PhoneNumberListAvailableResponse {
 
 export interface PhoneNumberCreateParams {
   /**
-   * The number to buy, in E.164 format, from a search result
-   */
-  e164: string;
-
-  /**
    * The agent to assign the number to
    */
   agentId?: string;
+
+  /**
+   * Let Roark pick a matching number instead of naming one. Give this or e164.
+   */
+  autoPick?: PhoneNumberCreateParams.AutoPick;
+
+  /**
+   * The country of the number given by e164 (default: US). An auto-picked number
+   * uses autoPick.country.
+   */
+  country?: 'US' | 'CA';
+
+  /**
+   * The number to buy, in E.164 format, from a search result. Give this or autoPick.
+   */
+  e164?: string;
 
   /**
    * Whether you expect this number to be free (from the allowance). The purchase is
@@ -418,6 +441,35 @@ export interface PhoneNumberCreateParams {
    * A label for the number
    */
   name?: string;
+}
+
+export namespace PhoneNumberCreateParams {
+  /**
+   * Let Roark pick a matching number instead of naming one. Give this or e164.
+   */
+  export interface AutoPick {
+    /**
+     * Three-digit area code, or a toll-free prefix such as 800. When it has no
+     * numbers, nearby ones are returned instead, flagged bestEffort.
+     */
+    areaCode?: string;
+
+    /**
+     * Digits or letters the number must contain (1 to 7, \* matches any digit)
+     */
+    contains?: string;
+
+    /**
+     * ISO 3166-1 alpha-2 country of the number: US or CA
+     */
+    country?: 'US' | 'CA';
+
+    /**
+     * LOCAL for a number in an area code, TOLL_FREE for one from the shared US and
+     * Canada toll-free pool
+     */
+    numberType?: 'LOCAL' | 'TOLL_FREE';
+  }
 }
 
 export interface PhoneNumberUpdateParams {
@@ -441,7 +493,8 @@ export interface PhoneNumberListParams {
 
 export interface PhoneNumberListAvailableParams {
   /**
-   * Three-digit US area code
+   * Three-digit area code, or a toll-free prefix such as 800. When it has no
+   * numbers, nearby ones are returned instead, flagged bestEffort.
    */
   areaCode?: string;
 
@@ -451,9 +504,20 @@ export interface PhoneNumberListAvailableParams {
   contains?: string;
 
   /**
-   * Maximum number of results (default: 20, max: 50)
+   * ISO 3166-1 alpha-2 country of the number: US or CA
+   */
+  country?: 'US' | 'CA';
+
+  /**
+   * Maximum number of results (default: 20, max: 100)
    */
   limit?: number;
+
+  /**
+   * LOCAL for a number in an area code, TOLL_FREE for one from the shared US and
+   * Canada toll-free pool
+   */
+  numberType?: 'LOCAL' | 'TOLL_FREE';
 }
 
 export declare namespace PhoneNumber {
