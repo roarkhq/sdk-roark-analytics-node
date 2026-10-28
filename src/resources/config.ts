@@ -1086,7 +1086,14 @@ export namespace Bundle {
 
   export namespace DashboardConfig {
     export interface Filter {
-      type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+      type:
+        | 'METRIC_PROPERTY'
+        | 'CALL_PROPERTY'
+        | 'AGENT_PROPERTY'
+        | 'CALL_ID'
+        | 'MODALITY'
+        | 'DATASET'
+        | 'METRIC_VALUE';
 
       operator?:
         | 'EQUALS'
@@ -1218,7 +1225,14 @@ export namespace Bundle {
         }
 
         export interface Filter {
-          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+          type:
+            | 'METRIC_PROPERTY'
+            | 'CALL_PROPERTY'
+            | 'AGENT_PROPERTY'
+            | 'CALL_ID'
+            | 'MODALITY'
+            | 'DATASET'
+            | 'METRIC_VALUE';
 
           operator?:
             | 'EQUALS'
@@ -1260,7 +1274,14 @@ export namespace Bundle {
 
       export namespace ComparisonGroup {
         export interface Filter {
-          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+          type:
+            | 'METRIC_PROPERTY'
+            | 'CALL_PROPERTY'
+            | 'AGENT_PROPERTY'
+            | 'CALL_ID'
+            | 'MODALITY'
+            | 'DATASET'
+            | 'METRIC_VALUE';
 
           operator?:
             | 'EQUALS'
@@ -1281,7 +1302,14 @@ export namespace Bundle {
       }
 
       export interface Filter {
-        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+        type:
+          | 'METRIC_PROPERTY'
+          | 'CALL_PROPERTY'
+          | 'AGENT_PROPERTY'
+          | 'CALL_ID'
+          | 'MODALITY'
+          | 'DATASET'
+          | 'METRIC_VALUE';
 
         operator?:
           | 'EQUALS'
@@ -2372,7 +2400,14 @@ export namespace Bundle {
 
     export namespace DashboardConfig {
       export interface Filter {
-        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+        type:
+          | 'METRIC_PROPERTY'
+          | 'CALL_PROPERTY'
+          | 'AGENT_PROPERTY'
+          | 'CALL_ID'
+          | 'MODALITY'
+          | 'DATASET'
+          | 'METRIC_VALUE';
 
         operator?:
           | 'EQUALS'
@@ -2504,7 +2539,14 @@ export namespace Bundle {
           }
 
           export interface Filter {
-            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+            type:
+              | 'METRIC_PROPERTY'
+              | 'CALL_PROPERTY'
+              | 'AGENT_PROPERTY'
+              | 'CALL_ID'
+              | 'MODALITY'
+              | 'DATASET'
+              | 'METRIC_VALUE';
 
             operator?:
               | 'EQUALS'
@@ -2546,7 +2588,14 @@ export namespace Bundle {
 
         export namespace ComparisonGroup {
           export interface Filter {
-            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+            type:
+              | 'METRIC_PROPERTY'
+              | 'CALL_PROPERTY'
+              | 'AGENT_PROPERTY'
+              | 'CALL_ID'
+              | 'MODALITY'
+              | 'DATASET'
+              | 'METRIC_VALUE';
 
             operator?:
               | 'EQUALS'
@@ -2567,7 +2616,14 @@ export namespace Bundle {
         }
 
         export interface Filter {
-          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+          type:
+            | 'METRIC_PROPERTY'
+            | 'CALL_PROPERTY'
+            | 'AGENT_PROPERTY'
+            | 'CALL_ID'
+            | 'MODALITY'
+            | 'DATASET'
+            | 'METRIC_VALUE';
 
           operator?:
             | 'EQUALS'
@@ -3807,7 +3863,14 @@ export namespace ConfigApplyParams {
 
   export namespace DashboardConfig {
     export interface Filter {
-      type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+      type:
+        | 'METRIC_PROPERTY'
+        | 'CALL_PROPERTY'
+        | 'AGENT_PROPERTY'
+        | 'CALL_ID'
+        | 'MODALITY'
+        | 'DATASET'
+        | 'METRIC_VALUE';
 
       operator?:
         | 'EQUALS'
@@ -3939,7 +4002,14 @@ export namespace ConfigApplyParams {
         }
 
         export interface Filter {
-          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+          type:
+            | 'METRIC_PROPERTY'
+            | 'CALL_PROPERTY'
+            | 'AGENT_PROPERTY'
+            | 'CALL_ID'
+            | 'MODALITY'
+            | 'DATASET'
+            | 'METRIC_VALUE';
 
           operator?:
             | 'EQUALS'
@@ -3981,7 +4051,14 @@ export namespace ConfigApplyParams {
 
       export namespace ComparisonGroup {
         export interface Filter {
-          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+          type:
+            | 'METRIC_PROPERTY'
+            | 'CALL_PROPERTY'
+            | 'AGENT_PROPERTY'
+            | 'CALL_ID'
+            | 'MODALITY'
+            | 'DATASET'
+            | 'METRIC_VALUE';
 
           operator?:
             | 'EQUALS'
@@ -4002,7 +4079,14 @@ export namespace ConfigApplyParams {
       }
 
       export interface Filter {
-        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+        type:
+          | 'METRIC_PROPERTY'
+          | 'CALL_PROPERTY'
+          | 'AGENT_PROPERTY'
+          | 'CALL_ID'
+          | 'MODALITY'
+          | 'DATASET'
+          | 'METRIC_VALUE';
 
         operator?:
           | 'EQUALS'
@@ -5093,7 +5177,14 @@ export namespace ConfigApplyParams {
 
     export namespace DashboardConfig {
       export interface Filter {
-        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+        type:
+          | 'METRIC_PROPERTY'
+          | 'CALL_PROPERTY'
+          | 'AGENT_PROPERTY'
+          | 'CALL_ID'
+          | 'MODALITY'
+          | 'DATASET'
+          | 'METRIC_VALUE';
 
         operator?:
           | 'EQUALS'
@@ -5225,7 +5316,14 @@ export namespace ConfigApplyParams {
           }
 
           export interface Filter {
-            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+            type:
+              | 'METRIC_PROPERTY'
+              | 'CALL_PROPERTY'
+              | 'AGENT_PROPERTY'
+              | 'CALL_ID'
+              | 'MODALITY'
+              | 'DATASET'
+              | 'METRIC_VALUE';
 
             operator?:
               | 'EQUALS'
@@ -5267,7 +5365,14 @@ export namespace ConfigApplyParams {
 
         export namespace ComparisonGroup {
           export interface Filter {
-            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+            type:
+              | 'METRIC_PROPERTY'
+              | 'CALL_PROPERTY'
+              | 'AGENT_PROPERTY'
+              | 'CALL_ID'
+              | 'MODALITY'
+              | 'DATASET'
+              | 'METRIC_VALUE';
 
             operator?:
               | 'EQUALS'
@@ -5288,7 +5393,14 @@ export namespace ConfigApplyParams {
         }
 
         export interface Filter {
-          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+          type:
+            | 'METRIC_PROPERTY'
+            | 'CALL_PROPERTY'
+            | 'AGENT_PROPERTY'
+            | 'CALL_ID'
+            | 'MODALITY'
+            | 'DATASET'
+            | 'METRIC_VALUE';
 
           operator?:
             | 'EQUALS'
@@ -6355,7 +6467,14 @@ export namespace ConfigDiffParams {
 
   export namespace DashboardConfig {
     export interface Filter {
-      type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+      type:
+        | 'METRIC_PROPERTY'
+        | 'CALL_PROPERTY'
+        | 'AGENT_PROPERTY'
+        | 'CALL_ID'
+        | 'MODALITY'
+        | 'DATASET'
+        | 'METRIC_VALUE';
 
       operator?:
         | 'EQUALS'
@@ -6487,7 +6606,14 @@ export namespace ConfigDiffParams {
         }
 
         export interface Filter {
-          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+          type:
+            | 'METRIC_PROPERTY'
+            | 'CALL_PROPERTY'
+            | 'AGENT_PROPERTY'
+            | 'CALL_ID'
+            | 'MODALITY'
+            | 'DATASET'
+            | 'METRIC_VALUE';
 
           operator?:
             | 'EQUALS'
@@ -6529,7 +6655,14 @@ export namespace ConfigDiffParams {
 
       export namespace ComparisonGroup {
         export interface Filter {
-          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+          type:
+            | 'METRIC_PROPERTY'
+            | 'CALL_PROPERTY'
+            | 'AGENT_PROPERTY'
+            | 'CALL_ID'
+            | 'MODALITY'
+            | 'DATASET'
+            | 'METRIC_VALUE';
 
           operator?:
             | 'EQUALS'
@@ -6550,7 +6683,14 @@ export namespace ConfigDiffParams {
       }
 
       export interface Filter {
-        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+        type:
+          | 'METRIC_PROPERTY'
+          | 'CALL_PROPERTY'
+          | 'AGENT_PROPERTY'
+          | 'CALL_ID'
+          | 'MODALITY'
+          | 'DATASET'
+          | 'METRIC_VALUE';
 
         operator?:
           | 'EQUALS'
@@ -7641,7 +7781,14 @@ export namespace ConfigDiffParams {
 
     export namespace DashboardConfig {
       export interface Filter {
-        type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+        type:
+          | 'METRIC_PROPERTY'
+          | 'CALL_PROPERTY'
+          | 'AGENT_PROPERTY'
+          | 'CALL_ID'
+          | 'MODALITY'
+          | 'DATASET'
+          | 'METRIC_VALUE';
 
         operator?:
           | 'EQUALS'
@@ -7773,7 +7920,14 @@ export namespace ConfigDiffParams {
           }
 
           export interface Filter {
-            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+            type:
+              | 'METRIC_PROPERTY'
+              | 'CALL_PROPERTY'
+              | 'AGENT_PROPERTY'
+              | 'CALL_ID'
+              | 'MODALITY'
+              | 'DATASET'
+              | 'METRIC_VALUE';
 
             operator?:
               | 'EQUALS'
@@ -7815,7 +7969,14 @@ export namespace ConfigDiffParams {
 
         export namespace ComparisonGroup {
           export interface Filter {
-            type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+            type:
+              | 'METRIC_PROPERTY'
+              | 'CALL_PROPERTY'
+              | 'AGENT_PROPERTY'
+              | 'CALL_ID'
+              | 'MODALITY'
+              | 'DATASET'
+              | 'METRIC_VALUE';
 
             operator?:
               | 'EQUALS'
@@ -7836,7 +7997,14 @@ export namespace ConfigDiffParams {
         }
 
         export interface Filter {
-          type: 'METRIC_PROPERTY' | 'CALL_PROPERTY' | 'AGENT_PROPERTY' | 'CALL_ID' | 'MODALITY' | 'DATASET';
+          type:
+            | 'METRIC_PROPERTY'
+            | 'CALL_PROPERTY'
+            | 'AGENT_PROPERTY'
+            | 'CALL_ID'
+            | 'MODALITY'
+            | 'DATASET'
+            | 'METRIC_VALUE';
 
           operator?:
             | 'EQUALS'
