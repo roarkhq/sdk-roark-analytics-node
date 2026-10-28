@@ -25,6 +25,17 @@ export {
   type AgentConfigResolveParams,
 } from './agent-config';
 export {
+  AgentDraft,
+  type AgentDraftCreateResponse,
+  type AgentDraftUpdateResponse,
+  type AgentDraftDeleteResponse,
+  type AgentDraftGetResponse,
+  type AgentDraftPublishResponse,
+  type AgentDraftCreateParams,
+  type AgentDraftUpdateParams,
+  type AgentDraftPublishParams,
+} from './agent-draft';
+export {
   AgentEndpoint,
   type AgentEndpointCreateResponse,
   type AgentEndpointUpdateResponse,
@@ -42,6 +53,15 @@ export {
   type AgentPromptUpdateParams,
   type AgentPromptListVersionsParams,
 } from './agent-prompt';
+export {
+  AgentVersion,
+  type AgentVersionListResponse,
+  type AgentVersionGetByIDResponse,
+  type AgentVersionRestoreResponse,
+  type AgentVersionListParams,
+  type AgentVersionGetByIDParams,
+  type AgentVersionRestoreParams,
+} from './agent-version';
 export {
   Analytics,
   type AnalyticsGetSchemaResponse,

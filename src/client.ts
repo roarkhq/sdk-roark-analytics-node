@@ -42,6 +42,17 @@ import {
   ManagedAgentConfigRevision,
 } from './resources/agent-config';
 import {
+  AgentDraft,
+  AgentDraftCreateParams,
+  AgentDraftCreateResponse,
+  AgentDraftDeleteResponse,
+  AgentDraftGetResponse,
+  AgentDraftPublishParams,
+  AgentDraftPublishResponse,
+  AgentDraftUpdateParams,
+  AgentDraftUpdateResponse,
+} from './resources/agent-draft';
+import {
   AgentEndpoint,
   AgentEndpointCreateParams,
   AgentEndpointCreateResponse,
@@ -59,6 +70,15 @@ import {
   AgentPromptUpdateParams,
   AgentPromptUpdateResponse,
 } from './resources/agent-prompt';
+import {
+  AgentVersion,
+  AgentVersionGetByIDParams,
+  AgentVersionGetByIDResponse,
+  AgentVersionListParams,
+  AgentVersionListResponse,
+  AgentVersionRestoreParams,
+  AgentVersionRestoreResponse,
+} from './resources/agent-version';
 import {
   Analytics,
   AnalyticsGetSchemaResponse,
@@ -1130,6 +1150,8 @@ export class Roark {
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
   phoneNumber: API.PhoneNumber = new API.PhoneNumber(this);
   agentPrompt: API.AgentPrompt = new API.AgentPrompt(this);
+  agentVersion: API.AgentVersion = new API.AgentVersion(this);
+  agentDraft: API.AgentDraft = new API.AgentDraft(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
   webhook: API.Webhook = new API.Webhook(this);
   benchmark: API.Benchmark = new API.Benchmark(this);
@@ -1166,6 +1188,8 @@ Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
 Roark.PhoneNumber = PhoneNumber;
 Roark.AgentPrompt = AgentPrompt;
+Roark.AgentVersion = AgentVersion;
+Roark.AgentDraft = AgentDraft;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
 Roark.Webhook = Webhook;
 Roark.Benchmark = Benchmark;
@@ -1500,6 +1524,28 @@ export declare namespace Roark {
     type AgentPromptListVersionsResponse as AgentPromptListVersionsResponse,
     type AgentPromptUpdateParams as AgentPromptUpdateParams,
     type AgentPromptListVersionsParams as AgentPromptListVersionsParams,
+  };
+
+  export {
+    AgentVersion as AgentVersion,
+    type AgentVersionListResponse as AgentVersionListResponse,
+    type AgentVersionGetByIDResponse as AgentVersionGetByIDResponse,
+    type AgentVersionRestoreResponse as AgentVersionRestoreResponse,
+    type AgentVersionListParams as AgentVersionListParams,
+    type AgentVersionGetByIDParams as AgentVersionGetByIDParams,
+    type AgentVersionRestoreParams as AgentVersionRestoreParams,
+  };
+
+  export {
+    AgentDraft as AgentDraft,
+    type AgentDraftCreateResponse as AgentDraftCreateResponse,
+    type AgentDraftUpdateResponse as AgentDraftUpdateResponse,
+    type AgentDraftDeleteResponse as AgentDraftDeleteResponse,
+    type AgentDraftGetResponse as AgentDraftGetResponse,
+    type AgentDraftPublishResponse as AgentDraftPublishResponse,
+    type AgentDraftCreateParams as AgentDraftCreateParams,
+    type AgentDraftUpdateParams as AgentDraftUpdateParams,
+    type AgentDraftPublishParams as AgentDraftPublishParams,
   };
 
   export {

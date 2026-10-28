@@ -355,10 +355,9 @@ export namespace AgentBuildParams {
    */
   export interface Tts {
     /**
-     * Text-to-speech provider, for example ELEVENLABS. Not checked against a known
-     * list.
+     * Text-to-speech provider, for example ELEVENLABS
      */
-    provider: string;
+    provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
 
     /**
      * The provider's id for the voice
