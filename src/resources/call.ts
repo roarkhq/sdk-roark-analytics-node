@@ -278,6 +278,11 @@ export namespace CallCreateResponse {
     export interface Agent {
       id: string;
 
+      /**
+       * For an agent hosted on Roark, the version of it that handled the call
+       */
+      agentVersionId?: string | null;
+
       endpoint?: Agent.Endpoint | null;
     }
 
@@ -444,6 +449,11 @@ export namespace CallListResponse {
   export namespace Data {
     export interface Agent {
       id: string;
+
+      /**
+       * For an agent hosted on Roark, the version of it that handled the call
+       */
+      agentVersionId?: string | null;
 
       endpoint?: Agent.Endpoint | null;
     }
@@ -780,6 +790,11 @@ export namespace CallGetByIDResponse {
   export namespace Data {
     export interface Agent {
       id: string;
+
+      /**
+       * For an agent hosted on Roark, the version of it that handled the call
+       */
+      agentVersionId?: string | null;
 
       endpoint?: Agent.Endpoint | null;
     }
