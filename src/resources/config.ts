@@ -52,6 +52,7 @@ export interface Bundle {
     | Bundle.CollectorConfig
     | Bundle.MetricConfig
     | Bundle.APICheckMetricConfig
+    | Bundle.ThresholdMetricConfig
     | Bundle.SimulationPlanConfig
     | Bundle.QaSimulationPlanConfig
     | Bundle.SimulationGroupConfig
@@ -475,6 +476,38 @@ export namespace Bundle {
 
       method?: 'GET' | 'POST';
     }
+  }
+
+  export interface ThresholdMetricConfig {
+    calculationType: 'THRESHOLD';
+
+    kind: 'metric';
+
+    name: string;
+
+    operator:
+      | 'GREATER_THAN'
+      | 'GREATER_THAN_OR_EQUALS'
+      | 'LESS_THAN'
+      | 'LESS_THAN_OR_EQUALS'
+      | 'EQUALS'
+      | 'NOT_EQUALS';
+
+    sourceMetric: string;
+
+    value: string | number | boolean;
+
+    aggregationMode?: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
+
+    countThreshold?: number;
+
+    falseLabel?: string;
+
+    sourceParticipantRole?: 'AGENT' | 'CUSTOMER';
+
+    sourceVariant?: string;
+
+    trueLabel?: string;
   }
 
   export interface SimulationPlanConfig {
@@ -1363,6 +1396,7 @@ export namespace Bundle {
       | ProjectConfig.CollectorConfig
       | ProjectConfig.MetricConfig
       | ProjectConfig.APICheckMetricConfig
+      | ProjectConfig.ThresholdMetricConfig
       | ProjectConfig.SimulationPlanConfig
       | ProjectConfig.QaSimulationPlanConfig
       | ProjectConfig.SimulationGroupConfig
@@ -1789,6 +1823,38 @@ export namespace Bundle {
 
         method?: 'GET' | 'POST';
       }
+    }
+
+    export interface ThresholdMetricConfig {
+      calculationType: 'THRESHOLD';
+
+      kind: 'metric';
+
+      name: string;
+
+      operator:
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUALS'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUALS'
+        | 'EQUALS'
+        | 'NOT_EQUALS';
+
+      sourceMetric: string;
+
+      value: string | number | boolean;
+
+      aggregationMode?: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
+
+      countThreshold?: number;
+
+      falseLabel?: string;
+
+      sourceParticipantRole?: 'AGENT' | 'CUSTOMER';
+
+      sourceVariant?: string;
+
+      trueLabel?: string;
     }
 
     export interface SimulationPlanConfig {
@@ -2829,6 +2895,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.CollectorConfig
     | ConfigApplyParams.MetricConfig
     | ConfigApplyParams.APICheckMetricConfig
+    | ConfigApplyParams.ThresholdMetricConfig
     | ConfigApplyParams.SimulationPlanConfig
     | ConfigApplyParams.QaSimulationPlanConfig
     | ConfigApplyParams.SimulationGroupConfig
@@ -3252,6 +3319,38 @@ export namespace ConfigApplyParams {
 
       method?: 'GET' | 'POST';
     }
+  }
+
+  export interface ThresholdMetricConfig {
+    calculationType: 'THRESHOLD';
+
+    kind: 'metric';
+
+    name: string;
+
+    operator:
+      | 'GREATER_THAN'
+      | 'GREATER_THAN_OR_EQUALS'
+      | 'LESS_THAN'
+      | 'LESS_THAN_OR_EQUALS'
+      | 'EQUALS'
+      | 'NOT_EQUALS';
+
+    sourceMetric: string;
+
+    value: string | number | boolean;
+
+    aggregationMode?: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
+
+    countThreshold?: number;
+
+    falseLabel?: string;
+
+    sourceParticipantRole?: 'AGENT' | 'CUSTOMER';
+
+    sourceVariant?: string;
+
+    trueLabel?: string;
   }
 
   export interface SimulationPlanConfig {
@@ -4140,6 +4239,7 @@ export namespace ConfigApplyParams {
       | ProjectConfig.CollectorConfig
       | ProjectConfig.MetricConfig
       | ProjectConfig.APICheckMetricConfig
+      | ProjectConfig.ThresholdMetricConfig
       | ProjectConfig.SimulationPlanConfig
       | ProjectConfig.QaSimulationPlanConfig
       | ProjectConfig.SimulationGroupConfig
@@ -4566,6 +4666,38 @@ export namespace ConfigApplyParams {
 
         method?: 'GET' | 'POST';
       }
+    }
+
+    export interface ThresholdMetricConfig {
+      calculationType: 'THRESHOLD';
+
+      kind: 'metric';
+
+      name: string;
+
+      operator:
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUALS'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUALS'
+        | 'EQUALS'
+        | 'NOT_EQUALS';
+
+      sourceMetric: string;
+
+      value: string | number | boolean;
+
+      aggregationMode?: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
+
+      countThreshold?: number;
+
+      falseLabel?: string;
+
+      sourceParticipantRole?: 'AGENT' | 'CUSTOMER';
+
+      sourceVariant?: string;
+
+      trueLabel?: string;
     }
 
     export interface SimulationPlanConfig {
@@ -5433,6 +5565,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.CollectorConfig
     | ConfigDiffParams.MetricConfig
     | ConfigDiffParams.APICheckMetricConfig
+    | ConfigDiffParams.ThresholdMetricConfig
     | ConfigDiffParams.SimulationPlanConfig
     | ConfigDiffParams.QaSimulationPlanConfig
     | ConfigDiffParams.SimulationGroupConfig
@@ -5856,6 +5989,38 @@ export namespace ConfigDiffParams {
 
       method?: 'GET' | 'POST';
     }
+  }
+
+  export interface ThresholdMetricConfig {
+    calculationType: 'THRESHOLD';
+
+    kind: 'metric';
+
+    name: string;
+
+    operator:
+      | 'GREATER_THAN'
+      | 'GREATER_THAN_OR_EQUALS'
+      | 'LESS_THAN'
+      | 'LESS_THAN_OR_EQUALS'
+      | 'EQUALS'
+      | 'NOT_EQUALS';
+
+    sourceMetric: string;
+
+    value: string | number | boolean;
+
+    aggregationMode?: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
+
+    countThreshold?: number;
+
+    falseLabel?: string;
+
+    sourceParticipantRole?: 'AGENT' | 'CUSTOMER';
+
+    sourceVariant?: string;
+
+    trueLabel?: string;
   }
 
   export interface SimulationPlanConfig {
@@ -6744,6 +6909,7 @@ export namespace ConfigDiffParams {
       | ProjectConfig.CollectorConfig
       | ProjectConfig.MetricConfig
       | ProjectConfig.APICheckMetricConfig
+      | ProjectConfig.ThresholdMetricConfig
       | ProjectConfig.SimulationPlanConfig
       | ProjectConfig.QaSimulationPlanConfig
       | ProjectConfig.SimulationGroupConfig
@@ -7170,6 +7336,38 @@ export namespace ConfigDiffParams {
 
         method?: 'GET' | 'POST';
       }
+    }
+
+    export interface ThresholdMetricConfig {
+      calculationType: 'THRESHOLD';
+
+      kind: 'metric';
+
+      name: string;
+
+      operator:
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUALS'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUALS'
+        | 'EQUALS'
+        | 'NOT_EQUALS';
+
+      sourceMetric: string;
+
+      value: string | number | boolean;
+
+      aggregationMode?: 'EACH' | 'COUNT' | 'AVERAGE' | 'MIN' | 'MAX' | 'MEDIAN' | 'P95' | 'P99' | 'SUM';
+
+      countThreshold?: number;
+
+      falseLabel?: string;
+
+      sourceParticipantRole?: 'AGENT' | 'CUSTOMER';
+
+      sourceVariant?: string;
+
+      trueLabel?: string;
     }
 
     export interface SimulationPlanConfig {

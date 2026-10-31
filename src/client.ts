@@ -76,8 +76,8 @@ import {
   AgentVersionGetByIDResponse,
   AgentVersionListParams,
   AgentVersionListResponse,
-  AgentVersionRestoreParams,
-  AgentVersionRestoreResponse,
+  AgentVersionRollbackParams,
+  AgentVersionRollbackResponse,
 } from './resources/agent-version';
 import {
   Analytics,
@@ -1530,10 +1530,10 @@ export declare namespace Roark {
     AgentVersion as AgentVersion,
     type AgentVersionListResponse as AgentVersionListResponse,
     type AgentVersionGetByIDResponse as AgentVersionGetByIDResponse,
-    type AgentVersionRestoreResponse as AgentVersionRestoreResponse,
+    type AgentVersionRollbackResponse as AgentVersionRollbackResponse,
     type AgentVersionListParams as AgentVersionListParams,
     type AgentVersionGetByIDParams as AgentVersionGetByIDParams,
-    type AgentVersionRestoreParams as AgentVersionRestoreParams,
+    type AgentVersionRollbackParams as AgentVersionRollbackParams,
   };
 
   export {
