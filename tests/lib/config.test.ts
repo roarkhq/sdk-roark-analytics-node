@@ -117,6 +117,34 @@ describe('config builders', () => {
     });
   });
 
+  test('defineThreshold passes a boolean COUNT threshold through', () => {
+    expect(
+      defineThreshold({
+        name: 'never_interrupts',
+        sourceMetric: 'interrupted_caller',
+        operator: 'EQUALS',
+        value: false,
+        aggregationMode: 'COUNT',
+        countThreshold: 1,
+        sourceParticipantRole: 'AGENT',
+        trueLabel: 'Polite',
+        falseLabel: 'Interrupts',
+      }),
+    ).toEqual({
+      kind: 'metric',
+      calculationType: 'THRESHOLD',
+      name: 'never_interrupts',
+      sourceMetric: 'interrupted_caller',
+      operator: 'EQUALS',
+      value: false,
+      aggregationMode: 'COUNT',
+      countThreshold: 1,
+      sourceParticipantRole: 'AGENT',
+      trueLabel: 'Polite',
+      falseLabel: 'Interrupts',
+    });
+  });
+
   test('defineQaSimulationPlan injects the qa template', () => {
     const plan = defineQaSimulationPlan({
       name: 'kb-check',
