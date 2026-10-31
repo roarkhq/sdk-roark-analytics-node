@@ -32,6 +32,7 @@ export type ScriptedFlowConfig = ConfigApplyParams.ScriptedFlowConfig;
 export type CollectorConfig = ConfigApplyParams.CollectorConfig;
 export type MetricConfig = ConfigApplyParams.MetricConfig;
 export type APICheckMetricConfig = ConfigApplyParams.APICheckMetricConfig;
+export type ThresholdMetricConfig = ConfigApplyParams.ThresholdMetricConfig;
 export type SimulationPlanConfig = ConfigApplyParams.SimulationPlanConfig;
 export type QaSimulationPlanConfig = ConfigApplyParams.QaSimulationPlanConfig;
 export type SimulationGroupConfig = ConfigApplyParams.SimulationGroupConfig;
@@ -86,6 +87,14 @@ export const defineApiCheck = (
   kind: 'metric',
   calculationType: 'HTTP_REQUEST',
   ...check,
+});
+
+export const defineThreshold = (
+  threshold: Omit<ThresholdMetricConfig, 'kind' | 'calculationType'>,
+): ThresholdMetricConfig => ({
+  kind: 'metric',
+  calculationType: 'THRESHOLD',
+  ...threshold,
 });
 
 export const defineSimulationPlan = (plan: Omit<SimulationPlanConfig, 'kind'>): SimulationPlanConfig => ({
