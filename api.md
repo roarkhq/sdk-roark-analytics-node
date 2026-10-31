@@ -513,13 +513,13 @@ Types:
 
 - <code><a href="./src/resources/agent-version.ts">AgentVersionListResponse</a></code>
 - <code><a href="./src/resources/agent-version.ts">AgentVersionGetByIDResponse</a></code>
-- <code><a href="./src/resources/agent-version.ts">AgentVersionRestoreResponse</a></code>
+- <code><a href="./src/resources/agent-version.ts">AgentVersionRollbackResponse</a></code>
 
 Methods:
 
 - <code title="get /v1/agent/{agentId}/versions">client.agentVersion.<a href="./src/resources/agent-version.ts">list</a>(agentID, { ...params }) -> AgentVersionListResponse</code>
 - <code title="get /v1/agent/{agentId}/versions/{versionId}">client.agentVersion.<a href="./src/resources/agent-version.ts">getByID</a>(versionID, { ...params }) -> AgentVersionGetByIDResponse</code>
-- <code title="post /v1/agent/{agentId}/versions/{versionId}/restore">client.agentVersion.<a href="./src/resources/agent-version.ts">restore</a>(versionID, { ...params }) -> AgentVersionRestoreResponse</code>
+- <code title="post /v1/agent/{agentId}/versions/{versionId}/rollback">client.agentVersion.<a href="./src/resources/agent-version.ts">rollback</a>(versionID, { ...params }) -> AgentVersionRollbackResponse</code>
 
 # AgentDraft
 
@@ -534,7 +534,7 @@ Types:
 Methods:
 
 - <code title="post /v1/agent/{agentId}/draft">client.agentDraft.<a href="./src/resources/agent-draft.ts">create</a>(agentID, { ...params }) -> AgentDraftCreateResponse</code>
-- <code title="patch /v1/agent/{agentId}/draft">client.agentDraft.<a href="./src/resources/agent-draft.ts">update</a>(agentID, { ...params }) -> AgentDraftUpdateResponse</code>
+- <code title="put /v1/agent/{agentId}/draft">client.agentDraft.<a href="./src/resources/agent-draft.ts">update</a>(agentID, { ...params }) -> AgentDraftUpdateResponse</code>
 - <code title="delete /v1/agent/{agentId}/draft">client.agentDraft.<a href="./src/resources/agent-draft.ts">delete</a>(agentID) -> AgentDraftDeleteResponse</code>
 - <code title="get /v1/agent/{agentId}/draft">client.agentDraft.<a href="./src/resources/agent-draft.ts">get</a>(agentID) -> AgentDraftGetResponse</code>
 - <code title="post /v1/agent/{agentId}/draft/publish">client.agentDraft.<a href="./src/resources/agent-draft.ts">publish</a>(agentID, { ...params }) -> AgentDraftPublishResponse</code>

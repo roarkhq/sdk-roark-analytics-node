@@ -43,7 +43,7 @@ export class AgentDraft extends APIResource {
     body: AgentDraftUpdateParams,
     options?: RequestOptions,
   ): APIPromise<AgentDraftUpdateResponse> {
-    return this._client.patch(path`/v1/agent/${agentID}/draft`, { body, ...options });
+    return this._client.put(path`/v1/agent/${agentID}/draft`, { body, ...options });
   }
 
   /**
@@ -204,30 +204,6 @@ export namespace AgentDraftCreateResponse {
     language: string | null;
 
     /**
-     * OpenAI Live models only: the text model they delegate to.
-     */
-    llmBackendModel: string | null;
-
-    llmMaxTokens: number | null;
-
-    /**
-     * Any model id the provider accepts. One model serves every speaker.
-     */
-    llmModel: string | null;
-
-    llmProvider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS' | null;
-
-    /**
-     * 0 to 2.
-     */
-    llmTemperature: number | null;
-
-    /**
-     * Speech-to-speech models only: the model's own voice.
-     */
-    llmVoice: string | null;
-
-    /**
      * Whether the agent takes calls, chats, or both.
      */
     modalities: Array<'call' | 'chat'>;
@@ -242,35 +218,20 @@ export namespace AgentDraftCreateResponse {
     publishedByType: 'USER' | 'API' | 'CONFIG' | 'AUTOIMPROVE' | 'INTEGRATION' | 'SYSTEM' | null;
 
     /**
-     * Set when this version restores an older one.
-     */
-    restoredFromVersionId: string | null;
-
-    /**
      * Increases with every edit to a draft. Send it back as expectedRevision when you
      * publish.
      */
     revision: number;
 
     /**
+     * Set when this version rolls the agent back to an older one.
+     */
+    rolledBackFromVersionId: string | null;
+
+    /**
      * DRAFT while being edited, PUBLISHED once it has been live.
      */
     status: 'DRAFT' | 'PUBLISHED' | 'DISCARDED';
-
-    sttEndpointingMs: number | null;
-
-    /**
-     * Words and phrases the transcriber should listen for.
-     */
-    sttKeyterms: Array<string>;
-
-    sttModel: string | null;
-
-    sttProvider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | null;
-
-    sttSmartFormat: boolean | null;
-
-    sttTurnDetection: 'pipeline' | 'provider' | null;
 
     /**
      * The main agent (key `main`) first, then the sub-agents it can hand the call to.
@@ -305,8 +266,8 @@ export namespace AgentDraftCreateResponse {
 
   export namespace Data {
     /**
-     * A speaker in the conversation. On a sub-agent, null voice settings use the main
-     * agent's.
+     * A speaker in the conversation. A sub-agent without model configs runs on the
+     * main agent's.
      */
     export interface SubAgent {
       handoffs: Array<SubAgent.Handoff>;
@@ -322,6 +283,12 @@ export namespace AgentDraftCreateResponse {
       key: string;
 
       /**
+       * Up to three, in the order a call tries them. Empty on a sub-agent: it runs on
+       * the main agent's. The main agent needs one.
+       */
+      modelConfigs: Array<SubAgent.AgentCascadeModelConfig | SubAgent.AgentSpeechToSpeechModelConfig>;
+
+      /**
        * How the agent refers to this speaker.
        */
       name: string | null;
@@ -332,30 +299,6 @@ export namespace AgentDraftCreateResponse {
       systemPrompt: string | null;
 
       tools: Array<SubAgent.Tool>;
-
-      ttsModel: string | null;
-
-      ttsProvider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsSimilarityBoost: number | null;
-
-      /**
-       * 0.5 to 2.
-       */
-      ttsSpeed: number | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsStability: number | null;
-
-      /**
-       * Any voice id the provider accepts, including your own voices.
-       */
-      ttsVoiceId: string | null;
     }
 
     export namespace SubAgent {
@@ -384,6 +327,153 @@ export namespace AgentDraftCreateResponse {
          * The key of the sub-agent that takes over; `main` for the main agent.
          */
         to: string;
+      }
+
+      /**
+       * A transcriber, a text model and a voice. A component that fails during a call
+       * moves to its next entry; the others stay.
+       */
+      export interface AgentCascadeModelConfig {
+        /**
+         * One to three text models, in the order a call tries them.
+         */
+        llm: Array<AgentCascadeModelConfig.Llm>;
+
+        /**
+         * One to three transcribers, in the order a call tries them.
+         */
+        stt: Array<AgentCascadeModelConfig.Stt>;
+
+        /**
+         * One to three voices, in the order a call tries them.
+         */
+        tts: Array<AgentCascadeModelConfig.Tt>;
+
+        type: 'CASCADE';
+      }
+
+      export namespace AgentCascadeModelConfig {
+        /**
+         * A text model. Null settings use the default.
+         */
+        export interface Llm {
+          maxTokens: number | null;
+
+          /**
+           * Any text model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+        }
+
+        /**
+         * A transcriber. Null settings use the default.
+         */
+        export interface Stt {
+          /**
+           * How long the transcriber waits before it ends a turn.
+           */
+          endpointingMs: number | null;
+
+          /**
+           * Words and phrases the transcriber should listen for.
+           */
+          keyterms: Array<string>;
+
+          /**
+           * Any transcriber model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+
+          smartFormat: boolean | null;
+
+          turnDetection: 'pipeline' | 'provider' | null;
+        }
+
+        /**
+         * A voice. Null settings use the default.
+         */
+        export interface Tt {
+          /**
+           * Any voice model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          similarityBoost: number | null;
+
+          /**
+           * 0.5 to 2.
+           */
+          speed: number | null;
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          stability: number | null;
+
+          /**
+           * Any voice id the provider accepts, including your own voices.
+           */
+          voiceId: string;
+        }
+      }
+
+      /**
+       * One model that hears the caller and speaks with its own voice.
+       */
+      export interface AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        speechToSpeech: AgentSpeechToSpeechModelConfig.SpeechToSpeech;
+
+        type: 'SPEECH_TO_SPEECH';
+      }
+
+      export namespace AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        export interface SpeechToSpeech {
+          /**
+           * OpenAI Live models only: the text model they delegate to.
+           */
+          backendModel: string | null;
+
+          maxOutputTokens: number | null;
+
+          /**
+           * Any speech-to-speech model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+
+          /**
+           * The model's own voice.
+           */
+          voice: string | null;
+        }
       }
 
       export interface Tool {
@@ -517,30 +607,6 @@ export namespace AgentDraftUpdateResponse {
     language: string | null;
 
     /**
-     * OpenAI Live models only: the text model they delegate to.
-     */
-    llmBackendModel: string | null;
-
-    llmMaxTokens: number | null;
-
-    /**
-     * Any model id the provider accepts. One model serves every speaker.
-     */
-    llmModel: string | null;
-
-    llmProvider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS' | null;
-
-    /**
-     * 0 to 2.
-     */
-    llmTemperature: number | null;
-
-    /**
-     * Speech-to-speech models only: the model's own voice.
-     */
-    llmVoice: string | null;
-
-    /**
      * Whether the agent takes calls, chats, or both.
      */
     modalities: Array<'call' | 'chat'>;
@@ -555,35 +621,20 @@ export namespace AgentDraftUpdateResponse {
     publishedByType: 'USER' | 'API' | 'CONFIG' | 'AUTOIMPROVE' | 'INTEGRATION' | 'SYSTEM' | null;
 
     /**
-     * Set when this version restores an older one.
-     */
-    restoredFromVersionId: string | null;
-
-    /**
      * Increases with every edit to a draft. Send it back as expectedRevision when you
      * publish.
      */
     revision: number;
 
     /**
+     * Set when this version rolls the agent back to an older one.
+     */
+    rolledBackFromVersionId: string | null;
+
+    /**
      * DRAFT while being edited, PUBLISHED once it has been live.
      */
     status: 'DRAFT' | 'PUBLISHED' | 'DISCARDED';
-
-    sttEndpointingMs: number | null;
-
-    /**
-     * Words and phrases the transcriber should listen for.
-     */
-    sttKeyterms: Array<string>;
-
-    sttModel: string | null;
-
-    sttProvider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | null;
-
-    sttSmartFormat: boolean | null;
-
-    sttTurnDetection: 'pipeline' | 'provider' | null;
 
     /**
      * The main agent (key `main`) first, then the sub-agents it can hand the call to.
@@ -618,8 +669,8 @@ export namespace AgentDraftUpdateResponse {
 
   export namespace Data {
     /**
-     * A speaker in the conversation. On a sub-agent, null voice settings use the main
-     * agent's.
+     * A speaker in the conversation. A sub-agent without model configs runs on the
+     * main agent's.
      */
     export interface SubAgent {
       handoffs: Array<SubAgent.Handoff>;
@@ -635,6 +686,12 @@ export namespace AgentDraftUpdateResponse {
       key: string;
 
       /**
+       * Up to three, in the order a call tries them. Empty on a sub-agent: it runs on
+       * the main agent's. The main agent needs one.
+       */
+      modelConfigs: Array<SubAgent.AgentCascadeModelConfig | SubAgent.AgentSpeechToSpeechModelConfig>;
+
+      /**
        * How the agent refers to this speaker.
        */
       name: string | null;
@@ -645,30 +702,6 @@ export namespace AgentDraftUpdateResponse {
       systemPrompt: string | null;
 
       tools: Array<SubAgent.Tool>;
-
-      ttsModel: string | null;
-
-      ttsProvider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsSimilarityBoost: number | null;
-
-      /**
-       * 0.5 to 2.
-       */
-      ttsSpeed: number | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsStability: number | null;
-
-      /**
-       * Any voice id the provider accepts, including your own voices.
-       */
-      ttsVoiceId: string | null;
     }
 
     export namespace SubAgent {
@@ -697,6 +730,153 @@ export namespace AgentDraftUpdateResponse {
          * The key of the sub-agent that takes over; `main` for the main agent.
          */
         to: string;
+      }
+
+      /**
+       * A transcriber, a text model and a voice. A component that fails during a call
+       * moves to its next entry; the others stay.
+       */
+      export interface AgentCascadeModelConfig {
+        /**
+         * One to three text models, in the order a call tries them.
+         */
+        llm: Array<AgentCascadeModelConfig.Llm>;
+
+        /**
+         * One to three transcribers, in the order a call tries them.
+         */
+        stt: Array<AgentCascadeModelConfig.Stt>;
+
+        /**
+         * One to three voices, in the order a call tries them.
+         */
+        tts: Array<AgentCascadeModelConfig.Tt>;
+
+        type: 'CASCADE';
+      }
+
+      export namespace AgentCascadeModelConfig {
+        /**
+         * A text model. Null settings use the default.
+         */
+        export interface Llm {
+          maxTokens: number | null;
+
+          /**
+           * Any text model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+        }
+
+        /**
+         * A transcriber. Null settings use the default.
+         */
+        export interface Stt {
+          /**
+           * How long the transcriber waits before it ends a turn.
+           */
+          endpointingMs: number | null;
+
+          /**
+           * Words and phrases the transcriber should listen for.
+           */
+          keyterms: Array<string>;
+
+          /**
+           * Any transcriber model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+
+          smartFormat: boolean | null;
+
+          turnDetection: 'pipeline' | 'provider' | null;
+        }
+
+        /**
+         * A voice. Null settings use the default.
+         */
+        export interface Tt {
+          /**
+           * Any voice model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          similarityBoost: number | null;
+
+          /**
+           * 0.5 to 2.
+           */
+          speed: number | null;
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          stability: number | null;
+
+          /**
+           * Any voice id the provider accepts, including your own voices.
+           */
+          voiceId: string;
+        }
+      }
+
+      /**
+       * One model that hears the caller and speaks with its own voice.
+       */
+      export interface AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        speechToSpeech: AgentSpeechToSpeechModelConfig.SpeechToSpeech;
+
+        type: 'SPEECH_TO_SPEECH';
+      }
+
+      export namespace AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        export interface SpeechToSpeech {
+          /**
+           * OpenAI Live models only: the text model they delegate to.
+           */
+          backendModel: string | null;
+
+          maxOutputTokens: number | null;
+
+          /**
+           * Any speech-to-speech model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+
+          /**
+           * The model's own voice.
+           */
+          voice: string | null;
+        }
       }
 
       export interface Tool {
@@ -830,30 +1010,6 @@ export namespace AgentDraftDeleteResponse {
     language: string | null;
 
     /**
-     * OpenAI Live models only: the text model they delegate to.
-     */
-    llmBackendModel: string | null;
-
-    llmMaxTokens: number | null;
-
-    /**
-     * Any model id the provider accepts. One model serves every speaker.
-     */
-    llmModel: string | null;
-
-    llmProvider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS' | null;
-
-    /**
-     * 0 to 2.
-     */
-    llmTemperature: number | null;
-
-    /**
-     * Speech-to-speech models only: the model's own voice.
-     */
-    llmVoice: string | null;
-
-    /**
      * Whether the agent takes calls, chats, or both.
      */
     modalities: Array<'call' | 'chat'>;
@@ -868,35 +1024,20 @@ export namespace AgentDraftDeleteResponse {
     publishedByType: 'USER' | 'API' | 'CONFIG' | 'AUTOIMPROVE' | 'INTEGRATION' | 'SYSTEM' | null;
 
     /**
-     * Set when this version restores an older one.
-     */
-    restoredFromVersionId: string | null;
-
-    /**
      * Increases with every edit to a draft. Send it back as expectedRevision when you
      * publish.
      */
     revision: number;
 
     /**
+     * Set when this version rolls the agent back to an older one.
+     */
+    rolledBackFromVersionId: string | null;
+
+    /**
      * DRAFT while being edited, PUBLISHED once it has been live.
      */
     status: 'DRAFT' | 'PUBLISHED' | 'DISCARDED';
-
-    sttEndpointingMs: number | null;
-
-    /**
-     * Words and phrases the transcriber should listen for.
-     */
-    sttKeyterms: Array<string>;
-
-    sttModel: string | null;
-
-    sttProvider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | null;
-
-    sttSmartFormat: boolean | null;
-
-    sttTurnDetection: 'pipeline' | 'provider' | null;
 
     /**
      * The main agent (key `main`) first, then the sub-agents it can hand the call to.
@@ -931,8 +1072,8 @@ export namespace AgentDraftDeleteResponse {
 
   export namespace Data {
     /**
-     * A speaker in the conversation. On a sub-agent, null voice settings use the main
-     * agent's.
+     * A speaker in the conversation. A sub-agent without model configs runs on the
+     * main agent's.
      */
     export interface SubAgent {
       handoffs: Array<SubAgent.Handoff>;
@@ -948,6 +1089,12 @@ export namespace AgentDraftDeleteResponse {
       key: string;
 
       /**
+       * Up to three, in the order a call tries them. Empty on a sub-agent: it runs on
+       * the main agent's. The main agent needs one.
+       */
+      modelConfigs: Array<SubAgent.AgentCascadeModelConfig | SubAgent.AgentSpeechToSpeechModelConfig>;
+
+      /**
        * How the agent refers to this speaker.
        */
       name: string | null;
@@ -958,30 +1105,6 @@ export namespace AgentDraftDeleteResponse {
       systemPrompt: string | null;
 
       tools: Array<SubAgent.Tool>;
-
-      ttsModel: string | null;
-
-      ttsProvider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsSimilarityBoost: number | null;
-
-      /**
-       * 0.5 to 2.
-       */
-      ttsSpeed: number | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsStability: number | null;
-
-      /**
-       * Any voice id the provider accepts, including your own voices.
-       */
-      ttsVoiceId: string | null;
     }
 
     export namespace SubAgent {
@@ -1010,6 +1133,153 @@ export namespace AgentDraftDeleteResponse {
          * The key of the sub-agent that takes over; `main` for the main agent.
          */
         to: string;
+      }
+
+      /**
+       * A transcriber, a text model and a voice. A component that fails during a call
+       * moves to its next entry; the others stay.
+       */
+      export interface AgentCascadeModelConfig {
+        /**
+         * One to three text models, in the order a call tries them.
+         */
+        llm: Array<AgentCascadeModelConfig.Llm>;
+
+        /**
+         * One to three transcribers, in the order a call tries them.
+         */
+        stt: Array<AgentCascadeModelConfig.Stt>;
+
+        /**
+         * One to three voices, in the order a call tries them.
+         */
+        tts: Array<AgentCascadeModelConfig.Tt>;
+
+        type: 'CASCADE';
+      }
+
+      export namespace AgentCascadeModelConfig {
+        /**
+         * A text model. Null settings use the default.
+         */
+        export interface Llm {
+          maxTokens: number | null;
+
+          /**
+           * Any text model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+        }
+
+        /**
+         * A transcriber. Null settings use the default.
+         */
+        export interface Stt {
+          /**
+           * How long the transcriber waits before it ends a turn.
+           */
+          endpointingMs: number | null;
+
+          /**
+           * Words and phrases the transcriber should listen for.
+           */
+          keyterms: Array<string>;
+
+          /**
+           * Any transcriber model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+
+          smartFormat: boolean | null;
+
+          turnDetection: 'pipeline' | 'provider' | null;
+        }
+
+        /**
+         * A voice. Null settings use the default.
+         */
+        export interface Tt {
+          /**
+           * Any voice model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          similarityBoost: number | null;
+
+          /**
+           * 0.5 to 2.
+           */
+          speed: number | null;
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          stability: number | null;
+
+          /**
+           * Any voice id the provider accepts, including your own voices.
+           */
+          voiceId: string;
+        }
+      }
+
+      /**
+       * One model that hears the caller and speaks with its own voice.
+       */
+      export interface AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        speechToSpeech: AgentSpeechToSpeechModelConfig.SpeechToSpeech;
+
+        type: 'SPEECH_TO_SPEECH';
+      }
+
+      export namespace AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        export interface SpeechToSpeech {
+          /**
+           * OpenAI Live models only: the text model they delegate to.
+           */
+          backendModel: string | null;
+
+          maxOutputTokens: number | null;
+
+          /**
+           * Any speech-to-speech model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+
+          /**
+           * The model's own voice.
+           */
+          voice: string | null;
+        }
       }
 
       export interface Tool {
@@ -1143,30 +1413,6 @@ export namespace AgentDraftGetResponse {
     language: string | null;
 
     /**
-     * OpenAI Live models only: the text model they delegate to.
-     */
-    llmBackendModel: string | null;
-
-    llmMaxTokens: number | null;
-
-    /**
-     * Any model id the provider accepts. One model serves every speaker.
-     */
-    llmModel: string | null;
-
-    llmProvider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS' | null;
-
-    /**
-     * 0 to 2.
-     */
-    llmTemperature: number | null;
-
-    /**
-     * Speech-to-speech models only: the model's own voice.
-     */
-    llmVoice: string | null;
-
-    /**
      * Whether the agent takes calls, chats, or both.
      */
     modalities: Array<'call' | 'chat'>;
@@ -1181,35 +1427,20 @@ export namespace AgentDraftGetResponse {
     publishedByType: 'USER' | 'API' | 'CONFIG' | 'AUTOIMPROVE' | 'INTEGRATION' | 'SYSTEM' | null;
 
     /**
-     * Set when this version restores an older one.
-     */
-    restoredFromVersionId: string | null;
-
-    /**
      * Increases with every edit to a draft. Send it back as expectedRevision when you
      * publish.
      */
     revision: number;
 
     /**
+     * Set when this version rolls the agent back to an older one.
+     */
+    rolledBackFromVersionId: string | null;
+
+    /**
      * DRAFT while being edited, PUBLISHED once it has been live.
      */
     status: 'DRAFT' | 'PUBLISHED' | 'DISCARDED';
-
-    sttEndpointingMs: number | null;
-
-    /**
-     * Words and phrases the transcriber should listen for.
-     */
-    sttKeyterms: Array<string>;
-
-    sttModel: string | null;
-
-    sttProvider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | null;
-
-    sttSmartFormat: boolean | null;
-
-    sttTurnDetection: 'pipeline' | 'provider' | null;
 
     /**
      * The main agent (key `main`) first, then the sub-agents it can hand the call to.
@@ -1244,8 +1475,8 @@ export namespace AgentDraftGetResponse {
 
   export namespace Data {
     /**
-     * A speaker in the conversation. On a sub-agent, null voice settings use the main
-     * agent's.
+     * A speaker in the conversation. A sub-agent without model configs runs on the
+     * main agent's.
      */
     export interface SubAgent {
       handoffs: Array<SubAgent.Handoff>;
@@ -1261,6 +1492,12 @@ export namespace AgentDraftGetResponse {
       key: string;
 
       /**
+       * Up to three, in the order a call tries them. Empty on a sub-agent: it runs on
+       * the main agent's. The main agent needs one.
+       */
+      modelConfigs: Array<SubAgent.AgentCascadeModelConfig | SubAgent.AgentSpeechToSpeechModelConfig>;
+
+      /**
        * How the agent refers to this speaker.
        */
       name: string | null;
@@ -1271,30 +1508,6 @@ export namespace AgentDraftGetResponse {
       systemPrompt: string | null;
 
       tools: Array<SubAgent.Tool>;
-
-      ttsModel: string | null;
-
-      ttsProvider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsSimilarityBoost: number | null;
-
-      /**
-       * 0.5 to 2.
-       */
-      ttsSpeed: number | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsStability: number | null;
-
-      /**
-       * Any voice id the provider accepts, including your own voices.
-       */
-      ttsVoiceId: string | null;
     }
 
     export namespace SubAgent {
@@ -1323,6 +1536,153 @@ export namespace AgentDraftGetResponse {
          * The key of the sub-agent that takes over; `main` for the main agent.
          */
         to: string;
+      }
+
+      /**
+       * A transcriber, a text model and a voice. A component that fails during a call
+       * moves to its next entry; the others stay.
+       */
+      export interface AgentCascadeModelConfig {
+        /**
+         * One to three text models, in the order a call tries them.
+         */
+        llm: Array<AgentCascadeModelConfig.Llm>;
+
+        /**
+         * One to three transcribers, in the order a call tries them.
+         */
+        stt: Array<AgentCascadeModelConfig.Stt>;
+
+        /**
+         * One to three voices, in the order a call tries them.
+         */
+        tts: Array<AgentCascadeModelConfig.Tt>;
+
+        type: 'CASCADE';
+      }
+
+      export namespace AgentCascadeModelConfig {
+        /**
+         * A text model. Null settings use the default.
+         */
+        export interface Llm {
+          maxTokens: number | null;
+
+          /**
+           * Any text model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+        }
+
+        /**
+         * A transcriber. Null settings use the default.
+         */
+        export interface Stt {
+          /**
+           * How long the transcriber waits before it ends a turn.
+           */
+          endpointingMs: number | null;
+
+          /**
+           * Words and phrases the transcriber should listen for.
+           */
+          keyterms: Array<string>;
+
+          /**
+           * Any transcriber model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+
+          smartFormat: boolean | null;
+
+          turnDetection: 'pipeline' | 'provider' | null;
+        }
+
+        /**
+         * A voice. Null settings use the default.
+         */
+        export interface Tt {
+          /**
+           * Any voice model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          similarityBoost: number | null;
+
+          /**
+           * 0.5 to 2.
+           */
+          speed: number | null;
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          stability: number | null;
+
+          /**
+           * Any voice id the provider accepts, including your own voices.
+           */
+          voiceId: string;
+        }
+      }
+
+      /**
+       * One model that hears the caller and speaks with its own voice.
+       */
+      export interface AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        speechToSpeech: AgentSpeechToSpeechModelConfig.SpeechToSpeech;
+
+        type: 'SPEECH_TO_SPEECH';
+      }
+
+      export namespace AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        export interface SpeechToSpeech {
+          /**
+           * OpenAI Live models only: the text model they delegate to.
+           */
+          backendModel: string | null;
+
+          maxOutputTokens: number | null;
+
+          /**
+           * Any speech-to-speech model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+
+          /**
+           * The model's own voice.
+           */
+          voice: string | null;
+        }
       }
 
       export interface Tool {
@@ -1456,30 +1816,6 @@ export namespace AgentDraftPublishResponse {
     language: string | null;
 
     /**
-     * OpenAI Live models only: the text model they delegate to.
-     */
-    llmBackendModel: string | null;
-
-    llmMaxTokens: number | null;
-
-    /**
-     * Any model id the provider accepts. One model serves every speaker.
-     */
-    llmModel: string | null;
-
-    llmProvider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS' | null;
-
-    /**
-     * 0 to 2.
-     */
-    llmTemperature: number | null;
-
-    /**
-     * Speech-to-speech models only: the model's own voice.
-     */
-    llmVoice: string | null;
-
-    /**
      * Whether the agent takes calls, chats, or both.
      */
     modalities: Array<'call' | 'chat'>;
@@ -1494,35 +1830,20 @@ export namespace AgentDraftPublishResponse {
     publishedByType: 'USER' | 'API' | 'CONFIG' | 'AUTOIMPROVE' | 'INTEGRATION' | 'SYSTEM' | null;
 
     /**
-     * Set when this version restores an older one.
-     */
-    restoredFromVersionId: string | null;
-
-    /**
      * Increases with every edit to a draft. Send it back as expectedRevision when you
      * publish.
      */
     revision: number;
 
     /**
+     * Set when this version rolls the agent back to an older one.
+     */
+    rolledBackFromVersionId: string | null;
+
+    /**
      * DRAFT while being edited, PUBLISHED once it has been live.
      */
     status: 'DRAFT' | 'PUBLISHED' | 'DISCARDED';
-
-    sttEndpointingMs: number | null;
-
-    /**
-     * Words and phrases the transcriber should listen for.
-     */
-    sttKeyterms: Array<string>;
-
-    sttModel: string | null;
-
-    sttProvider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | null;
-
-    sttSmartFormat: boolean | null;
-
-    sttTurnDetection: 'pipeline' | 'provider' | null;
 
     /**
      * The main agent (key `main`) first, then the sub-agents it can hand the call to.
@@ -1557,8 +1878,8 @@ export namespace AgentDraftPublishResponse {
 
   export namespace Data {
     /**
-     * A speaker in the conversation. On a sub-agent, null voice settings use the main
-     * agent's.
+     * A speaker in the conversation. A sub-agent without model configs runs on the
+     * main agent's.
      */
     export interface SubAgent {
       handoffs: Array<SubAgent.Handoff>;
@@ -1574,6 +1895,12 @@ export namespace AgentDraftPublishResponse {
       key: string;
 
       /**
+       * Up to three, in the order a call tries them. Empty on a sub-agent: it runs on
+       * the main agent's. The main agent needs one.
+       */
+      modelConfigs: Array<SubAgent.AgentCascadeModelConfig | SubAgent.AgentSpeechToSpeechModelConfig>;
+
+      /**
        * How the agent refers to this speaker.
        */
       name: string | null;
@@ -1584,30 +1911,6 @@ export namespace AgentDraftPublishResponse {
       systemPrompt: string | null;
 
       tools: Array<SubAgent.Tool>;
-
-      ttsModel: string | null;
-
-      ttsProvider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsSimilarityBoost: number | null;
-
-      /**
-       * 0.5 to 2.
-       */
-      ttsSpeed: number | null;
-
-      /**
-       * 0 to 1, ElevenLabs.
-       */
-      ttsStability: number | null;
-
-      /**
-       * Any voice id the provider accepts, including your own voices.
-       */
-      ttsVoiceId: string | null;
     }
 
     export namespace SubAgent {
@@ -1636,6 +1939,153 @@ export namespace AgentDraftPublishResponse {
          * The key of the sub-agent that takes over; `main` for the main agent.
          */
         to: string;
+      }
+
+      /**
+       * A transcriber, a text model and a voice. A component that fails during a call
+       * moves to its next entry; the others stay.
+       */
+      export interface AgentCascadeModelConfig {
+        /**
+         * One to three text models, in the order a call tries them.
+         */
+        llm: Array<AgentCascadeModelConfig.Llm>;
+
+        /**
+         * One to three transcribers, in the order a call tries them.
+         */
+        stt: Array<AgentCascadeModelConfig.Stt>;
+
+        /**
+         * One to three voices, in the order a call tries them.
+         */
+        tts: Array<AgentCascadeModelConfig.Tt>;
+
+        type: 'CASCADE';
+      }
+
+      export namespace AgentCascadeModelConfig {
+        /**
+         * A text model. Null settings use the default.
+         */
+        export interface Llm {
+          maxTokens: number | null;
+
+          /**
+           * Any text model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+        }
+
+        /**
+         * A transcriber. Null settings use the default.
+         */
+        export interface Stt {
+          /**
+           * How long the transcriber waits before it ends a turn.
+           */
+          endpointingMs: number | null;
+
+          /**
+           * Words and phrases the transcriber should listen for.
+           */
+          keyterms: Array<string>;
+
+          /**
+           * Any transcriber model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+
+          smartFormat: boolean | null;
+
+          turnDetection: 'pipeline' | 'provider' | null;
+        }
+
+        /**
+         * A voice. Null settings use the default.
+         */
+        export interface Tt {
+          /**
+           * Any voice model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          similarityBoost: number | null;
+
+          /**
+           * 0.5 to 2.
+           */
+          speed: number | null;
+
+          /**
+           * 0 to 1, ElevenLabs.
+           */
+          stability: number | null;
+
+          /**
+           * Any voice id the provider accepts, including your own voices.
+           */
+          voiceId: string;
+        }
+      }
+
+      /**
+       * One model that hears the caller and speaks with its own voice.
+       */
+      export interface AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        speechToSpeech: AgentSpeechToSpeechModelConfig.SpeechToSpeech;
+
+        type: 'SPEECH_TO_SPEECH';
+      }
+
+      export namespace AgentSpeechToSpeechModelConfig {
+        /**
+         * A model that hears the caller and speaks with its own voice. Null settings use
+         * the default.
+         */
+        export interface SpeechToSpeech {
+          /**
+           * OpenAI Live models only: the text model they delegate to.
+           */
+          backendModel: string | null;
+
+          maxOutputTokens: number | null;
+
+          /**
+           * Any speech-to-speech model id the provider accepts.
+           */
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          /**
+           * 0 to 2.
+           */
+          temperature: number | null;
+
+          /**
+           * The model's own voice.
+           */
+          voice: string | null;
+        }
       }
 
       export interface Tool {
@@ -1672,7 +2122,9 @@ export interface AgentDraftCreateParams {
 export interface AgentDraftUpdateParams {
   /**
    * The settings to change. Omitted settings stay as they are; null clears one to
-   * the runtime default. subAgents replaces every speaker and must include `main`.
+   * the runtime default. subAgents replaces every speaker, model configs included,
+   * and must include `main`; in a model config, omitted fields use the runtime
+   * default.
    */
   settings: AgentDraftUpdateParams.Settings;
 
@@ -1686,7 +2138,9 @@ export interface AgentDraftUpdateParams {
 export namespace AgentDraftUpdateParams {
   /**
    * The settings to change. Omitted settings stay as they are; null clears one to
-   * the runtime default. subAgents replaces every speaker and must include `main`.
+   * the runtime default. subAgents replaces every speaker, model configs included,
+   * and must include `main`; in a model config, omitted fields use the runtime
+   * default.
    */
   export interface Settings {
     backgroundNoise?:
@@ -1738,31 +2192,7 @@ export namespace AgentDraftUpdateParams {
 
     language?: string | null;
 
-    llmBackendModel?: string | null;
-
-    llmMaxTokens?: number | null;
-
-    llmModel?: string | null;
-
-    llmProvider?: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS' | null;
-
-    llmTemperature?: number | null;
-
-    llmVoice?: string | null;
-
     modalities?: Array<'call' | 'chat'>;
-
-    sttEndpointingMs?: number | null;
-
-    sttKeyterms?: Array<string>;
-
-    sttModel?: string | null;
-
-    sttProvider?: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | null;
-
-    sttSmartFormat?: boolean | null;
-
-    sttTurnDetection?: 'pipeline' | 'provider' | null;
 
     subAgents?: Array<Settings.SubAgent>;
 
@@ -1779,23 +2209,13 @@ export namespace AgentDraftUpdateParams {
 
       key: 'main' | string;
 
+      modelConfigs: Array<SubAgent.UnionMember0 | SubAgent.UnionMember1>;
+
       name: string | null;
 
       systemPrompt: string | null;
 
       tools: Array<SubAgent.Tool>;
-
-      ttsModel: string | null;
-
-      ttsProvider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | null;
-
-      ttsSimilarityBoost: number | null;
-
-      ttsSpeed: number | null;
-
-      ttsStability: number | null;
-
-      ttsVoiceId: string | null;
     }
 
     export namespace SubAgent {
@@ -1809,6 +2229,78 @@ export namespace AgentDraftUpdateParams {
         once: boolean;
 
         to: 'main' | string;
+      }
+
+      export interface UnionMember0 {
+        llm: Array<UnionMember0.Llm>;
+
+        stt: Array<UnionMember0.Stt>;
+
+        tts: Array<UnionMember0.Tt>;
+
+        type: 'CASCADE';
+      }
+
+      export namespace UnionMember0 {
+        export interface Llm {
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          maxTokens?: number | null;
+
+          temperature?: number | null;
+        }
+
+        export interface Stt {
+          model: string;
+
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+
+          endpointingMs?: number | null;
+
+          keyterms?: Array<string>;
+
+          smartFormat?: boolean | null;
+
+          turnDetection?: 'pipeline' | 'provider' | null;
+        }
+
+        export interface Tt {
+          model: string;
+
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+          voiceId: string;
+
+          similarityBoost?: number | null;
+
+          speed?: number | null;
+
+          stability?: number | null;
+        }
+      }
+
+      export interface UnionMember1 {
+        speechToSpeech: UnionMember1.SpeechToSpeech;
+
+        type: 'SPEECH_TO_SPEECH';
+      }
+
+      export namespace UnionMember1 {
+        export interface SpeechToSpeech {
+          model: string;
+
+          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+
+          backendModel?: string | null;
+
+          maxOutputTokens?: number | null;
+
+          temperature?: number | null;
+
+          voice?: string | null;
+        }
       }
 
       export interface Tool {

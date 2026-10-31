@@ -52,8 +52,8 @@ describe('resource agentVersion', () => {
     });
   });
 
-  test('restore: only required params', async () => {
-    const responsePromise = client.agentVersion.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+  test('rollback: only required params', async () => {
+    const responsePromise = client.agentVersion.rollback('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -65,8 +65,8 @@ describe('resource agentVersion', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('restore: required and optional params', async () => {
-    const response = await client.agentVersion.restore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+  test('rollback: required and optional params', async () => {
+    const response = await client.agentVersion.rollback('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       expectedLiveVersionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       summary: 'x',

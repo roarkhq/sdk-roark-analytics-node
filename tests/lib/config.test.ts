@@ -6,6 +6,7 @@ import {
   defineHTTPRequestDefinition,
   defineMetric,
   defineApiCheck,
+  defineThreshold,
   definePersona,
   defineProject,
   defineScriptedFlow,
@@ -40,6 +41,7 @@ type DefinedResource =
   | ReturnType<typeof defineCollector>
   | ReturnType<typeof defineMetric>
   | ReturnType<typeof defineApiCheck>
+  | ReturnType<typeof defineThreshold>
   | ReturnType<typeof defineSimulationPlan>
   | ReturnType<typeof defineQaSimulationPlan>
   | ReturnType<typeof defineSimulationGroup>
@@ -99,6 +101,47 @@ describe('config builders', () => {
       calculationType: 'HTTP_REQUEST',
       name: 'pin_changed',
       httpRequest: { url: 'https://example.com/checks/pin' },
+    });
+  });
+
+  test('defineThreshold injects kind and the THRESHOLD engine', () => {
+    expect(
+      defineThreshold({ name: 'latency_under_2s', sourceMetric: 'latency', operator: 'LESS_THAN', value: 2 }),
+    ).toEqual({
+      kind: 'metric',
+      calculationType: 'THRESHOLD',
+      name: 'latency_under_2s',
+      sourceMetric: 'latency',
+      operator: 'LESS_THAN',
+      value: 2,
+    });
+  });
+
+  test('defineThreshold passes a boolean COUNT threshold through', () => {
+    expect(
+      defineThreshold({
+        name: 'never_interrupts',
+        sourceMetric: 'interrupted_caller',
+        operator: 'EQUALS',
+        value: false,
+        aggregationMode: 'COUNT',
+        countThreshold: 1,
+        sourceParticipantRole: 'AGENT',
+        trueLabel: 'Polite',
+        falseLabel: 'Interrupts',
+      }),
+    ).toEqual({
+      kind: 'metric',
+      calculationType: 'THRESHOLD',
+      name: 'never_interrupts',
+      sourceMetric: 'interrupted_caller',
+      operator: 'EQUALS',
+      value: false,
+      aggregationMode: 'COUNT',
+      countThreshold: 1,
+      sourceParticipantRole: 'AGENT',
+      trueLabel: 'Polite',
+      falseLabel: 'Interrupts',
     });
   });
 
