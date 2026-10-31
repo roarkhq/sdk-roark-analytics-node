@@ -57,10 +57,10 @@ export {
   AgentVersion,
   type AgentVersionListResponse,
   type AgentVersionGetByIDResponse,
-  type AgentVersionRestoreResponse,
+  type AgentVersionRollbackResponse,
   type AgentVersionListParams,
   type AgentVersionGetByIDParams,
-  type AgentVersionRestoreParams,
+  type AgentVersionRollbackParams,
 } from './agent-version';
 export {
   Analytics,

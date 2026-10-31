@@ -338,6 +338,16 @@ export interface AgentBuildParams {
   name: string;
 
   /**
+   * Optional text model the hosted agent thinks with. Roark's default when omitted
+   */
+  llm?: AgentBuildParams.Llm | null;
+
+  /**
+   * Optional transcriber the hosted agent hears with. Roark's default when omitted
+   */
+  stt?: AgentBuildParams.Stt | null;
+
+  /**
    * Optional provider voice the hosted agent speaks with
    */
   tts?: AgentBuildParams.Tts | null;
@@ -351,6 +361,36 @@ export interface AgentBuildParams {
 
 export namespace AgentBuildParams {
   /**
+   * Optional text model the hosted agent thinks with. Roark's default when omitted
+   */
+  export interface Llm {
+    /**
+     * The provider's model id, for example gpt-4.1
+     */
+    model: string;
+
+    /**
+     * Text model provider, for example OPENAI
+     */
+    provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+  }
+
+  /**
+   * Optional transcriber the hosted agent hears with. Roark's default when omitted
+   */
+  export interface Stt {
+    /**
+     * The provider's model id, for example nova-3
+     */
+    model: string;
+
+    /**
+     * Speech-to-text provider, for example DEEPGRAM
+     */
+    provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+  }
+
+  /**
    * Optional provider voice the hosted agent speaks with
    */
   export interface Tts {
@@ -363,6 +403,12 @@ export namespace AgentBuildParams {
      * The provider's id for the voice
      */
     voiceId: string;
+
+    /**
+     * The provider's voice model, for example eleven_flash_v2_5. Its current one when
+     * omitted
+     */
+    model?: string | null;
   }
 }
 

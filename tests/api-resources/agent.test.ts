@@ -92,7 +92,9 @@ describe('resource agent', () => {
     const response = await client.agent.build({
       jobDescription: 'x',
       name: 'x',
-      tts: { provider: 'CARTESIA', voiceId: 'x' },
+      llm: { model: 'x', provider: 'OPENAI' },
+      stt: { model: 'x', provider: 'DEEPGRAM' },
+      tts: { provider: 'CARTESIA', voiceId: 'x', model: 'x' },
       voice: 'voice',
     });
   });
