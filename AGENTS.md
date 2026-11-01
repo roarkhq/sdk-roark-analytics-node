@@ -34,7 +34,9 @@ with an error naming the type, which turns the codegen PR red until the helper e
 ## Code structure (`src/lib/`)
 
 `src/lib/` is published as `@roarkanalytics/sdk/lib/*`, so a file's path there is its public import path.
-Hand-written files there follow these rules.
+Hand-written files there follow these rules. They apply to every line you write, including in files that
+already break them: do not copy an existing deviation into new code, and do not refactor unrelated code
+just to conform.
 
 - **Arrow functions only**: `const foo = () => {}`, never `function foo() {}`. No classes; group related
   functions in a module.
@@ -44,8 +46,8 @@ Hand-written files there follow these rules.
   aliases of generated ones go in a `types.ts` beside the module and are re-exported from the module
   whose subpath users import (for example `lib/config`), so the public path does not change. Do not
   declare named input or return shapes inline in implementation files.
-- **Pure helpers** (such as `refName`) that more than one module needs go in a `helpers.ts`; do not copy
-  them between files.
+- **Pure helpers** that more than one module needs go in a `helpers.ts` (none exists yet: `refName` in
+  `config.ts` moves there once a second module needs it); do not copy them between files.
 - **No duplication.** Before adding a helper or type, search `src/lib/` and the generated `src/resources/`
   for an existing one and reuse it.
 - **Imports**: relative paths to the generated code (`'../resources/config'`), as eslint requires inside
