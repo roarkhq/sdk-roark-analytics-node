@@ -24,7 +24,9 @@ export class Call extends APIResource {
   }
 
   /**
-   * Returns a paginated list of calls for the authenticated project.
+   * Returns a paginated list of calls for the authenticated project. Pass agentId to
+   * keep calls for specific agents, or properties[agent_name][eq] when you only have
+   * the agent name. sortBy and sortDirection apply together with those filters.
    *
    * @example
    * ```ts
@@ -2313,6 +2315,14 @@ export interface CallListParams {
   after?: string;
 
   /**
+   * Calls that include any of these agents. One id, or several separated by commas,
+   * at most 100. A call with more than one agent matches when any of them is listed.
+   * An id that is not an agent on a call in this project matches nothing. Combines
+   * with the other filters, including sortBy and sortDirection.
+   */
+  agentId?: string;
+
+  /**
    * true: only simulated calls their run's results count (not invalidated, for
    * example because the agent never spoke). false: only the simulated calls the
    * results leave out, each invalidated. Live calls, and calls removed from their
@@ -2332,13 +2342,18 @@ export interface CallListParams {
   limit?: number;
 
   /**
-   * Filter on custom properties, one entry per property name:
+   * Filter on properties, one entry per property name.
    * properties[<name>][exists]=true keeps calls that have the property set (whatever
    * the value), properties[<name>][exists]=false keeps calls missing it (never sent,
-   * sent as null, or removed). A property the project has never seen is missing on
-   * every call. Names match the way properties are stored, so planTier and plan_tier
-   * are one property. At most 20 properties; a name taken by a built-in call filter,
-   * such as status, is rejected with 400.
+   * sent as null, or removed). properties[<name>][eq]=<value> keeps calls whose
+   * value equals it, ignoring case. agent_name and agent_id are built in and read
+   * the agents linked to the call, not a stored snapshot: agent_name matches an
+   * agent name, agent_id matches an agent id (a UUID). A call with several agents
+   * matches when any of them does. A custom property the project has never stored
+   * matches no calls under eq. Names match the way properties are stored, so
+   * planTier and plan_tier are one property, and agentName is agent_name. At most 20
+   * properties. A name taken by a built-in call filter, such as status, is rejected
+   * with 400. One operator per property.
    */
   properties?: { [key: string]: CallListParams.Property };
 
@@ -2382,15 +2397,26 @@ export interface CallListParams {
 
 export namespace CallListParams {
   /**
-   * Filter on custom properties, one entry per property name:
+   * Filter on properties, one entry per property name.
    * properties[<name>][exists]=true keeps calls that have the property set (whatever
    * the value), properties[<name>][exists]=false keeps calls missing it (never sent,
-   * sent as null, or removed). A property the project has never seen is missing on
-   * every call. Names match the way properties are stored, so planTier and plan_tier
-   * are one property. At most 20 properties; a name taken by a built-in call filter,
-   * such as status, is rejected with 400.
+   * sent as null, or removed). properties[<name>][eq]=<value> keeps calls whose
+   * value equals it, ignoring case. agent_name and agent_id are built in and read
+   * the agents linked to the call, not a stored snapshot: agent_name matches an
+   * agent name, agent_id matches an agent id (a UUID). A call with several agents
+   * matches when any of them does. A custom property the project has never stored
+   * matches no calls under eq. Names match the way properties are stored, so
+   * planTier and plan_tier are one property, and agentName is agent_name. At most 20
+   * properties. A name taken by a built-in call filter, such as status, is rejected
+   * with 400. One operator per property.
    */
   export interface Property {
+    /**
+     * Case-insensitive exact match. For agent_name and agent_id this matches any agent
+     * on the call. For any other name it matches the stored property value.
+     */
+    eq?: string;
+
     /**
      * true: the property is set. false: the property is missing.
      */
