@@ -93,10 +93,11 @@ describe('resource call', () => {
         {
           after:
             'eyJzb3J0VmFsdWUiOiIyMDI1LTAxLTE1VDEwOjAwOjAwLjAwMDAwMFoiLCJpZCI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCJ9',
+          agentId: '550e8400-e29b-41d4-a716-446655440000,660e8400-e29b-41d4-a716-446655440001',
           countedInResults: 'true',
           excludeHiddenRuns: 'true',
           limit: 20,
-          properties: { plan_tier: { exists: false }, region: { exists: true } },
+          properties: { plan_tier: { exists: false }, agent_name: { eq: 'Billing Bot' } },
           searchText: 'billing inquiry',
           simulationRunPlanIds: '770e8400-e29b-41d4-a716-446655440002',
           simulationRunPlanJobId: '550e8400-e29b-41d4-a716-446655440000',
