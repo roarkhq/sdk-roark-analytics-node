@@ -205,6 +205,23 @@ import {
   HTTPRequestDefinitionUpdateResponse,
 } from './resources/http-request-definition';
 import {
+  LiveReport,
+  LiveReportCreateParams,
+  LiveReportCreateResponse,
+  LiveReportDeleteResponse,
+  LiveReportGetByIDResponse,
+  LiveReportGetDocumentParams,
+  LiveReportGetDocumentResponse,
+  LiveReportListDocumentsParams,
+  LiveReportListDocumentsResponse,
+  LiveReportListParams,
+  LiveReportListResponse,
+  LiveReportRunParams,
+  LiveReportRunResponse,
+  LiveReportUpdateParams,
+  LiveReportUpdateResponse,
+} from './resources/live-report';
+import {
   Me,
   MeCreateAPIKeyParams,
   MeCreateAPIKeyResponse,
@@ -1127,6 +1144,7 @@ export class Roark {
   call: API.Call = new API.Call(this);
   analytics: API.Analytics = new API.Analytics(this);
   dashboard: API.Dashboard = new API.Dashboard(this);
+  liveReport: API.LiveReport = new API.LiveReport(this);
   metric: API.Metric = new API.Metric(this);
   metricPolicy: API.MetricPolicy = new API.MetricPolicy(this);
   metricCollectionJob: API.MetricCollectionJob = new API.MetricCollectionJob(this);
@@ -1165,6 +1183,7 @@ Roark.Usage = Usage;
 Roark.Call = Call;
 Roark.Analytics = Analytics;
 Roark.Dashboard = Dashboard;
+Roark.LiveReport = LiveReport;
 Roark.Metric = Metric;
 Roark.MetricPolicy = MetricPolicy;
 Roark.MetricCollectionJob = MetricCollectionJob;
@@ -1262,6 +1281,24 @@ export declare namespace Roark {
     type DashboardGetDataParams as DashboardGetDataParams,
     type DashboardGetWidgetDataParams as DashboardGetWidgetDataParams,
     type DashboardUpdateWidgetParams as DashboardUpdateWidgetParams,
+  };
+
+  export {
+    LiveReport as LiveReport,
+    type LiveReportCreateResponse as LiveReportCreateResponse,
+    type LiveReportUpdateResponse as LiveReportUpdateResponse,
+    type LiveReportListResponse as LiveReportListResponse,
+    type LiveReportDeleteResponse as LiveReportDeleteResponse,
+    type LiveReportGetByIDResponse as LiveReportGetByIDResponse,
+    type LiveReportGetDocumentResponse as LiveReportGetDocumentResponse,
+    type LiveReportListDocumentsResponse as LiveReportListDocumentsResponse,
+    type LiveReportRunResponse as LiveReportRunResponse,
+    type LiveReportCreateParams as LiveReportCreateParams,
+    type LiveReportUpdateParams as LiveReportUpdateParams,
+    type LiveReportListParams as LiveReportListParams,
+    type LiveReportGetDocumentParams as LiveReportGetDocumentParams,
+    type LiveReportListDocumentsParams as LiveReportListDocumentsParams,
+    type LiveReportRunParams as LiveReportRunParams,
   };
 
   export {
