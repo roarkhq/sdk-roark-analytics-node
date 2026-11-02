@@ -188,6 +188,23 @@ export {
 } from './http-request-definition';
 export { Health, type HealthGetResponse } from './health';
 export {
+  LiveReport,
+  type LiveReportCreateResponse,
+  type LiveReportUpdateResponse,
+  type LiveReportListResponse,
+  type LiveReportDeleteResponse,
+  type LiveReportGetByIDResponse,
+  type LiveReportGetDocumentResponse,
+  type LiveReportListDocumentsResponse,
+  type LiveReportRunResponse,
+  type LiveReportCreateParams,
+  type LiveReportUpdateParams,
+  type LiveReportListParams,
+  type LiveReportGetDocumentParams,
+  type LiveReportListDocumentsParams,
+  type LiveReportRunParams,
+} from './live-report';
+export {
   Me,
   type MeCreateAPIKeyResponse,
   type MeGetResponse,

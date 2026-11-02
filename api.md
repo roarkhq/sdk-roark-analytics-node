@@ -114,6 +114,30 @@ Methods:
 - <code title="get /v1/dashboard/{dashboardId}/widget/{widgetId}/data">client.dashboard.<a href="./src/resources/dashboard.ts">getWidgetData</a>(widgetID, { ...params }) -> DashboardGetWidgetDataResponse</code>
 - <code title="put /v1/dashboard/{dashboardId}/widget/{widgetId}">client.dashboard.<a href="./src/resources/dashboard.ts">updateWidget</a>(widgetID, { ...params }) -> DashboardUpdateWidgetResponse</code>
 
+# LiveReport
+
+Types:
+
+- <code><a href="./src/resources/live-report.ts">LiveReportCreateResponse</a></code>
+- <code><a href="./src/resources/live-report.ts">LiveReportUpdateResponse</a></code>
+- <code><a href="./src/resources/live-report.ts">LiveReportListResponse</a></code>
+- <code><a href="./src/resources/live-report.ts">LiveReportDeleteResponse</a></code>
+- <code><a href="./src/resources/live-report.ts">LiveReportGetByIDResponse</a></code>
+- <code><a href="./src/resources/live-report.ts">LiveReportGetDocumentResponse</a></code>
+- <code><a href="./src/resources/live-report.ts">LiveReportListDocumentsResponse</a></code>
+- <code><a href="./src/resources/live-report.ts">LiveReportRunResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/live-report">client.liveReport.<a href="./src/resources/live-report.ts">create</a>({ ...params }) -> LiveReportCreateResponse</code>
+- <code title="patch /v1/live-report/{reportId}">client.liveReport.<a href="./src/resources/live-report.ts">update</a>(reportID, { ...params }) -> LiveReportUpdateResponse</code>
+- <code title="get /v1/live-report">client.liveReport.<a href="./src/resources/live-report.ts">list</a>({ ...params }) -> LiveReportListResponse</code>
+- <code title="delete /v1/live-report/{reportId}">client.liveReport.<a href="./src/resources/live-report.ts">delete</a>(reportID) -> LiveReportDeleteResponse</code>
+- <code title="get /v1/live-report/{reportId}">client.liveReport.<a href="./src/resources/live-report.ts">getByID</a>(reportID) -> LiveReportGetByIDResponse</code>
+- <code title="get /v1/live-report/{reportId}/document/{documentId}">client.liveReport.<a href="./src/resources/live-report.ts">getDocument</a>(documentID, { ...params }) -> LiveReportGetDocumentResponse</code>
+- <code title="get /v1/live-report/{reportId}/document">client.liveReport.<a href="./src/resources/live-report.ts">listDocuments</a>(reportID, { ...params }) -> LiveReportListDocumentsResponse</code>
+- <code title="post /v1/live-report/{reportId}/generate">client.liveReport.<a href="./src/resources/live-report.ts">run</a>(reportID, { ...params }) -> LiveReportRunResponse</code>
+
 # Metric
 
 Types:
