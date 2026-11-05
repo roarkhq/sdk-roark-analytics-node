@@ -124,7 +124,7 @@ export namespace MetricCreateDefinitionResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -281,7 +281,7 @@ export namespace MetricCreateDefinitionResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -444,7 +444,7 @@ export namespace MetricCreateDefinitionResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -663,7 +663,7 @@ export namespace MetricCreateDefinitionResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -866,7 +866,7 @@ export namespace MetricListDefinitionsResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -1018,7 +1018,7 @@ export namespace MetricListDefinitionsResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -1164,7 +1164,7 @@ export namespace MetricListDefinitionsResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -1345,7 +1345,7 @@ export namespace MetricListDefinitionsResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -1508,7 +1508,7 @@ export namespace MetricListDefinitionsResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -1727,7 +1727,7 @@ export namespace MetricListDefinitionsResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -1934,7 +1934,7 @@ export namespace MetricUpdateDefinitionResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -2091,7 +2091,7 @@ export namespace MetricUpdateDefinitionResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -2254,7 +2254,7 @@ export namespace MetricUpdateDefinitionResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -2462,7 +2462,7 @@ export namespace MetricUpdateDefinitionResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -2649,7 +2649,7 @@ export namespace MetricUpdateDefinitionResponse {
 
     /**
      * Whether a simulation scores this metric on a call with fewer than 4 transcript
-     * lines. Such calls skip every metric without it.
+     * lines or where your agent never spoke. Such calls skip every metric without it.
      */
     gradesShortCalls: boolean;
 
@@ -2842,8 +2842,9 @@ export declare namespace MetricCreateDefinitionParams {
     classificationOptions?: Array<PromptMetricInput.ClassificationOption>;
 
     /**
-     * Score this metric on a simulated call with fewer than 4 transcript lines. Such
-     * calls skip every other metric. Default false.
+     * Score this metric on a simulated call with fewer than 4 transcript lines or
+     * where your agent never spoke (custom metrics only, not ones that judge the
+     * audio). Such calls skip every other metric. Default false.
      */
     gradesShortCalls?: boolean;
 
@@ -3167,8 +3168,9 @@ export declare namespace MetricCreateDefinitionParams {
     booleanTrueLabel?: string;
 
     /**
-     * Score this metric on a simulated call with fewer than 4 transcript lines. Such
-     * calls skip every other metric. Default false.
+     * Score this metric on a simulated call with fewer than 4 transcript lines or
+     * where your agent never spoke (custom metrics only, not ones that judge the
+     * audio). Such calls skip every other metric. Default false.
      */
     gradesShortCalls?: boolean;
 
@@ -3255,8 +3257,9 @@ export interface MetricUpdateDefinitionParams {
   formula?: string;
 
   /**
-   * Score this metric on a simulated call with fewer than 4 transcript lines. Such
-   * calls skip every other metric. Default false.
+   * Score this metric on a simulated call with fewer than 4 transcript lines or
+   * where your agent never spoke (custom metrics only, not ones that judge the
+   * audio). Such calls skip every other metric. Default false.
    */
   gradesShortCalls?: boolean;
 
