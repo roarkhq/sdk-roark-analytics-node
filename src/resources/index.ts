@@ -98,6 +98,21 @@ export {
   type BenchmarkListTargetScoreSamplesParams,
 } from './benchmark';
 export {
+  CalendarConnection,
+  type CalendarConnectionCreateResponse,
+  type CalendarConnectionUpdateResponse,
+  type CalendarConnectionListResponse,
+  type CalendarConnectionDeleteResponse,
+  type CalendarConnectionCheckResponse,
+  type CalendarConnectionGetByIDResponse,
+  type CalendarConnectionGetTargetResponse,
+  type CalendarConnectionListTargetsResponse,
+  type CalendarConnectionCreateParams,
+  type CalendarConnectionUpdateParams,
+  type CalendarConnectionListParams,
+  type CalendarConnectionGetTargetParams,
+} from './calendar-connection';
+export {
   Call,
   type CallCreateResponse,
   type CallListResponse,
@@ -361,6 +376,17 @@ export {
   type SimulationToolFixtureUpdateParams,
   type SimulationToolFixtureListParams,
 } from './simulation-tool-fixture';
+export {
+  Tool,
+  type ToolCreateResponse,
+  type ToolUpdateResponse,
+  type ToolListResponse,
+  type ToolDeleteResponse,
+  type ToolGetByIDResponse,
+  type ToolCreateParams,
+  type ToolUpdateParams,
+  type ToolListParams,
+} from './tool';
 export { Usage, type UsageGetResponse, type UsageGetParams } from './usage';
 export {
   Webhook,

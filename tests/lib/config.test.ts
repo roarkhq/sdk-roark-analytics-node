@@ -13,8 +13,10 @@ import {
   defineSimulationGroup,
   defineSimulationPlan,
   defineTool,
+  type DefineToolInput,
   defineConfig,
   defineImprovFlow,
+  defineLiveReport,
   defineQaSimulationPlan,
   type ImprovFlowConfig,
   type QaSimulationPlanConfig,
@@ -48,6 +50,7 @@ type DefinedResource =
   | ReturnType<typeof defineAlert>
   | ReturnType<typeof defineTool>
   | ReturnType<typeof defineDashboard>
+  | ReturnType<typeof defineLiveReport>
   | ReturnType<typeof defineProject>;
 type ResourceWithoutHelper = Exclude<ResourceConfig, DefinedResource>;
 const everyResourceHasAHelper: [ResourceWithoutHelper] extends [never] ? true : ResourceWithoutHelper = true;
@@ -83,6 +86,94 @@ describe('config builders', () => {
     const tool = defineTool({ name: 'ping' });
     expect(tool.kind).toBe('tool');
     expect('agent' in tool).toBe(false);
+  });
+
+  // `handler` became a discriminated union on `type` in the regeneration that added calendar
+  // tools, so `ToolConfig.Handler` is gone and both variants are anonymous members. These pin
+  // that each one survives `defineTool` untouched, and that picking the wrong `type` for a
+  // variant's fields does not compile.
+  test('defineTool passes an http handler through, including the fields added with the union', () => {
+    const tool = defineTool({
+      name: 'book',
+      handler: {
+        type: 'http',
+        url: 'https://example.test/book',
+        method: 'POST',
+        body: '{"date":"{{date}}"}',
+        headers: { 'content-type': 'application/json' },
+        timeoutMs: 5_000,
+      },
+    });
+    expect(tool.handler).toEqual({
+      type: 'http',
+      url: 'https://example.test/book',
+      method: 'POST',
+      body: '{"date":"{{date}}"}',
+      headers: { 'content-type': 'application/json' },
+      timeoutMs: 5_000,
+    });
+  });
+
+  test('defineTool passes a calendar handler through', () => {
+    // `calendarConnection` is a connection **id**, not a name, and deliberately not a `Ref`:
+    // a connection holds a provider credential, so it is not a config resource and never will
+    // be (`toolCalendarHandlerConfigSchema` says so). There is no construct to hand over here.
+    const tool = defineTool({
+      name: 'book-appointment',
+      handler: {
+        type: 'calendar',
+        calendarConnection: '6f9b1f4e-3c2a-4d58-9d41-7c0b2e8a5f13',
+        operation: 'BOOK',
+        appointmentTypes: [{ eventTypeId: 42, name: 'Consultation', durationMinutes: 30 }],
+        simulate: true,
+      },
+    });
+    expect(tool.handler).toEqual({
+      type: 'calendar',
+      calendarConnection: '6f9b1f4e-3c2a-4d58-9d41-7c0b2e8a5f13',
+      operation: 'BOOK',
+      appointmentTypes: [{ eventTypeId: 42, name: 'Consultation', durationMinutes: 30 }],
+      simulate: true,
+    });
+  });
+
+  test('defineTool still resolves the agent when a handler is given', () => {
+    const agent = defineAgent({ name: 'front-desk' });
+    const tool = defineTool({ name: 'book', agent, handler: { type: 'http', url: 'https://example.test' } });
+    expect(tool.agent).toBe('front-desk');
+    expect(tool.handler).toEqual({ type: 'http', url: 'https://example.test' });
+  });
+
+  test("a handler variant cannot borrow the other variant's discriminator", () => {
+    const wrong: DefineToolInput = {
+      name: 'book',
+      // @ts-expect-error - `url` belongs to the http variant; the calendar one has no such field.
+      handler: { type: 'calendar', url: 'https://example.test' },
+    };
+    expect(wrong.name).toBe('book');
+  });
+
+  test('defineLiveReport resolves agent and dashboard constructs to their names', () => {
+    const agent = defineAgent({ name: 'front-desk' });
+    const dashboard = defineDashboard({ name: 'front-desk-health' });
+    expect(defineLiveReport({ name: 'weekly', agent, dashboard, cadence: 'WEEKLY' })).toEqual({
+      kind: 'liveReport',
+      name: 'weekly',
+      agent: 'front-desk',
+      dashboard: 'front-desk-health',
+      cadence: 'WEEKLY',
+    });
+  });
+
+  test('defineLiveReport accepts bare names, and omits both when neither is given', () => {
+    expect(defineLiveReport({ name: 'weekly', agent: 'front-desk', dashboard: 'health' })).toMatchObject({
+      agent: 'front-desk',
+      dashboard: 'health',
+    });
+    const report = defineLiveReport({ name: 'project-wide' });
+    expect(report.kind).toBe('liveReport');
+    expect('agent' in report).toBe(false);
+    expect('dashboard' in report).toBe(false);
   });
 
   test('defineImprovFlow injects both kind and the improv discriminator', () => {

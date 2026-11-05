@@ -563,6 +563,24 @@ Methods:
 - <code title="get /v1/agent/{agentId}/draft">client.agentDraft.<a href="./src/resources/agent-draft.ts">get</a>(agentID) -> AgentDraftGetResponse</code>
 - <code title="post /v1/agent/{agentId}/draft/publish">client.agentDraft.<a href="./src/resources/agent-draft.ts">publish</a>(agentID, { ...params }) -> AgentDraftPublishResponse</code>
 
+# Tool
+
+Types:
+
+- <code><a href="./src/resources/tool.ts">ToolCreateResponse</a></code>
+- <code><a href="./src/resources/tool.ts">ToolUpdateResponse</a></code>
+- <code><a href="./src/resources/tool.ts">ToolListResponse</a></code>
+- <code><a href="./src/resources/tool.ts">ToolDeleteResponse</a></code>
+- <code><a href="./src/resources/tool.ts">ToolGetByIDResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/tool">client.tool.<a href="./src/resources/tool.ts">create</a>({ ...params }) -> ToolCreateResponse</code>
+- <code title="put /v1/tool/{toolId}">client.tool.<a href="./src/resources/tool.ts">update</a>(toolID, { ...params }) -> ToolUpdateResponse</code>
+- <code title="get /v1/tool">client.tool.<a href="./src/resources/tool.ts">list</a>({ ...params }) -> ToolListResponse</code>
+- <code title="delete /v1/tool/{toolId}">client.tool.<a href="./src/resources/tool.ts">delete</a>(toolID) -> ToolDeleteResponse</code>
+- <code title="get /v1/tool/{toolId}">client.tool.<a href="./src/resources/tool.ts">getByID</a>(toolID) -> ToolGetByIDResponse</code>
+
 # HTTPRequestDefinition
 
 Types:
@@ -578,6 +596,30 @@ Methods:
 - <code title="put /v1/http-request-definition/{definitionId}">client.httpRequestDefinition.<a href="./src/resources/http-request-definition.ts">update</a>(definitionID, { ...params }) -> HTTPRequestDefinitionUpdateResponse</code>
 - <code title="get /v1/http-request-definition">client.httpRequestDefinition.<a href="./src/resources/http-request-definition.ts">list</a>({ ...params }) -> HTTPRequestDefinitionListResponse</code>
 - <code title="get /v1/http-request-definition/{definitionId}">client.httpRequestDefinition.<a href="./src/resources/http-request-definition.ts">getByID</a>(definitionID) -> HTTPRequestDefinitionGetByIDResponse</code>
+
+# CalendarConnection
+
+Types:
+
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionCreateResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionUpdateResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionListResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionDeleteResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionCheckResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionGetByIDResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionGetTargetResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionListTargetsResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/calendar-connection">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">create</a>({ ...params }) -> CalendarConnectionCreateResponse</code>
+- <code title="patch /v1/calendar-connection/{connectionId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">update</a>(connectionID, { ...params }) -> CalendarConnectionUpdateResponse</code>
+- <code title="get /v1/calendar-connection">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">list</a>({ ...params }) -> CalendarConnectionListResponse</code>
+- <code title="delete /v1/calendar-connection/{connectionId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">delete</a>(connectionID) -> CalendarConnectionDeleteResponse</code>
+- <code title="post /v1/calendar-connection/{connectionId}/check">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">check</a>(connectionID) -> CalendarConnectionCheckResponse</code>
+- <code title="get /v1/calendar-connection/{connectionId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">getByID</a>(connectionID) -> CalendarConnectionGetByIDResponse</code>
+- <code title="get /v1/calendar-connection/{connectionId}/targets/{targetId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">getTarget</a>(targetID, { ...params }) -> CalendarConnectionGetTargetResponse</code>
+- <code title="get /v1/calendar-connection/{connectionId}/targets">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">listTargets</a>(connectionID) -> CalendarConnectionListTargetsResponse</code>
 
 # Webhook
 

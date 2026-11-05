@@ -115,6 +115,21 @@ import {
   BenchmarkListTargetScoreSamplesResponse,
 } from './resources/benchmark';
 import {
+  CalendarConnection,
+  CalendarConnectionCheckResponse,
+  CalendarConnectionCreateParams,
+  CalendarConnectionCreateResponse,
+  CalendarConnectionDeleteResponse,
+  CalendarConnectionGetByIDResponse,
+  CalendarConnectionGetTargetParams,
+  CalendarConnectionGetTargetResponse,
+  CalendarConnectionListParams,
+  CalendarConnectionListResponse,
+  CalendarConnectionListTargetsResponse,
+  CalendarConnectionUpdateParams,
+  CalendarConnectionUpdateResponse,
+} from './resources/calendar-connection';
+import {
   Call,
   CallAppendToolInvocationsParams,
   CallAppendToolInvocationsResponse,
@@ -381,6 +396,17 @@ import {
   SimulationToolFixtureUpdateParams,
   SimulationToolFixtureUpdateResponse,
 } from './resources/simulation-tool-fixture';
+import {
+  Tool,
+  ToolCreateParams,
+  ToolCreateResponse,
+  ToolDeleteResponse,
+  ToolGetByIDResponse,
+  ToolListParams,
+  ToolListResponse,
+  ToolUpdateParams,
+  ToolUpdateResponse,
+} from './resources/tool';
 import { Usage, UsageGetParams, UsageGetResponse } from './resources/usage';
 import {
   Webhook,
@@ -1170,7 +1196,9 @@ export class Roark {
   agentPrompt: API.AgentPrompt = new API.AgentPrompt(this);
   agentVersion: API.AgentVersion = new API.AgentVersion(this);
   agentDraft: API.AgentDraft = new API.AgentDraft(this);
+  tool: API.Tool = new API.Tool(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
+  calendarConnection: API.CalendarConnection = new API.CalendarConnection(this);
   webhook: API.Webhook = new API.Webhook(this);
   benchmark: API.Benchmark = new API.Benchmark(this);
   config: API.Config = new API.Config(this);
@@ -1209,7 +1237,9 @@ Roark.PhoneNumber = PhoneNumber;
 Roark.AgentPrompt = AgentPrompt;
 Roark.AgentVersion = AgentVersion;
 Roark.AgentDraft = AgentDraft;
+Roark.Tool = Tool;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
+Roark.CalendarConnection = CalendarConnection;
 Roark.Webhook = Webhook;
 Roark.Benchmark = Benchmark;
 Roark.Config = Config;
@@ -1586,6 +1616,18 @@ export declare namespace Roark {
   };
 
   export {
+    Tool as Tool,
+    type ToolCreateResponse as ToolCreateResponse,
+    type ToolUpdateResponse as ToolUpdateResponse,
+    type ToolListResponse as ToolListResponse,
+    type ToolDeleteResponse as ToolDeleteResponse,
+    type ToolGetByIDResponse as ToolGetByIDResponse,
+    type ToolCreateParams as ToolCreateParams,
+    type ToolUpdateParams as ToolUpdateParams,
+    type ToolListParams as ToolListParams,
+  };
+
+  export {
     HTTPRequestDefinition as HTTPRequestDefinition,
     type HTTPRequestDefinitionCreateResponse as HTTPRequestDefinitionCreateResponse,
     type HTTPRequestDefinitionUpdateResponse as HTTPRequestDefinitionUpdateResponse,
@@ -1594,6 +1636,22 @@ export declare namespace Roark {
     type HTTPRequestDefinitionCreateParams as HTTPRequestDefinitionCreateParams,
     type HTTPRequestDefinitionUpdateParams as HTTPRequestDefinitionUpdateParams,
     type HTTPRequestDefinitionListParams as HTTPRequestDefinitionListParams,
+  };
+
+  export {
+    CalendarConnection as CalendarConnection,
+    type CalendarConnectionCreateResponse as CalendarConnectionCreateResponse,
+    type CalendarConnectionUpdateResponse as CalendarConnectionUpdateResponse,
+    type CalendarConnectionListResponse as CalendarConnectionListResponse,
+    type CalendarConnectionDeleteResponse as CalendarConnectionDeleteResponse,
+    type CalendarConnectionCheckResponse as CalendarConnectionCheckResponse,
+    type CalendarConnectionGetByIDResponse as CalendarConnectionGetByIDResponse,
+    type CalendarConnectionGetTargetResponse as CalendarConnectionGetTargetResponse,
+    type CalendarConnectionListTargetsResponse as CalendarConnectionListTargetsResponse,
+    type CalendarConnectionCreateParams as CalendarConnectionCreateParams,
+    type CalendarConnectionUpdateParams as CalendarConnectionUpdateParams,
+    type CalendarConnectionListParams as CalendarConnectionListParams,
+    type CalendarConnectionGetTargetParams as CalendarConnectionGetTargetParams,
   };
 
   export {
