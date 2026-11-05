@@ -238,6 +238,16 @@ Methods:
 
 - <code title="get /v1/simulation/job/{jobId}/tool-mock">client.simulationJobToolMock.<a href="./src/resources/simulation-job-tool-mock.ts">list</a>(jobID) -> SimulationJobToolMockListResponse</code>
 
+# SimulationAudioClip
+
+Types:
+
+- <code><a href="./src/resources/simulation-audio-clip.ts">SimulationAudioClipListResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/simulation/audio-clip">client.simulationAudioClip.<a href="./src/resources/simulation-audio-clip.ts">list</a>() -> SimulationAudioClipListResponse</code>
+
 # SimulationToolFixture
 
 Types:

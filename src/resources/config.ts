@@ -3023,11 +3023,23 @@ export interface ConfigFlowStep {
     | 'CUSTOMER_FIRST_MESSAGE'
     | 'CUSTOMER_VERBATIM_TURN'
     | 'CUSTOMER_SILENCE'
+    | 'CUSTOMER_AUDIO'
     | 'CUSTOMER_DTMF'
     | 'AGENT_DTMF'
     | 'VOICEMAIL'
     | 'SCENARIO_LINK'
     | 'CUSTOMER_HANDOFF';
+
+  audioClip?:
+    | 'HOLD_MUSIC_CLASSICAL_PIANO'
+    | 'HOLD_MUSIC_CLASSICAL_ORCHESTRA'
+    | 'HOLD_MUSIC_STRING_QUARTET'
+    | 'HOLD_MUSIC_AMBIENT'
+    | 'HOLD_MUSIC_SMOOTH_JAZZ'
+    | 'HOLD_MUSIC_SOFT_SYNTH'
+    | 'HOLD_BEEP'
+    | 'RINGBACK_US'
+    | 'RINGBACK_UK';
 
   content?: string;
 

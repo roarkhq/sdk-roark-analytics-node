@@ -404,7 +404,8 @@ export interface MetricVariantUpdateParams {
 
   /**
    * Body param: Score this metric on a simulated call with fewer than 4 transcript
-   * lines. Such calls skip every other metric. Default false.
+   * lines or where your agent never spoke (custom metrics only, not ones that judge
+   * the audio). Such calls skip every other metric. Default false.
    */
   gradesShortCalls?: boolean;
 
