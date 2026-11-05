@@ -2208,6 +2208,8 @@ export namespace CallCreateParams {
     export interface UnionMember0 {
       description?: string;
 
+      required?: boolean;
+
       type?: 'string' | 'number' | 'boolean';
 
       value?: unknown;
@@ -2484,6 +2486,8 @@ export namespace CallAppendToolInvocationsParams {
   export namespace ToolInvocation {
     export interface UnionMember0 {
       description?: string;
+
+      required?: boolean;
 
       type?: 'string' | 'number' | 'boolean';
 

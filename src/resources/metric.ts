@@ -123,6 +123,12 @@ export namespace MetricCreateDefinitionResponse {
     evidenceSource: LlmJudgeMetricResponse.EvidenceSource | null;
 
     /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
+
+    /**
      * The rubric this judge applies, as stored. Read it back to confirm which criteria
      * are live after a create or update.
      */
@@ -272,6 +278,12 @@ export namespace MetricCreateDefinitionResponse {
      * Formula configuration.
      */
     formula: FormulaMetricResponse.Formula;
+
+    /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -429,6 +441,12 @@ export namespace MetricCreateDefinitionResponse {
      * own evidence.
      */
     evidenceSource: PatternMetricResponse.EvidenceSource | null;
+
+    /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -642,6 +660,12 @@ export namespace MetricCreateDefinitionResponse {
      * own evidence.
      */
     evidenceSource: HTTPRequestMetricResponse.EvidenceSource | null;
+
+    /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
 
     /**
      * The request this metric sends.
@@ -841,6 +865,12 @@ export namespace MetricListDefinitionsResponse {
     evidenceSource: LlmJudgeMetricResponse.EvidenceSource | null;
 
     /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
+
+    /**
      * The rubric this judge applies, as stored. Read it back to confirm which criteria
      * are live after a create or update.
      */
@@ -987,6 +1017,12 @@ export namespace MetricListDefinitionsResponse {
     evidenceSource: ProviderMetricResponse.EvidenceSource | null;
 
     /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
+
+    /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
      */
     metricId: string;
@@ -1125,6 +1161,12 @@ export namespace MetricListDefinitionsResponse {
      * own evidence.
      */
     evidenceSource: ThresholdMetricResponse.EvidenceSource | null;
+
+    /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -1302,6 +1344,12 @@ export namespace MetricListDefinitionsResponse {
     formula: FormulaMetricResponse.Formula;
 
     /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
+
+    /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
      */
     metricId: string;
@@ -1457,6 +1505,12 @@ export namespace MetricListDefinitionsResponse {
      * own evidence.
      */
     evidenceSource: PatternMetricResponse.EvidenceSource | null;
+
+    /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -1670,6 +1724,12 @@ export namespace MetricListDefinitionsResponse {
      * own evidence.
      */
     evidenceSource: HTTPRequestMetricResponse.EvidenceSource | null;
+
+    /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
 
     /**
      * The request this metric sends.
@@ -1873,6 +1933,12 @@ export namespace MetricUpdateDefinitionResponse {
     evidenceSource: LlmJudgeMetricResponse.EvidenceSource | null;
 
     /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
+
+    /**
      * The rubric this judge applies, as stored. Read it back to confirm which criteria
      * are live after a create or update.
      */
@@ -2022,6 +2088,12 @@ export namespace MetricUpdateDefinitionResponse {
      * Formula configuration.
      */
     formula: FormulaMetricResponse.Formula;
+
+    /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -2179,6 +2251,12 @@ export namespace MetricUpdateDefinitionResponse {
      * own evidence.
      */
     evidenceSource: PatternMetricResponse.EvidenceSource | null;
+
+    /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
 
     /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
@@ -2383,6 +2461,12 @@ export namespace MetricUpdateDefinitionResponse {
     evidenceSource: ThresholdMetricResponse.EvidenceSource | null;
 
     /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
+
+    /**
      * Alias of `slug` retained for backwards compatibility. Same value as `slug`.
      */
     metricId: string;
@@ -2562,6 +2646,12 @@ export namespace MetricUpdateDefinitionResponse {
      * own evidence.
      */
     evidenceSource: HTTPRequestMetricResponse.EvidenceSource | null;
+
+    /**
+     * Whether a simulation scores this metric on a call with fewer than 4 transcript
+     * lines. Such calls skip every metric without it.
+     */
+    gradesShortCalls: boolean;
 
     /**
      * The request this metric sends.
@@ -2750,6 +2840,12 @@ export declare namespace MetricCreateDefinitionParams {
      * Options for classification. Required for CLASSIFICATION type.
      */
     classificationOptions?: Array<PromptMetricInput.ClassificationOption>;
+
+    /**
+     * Score this metric on a simulated call with fewer than 4 transcript lines. Such
+     * calls skip every other metric. Default false.
+     */
+    gradesShortCalls?: boolean;
 
     /**
      * LLM prompt/criteria for evaluating this metric. Required for BOOLEAN, NUMERIC,
@@ -3071,6 +3167,12 @@ export declare namespace MetricCreateDefinitionParams {
     booleanTrueLabel?: string;
 
     /**
+     * Score this metric on a simulated call with fewer than 4 transcript lines. Such
+     * calls skip every other metric. Default false.
+     */
+    gradesShortCalls?: boolean;
+
+    /**
      * Alias of `slug` accepted for backwards compatibility. Use `slug` for new
      * integrations.
      */
@@ -3151,6 +3253,12 @@ export interface MetricUpdateDefinitionParams {
    * referenced metrics change.
    */
   formula?: string;
+
+  /**
+   * Score this metric on a simulated call with fewer than 4 transcript lines. Such
+   * calls skip every other metric. Default false.
+   */
+  gradesShortCalls?: boolean;
 
   /**
    * Replacement request (HTTP_REQUEST only). Send the whole request; omitted headers

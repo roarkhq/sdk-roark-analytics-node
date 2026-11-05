@@ -123,7 +123,7 @@ export namespace HTTPRequestDefinitionCreateResponse {
     /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
-    method: 'POST' | 'PUT' | 'PATCH' | 'GET';
+    method: 'POST' | 'PUT' | 'PATCH' | 'GET' | 'DELETE';
 
     /**
      * Parsed body as a JSON object if valid JSON, otherwise the raw string
@@ -199,7 +199,7 @@ export namespace HTTPRequestDefinitionUpdateResponse {
     /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
-    method: 'POST' | 'PUT' | 'PATCH' | 'GET';
+    method: 'POST' | 'PUT' | 'PATCH' | 'GET' | 'DELETE';
 
     /**
      * Parsed body as a JSON object if valid JSON, otherwise the raw string
@@ -269,7 +269,7 @@ export namespace HTTPRequestDefinitionListResponse {
     /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
-    method: 'POST' | 'PUT' | 'PATCH' | 'GET';
+    method: 'POST' | 'PUT' | 'PATCH' | 'GET' | 'DELETE';
 
     /**
      * Parsed body as a JSON object if valid JSON, otherwise the raw string
@@ -357,7 +357,7 @@ export namespace HTTPRequestDefinitionGetByIDResponse {
     /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
-    method: 'POST' | 'PUT' | 'PATCH' | 'GET';
+    method: 'POST' | 'PUT' | 'PATCH' | 'GET' | 'DELETE';
 
     /**
      * Parsed body as a JSON object if valid JSON, otherwise the raw string

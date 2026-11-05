@@ -59,6 +59,7 @@ export interface Bundle {
     | Bundle.AlertConfig
     | Bundle.ToolConfig
     | Bundle.DashboardConfig
+    | Bundle.LiveReportConfig
     | Bundle.ProjectConfig
   >;
 
@@ -317,9 +318,13 @@ export namespace Bundle {
 
     description?: string | null;
 
+    environment?: string;
+
     expectations?: Array<string>;
 
     offScript?: ScriptedFlowConfig.OffScript;
+
+    persona?: string;
 
     title?: string;
   }
@@ -409,6 +414,8 @@ export namespace Bundle {
 
     falseLabel?: string;
 
+    gradesShortCalls?: boolean;
+
     maxSelections?: number;
 
     options?: Array<MetricConfig.Option>;
@@ -462,6 +469,8 @@ export namespace Bundle {
     displayName?: string;
 
     falseLabel?: string;
+
+    gradesShortCalls?: boolean;
 
     trueLabel?: string;
   }
@@ -521,7 +530,7 @@ export namespace Bundle {
 
     maxDurationSeconds: number;
 
-    metrics: Array<string>;
+    metrics: Array<string | SimulationPlanConfig.SimulationPlanMetricConfig>;
 
     name: string;
 
@@ -581,6 +590,12 @@ export namespace Bundle {
       personaOverride?: string;
 
       system?: string;
+    }
+
+    export interface SimulationPlanMetricConfig {
+      metric: string;
+
+      minPassRate?: number;
     }
 
     export interface Notify {
@@ -1074,24 +1089,68 @@ export namespace Bundle {
 
     agent?: string;
 
+    changesData?: boolean;
+
     description?: string | null;
 
     expectedResult?: string | null;
 
-    handler?: ToolConfig.Handler;
+    handler?: ToolConfig.UnionMember0 | ToolConfig.UnionMember1;
 
     invocationCriteria?: string | null;
 
+    messages?: ToolConfig.Messages;
+
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+
+    responseFields?: Array<string>;
   }
 
   export namespace ToolConfig {
-    export interface Handler {
+    export interface UnionMember0 {
       type: 'http';
 
       url: string;
 
+      body?: string;
+
+      headers?: { [key: string]: string };
+
       method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+      timeoutMs?: number;
+    }
+
+    export interface UnionMember1 {
+      appointmentTypes: Array<UnionMember1.AppointmentType>;
+
+      calendarConnection: string;
+
+      operation: 'CHECK_AVAILABILITY' | 'BOOK' | 'LOOKUP_BOOKING' | 'RESCHEDULE' | 'CANCEL' | 'LIST_BOOKINGS';
+
+      type: 'calendar';
+
+      simulate?: boolean | null;
+    }
+
+    export namespace UnionMember1 {
+      export interface AppointmentType {
+        eventTypeId: number;
+
+        name: string;
+
+        durationMinutes?: number | null;
+
+        whenToUse?: string | null;
+      }
+    }
+
+    export interface Messages {
+      before?: string;
+
+      failure?: string;
+
+      slow?: string;
     }
   }
 
@@ -1363,6 +1422,96 @@ export namespace Bundle {
     }
   }
 
+  export interface LiveReportConfig {
+    kind: 'liveReport';
+
+    name: string;
+
+    agent?: string;
+
+    cadence?: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+
+    dashboard?: string;
+
+    deliveryHour?: number;
+
+    description?: string;
+
+    displayName?: string;
+
+    enabled?: boolean;
+
+    filters?: Array<LiveReportConfig.Filter>;
+
+    includeTranscriptExcerpts?: boolean;
+
+    notify?: LiveReportConfig.Notify;
+
+    targets?: Array<LiveReportConfig.Target>;
+
+    timezone?: string;
+  }
+
+  export namespace LiveReportConfig {
+    export interface Filter {
+      type: 'CALL_PROPERTY' | 'MODALITY' | 'DATASET' | 'METRIC_VALUE';
+
+      operator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUAL_TO'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUAL_TO'
+        | 'CONTAINS'
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
+
+      property?: string;
+
+      value?: string | number | boolean;
+    }
+
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
+    }
+
+    export interface Target {
+      metric: string;
+
+      value: number;
+
+      aggregation?: 'PASS_RATE' | 'AVG' | 'MEDIAN' | 'PERCENTILE' | 'MIN' | 'MAX';
+
+      comparator?: 'AT_LEAST' | 'AT_MOST';
+
+      label?: string;
+
+      passOperator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUAL_TO'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUAL_TO';
+
+      passValue?: string | number | boolean;
+
+      percentile?: number;
+    }
+  }
+
   export interface ProjectConfig {
     kind: 'project';
 
@@ -1403,6 +1552,7 @@ export namespace Bundle {
       | ProjectConfig.AlertConfig
       | ProjectConfig.ToolConfig
       | ProjectConfig.DashboardConfig
+      | ProjectConfig.LiveReportConfig
     >;
   }
 
@@ -1664,9 +1814,13 @@ export namespace Bundle {
 
       description?: string | null;
 
+      environment?: string;
+
       expectations?: Array<string>;
 
       offScript?: ScriptedFlowConfig.OffScript;
+
+      persona?: string;
 
       title?: string;
     }
@@ -1756,6 +1910,8 @@ export namespace Bundle {
 
       falseLabel?: string;
 
+      gradesShortCalls?: boolean;
+
       maxSelections?: number;
 
       options?: Array<MetricConfig.Option>;
@@ -1809,6 +1965,8 @@ export namespace Bundle {
       displayName?: string;
 
       falseLabel?: string;
+
+      gradesShortCalls?: boolean;
 
       trueLabel?: string;
     }
@@ -1868,7 +2026,7 @@ export namespace Bundle {
 
       maxDurationSeconds: number;
 
-      metrics: Array<string>;
+      metrics: Array<string | SimulationPlanConfig.SimulationPlanMetricConfig>;
 
       name: string;
 
@@ -1928,6 +2086,12 @@ export namespace Bundle {
         personaOverride?: string;
 
         system?: string;
+      }
+
+      export interface SimulationPlanMetricConfig {
+        metric: string;
+
+        minPassRate?: number;
       }
 
       export interface Notify {
@@ -2421,24 +2585,74 @@ export namespace Bundle {
 
       agent?: string;
 
+      changesData?: boolean;
+
       description?: string | null;
 
       expectedResult?: string | null;
 
-      handler?: ToolConfig.Handler;
+      handler?: ToolConfig.UnionMember0 | ToolConfig.UnionMember1;
 
       invocationCriteria?: string | null;
 
+      messages?: ToolConfig.Messages;
+
       parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+
+      responseFields?: Array<string>;
     }
 
     export namespace ToolConfig {
-      export interface Handler {
+      export interface UnionMember0 {
         type: 'http';
 
         url: string;
 
+        body?: string;
+
+        headers?: { [key: string]: string };
+
         method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+        timeoutMs?: number;
+      }
+
+      export interface UnionMember1 {
+        appointmentTypes: Array<UnionMember1.AppointmentType>;
+
+        calendarConnection: string;
+
+        operation:
+          | 'CHECK_AVAILABILITY'
+          | 'BOOK'
+          | 'LOOKUP_BOOKING'
+          | 'RESCHEDULE'
+          | 'CANCEL'
+          | 'LIST_BOOKINGS';
+
+        type: 'calendar';
+
+        simulate?: boolean | null;
+      }
+
+      export namespace UnionMember1 {
+        export interface AppointmentType {
+          eventTypeId: number;
+
+          name: string;
+
+          durationMinutes?: number | null;
+
+          whenToUse?: string | null;
+        }
+      }
+
+      export interface Messages {
+        before?: string;
+
+        failure?: string;
+
+        slow?: string;
       }
     }
 
@@ -2709,6 +2923,96 @@ export namespace Bundle {
         }
       }
     }
+
+    export interface LiveReportConfig {
+      kind: 'liveReport';
+
+      name: string;
+
+      agent?: string;
+
+      cadence?: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+
+      dashboard?: string;
+
+      deliveryHour?: number;
+
+      description?: string;
+
+      displayName?: string;
+
+      enabled?: boolean;
+
+      filters?: Array<LiveReportConfig.Filter>;
+
+      includeTranscriptExcerpts?: boolean;
+
+      notify?: LiveReportConfig.Notify;
+
+      targets?: Array<LiveReportConfig.Target>;
+
+      timezone?: string;
+    }
+
+    export namespace LiveReportConfig {
+      export interface Filter {
+        type: 'CALL_PROPERTY' | 'MODALITY' | 'DATASET' | 'METRIC_VALUE';
+
+        operator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
+
+        property?: string;
+
+        value?: string | number | boolean;
+      }
+
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
+      }
+
+      export interface Target {
+        metric: string;
+
+        value: number;
+
+        aggregation?: 'PASS_RATE' | 'AVG' | 'MEDIAN' | 'PERCENTILE' | 'MIN' | 'MAX';
+
+        comparator?: 'AT_LEAST' | 'AT_MOST';
+
+        label?: string;
+
+        passOperator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO';
+
+        passValue?: string | number | boolean;
+
+        percentile?: number;
+      }
+    }
   }
 }
 
@@ -2800,6 +3104,7 @@ export namespace ConfigApplyResponse {
         | 'alert'
         | 'tool'
         | 'dashboard'
+        | 'liveReport'
         | 'project'
         | 'member';
 
@@ -2861,6 +3166,7 @@ export namespace ConfigDiffResponse {
         | 'alert'
         | 'tool'
         | 'dashboard'
+        | 'liveReport'
         | 'project'
         | 'member';
 
@@ -2902,6 +3208,7 @@ export interface ConfigApplyParams {
     | ConfigApplyParams.AlertConfig
     | ConfigApplyParams.ToolConfig
     | ConfigApplyParams.DashboardConfig
+    | ConfigApplyParams.LiveReportConfig
     | ConfigApplyParams.ProjectConfig
   >;
 
@@ -3160,9 +3467,13 @@ export namespace ConfigApplyParams {
 
     description?: string | null;
 
+    environment?: string;
+
     expectations?: Array<string>;
 
     offScript?: ScriptedFlowConfig.OffScript;
+
+    persona?: string;
 
     title?: string;
   }
@@ -3252,6 +3563,8 @@ export namespace ConfigApplyParams {
 
     falseLabel?: string;
 
+    gradesShortCalls?: boolean;
+
     maxSelections?: number;
 
     options?: Array<MetricConfig.Option>;
@@ -3305,6 +3618,8 @@ export namespace ConfigApplyParams {
     displayName?: string;
 
     falseLabel?: string;
+
+    gradesShortCalls?: boolean;
 
     trueLabel?: string;
   }
@@ -3364,7 +3679,7 @@ export namespace ConfigApplyParams {
 
     maxDurationSeconds: number;
 
-    metrics: Array<string>;
+    metrics: Array<string | SimulationPlanConfig.SimulationPlanMetricConfig>;
 
     name: string;
 
@@ -3424,6 +3739,12 @@ export namespace ConfigApplyParams {
       personaOverride?: string;
 
       system?: string;
+    }
+
+    export interface SimulationPlanMetricConfig {
+      metric: string;
+
+      minPassRate?: number;
     }
 
     export interface Notify {
@@ -3917,24 +4238,68 @@ export namespace ConfigApplyParams {
 
     agent?: string;
 
+    changesData?: boolean;
+
     description?: string | null;
 
     expectedResult?: string | null;
 
-    handler?: ToolConfig.Handler;
+    handler?: ToolConfig.UnionMember0 | ToolConfig.UnionMember1;
 
     invocationCriteria?: string | null;
 
+    messages?: ToolConfig.Messages;
+
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+
+    responseFields?: Array<string>;
   }
 
   export namespace ToolConfig {
-    export interface Handler {
+    export interface UnionMember0 {
       type: 'http';
 
       url: string;
 
+      body?: string;
+
+      headers?: { [key: string]: string };
+
       method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+      timeoutMs?: number;
+    }
+
+    export interface UnionMember1 {
+      appointmentTypes: Array<UnionMember1.AppointmentType>;
+
+      calendarConnection: string;
+
+      operation: 'CHECK_AVAILABILITY' | 'BOOK' | 'LOOKUP_BOOKING' | 'RESCHEDULE' | 'CANCEL' | 'LIST_BOOKINGS';
+
+      type: 'calendar';
+
+      simulate?: boolean | null;
+    }
+
+    export namespace UnionMember1 {
+      export interface AppointmentType {
+        eventTypeId: number;
+
+        name: string;
+
+        durationMinutes?: number | null;
+
+        whenToUse?: string | null;
+      }
+    }
+
+    export interface Messages {
+      before?: string;
+
+      failure?: string;
+
+      slow?: string;
     }
   }
 
@@ -4206,6 +4571,96 @@ export namespace ConfigApplyParams {
     }
   }
 
+  export interface LiveReportConfig {
+    kind: 'liveReport';
+
+    name: string;
+
+    agent?: string;
+
+    cadence?: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+
+    dashboard?: string;
+
+    deliveryHour?: number;
+
+    description?: string;
+
+    displayName?: string;
+
+    enabled?: boolean;
+
+    filters?: Array<LiveReportConfig.Filter>;
+
+    includeTranscriptExcerpts?: boolean;
+
+    notify?: LiveReportConfig.Notify;
+
+    targets?: Array<LiveReportConfig.Target>;
+
+    timezone?: string;
+  }
+
+  export namespace LiveReportConfig {
+    export interface Filter {
+      type: 'CALL_PROPERTY' | 'MODALITY' | 'DATASET' | 'METRIC_VALUE';
+
+      operator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUAL_TO'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUAL_TO'
+        | 'CONTAINS'
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
+
+      property?: string;
+
+      value?: string | number | boolean;
+    }
+
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
+    }
+
+    export interface Target {
+      metric: string;
+
+      value: number;
+
+      aggregation?: 'PASS_RATE' | 'AVG' | 'MEDIAN' | 'PERCENTILE' | 'MIN' | 'MAX';
+
+      comparator?: 'AT_LEAST' | 'AT_MOST';
+
+      label?: string;
+
+      passOperator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUAL_TO'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUAL_TO';
+
+      passValue?: string | number | boolean;
+
+      percentile?: number;
+    }
+  }
+
   export interface ProjectConfig {
     kind: 'project';
 
@@ -4246,6 +4701,7 @@ export namespace ConfigApplyParams {
       | ProjectConfig.AlertConfig
       | ProjectConfig.ToolConfig
       | ProjectConfig.DashboardConfig
+      | ProjectConfig.LiveReportConfig
     >;
   }
 
@@ -4507,9 +4963,13 @@ export namespace ConfigApplyParams {
 
       description?: string | null;
 
+      environment?: string;
+
       expectations?: Array<string>;
 
       offScript?: ScriptedFlowConfig.OffScript;
+
+      persona?: string;
 
       title?: string;
     }
@@ -4599,6 +5059,8 @@ export namespace ConfigApplyParams {
 
       falseLabel?: string;
 
+      gradesShortCalls?: boolean;
+
       maxSelections?: number;
 
       options?: Array<MetricConfig.Option>;
@@ -4652,6 +5114,8 @@ export namespace ConfigApplyParams {
       displayName?: string;
 
       falseLabel?: string;
+
+      gradesShortCalls?: boolean;
 
       trueLabel?: string;
     }
@@ -4711,7 +5175,7 @@ export namespace ConfigApplyParams {
 
       maxDurationSeconds: number;
 
-      metrics: Array<string>;
+      metrics: Array<string | SimulationPlanConfig.SimulationPlanMetricConfig>;
 
       name: string;
 
@@ -4771,6 +5235,12 @@ export namespace ConfigApplyParams {
         personaOverride?: string;
 
         system?: string;
+      }
+
+      export interface SimulationPlanMetricConfig {
+        metric: string;
+
+        minPassRate?: number;
       }
 
       export interface Notify {
@@ -5264,24 +5734,74 @@ export namespace ConfigApplyParams {
 
       agent?: string;
 
+      changesData?: boolean;
+
       description?: string | null;
 
       expectedResult?: string | null;
 
-      handler?: ToolConfig.Handler;
+      handler?: ToolConfig.UnionMember0 | ToolConfig.UnionMember1;
 
       invocationCriteria?: string | null;
 
+      messages?: ToolConfig.Messages;
+
       parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+
+      responseFields?: Array<string>;
     }
 
     export namespace ToolConfig {
-      export interface Handler {
+      export interface UnionMember0 {
         type: 'http';
 
         url: string;
 
+        body?: string;
+
+        headers?: { [key: string]: string };
+
         method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+        timeoutMs?: number;
+      }
+
+      export interface UnionMember1 {
+        appointmentTypes: Array<UnionMember1.AppointmentType>;
+
+        calendarConnection: string;
+
+        operation:
+          | 'CHECK_AVAILABILITY'
+          | 'BOOK'
+          | 'LOOKUP_BOOKING'
+          | 'RESCHEDULE'
+          | 'CANCEL'
+          | 'LIST_BOOKINGS';
+
+        type: 'calendar';
+
+        simulate?: boolean | null;
+      }
+
+      export namespace UnionMember1 {
+        export interface AppointmentType {
+          eventTypeId: number;
+
+          name: string;
+
+          durationMinutes?: number | null;
+
+          whenToUse?: string | null;
+        }
+      }
+
+      export interface Messages {
+        before?: string;
+
+        failure?: string;
+
+        slow?: string;
       }
     }
 
@@ -5552,6 +6072,96 @@ export namespace ConfigApplyParams {
         }
       }
     }
+
+    export interface LiveReportConfig {
+      kind: 'liveReport';
+
+      name: string;
+
+      agent?: string;
+
+      cadence?: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+
+      dashboard?: string;
+
+      deliveryHour?: number;
+
+      description?: string;
+
+      displayName?: string;
+
+      enabled?: boolean;
+
+      filters?: Array<LiveReportConfig.Filter>;
+
+      includeTranscriptExcerpts?: boolean;
+
+      notify?: LiveReportConfig.Notify;
+
+      targets?: Array<LiveReportConfig.Target>;
+
+      timezone?: string;
+    }
+
+    export namespace LiveReportConfig {
+      export interface Filter {
+        type: 'CALL_PROPERTY' | 'MODALITY' | 'DATASET' | 'METRIC_VALUE';
+
+        operator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
+
+        property?: string;
+
+        value?: string | number | boolean;
+      }
+
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
+      }
+
+      export interface Target {
+        metric: string;
+
+        value: number;
+
+        aggregation?: 'PASS_RATE' | 'AVG' | 'MEDIAN' | 'PERCENTILE' | 'MIN' | 'MAX';
+
+        comparator?: 'AT_LEAST' | 'AT_MOST';
+
+        label?: string;
+
+        passOperator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO';
+
+        passValue?: string | number | boolean;
+
+        percentile?: number;
+      }
+    }
   }
 }
 
@@ -5572,6 +6182,7 @@ export interface ConfigDiffParams {
     | ConfigDiffParams.AlertConfig
     | ConfigDiffParams.ToolConfig
     | ConfigDiffParams.DashboardConfig
+    | ConfigDiffParams.LiveReportConfig
     | ConfigDiffParams.ProjectConfig
   >;
 
@@ -5830,9 +6441,13 @@ export namespace ConfigDiffParams {
 
     description?: string | null;
 
+    environment?: string;
+
     expectations?: Array<string>;
 
     offScript?: ScriptedFlowConfig.OffScript;
+
+    persona?: string;
 
     title?: string;
   }
@@ -5922,6 +6537,8 @@ export namespace ConfigDiffParams {
 
     falseLabel?: string;
 
+    gradesShortCalls?: boolean;
+
     maxSelections?: number;
 
     options?: Array<MetricConfig.Option>;
@@ -5975,6 +6592,8 @@ export namespace ConfigDiffParams {
     displayName?: string;
 
     falseLabel?: string;
+
+    gradesShortCalls?: boolean;
 
     trueLabel?: string;
   }
@@ -6034,7 +6653,7 @@ export namespace ConfigDiffParams {
 
     maxDurationSeconds: number;
 
-    metrics: Array<string>;
+    metrics: Array<string | SimulationPlanConfig.SimulationPlanMetricConfig>;
 
     name: string;
 
@@ -6094,6 +6713,12 @@ export namespace ConfigDiffParams {
       personaOverride?: string;
 
       system?: string;
+    }
+
+    export interface SimulationPlanMetricConfig {
+      metric: string;
+
+      minPassRate?: number;
     }
 
     export interface Notify {
@@ -6587,24 +7212,68 @@ export namespace ConfigDiffParams {
 
     agent?: string;
 
+    changesData?: boolean;
+
     description?: string | null;
 
     expectedResult?: string | null;
 
-    handler?: ToolConfig.Handler;
+    handler?: ToolConfig.UnionMember0 | ToolConfig.UnionMember1;
 
     invocationCriteria?: string | null;
 
+    messages?: ToolConfig.Messages;
+
     parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+
+    responseFields?: Array<string>;
   }
 
   export namespace ToolConfig {
-    export interface Handler {
+    export interface UnionMember0 {
       type: 'http';
 
       url: string;
 
+      body?: string;
+
+      headers?: { [key: string]: string };
+
       method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+      timeoutMs?: number;
+    }
+
+    export interface UnionMember1 {
+      appointmentTypes: Array<UnionMember1.AppointmentType>;
+
+      calendarConnection: string;
+
+      operation: 'CHECK_AVAILABILITY' | 'BOOK' | 'LOOKUP_BOOKING' | 'RESCHEDULE' | 'CANCEL' | 'LIST_BOOKINGS';
+
+      type: 'calendar';
+
+      simulate?: boolean | null;
+    }
+
+    export namespace UnionMember1 {
+      export interface AppointmentType {
+        eventTypeId: number;
+
+        name: string;
+
+        durationMinutes?: number | null;
+
+        whenToUse?: string | null;
+      }
+    }
+
+    export interface Messages {
+      before?: string;
+
+      failure?: string;
+
+      slow?: string;
     }
   }
 
@@ -6876,6 +7545,96 @@ export namespace ConfigDiffParams {
     }
   }
 
+  export interface LiveReportConfig {
+    kind: 'liveReport';
+
+    name: string;
+
+    agent?: string;
+
+    cadence?: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+
+    dashboard?: string;
+
+    deliveryHour?: number;
+
+    description?: string;
+
+    displayName?: string;
+
+    enabled?: boolean;
+
+    filters?: Array<LiveReportConfig.Filter>;
+
+    includeTranscriptExcerpts?: boolean;
+
+    notify?: LiveReportConfig.Notify;
+
+    targets?: Array<LiveReportConfig.Target>;
+
+    timezone?: string;
+  }
+
+  export namespace LiveReportConfig {
+    export interface Filter {
+      type: 'CALL_PROPERTY' | 'MODALITY' | 'DATASET' | 'METRIC_VALUE';
+
+      operator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUAL_TO'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUAL_TO'
+        | 'CONTAINS'
+        | 'STARTS_WITH'
+        | 'IS_SET'
+        | 'IS_NOT_SET';
+
+      property?: string;
+
+      value?: string | number | boolean;
+    }
+
+    export interface Notify {
+      email?: boolean | Array<string>;
+
+      slack?: Array<Notify.Slack>;
+    }
+
+    export namespace Notify {
+      export interface Slack {
+        channelId: string;
+
+        channelName: string;
+      }
+    }
+
+    export interface Target {
+      metric: string;
+
+      value: number;
+
+      aggregation?: 'PASS_RATE' | 'AVG' | 'MEDIAN' | 'PERCENTILE' | 'MIN' | 'MAX';
+
+      comparator?: 'AT_LEAST' | 'AT_MOST';
+
+      label?: string;
+
+      passOperator?:
+        | 'EQUALS'
+        | 'NOT_EQUALS'
+        | 'GREATER_THAN'
+        | 'GREATER_THAN_OR_EQUAL_TO'
+        | 'LESS_THAN'
+        | 'LESS_THAN_OR_EQUAL_TO';
+
+      passValue?: string | number | boolean;
+
+      percentile?: number;
+    }
+  }
+
   export interface ProjectConfig {
     kind: 'project';
 
@@ -6916,6 +7675,7 @@ export namespace ConfigDiffParams {
       | ProjectConfig.AlertConfig
       | ProjectConfig.ToolConfig
       | ProjectConfig.DashboardConfig
+      | ProjectConfig.LiveReportConfig
     >;
   }
 
@@ -7177,9 +7937,13 @@ export namespace ConfigDiffParams {
 
       description?: string | null;
 
+      environment?: string;
+
       expectations?: Array<string>;
 
       offScript?: ScriptedFlowConfig.OffScript;
+
+      persona?: string;
 
       title?: string;
     }
@@ -7269,6 +8033,8 @@ export namespace ConfigDiffParams {
 
       falseLabel?: string;
 
+      gradesShortCalls?: boolean;
+
       maxSelections?: number;
 
       options?: Array<MetricConfig.Option>;
@@ -7322,6 +8088,8 @@ export namespace ConfigDiffParams {
       displayName?: string;
 
       falseLabel?: string;
+
+      gradesShortCalls?: boolean;
 
       trueLabel?: string;
     }
@@ -7381,7 +8149,7 @@ export namespace ConfigDiffParams {
 
       maxDurationSeconds: number;
 
-      metrics: Array<string>;
+      metrics: Array<string | SimulationPlanConfig.SimulationPlanMetricConfig>;
 
       name: string;
 
@@ -7441,6 +8209,12 @@ export namespace ConfigDiffParams {
         personaOverride?: string;
 
         system?: string;
+      }
+
+      export interface SimulationPlanMetricConfig {
+        metric: string;
+
+        minPassRate?: number;
       }
 
       export interface Notify {
@@ -7934,24 +8708,74 @@ export namespace ConfigDiffParams {
 
       agent?: string;
 
+      changesData?: boolean;
+
       description?: string | null;
 
       expectedResult?: string | null;
 
-      handler?: ToolConfig.Handler;
+      handler?: ToolConfig.UnionMember0 | ToolConfig.UnionMember1;
 
       invocationCriteria?: string | null;
 
+      messages?: ToolConfig.Messages;
+
       parameters?: { [key: string]: 'string' | 'number' | 'boolean' };
+
+      responseFields?: Array<string>;
     }
 
     export namespace ToolConfig {
-      export interface Handler {
+      export interface UnionMember0 {
         type: 'http';
 
         url: string;
 
+        body?: string;
+
+        headers?: { [key: string]: string };
+
         method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+        timeoutMs?: number;
+      }
+
+      export interface UnionMember1 {
+        appointmentTypes: Array<UnionMember1.AppointmentType>;
+
+        calendarConnection: string;
+
+        operation:
+          | 'CHECK_AVAILABILITY'
+          | 'BOOK'
+          | 'LOOKUP_BOOKING'
+          | 'RESCHEDULE'
+          | 'CANCEL'
+          | 'LIST_BOOKINGS';
+
+        type: 'calendar';
+
+        simulate?: boolean | null;
+      }
+
+      export namespace UnionMember1 {
+        export interface AppointmentType {
+          eventTypeId: number;
+
+          name: string;
+
+          durationMinutes?: number | null;
+
+          whenToUse?: string | null;
+        }
+      }
+
+      export interface Messages {
+        before?: string;
+
+        failure?: string;
+
+        slow?: string;
       }
     }
 
@@ -8220,6 +9044,96 @@ export namespace ConfigDiffParams {
 
           value?: string | number | boolean;
         }
+      }
+    }
+
+    export interface LiveReportConfig {
+      kind: 'liveReport';
+
+      name: string;
+
+      agent?: string;
+
+      cadence?: 'DAILY' | 'WEEKLY' | 'MONTHLY';
+
+      dashboard?: string;
+
+      deliveryHour?: number;
+
+      description?: string;
+
+      displayName?: string;
+
+      enabled?: boolean;
+
+      filters?: Array<LiveReportConfig.Filter>;
+
+      includeTranscriptExcerpts?: boolean;
+
+      notify?: LiveReportConfig.Notify;
+
+      targets?: Array<LiveReportConfig.Target>;
+
+      timezone?: string;
+    }
+
+    export namespace LiveReportConfig {
+      export interface Filter {
+        type: 'CALL_PROPERTY' | 'MODALITY' | 'DATASET' | 'METRIC_VALUE';
+
+        operator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO'
+          | 'CONTAINS'
+          | 'STARTS_WITH'
+          | 'IS_SET'
+          | 'IS_NOT_SET';
+
+        property?: string;
+
+        value?: string | number | boolean;
+      }
+
+      export interface Notify {
+        email?: boolean | Array<string>;
+
+        slack?: Array<Notify.Slack>;
+      }
+
+      export namespace Notify {
+        export interface Slack {
+          channelId: string;
+
+          channelName: string;
+        }
+      }
+
+      export interface Target {
+        metric: string;
+
+        value: number;
+
+        aggregation?: 'PASS_RATE' | 'AVG' | 'MEDIAN' | 'PERCENTILE' | 'MIN' | 'MAX';
+
+        comparator?: 'AT_LEAST' | 'AT_MOST';
+
+        label?: string;
+
+        passOperator?:
+          | 'EQUALS'
+          | 'NOT_EQUALS'
+          | 'GREATER_THAN'
+          | 'GREATER_THAN_OR_EQUAL_TO'
+          | 'LESS_THAN'
+          | 'LESS_THAN_OR_EQUAL_TO';
+
+        passValue?: string | number | boolean;
+
+        percentile?: number;
       }
     }
   }
