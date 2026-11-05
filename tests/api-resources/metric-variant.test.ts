@@ -42,6 +42,7 @@ describe('resource metricVariant', () => {
       booleanFalseLabel: 'booleanFalseLabel',
       booleanTrueLabel: 'booleanTrueLabel',
       changeReason: 'changeReason',
+      gradesShortCalls: true,
       llmPrompt: 'llmPrompt',
       maxClassifications: 1,
       name: 'x',

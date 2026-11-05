@@ -403,6 +403,12 @@ export interface MetricVariantUpdateParams {
   changeReason?: string;
 
   /**
+   * Body param: Score this metric on a simulated call with fewer than 4 transcript
+   * lines. Such calls skip every other metric. Default false.
+   */
+  gradesShortCalls?: boolean;
+
+  /**
    * Body param: The rubric this variant applies. LLM judge metrics only.
    */
   llmPrompt?: string;

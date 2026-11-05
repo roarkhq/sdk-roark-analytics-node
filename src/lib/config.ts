@@ -39,6 +39,7 @@ export type SimulationGroupConfig = ConfigApplyParams.SimulationGroupConfig;
 export type AlertConfig = ConfigApplyParams.AlertConfig;
 export type ToolConfig = ConfigApplyParams.ToolConfig;
 export type DashboardConfig = ConfigApplyParams.DashboardConfig;
+export type LiveReportConfig = ConfigApplyParams.LiveReportConfig;
 export type ProjectConfig = ConfigApplyParams.ProjectConfig;
 
 /** Any resource a config bundle can carry. */
@@ -132,6 +133,27 @@ export type DefineToolInput = Omit<ToolConfig, 'kind' | 'agent'> & {
 export const defineTool = (tool: DefineToolInput): ToolConfig => {
   const { agent, ...rest } = tool;
   return { kind: 'tool', ...rest, ...(agent === undefined ? {} : { agent: refName(agent) }) };
+};
+
+/**
+ * Input to `defineLiveReport`: `agent` and `dashboard` accept the construct a `define*` helper
+ * returned or a bare name string, the same as `defineTool`'s `agent`.
+ */
+export type DefineLiveReportInput = Omit<LiveReportConfig, 'kind' | 'agent' | 'dashboard'> & {
+  /** Scope the report to one agent's calls (omit to report on the whole project). */
+  agent?: Ref<AgentConfig>;
+  /** Embed this dashboard's charts, read over the report's calls. */
+  dashboard?: Ref<DashboardConfig>;
+};
+
+export const defineLiveReport = (report: DefineLiveReportInput): LiveReportConfig => {
+  const { agent, dashboard, ...rest } = report;
+  return {
+    kind: 'liveReport',
+    ...rest,
+    ...(agent === undefined ? {} : { agent: refName(agent) }),
+    ...(dashboard === undefined ? {} : { dashboard: refName(dashboard) }),
+  };
 };
 
 // ── The bundle ──

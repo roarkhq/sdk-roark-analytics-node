@@ -32,6 +32,7 @@ describe('resource metric', () => {
       booleanFalseLabel: 'booleanFalseLabel',
       booleanTrueLabel: 'booleanTrueLabel',
       classificationOptions: [{ description: 'description', displayOrder: 0, label: 'label' }],
+      gradesShortCalls: true,
       llmPrompt: 'Evaluate whether the customer expressed satisfaction with the service provided.',
       maxClassifications: 1,
       metricId: 'customer_satisfaction',
@@ -96,6 +97,7 @@ describe('resource metric', () => {
           changeReason: 'changeReason',
           classificationOptions: [{ description: 'description', displayOrder: 0, label: 'label' }],
           formula: 'x',
+          gradesShortCalls: true,
           httpRequest: {
             url: 'https://api.example.com/roark/checks/pin-changed',
             body: 'x',
