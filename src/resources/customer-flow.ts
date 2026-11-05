@@ -206,10 +206,25 @@ export class CustomerFlow extends APIResource {
  * whoever holds the phone. It sits between turns like a silence, so it may follow
  * either side.
  *
+ * A `CUSTOMER_AUDIO` plays audio from the library (`audioClip`, see GET
+ * /v1/simulation/audio-clip) on the line for `silenceDurationSeconds` (up to 600,
+ * 30 when unset), looping it or cutting it to fit, the way an IVR plays hold
+ * music. It plays in a STRICT voice flow only: anywhere else it is a pause of the
+ * same length. It sits between turns like a silence.
+ *
  * In a STRICT flow an `AGENT_TURN` may carry its own `offScriptPolicy`, which
  * replaces the flow-level one at that step. Omit it (or send null) to follow the
  * flow's policy. Use it where one missed step makes the rest of the call
  * meaningless: an authentication menu, say, with `then: HANG_UP_INVALIDATE`.
+ *
+ * In a STRICT flow an `AGENT_DTMF` may carry an `offScriptPolicy` too, read
+ * differently: `waitSeconds` is how long to wait for the keys (at least 5, and
+ * just under the run's silence timeout by default and at most) and `then` what
+ * follows (`MOVE_ON`, `HANG_UP` or `HANG_UP_INVALIDATE`). Without one the call
+ * hangs up in silence after that wait, whatever the flow-level policy says. Speech
+ * does not end the wait. `reaction` is `STAY_SILENT` or `REPEAT`: with `REPEAT`
+ * the caller says the line before the step again each time the wait runs out, up
+ * to `maxAttempts` waits (at most 5), and `then` follows the last one.
  *
  * Any step may set `stage`, the named phase of the flow it belongs to: the IVR,
  * the login, the scenario itself. Steps in one stage are drawn as a group in the
@@ -248,7 +263,8 @@ export type FlowStep =
   | FlowStep.UnionMember6
   | FlowStep.UnionMember7
   | FlowStep.UnionMember8
-  | FlowStep.UnionMember9;
+  | FlowStep.UnionMember9
+  | FlowStep.UnionMember10;
 
 export namespace FlowStep {
   export interface UnionMember0 {
@@ -396,15 +412,27 @@ export namespace FlowStep {
   }
 
   export interface UnionMember5 {
-    type: 'CUSTOMER_DTMF';
+    type: 'CUSTOMER_AUDIO';
 
-    dtmfDigits?: string | null;
+    audioClip?:
+      | 'HOLD_MUSIC_CLASSICAL_PIANO'
+      | 'HOLD_MUSIC_CLASSICAL_ORCHESTRA'
+      | 'HOLD_MUSIC_STRING_QUARTET'
+      | 'HOLD_MUSIC_AMBIENT'
+      | 'HOLD_MUSIC_SMOOTH_JAZZ'
+      | 'HOLD_MUSIC_SOFT_SYNTH'
+      | 'HOLD_BEEP'
+      | 'RINGBACK_US'
+      | 'RINGBACK_UK'
+      | null;
 
     mergeIntoNodeIds?: Array<string>;
 
     nodeId?: string;
 
     ref?: string;
+
+    silenceDurationSeconds?: number | null;
 
     stage?: UnionMember5.Stage | null;
 
@@ -422,7 +450,7 @@ export namespace FlowStep {
   }
 
   export interface UnionMember6 {
-    type: 'AGENT_DTMF';
+    type: 'CUSTOMER_DTMF';
 
     dtmfDigits?: string | null;
 
@@ -448,11 +476,15 @@ export namespace FlowStep {
   }
 
   export interface UnionMember7 {
-    type: 'VOICEMAIL';
+    type: 'AGENT_DTMF';
+
+    dtmfDigits?: string | null;
 
     mergeIntoNodeIds?: Array<string>;
 
     nodeId?: string;
+
+    offScriptPolicy?: UnionMember7.OffScriptPolicy | null;
 
     ref?: string;
 
@@ -462,6 +494,18 @@ export namespace FlowStep {
   }
 
   export namespace UnionMember7 {
+    export interface OffScriptPolicy {
+      maxAttempts: number;
+
+      reaction: 'STAY_SILENT' | 'REPEAT' | 'RESPOND' | 'SAY';
+
+      then: 'HANG_UP' | 'MOVE_ON' | 'ADAPT' | 'HANG_UP_INVALIDATE';
+
+      sayLine?: string | null;
+
+      waitSeconds?: number | null;
+    }
+
     export interface Stage {
       name: string;
 
@@ -472,9 +516,7 @@ export namespace FlowStep {
   }
 
   export interface UnionMember8 {
-    type: 'CUSTOMER_HANDOFF';
-
-    handoffPersonaId?: string | null;
+    type: 'VOICEMAIL';
 
     mergeIntoNodeIds?: Array<string>;
 
@@ -498,11 +540,9 @@ export namespace FlowStep {
   }
 
   export interface UnionMember9 {
-    type: 'SCENARIO_LINK';
+    type: 'CUSTOMER_HANDOFF';
 
-    linkedCustomerFlowId?: string | null;
-
-    linkedCustomerFlowVariantId?: string | null;
+    handoffPersonaId?: string | null;
 
     mergeIntoNodeIds?: Array<string>;
 
@@ -516,6 +556,34 @@ export namespace FlowStep {
   }
 
   export namespace UnionMember9 {
+    export interface Stage {
+      name: string;
+
+      analyze?: boolean;
+
+      required?: boolean;
+    }
+  }
+
+  export interface UnionMember10 {
+    type: 'SCENARIO_LINK';
+
+    linkedCustomerFlowId?: string | null;
+
+    linkedCustomerFlowVariantId?: string | null;
+
+    mergeIntoNodeIds?: Array<string>;
+
+    nodeId?: string;
+
+    ref?: string;
+
+    stage?: UnionMember10.Stage | null;
+
+    steps?: Array<CustomerFlowAPI.FlowStep>;
+  }
+
+  export namespace UnionMember10 {
     export interface Stage {
       name: string;
 

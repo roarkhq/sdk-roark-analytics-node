@@ -290,6 +290,7 @@ export {
   type SimulationMockToolParams,
   type SimulationRunParams,
 } from './simulation';
+export { SimulationAudioClip, type SimulationAudioClipListResponse } from './simulation-audio-clip';
 export {
   SimulationEnvironment,
   type SimulationEnvironmentCreateResponse,

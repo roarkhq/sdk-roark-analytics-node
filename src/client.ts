@@ -307,6 +307,7 @@ import {
   SimulationRunParams,
   SimulationRunResponse,
 } from './resources/simulation';
+import { SimulationAudioClip, SimulationAudioClipListResponse } from './resources/simulation-audio-clip';
 import {
   SimulationEnvironment,
   SimulationEnvironmentCreateParams,
@@ -1178,6 +1179,7 @@ export class Roark {
   simulation: API.Simulation = new API.Simulation(this);
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
   simulationJobToolMock: API.SimulationJobToolMock = new API.SimulationJobToolMock(this);
+  simulationAudioClip: API.SimulationAudioClip = new API.SimulationAudioClip(this);
   simulationToolFixture: API.SimulationToolFixture = new API.SimulationToolFixture(this);
   simulationGroup: API.SimulationGroup = new API.SimulationGroup(this);
   simulationRunGroup: API.SimulationRunGroup = new API.SimulationRunGroup(this);
@@ -1219,6 +1221,7 @@ Roark.MetricVariant = MetricVariant;
 Roark.Simulation = Simulation;
 Roark.SimulationJob = SimulationJob;
 Roark.SimulationJobToolMock = SimulationJobToolMock;
+Roark.SimulationAudioClip = SimulationAudioClip;
 Roark.SimulationToolFixture = SimulationToolFixture;
 Roark.SimulationGroup = SimulationGroup;
 Roark.SimulationRunGroup = SimulationRunGroup;
@@ -1394,6 +1397,11 @@ export declare namespace Roark {
   export {
     SimulationJobToolMock as SimulationJobToolMock,
     type SimulationJobToolMockListResponse as SimulationJobToolMockListResponse,
+  };
+
+  export {
+    SimulationAudioClip as SimulationAudioClip,
+    type SimulationAudioClipListResponse as SimulationAudioClipListResponse,
   };
 
   export {
