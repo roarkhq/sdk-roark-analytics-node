@@ -15,6 +15,7 @@ import {
   defineTool,
   defineConfig,
   defineImprovFlow,
+  defineLiveReport,
   defineQaSimulationPlan,
   type ImprovFlowConfig,
   type QaSimulationPlanConfig,
@@ -48,6 +49,7 @@ type DefinedResource =
   | ReturnType<typeof defineAlert>
   | ReturnType<typeof defineTool>
   | ReturnType<typeof defineDashboard>
+  | ReturnType<typeof defineLiveReport>
   | ReturnType<typeof defineProject>;
 type ResourceWithoutHelper = Exclude<ResourceConfig, DefinedResource>;
 const everyResourceHasAHelper: [ResourceWithoutHelper] extends [never] ? true : ResourceWithoutHelper = true;
@@ -83,6 +85,29 @@ describe('config builders', () => {
     const tool = defineTool({ name: 'ping' });
     expect(tool.kind).toBe('tool');
     expect('agent' in tool).toBe(false);
+  });
+
+  test('defineLiveReport resolves agent and dashboard constructs to their names', () => {
+    const agent = defineAgent({ name: 'front-desk' });
+    const dashboard = defineDashboard({ name: 'front-desk-health' });
+    expect(defineLiveReport({ name: 'weekly', agent, dashboard, cadence: 'WEEKLY' })).toEqual({
+      kind: 'liveReport',
+      name: 'weekly',
+      agent: 'front-desk',
+      dashboard: 'front-desk-health',
+      cadence: 'WEEKLY',
+    });
+  });
+
+  test('defineLiveReport accepts bare names, and omits both when neither is given', () => {
+    expect(defineLiveReport({ name: 'weekly', agent: 'front-desk', dashboard: 'health' })).toMatchObject({
+      agent: 'front-desk',
+      dashboard: 'health',
+    });
+    const report = defineLiveReport({ name: 'project-wide' });
+    expect(report.kind).toBe('liveReport');
+    expect('agent' in report).toBe(false);
+    expect('dashboard' in report).toBe(false);
   });
 
   test('defineImprovFlow injects both kind and the improv discriminator', () => {
