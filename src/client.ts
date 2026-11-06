@@ -377,6 +377,7 @@ import {
   SimulationRunPlanJobCancelResponse,
   SimulationRunPlanJobCreateDebriefParams,
   SimulationRunPlanJobCreateDebriefResponse,
+  SimulationRunPlanJobDeleteResponse,
   SimulationRunPlanJobGetByIDResponse,
   SimulationRunPlanJobGetCostResponse,
   SimulationRunPlanJobGetResultsParams,
@@ -1454,6 +1455,7 @@ export declare namespace Roark {
   export {
     SimulationRunPlanJob as SimulationRunPlanJob,
     type SimulationRunPlanJobListResponse as SimulationRunPlanJobListResponse,
+    type SimulationRunPlanJobDeleteResponse as SimulationRunPlanJobDeleteResponse,
     type SimulationRunPlanJobCancelResponse as SimulationRunPlanJobCancelResponse,
     type SimulationRunPlanJobCreateDebriefResponse as SimulationRunPlanJobCreateDebriefResponse,
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,

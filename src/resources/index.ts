@@ -355,6 +355,7 @@ export {
 export {
   SimulationRunPlanJob,
   type SimulationRunPlanJobListResponse,
+  type SimulationRunPlanJobDeleteResponse,
   type SimulationRunPlanJobCancelResponse,
   type SimulationRunPlanJobCreateDebriefResponse,
   type SimulationRunPlanJobGetByIDResponse,
