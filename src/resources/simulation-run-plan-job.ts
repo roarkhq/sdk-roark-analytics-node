@@ -24,6 +24,25 @@ export class SimulationRunPlanJob extends APIResource {
   }
 
   /**
+   * Removes a finished run from the run history (a soft delete). The run stops
+   * appearing in run lists, counts and plan run histories, and reading it by ID
+   * returns 404.
+   *
+   * A run that is still in progress is refused with 409: cancel it first.
+   *
+   * @example
+   * ```ts
+   * const simulationRunPlanJob =
+   *   await client.simulationRunPlanJob.delete(
+   *     '7f3e4d2c-8a91-4b5c-9e6f-1a2b3c4d5e6f',
+   *   );
+   * ```
+   */
+  delete(jobID: string, options?: RequestOptions): APIPromise<SimulationRunPlanJobDeleteResponse> {
+    return this._client.delete(path`/v1/simulation/plan/job/${jobID}`, options);
+  }
+
+  /**
    * Stops a run that has not finished yet. Already-finished runs are left alone.
    *
    * Intended for CI: when a pipeline is cancelled or superseded, cancelling the run
@@ -229,6 +248,27 @@ export namespace SimulationRunPlanJobListResponse {
      * Cursor to use for fetching the next page
      */
     nextCursor?: string | null;
+  }
+}
+
+export interface SimulationRunPlanJobDeleteResponse {
+  /**
+   * Result of deleting a simulation plan job
+   */
+  data: SimulationRunPlanJobDeleteResponse.Data;
+}
+
+export namespace SimulationRunPlanJobDeleteResponse {
+  /**
+   * Result of deleting a simulation plan job
+   */
+  export interface Data {
+    /**
+     * True when the run was removed from the run history.
+     */
+    deleted: boolean;
+
+    simulationRunPlanJobId: string;
   }
 }
 
@@ -3021,6 +3061,7 @@ export namespace SimulationRunPlanJobStartParams {
 export declare namespace SimulationRunPlanJob {
   export {
     type SimulationRunPlanJobListResponse as SimulationRunPlanJobListResponse,
+    type SimulationRunPlanJobDeleteResponse as SimulationRunPlanJobDeleteResponse,
     type SimulationRunPlanJobCancelResponse as SimulationRunPlanJobCancelResponse,
     type SimulationRunPlanJobCreateDebriefResponse as SimulationRunPlanJobCreateDebriefResponse,
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
