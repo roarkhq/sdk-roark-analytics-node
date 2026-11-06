@@ -321,6 +321,7 @@ describe('resource customerFlow', () => {
           ],
           environmentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           includeFlowExpectations: true,
+          openingLine: 'openingLine',
           personaOverrideId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           precededByCustomerFlowId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           precededByCustomerFlowVariantId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
