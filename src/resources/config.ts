@@ -80,7 +80,34 @@ export namespace Bundle {
 
     endpoints?: Array<AgentConfig.Endpoint>;
 
+    greeting?: string;
+
+    jobDescription?: string;
+
+    llm?: AgentConfig.Llm;
+
     prompt?: string | null;
+
+    provider?:
+      | 'roark'
+      | 'vapi'
+      | 'retell'
+      | 'elevenlabs'
+      | 'livekit'
+      | 'livekit-self-hosted'
+      | 'leaping'
+      | 'bland'
+      | 'api'
+      | 'kore'
+      | 'google-ces'
+      | 'pipecat-cloud'
+      | 'pipecat-self-hosted';
+
+    stt?: AgentConfig.Stt;
+
+    tts?: AgentConfig.Tts;
+
+    voice?: string;
   }
 
   export namespace AgentConfig {
@@ -96,6 +123,26 @@ export namespace Bundle {
       type?: 'PHONE' | 'WEBSOCKET';
 
       value?: string;
+    }
+
+    export interface Llm {
+      model: string;
+
+      provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+    }
+
+    export interface Stt {
+      model: string;
+
+      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+    }
+
+    export interface Tts {
+      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+      voiceId: string;
+
+      model?: string;
     }
   }
 
@@ -1584,7 +1631,34 @@ export namespace Bundle {
 
       endpoints?: Array<AgentConfig.Endpoint>;
 
+      greeting?: string;
+
+      jobDescription?: string;
+
+      llm?: AgentConfig.Llm;
+
       prompt?: string | null;
+
+      provider?:
+        | 'roark'
+        | 'vapi'
+        | 'retell'
+        | 'elevenlabs'
+        | 'livekit'
+        | 'livekit-self-hosted'
+        | 'leaping'
+        | 'bland'
+        | 'api'
+        | 'kore'
+        | 'google-ces'
+        | 'pipecat-cloud'
+        | 'pipecat-self-hosted';
+
+      stt?: AgentConfig.Stt;
+
+      tts?: AgentConfig.Tts;
+
+      voice?: string;
     }
 
     export namespace AgentConfig {
@@ -1600,6 +1674,26 @@ export namespace Bundle {
         type?: 'PHONE' | 'WEBSOCKET';
 
         value?: string;
+      }
+
+      export interface Llm {
+        model: string;
+
+        provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+      }
+
+      export interface Stt {
+        model: string;
+
+        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+      }
+
+      export interface Tts {
+        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+        voiceId: string;
+
+        model?: string;
       }
     }
 
@@ -3257,7 +3351,34 @@ export namespace ConfigApplyParams {
 
     endpoints?: Array<AgentConfig.Endpoint>;
 
+    greeting?: string;
+
+    jobDescription?: string;
+
+    llm?: AgentConfig.Llm;
+
     prompt?: string | null;
+
+    provider?:
+      | 'roark'
+      | 'vapi'
+      | 'retell'
+      | 'elevenlabs'
+      | 'livekit'
+      | 'livekit-self-hosted'
+      | 'leaping'
+      | 'bland'
+      | 'api'
+      | 'kore'
+      | 'google-ces'
+      | 'pipecat-cloud'
+      | 'pipecat-self-hosted';
+
+    stt?: AgentConfig.Stt;
+
+    tts?: AgentConfig.Tts;
+
+    voice?: string;
   }
 
   export namespace AgentConfig {
@@ -3273,6 +3394,26 @@ export namespace ConfigApplyParams {
       type?: 'PHONE' | 'WEBSOCKET';
 
       value?: string;
+    }
+
+    export interface Llm {
+      model: string;
+
+      provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+    }
+
+    export interface Stt {
+      model: string;
+
+      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+    }
+
+    export interface Tts {
+      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+      voiceId: string;
+
+      model?: string;
     }
   }
 
@@ -4761,7 +4902,34 @@ export namespace ConfigApplyParams {
 
       endpoints?: Array<AgentConfig.Endpoint>;
 
+      greeting?: string;
+
+      jobDescription?: string;
+
+      llm?: AgentConfig.Llm;
+
       prompt?: string | null;
+
+      provider?:
+        | 'roark'
+        | 'vapi'
+        | 'retell'
+        | 'elevenlabs'
+        | 'livekit'
+        | 'livekit-self-hosted'
+        | 'leaping'
+        | 'bland'
+        | 'api'
+        | 'kore'
+        | 'google-ces'
+        | 'pipecat-cloud'
+        | 'pipecat-self-hosted';
+
+      stt?: AgentConfig.Stt;
+
+      tts?: AgentConfig.Tts;
+
+      voice?: string;
     }
 
     export namespace AgentConfig {
@@ -4777,6 +4945,26 @@ export namespace ConfigApplyParams {
         type?: 'PHONE' | 'WEBSOCKET';
 
         value?: string;
+      }
+
+      export interface Llm {
+        model: string;
+
+        provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+      }
+
+      export interface Stt {
+        model: string;
+
+        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+      }
+
+      export interface Tts {
+        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+        voiceId: string;
+
+        model?: string;
       }
     }
 
@@ -6247,7 +6435,34 @@ export namespace ConfigDiffParams {
 
     endpoints?: Array<AgentConfig.Endpoint>;
 
+    greeting?: string;
+
+    jobDescription?: string;
+
+    llm?: AgentConfig.Llm;
+
     prompt?: string | null;
+
+    provider?:
+      | 'roark'
+      | 'vapi'
+      | 'retell'
+      | 'elevenlabs'
+      | 'livekit'
+      | 'livekit-self-hosted'
+      | 'leaping'
+      | 'bland'
+      | 'api'
+      | 'kore'
+      | 'google-ces'
+      | 'pipecat-cloud'
+      | 'pipecat-self-hosted';
+
+    stt?: AgentConfig.Stt;
+
+    tts?: AgentConfig.Tts;
+
+    voice?: string;
   }
 
   export namespace AgentConfig {
@@ -6263,6 +6478,26 @@ export namespace ConfigDiffParams {
       type?: 'PHONE' | 'WEBSOCKET';
 
       value?: string;
+    }
+
+    export interface Llm {
+      model: string;
+
+      provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+    }
+
+    export interface Stt {
+      model: string;
+
+      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+    }
+
+    export interface Tts {
+      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+      voiceId: string;
+
+      model?: string;
     }
   }
 
@@ -7751,7 +7986,34 @@ export namespace ConfigDiffParams {
 
       endpoints?: Array<AgentConfig.Endpoint>;
 
+      greeting?: string;
+
+      jobDescription?: string;
+
+      llm?: AgentConfig.Llm;
+
       prompt?: string | null;
+
+      provider?:
+        | 'roark'
+        | 'vapi'
+        | 'retell'
+        | 'elevenlabs'
+        | 'livekit'
+        | 'livekit-self-hosted'
+        | 'leaping'
+        | 'bland'
+        | 'api'
+        | 'kore'
+        | 'google-ces'
+        | 'pipecat-cloud'
+        | 'pipecat-self-hosted';
+
+      stt?: AgentConfig.Stt;
+
+      tts?: AgentConfig.Tts;
+
+      voice?: string;
     }
 
     export namespace AgentConfig {
@@ -7767,6 +8029,26 @@ export namespace ConfigDiffParams {
         type?: 'PHONE' | 'WEBSOCKET';
 
         value?: string;
+      }
+
+      export interface Llm {
+        model: string;
+
+        provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+      }
+
+      export interface Stt {
+        model: string;
+
+        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+      }
+
+      export interface Tts {
+        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+
+        voiceId: string;
+
+        model?: string;
       }
     }
 
