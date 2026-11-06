@@ -30,12 +30,12 @@ describe('resource config', () => {
           displayName: 'displayName',
           endpoints: [
             {
-              value: 'x',
               direction: 'INCOMING',
               environment: 'environment',
               outboundDialHttpRequestDefinition: 'x',
               outboundDialType: 'NONE',
               type: 'PHONE',
+              value: 'x',
             },
           ],
           prompt: 'prompt',
@@ -67,12 +67,12 @@ describe('resource config', () => {
           displayName: 'displayName',
           endpoints: [
             {
-              value: 'x',
               direction: 'INCOMING',
               environment: 'environment',
               outboundDialHttpRequestDefinition: 'x',
               outboundDialType: 'NONE',
               type: 'PHONE',
+              value: 'x',
             },
           ],
           prompt: 'prompt',
