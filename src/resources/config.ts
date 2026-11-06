@@ -85,8 +85,6 @@ export namespace Bundle {
 
   export namespace AgentConfig {
     export interface Endpoint {
-      value: string;
-
       direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
       environment?: string;
@@ -96,6 +94,8 @@ export namespace Bundle {
       outboundDialType?: 'NONE' | 'HTTP_REQUEST';
 
       type?: 'PHONE' | 'WEBSOCKET';
+
+      value?: string;
     }
   }
 
@@ -577,6 +577,8 @@ export namespace Bundle {
 
       direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
+      environment?: string;
+
       value?: string;
     }
 
@@ -760,6 +762,8 @@ export namespace Bundle {
       agent: string;
 
       direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+      environment?: string;
 
       value?: string;
     }
@@ -1581,8 +1585,6 @@ export namespace Bundle {
 
     export namespace AgentConfig {
       export interface Endpoint {
-        value: string;
-
         direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
         environment?: string;
@@ -1592,6 +1594,8 @@ export namespace Bundle {
         outboundDialType?: 'NONE' | 'HTTP_REQUEST';
 
         type?: 'PHONE' | 'WEBSOCKET';
+
+        value?: string;
       }
     }
 
@@ -2073,6 +2077,8 @@ export namespace Bundle {
 
         direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
+        environment?: string;
+
         value?: string;
       }
 
@@ -2256,6 +2262,8 @@ export namespace Bundle {
         agent: string;
 
         direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        environment?: string;
 
         value?: string;
       }
@@ -3246,8 +3254,6 @@ export namespace ConfigApplyParams {
 
   export namespace AgentConfig {
     export interface Endpoint {
-      value: string;
-
       direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
       environment?: string;
@@ -3257,6 +3263,8 @@ export namespace ConfigApplyParams {
       outboundDialType?: 'NONE' | 'HTTP_REQUEST';
 
       type?: 'PHONE' | 'WEBSOCKET';
+
+      value?: string;
     }
   }
 
@@ -3738,6 +3746,8 @@ export namespace ConfigApplyParams {
 
       direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
+      environment?: string;
+
       value?: string;
     }
 
@@ -3921,6 +3931,8 @@ export namespace ConfigApplyParams {
       agent: string;
 
       direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+      environment?: string;
 
       value?: string;
     }
@@ -4742,8 +4754,6 @@ export namespace ConfigApplyParams {
 
     export namespace AgentConfig {
       export interface Endpoint {
-        value: string;
-
         direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
         environment?: string;
@@ -4753,6 +4763,8 @@ export namespace ConfigApplyParams {
         outboundDialType?: 'NONE' | 'HTTP_REQUEST';
 
         type?: 'PHONE' | 'WEBSOCKET';
+
+        value?: string;
       }
     }
 
@@ -5234,6 +5246,8 @@ export namespace ConfigApplyParams {
 
         direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
+        environment?: string;
+
         value?: string;
       }
 
@@ -5417,6 +5431,8 @@ export namespace ConfigApplyParams {
         agent: string;
 
         direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        environment?: string;
 
         value?: string;
       }
@@ -6220,8 +6236,6 @@ export namespace ConfigDiffParams {
 
   export namespace AgentConfig {
     export interface Endpoint {
-      value: string;
-
       direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
       environment?: string;
@@ -6231,6 +6245,8 @@ export namespace ConfigDiffParams {
       outboundDialType?: 'NONE' | 'HTTP_REQUEST';
 
       type?: 'PHONE' | 'WEBSOCKET';
+
+      value?: string;
     }
   }
 
@@ -6712,6 +6728,8 @@ export namespace ConfigDiffParams {
 
       direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
+      environment?: string;
+
       value?: string;
     }
 
@@ -6895,6 +6913,8 @@ export namespace ConfigDiffParams {
       agent: string;
 
       direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+      environment?: string;
 
       value?: string;
     }
@@ -7716,8 +7736,6 @@ export namespace ConfigDiffParams {
 
     export namespace AgentConfig {
       export interface Endpoint {
-        value: string;
-
         direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
         environment?: string;
@@ -7727,6 +7745,8 @@ export namespace ConfigDiffParams {
         outboundDialType?: 'NONE' | 'HTTP_REQUEST';
 
         type?: 'PHONE' | 'WEBSOCKET';
+
+        value?: string;
       }
     }
 
@@ -8208,6 +8228,8 @@ export namespace ConfigDiffParams {
 
         direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
 
+        environment?: string;
+
         value?: string;
       }
 
@@ -8391,6 +8413,8 @@ export namespace ConfigDiffParams {
         agent: string;
 
         direction?: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
+
+        environment?: string;
 
         value?: string;
       }
