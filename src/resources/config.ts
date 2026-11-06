@@ -279,6 +279,8 @@ export namespace Bundle {
 
       expectations?: Array<string>;
 
+      openingLine?: string;
+
       prompt?: string;
 
       title?: string;
@@ -292,6 +294,8 @@ export namespace Bundle {
       expectations?: Array<string>;
 
       includeFlowExpectations?: boolean;
+
+      openingLine?: string;
 
       persona?: string;
 
@@ -1779,6 +1783,8 @@ export namespace Bundle {
 
         expectations?: Array<string>;
 
+        openingLine?: string;
+
         prompt?: string;
 
         title?: string;
@@ -1792,6 +1798,8 @@ export namespace Bundle {
         expectations?: Array<string>;
 
         includeFlowExpectations?: boolean;
+
+        openingLine?: string;
 
         persona?: string;
 
@@ -3448,6 +3456,8 @@ export namespace ConfigApplyParams {
 
       expectations?: Array<string>;
 
+      openingLine?: string;
+
       prompt?: string;
 
       title?: string;
@@ -3461,6 +3471,8 @@ export namespace ConfigApplyParams {
       expectations?: Array<string>;
 
       includeFlowExpectations?: boolean;
+
+      openingLine?: string;
 
       persona?: string;
 
@@ -4948,6 +4960,8 @@ export namespace ConfigApplyParams {
 
         expectations?: Array<string>;
 
+        openingLine?: string;
+
         prompt?: string;
 
         title?: string;
@@ -4961,6 +4975,8 @@ export namespace ConfigApplyParams {
         expectations?: Array<string>;
 
         includeFlowExpectations?: boolean;
+
+        openingLine?: string;
 
         persona?: string;
 
@@ -6430,6 +6446,8 @@ export namespace ConfigDiffParams {
 
       expectations?: Array<string>;
 
+      openingLine?: string;
+
       prompt?: string;
 
       title?: string;
@@ -6443,6 +6461,8 @@ export namespace ConfigDiffParams {
       expectations?: Array<string>;
 
       includeFlowExpectations?: boolean;
+
+      openingLine?: string;
 
       persona?: string;
 
@@ -7930,6 +7950,8 @@ export namespace ConfigDiffParams {
 
         expectations?: Array<string>;
 
+        openingLine?: string;
+
         prompt?: string;
 
         title?: string;
@@ -7943,6 +7965,8 @@ export namespace ConfigDiffParams {
         expectations?: Array<string>;
 
         includeFlowExpectations?: boolean;
+
+        openingLine?: string;
 
         persona?: string;
 

@@ -170,6 +170,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      */
     updatedAt: string;
 
+    openingLine?: string | null;
+
     systemKey?: string | null;
   }
 
@@ -531,6 +533,14 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    /**
+     * What the simulated customer says word for word as the call connects. Null on an
+     * edge case inherits the happy path's; null on the happy path waits for your agent
+     * to speak first. Ignored when a preceding flow runs first. Cannot use
+     * {{variables}}.
+     */
+    openingLine?: string | null;
 
     /**
      * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -1141,6 +1151,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    openingLine?: string | null;
 
     systemKey?: string | null;
   }
@@ -1517,6 +1529,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      */
     updatedAt: string;
 
+    openingLine?: string | null;
+
     systemKey?: string | null;
   }
 
@@ -1878,6 +1892,14 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    /**
+     * What the simulated customer says word for word as the call connects. Null on an
+     * edge case inherits the happy path's; null on the happy path waits for your agent
+     * to speak first. Ignored when a preceding flow runs first. Cannot use
+     * {{variables}}.
+     */
+    openingLine?: string | null;
 
     /**
      * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -2488,6 +2510,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    openingLine?: string | null;
 
     systemKey?: string | null;
   }
@@ -2864,6 +2888,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      */
     updatedAt: string;
 
+    openingLine?: string | null;
+
     systemKey?: string | null;
   }
 
@@ -3225,6 +3251,14 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    /**
+     * What the simulated customer says word for word as the call connects. Null on an
+     * edge case inherits the happy path's; null on the happy path waits for your agent
+     * to speak first. Ignored when a preceding flow runs first. Cannot use
+     * {{variables}}.
+     */
+    openingLine?: string | null;
 
     /**
      * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -3836,6 +3870,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
      */
     updatedAt: string;
 
+    openingLine?: string | null;
+
     systemKey?: string | null;
   }
 
@@ -4184,6 +4220,11 @@ export interface CustomerFlowEdgeCaseUpdateParams {
   includeFlowExpectations?: boolean;
 
   /**
+   * Body param
+   */
+  openingLine?: string | null;
+
+  /**
    * Body param: The persona this runs as. Null on an edge case inherits the happy
    * path's.
    */
@@ -4239,6 +4280,8 @@ export interface CustomerFlowEdgeCaseAddParams {
    * additionalExpectations only.
    */
   includeFlowExpectations?: boolean;
+
+  openingLine?: string | null;
 
   /**
    * The persona this runs as. Omit to inherit the happy path's.
