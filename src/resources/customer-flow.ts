@@ -791,6 +791,8 @@ export namespace CustomerFlowCreateResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -1153,6 +1155,8 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -1628,6 +1632,14 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -2244,6 +2256,14 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -2943,6 +2963,8 @@ export namespace CustomerFlowCreateResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -3298,6 +3320,8 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -3804,6 +3828,8 @@ export namespace CustomerFlowUpdateResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -4166,6 +4192,8 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -4641,6 +4669,14 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -5257,6 +5293,14 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -5956,6 +6000,8 @@ export namespace CustomerFlowUpdateResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -6311,6 +6357,8 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -6820,6 +6868,8 @@ export namespace CustomerFlowListResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -7182,6 +7232,8 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -7657,6 +7709,14 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -8273,6 +8333,14 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -8972,6 +9040,8 @@ export namespace CustomerFlowListResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -9327,6 +9397,8 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -9863,6 +9935,8 @@ export namespace CustomerFlowDuplicateResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -10225,6 +10299,8 @@ export namespace CustomerFlowDuplicateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -10700,6 +10776,14 @@ export namespace CustomerFlowDuplicateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -11316,6 +11400,14 @@ export namespace CustomerFlowDuplicateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -12015,6 +12107,8 @@ export namespace CustomerFlowDuplicateResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -12370,6 +12464,8 @@ export namespace CustomerFlowDuplicateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -12876,6 +12972,8 @@ export namespace CustomerFlowGetByIDResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -13238,6 +13336,8 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -13713,6 +13813,14 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -14329,6 +14437,14 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -15028,6 +15144,8 @@ export namespace CustomerFlowGetByIDResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -15383,6 +15501,8 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      openingLine?: string | null;
 
       systemKey?: string | null;
     }
@@ -15777,6 +15897,8 @@ export namespace CustomerFlowReplaceGraphResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -16138,6 +16260,14 @@ export namespace CustomerFlowReplaceGraphResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * What the simulated customer says word for word as the call connects. Null on an
+       * edge case inherits the happy path's; null on the happy path waits for your agent
+       * to speak first. Ignored when a preceding flow runs first. Cannot use
+       * {{variables}}.
+       */
+      openingLine?: string | null;
 
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -16749,6 +16879,8 @@ export namespace CustomerFlowReplaceGraphResponse {
        */
       updatedAt: string;
 
+      openingLine?: string | null;
+
       systemKey?: string | null;
     }
 
@@ -17125,6 +17257,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
      */
     updatedAt: string;
 
+    openingLine?: string | null;
+
     systemKey?: string | null;
   }
 
@@ -17486,6 +17620,14 @@ export namespace CustomerFlowUpdateHappyPathResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    /**
+     * What the simulated customer says word for word as the call connects. Null on an
+     * edge case inherits the happy path's; null on the happy path waits for your agent
+     * to speak first. Ignored when a preceding flow runs first. Cannot use
+     * {{variables}}.
+     */
+    openingLine?: string | null;
 
     /**
      * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
@@ -18097,6 +18239,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
      */
     updatedAt: string;
 
+    openingLine?: string | null;
+
     systemKey?: string | null;
   }
 
@@ -18553,6 +18697,8 @@ export declare namespace CustomerFlowCreateParams {
        */
       additionalExpectations?: Array<HappyPath.AdditionalExpectation>;
 
+      openingLine?: string | null;
+
       precededByCustomerFlowId?: string | null;
 
       precededByCustomerFlowVariantId?: string | null;
@@ -18596,6 +18742,8 @@ export declare namespace CustomerFlowCreateParams {
        * additionalExpectations only.
        */
       includeFlowExpectations?: boolean;
+
+      openingLine?: string | null;
 
       /**
        * The persona this runs as. Omit to inherit the happy path's.
@@ -18763,6 +18911,8 @@ export interface CustomerFlowUpdateHappyPathParams {
    * additionalExpectations only.
    */
   includeFlowExpectations?: boolean;
+
+  openingLine?: string | null;
 
   /**
    * The persona this runs as. Null on an edge case inherits the happy path's.
