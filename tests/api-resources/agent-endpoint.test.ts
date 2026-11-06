@@ -12,7 +12,6 @@ describe('resource agentEndpoint', () => {
     const responsePromise = client.agentEndpoint.create({
       agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       direction: 'INCOMING',
-      value: 'value',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -27,10 +26,10 @@ describe('resource agentEndpoint', () => {
     const response = await client.agentEndpoint.create({
       agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       direction: 'INCOMING',
-      value: 'value',
       environment: 'environment',
       outboundDialHttpRequestDefinitionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       outboundDialType: 'NONE',
+      value: 'value',
     });
   });
 

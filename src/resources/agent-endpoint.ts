@@ -14,7 +14,6 @@ export class AgentEndpoint extends APIResource {
    * const agentEndpoint = await client.agentEndpoint.create({
    *   agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    *   direction: 'INCOMING',
-   *   value: 'value',
    * });
    * ```
    */
@@ -135,9 +134,10 @@ export namespace AgentEndpointCreateResponse {
     updatedAt: string;
 
     /**
-     * Agent endpoint value (phone number, URL, etc.)
+     * Agent endpoint value (phone number, URL, etc.). Null for an outbound phone
+     * endpoint with no fixed calling number.
      */
-    value: string;
+    value: string | null;
   }
 }
 
@@ -207,9 +207,10 @@ export namespace AgentEndpointUpdateResponse {
     updatedAt: string;
 
     /**
-     * Agent endpoint value (phone number, URL, etc.)
+     * Agent endpoint value (phone number, URL, etc.). Null for an outbound phone
+     * endpoint with no fixed calling number.
      */
-    value: string;
+    value: string | null;
   }
 }
 
@@ -278,9 +279,10 @@ export namespace AgentEndpointListResponse {
     updatedAt: string;
 
     /**
-     * Agent endpoint value (phone number, URL, etc.)
+     * Agent endpoint value (phone number, URL, etc.). Null for an outbound phone
+     * endpoint with no fixed calling number.
      */
-    value: string;
+    value: string | null;
   }
 
   export interface Pagination {
@@ -367,9 +369,10 @@ export namespace AgentEndpointGetByIDResponse {
     updatedAt: string;
 
     /**
-     * Agent endpoint value (phone number, URL, etc.)
+     * Agent endpoint value (phone number, URL, etc.). Null for an outbound phone
+     * endpoint with no fixed calling number.
      */
-    value: string;
+    value: string | null;
   }
 }
 
@@ -383,11 +386,6 @@ export interface AgentEndpointCreateParams {
    * Call direction: INCOMING, OUTGOING, or INCOMING_AND_OUTGOING
    */
   direction: 'INCOMING' | 'OUTGOING' | 'INCOMING_AND_OUTGOING';
-
-  /**
-   * Phone number in E.164 format (e.g., +12345678900)
-   */
-  value: string;
 
   /**
    * Environment name (default: production)
@@ -404,6 +402,12 @@ export interface AgentEndpointCreateParams {
    * Outbound dial type: NONE or HTTP_REQUEST (default: NONE)
    */
   outboundDialType?: 'NONE' | 'HTTP_REQUEST';
+
+  /**
+   * Phone number in E.164 format (e.g., +12345678900). Optional when direction is
+   * OUTGOING, for an agent that calls from numbers you do not know up front.
+   */
+  value?: string | null;
 }
 
 export interface AgentEndpointUpdateParams {
