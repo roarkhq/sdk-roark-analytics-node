@@ -90,6 +90,7 @@ export namespace Bundle {
 
     provider?:
       | 'roark'
+      | 'custom'
       | 'vapi'
       | 'retell'
       | 'elevenlabs'
@@ -1641,6 +1642,7 @@ export namespace Bundle {
 
       provider?:
         | 'roark'
+        | 'custom'
         | 'vapi'
         | 'retell'
         | 'elevenlabs'
@@ -3361,6 +3363,7 @@ export namespace ConfigApplyParams {
 
     provider?:
       | 'roark'
+      | 'custom'
       | 'vapi'
       | 'retell'
       | 'elevenlabs'
@@ -4912,6 +4915,7 @@ export namespace ConfigApplyParams {
 
       provider?:
         | 'roark'
+        | 'custom'
         | 'vapi'
         | 'retell'
         | 'elevenlabs'
@@ -6445,6 +6449,7 @@ export namespace ConfigDiffParams {
 
     provider?:
       | 'roark'
+      | 'custom'
       | 'vapi'
       | 'retell'
       | 'elevenlabs'
@@ -7996,6 +8001,7 @@ export namespace ConfigDiffParams {
 
       provider?:
         | 'roark'
+        | 'custom'
         | 'vapi'
         | 'retell'
         | 'elevenlabs'
