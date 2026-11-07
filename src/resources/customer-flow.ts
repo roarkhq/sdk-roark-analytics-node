@@ -212,6 +212,12 @@ export class CustomerFlow extends APIResource {
  * music. It plays in a STRICT voice flow only: anywhere else it is a pause of the
  * same length. It sits between turns like a silence.
  *
+ * When an improv flow opens with a STRICT scripted flow, every path through the
+ * script hands over to the improv. Set `endsCall: true` on the last step of a path
+ * to end the call there instead, as an IVR does after saying goodbye. Sharing the
+ * script between improvs shares this too. A step with steps after it, or a
+ * `SCENARIO_LINK`, is rejected.
+ *
  * In a STRICT flow an `AGENT_TURN` may carry its own `offScriptPolicy`, which
  * replaces the flow-level one at that step. Omit it (or send null) to follow the
  * flow's policy. Use it where one missed step makes the rest of the call
@@ -272,6 +278,8 @@ export namespace FlowStep {
 
     content?: string | null;
 
+    endsCall?: boolean;
+
     mergeIntoNodeIds?: Array<string>;
 
     nodeId?: string;
@@ -312,6 +320,8 @@ export namespace FlowStep {
 
     content?: string | null;
 
+    endsCall?: boolean;
+
     mergeIntoNodeIds?: Array<string>;
 
     nodeId?: string;
@@ -337,6 +347,8 @@ export namespace FlowStep {
     type: 'CUSTOMER_FIRST_MESSAGE';
 
     content?: string | null;
+
+    endsCall?: boolean;
 
     mergeIntoNodeIds?: Array<string>;
 
@@ -364,6 +376,8 @@ export namespace FlowStep {
 
     content?: string | null;
 
+    endsCall?: boolean;
+
     mergeIntoNodeIds?: Array<string>;
 
     nodeId?: string;
@@ -387,6 +401,8 @@ export namespace FlowStep {
 
   export interface UnionMember4 {
     type: 'CUSTOMER_SILENCE';
+
+    endsCall?: boolean;
 
     mergeIntoNodeIds?: Array<string>;
 
@@ -426,6 +442,8 @@ export namespace FlowStep {
       | 'RINGBACK_UK'
       | null;
 
+    endsCall?: boolean;
+
     mergeIntoNodeIds?: Array<string>;
 
     nodeId?: string;
@@ -454,6 +472,8 @@ export namespace FlowStep {
 
     dtmfDigits?: string | null;
 
+    endsCall?: boolean;
+
     mergeIntoNodeIds?: Array<string>;
 
     nodeId?: string;
@@ -479,6 +499,8 @@ export namespace FlowStep {
     type: 'AGENT_DTMF';
 
     dtmfDigits?: string | null;
+
+    endsCall?: boolean;
 
     mergeIntoNodeIds?: Array<string>;
 
@@ -518,6 +540,8 @@ export namespace FlowStep {
   export interface UnionMember8 {
     type: 'VOICEMAIL';
 
+    endsCall?: boolean;
+
     mergeIntoNodeIds?: Array<string>;
 
     nodeId?: string;
@@ -541,6 +565,8 @@ export namespace FlowStep {
 
   export interface UnionMember9 {
     type: 'CUSTOMER_HANDOFF';
+
+    endsCall?: boolean;
 
     handoffPersonaId?: string | null;
 
@@ -567,6 +593,8 @@ export namespace FlowStep {
 
   export interface UnionMember10 {
     type: 'SCENARIO_LINK';
+
+    endsCall?: boolean;
 
     linkedCustomerFlowId?: string | null;
 

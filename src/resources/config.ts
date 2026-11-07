@@ -3157,6 +3157,8 @@ export interface ConfigFlowStep {
 
   dtmfDigits?: string;
 
+  endsCall?: boolean;
+
   flow?: string;
 
   handoffPersona?: string;

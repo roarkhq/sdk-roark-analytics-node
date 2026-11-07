@@ -29,6 +29,7 @@ describe('resource customerFlow', () => {
         {
           type: 'AGENT_TURN',
           content: 'content',
+          endsCall: true,
           mergeIntoNodeIds: ['x'],
           nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           offScriptPolicy: {
@@ -44,6 +45,7 @@ describe('resource customerFlow', () => {
             {
               type: 'AGENT_TURN',
               content: 'content',
+              endsCall: true,
               mergeIntoNodeIds: ['x'],
               nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
               offScriptPolicy: {
@@ -59,6 +61,7 @@ describe('resource customerFlow', () => {
                 {
                   type: 'AGENT_TURN',
                   content: 'content',
+                  endsCall: true,
                   mergeIntoNodeIds: ['x'],
                   nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
                   offScriptPolicy: {
@@ -74,6 +77,7 @@ describe('resource customerFlow', () => {
                     {
                       type: 'AGENT_TURN',
                       content: 'content',
+                      endsCall: true,
                       mergeIntoNodeIds: [],
                       nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
                       offScriptPolicy: { maxAttempts: 1, reaction: 'STAY_SILENT', then: 'HANG_UP' },
@@ -236,6 +240,7 @@ describe('resource customerFlow', () => {
         {
           type: 'AGENT_TURN',
           content: 'content',
+          endsCall: true,
           mergeIntoNodeIds: ['x'],
           nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           offScriptPolicy: {
@@ -251,6 +256,7 @@ describe('resource customerFlow', () => {
             {
               type: 'AGENT_TURN',
               content: 'content',
+              endsCall: true,
               mergeIntoNodeIds: ['x'],
               nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
               offScriptPolicy: {
@@ -266,6 +272,7 @@ describe('resource customerFlow', () => {
                 {
                   type: 'AGENT_TURN',
                   content: 'content',
+                  endsCall: true,
                   mergeIntoNodeIds: ['x'],
                   nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
                   offScriptPolicy: {
@@ -281,6 +288,7 @@ describe('resource customerFlow', () => {
                     {
                       type: 'AGENT_TURN',
                       content: 'content',
+                      endsCall: true,
                       mergeIntoNodeIds: [],
                       nodeId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
                       offScriptPolicy: { maxAttempts: 1, reaction: 'STAY_SILENT', then: 'HANG_UP' },
