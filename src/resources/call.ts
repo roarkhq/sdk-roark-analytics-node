@@ -299,6 +299,8 @@ export namespace CallCreateResponse {
     }
 
     export interface Customer {
+      customerProfileId?: string | null;
+
       label?: string | null;
 
       phoneNumberE164?: string | null;
@@ -471,6 +473,8 @@ export namespace CallListResponse {
     }
 
     export interface Customer {
+      customerProfileId?: string | null;
+
       label?: string | null;
 
       phoneNumberE164?: string | null;
@@ -812,6 +816,8 @@ export namespace CallGetByIDResponse {
     }
 
     export interface Customer {
+      customerProfileId?: string | null;
+
       label?: string | null;
 
       phoneNumberE164?: string | null;
@@ -2157,6 +2163,12 @@ export namespace CallCreateParams {
      * Customer phone number in E.164 format (e.g., +14155551234)
      */
     phoneNumberE164: string | null;
+
+    /**
+     * Your own stable id for this person. Links conversations to one customer profile
+     * where there is no phone number, such as web calls.
+     */
+    externalId?: string | null;
 
     /**
      * Label to identify this customer in the transcript (e.g., "speaker-01",

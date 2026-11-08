@@ -360,6 +360,30 @@ Methods:
 - <code title="get /v1/persona">client.simulationPersona.<a href="./src/resources/simulation-persona.ts">list</a>({ ...params }) -> SimulationPersonaListResponse</code>
 - <code title="get /v1/persona/{personaId}">client.simulationPersona.<a href="./src/resources/simulation-persona.ts">getByID</a>(personaID) -> SimulationPersonaGetByIDResponse</code>
 
+# CustomerProfile
+
+Types:
+
+- <code><a href="./src/resources/customer-profile.ts">CustomerProfileListResponse</a></code>
+- <code><a href="./src/resources/customer-profile.ts">CustomerProfileDeleteResponse</a></code>
+- <code><a href="./src/resources/customer-profile.ts">CustomerProfileClearAttributeResponse</a></code>
+- <code><a href="./src/resources/customer-profile.ts">CustomerProfileGetByIDResponse</a></code>
+- <code><a href="./src/resources/customer-profile.ts">CustomerProfileListConversationsResponse</a></code>
+- <code><a href="./src/resources/customer-profile.ts">CustomerProfileSetAttributeResponse</a></code>
+- <code><a href="./src/resources/customer-profile.ts">CustomerProfileUnlockAttributeResponse</a></code>
+- <code><a href="./src/resources/customer-profile.ts">CustomerProfileUpdateNotesResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/customer-profile">client.customerProfile.<a href="./src/resources/customer-profile.ts">list</a>({ ...params }) -> CustomerProfileListResponse</code>
+- <code title="delete /v1/customer-profile/{customerProfileId}">client.customerProfile.<a href="./src/resources/customer-profile.ts">delete</a>(customerProfileID) -> CustomerProfileDeleteResponse</code>
+- <code title="delete /v1/customer-profile/{customerProfileId}/attributes/{key}">client.customerProfile.<a href="./src/resources/customer-profile.ts">clearAttribute</a>(key, { ...params }) -> CustomerProfileClearAttributeResponse</code>
+- <code title="get /v1/customer-profile/{customerProfileId}">client.customerProfile.<a href="./src/resources/customer-profile.ts">getByID</a>(customerProfileID) -> CustomerProfileGetByIDResponse</code>
+- <code title="get /v1/customer-profile/{customerProfileId}/conversations">client.customerProfile.<a href="./src/resources/customer-profile.ts">listConversations</a>(customerProfileID, { ...params }) -> CustomerProfileListConversationsResponse</code>
+- <code title="put /v1/customer-profile/{customerProfileId}/attributes/{key}">client.customerProfile.<a href="./src/resources/customer-profile.ts">setAttribute</a>(key, { ...params }) -> CustomerProfileSetAttributeResponse</code>
+- <code title="post /v1/customer-profile/{customerProfileId}/attributes/{key}/unlock">client.customerProfile.<a href="./src/resources/customer-profile.ts">unlockAttribute</a>(key, { ...params }) -> CustomerProfileUnlockAttributeResponse</code>
+- <code title="put /v1/customer-profile/{customerProfileId}/notes">client.customerProfile.<a href="./src/resources/customer-profile.ts">updateNotes</a>(customerProfileID, { ...params }) -> CustomerProfileUpdateNotesResponse</code>
+
 # SimulationEnvironment
 
 Types:
