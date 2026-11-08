@@ -260,8 +260,6 @@ export namespace CustomerProfileListResponse {
 
       notesUpdatedAt: string | null;
 
-      openItems: string | null;
-
       phoneNumberE164: string | null;
 
       summary: string | null;
@@ -424,8 +422,6 @@ export namespace CustomerProfileClearAttributeResponse {
 
     notesUpdatedAt: string | null;
 
-    openItems: string | null;
-
     phoneNumberE164: string | null;
 
     summary: string | null;
@@ -576,8 +572,6 @@ export namespace CustomerProfileGetByIDResponse {
     notes: string | null;
 
     notesUpdatedAt: string | null;
-
-    openItems: string | null;
 
     phoneNumberE164: string | null;
 
@@ -760,8 +754,6 @@ export namespace CustomerProfileSetAttributeResponse {
 
     notesUpdatedAt: string | null;
 
-    openItems: string | null;
-
     phoneNumberE164: string | null;
 
     summary: string | null;
@@ -913,8 +905,6 @@ export namespace CustomerProfileUnlockAttributeResponse {
 
     notesUpdatedAt: string | null;
 
-    openItems: string | null;
-
     phoneNumberE164: string | null;
 
     summary: string | null;
@@ -1065,8 +1055,6 @@ export namespace CustomerProfileUpdateNotesResponse {
     notes: string | null;
 
     notesUpdatedAt: string | null;
-
-    openItems: string | null;
 
     phoneNumberE164: string | null;
 
