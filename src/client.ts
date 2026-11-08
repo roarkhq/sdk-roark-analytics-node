@@ -189,6 +189,23 @@ import {
   CustomerFlowEdgeCaseUpdateResponse,
 } from './resources/customer-flow-edge-case';
 import {
+  CustomerProfile,
+  CustomerProfileClearAttributeParams,
+  CustomerProfileClearAttributeResponse,
+  CustomerProfileDeleteResponse,
+  CustomerProfileGetByIDResponse,
+  CustomerProfileListConversationsParams,
+  CustomerProfileListConversationsResponse,
+  CustomerProfileListParams,
+  CustomerProfileListResponse,
+  CustomerProfileSetAttributeParams,
+  CustomerProfileSetAttributeResponse,
+  CustomerProfileUnlockAttributeParams,
+  CustomerProfileUnlockAttributeResponse,
+  CustomerProfileUpdateNotesParams,
+  CustomerProfileUpdateNotesResponse,
+} from './resources/customer-profile';
+import {
   Dashboard,
   DashboardCreateParams,
   DashboardCreateResponse,
@@ -1187,6 +1204,7 @@ export class Roark {
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
+  customerProfile: API.CustomerProfile = new API.CustomerProfile(this);
   simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
   simulationTemplate: API.SimulationTemplate = new API.SimulationTemplate(this);
   agentConfig: API.AgentConfig = new API.AgentConfig(this);
@@ -1229,6 +1247,7 @@ Roark.SimulationRunGroup = SimulationRunGroup;
 Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationPersona = SimulationPersona;
+Roark.CustomerProfile = CustomerProfile;
 Roark.SimulationEnvironment = SimulationEnvironment;
 Roark.SimulationTemplate = SimulationTemplate;
 Roark.AgentConfig = AgentConfig;
@@ -1477,6 +1496,24 @@ export declare namespace Roark {
     type SimulationPersonaCreateParams as SimulationPersonaCreateParams,
     type SimulationPersonaUpdateParams as SimulationPersonaUpdateParams,
     type SimulationPersonaListParams as SimulationPersonaListParams,
+  };
+
+  export {
+    CustomerProfile as CustomerProfile,
+    type CustomerProfileListResponse as CustomerProfileListResponse,
+    type CustomerProfileDeleteResponse as CustomerProfileDeleteResponse,
+    type CustomerProfileClearAttributeResponse as CustomerProfileClearAttributeResponse,
+    type CustomerProfileGetByIDResponse as CustomerProfileGetByIDResponse,
+    type CustomerProfileListConversationsResponse as CustomerProfileListConversationsResponse,
+    type CustomerProfileSetAttributeResponse as CustomerProfileSetAttributeResponse,
+    type CustomerProfileUnlockAttributeResponse as CustomerProfileUnlockAttributeResponse,
+    type CustomerProfileUpdateNotesResponse as CustomerProfileUpdateNotesResponse,
+    type CustomerProfileListParams as CustomerProfileListParams,
+    type CustomerProfileClearAttributeParams as CustomerProfileClearAttributeParams,
+    type CustomerProfileListConversationsParams as CustomerProfileListConversationsParams,
+    type CustomerProfileSetAttributeParams as CustomerProfileSetAttributeParams,
+    type CustomerProfileUnlockAttributeParams as CustomerProfileUnlockAttributeParams,
+    type CustomerProfileUpdateNotesParams as CustomerProfileUpdateNotesParams,
   };
 
   export {

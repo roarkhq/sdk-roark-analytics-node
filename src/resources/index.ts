@@ -172,6 +172,23 @@ export {
   type CustomerFlowEdgeCaseRemoveParams,
 } from './customer-flow-edge-case';
 export {
+  CustomerProfile,
+  type CustomerProfileListResponse,
+  type CustomerProfileDeleteResponse,
+  type CustomerProfileClearAttributeResponse,
+  type CustomerProfileGetByIDResponse,
+  type CustomerProfileListConversationsResponse,
+  type CustomerProfileSetAttributeResponse,
+  type CustomerProfileUnlockAttributeResponse,
+  type CustomerProfileUpdateNotesResponse,
+  type CustomerProfileListParams,
+  type CustomerProfileClearAttributeParams,
+  type CustomerProfileListConversationsParams,
+  type CustomerProfileSetAttributeParams,
+  type CustomerProfileUnlockAttributeParams,
+  type CustomerProfileUpdateNotesParams,
+} from './customer-profile';
+export {
   Dashboard,
   type DashboardCreateResponse,
   type DashboardUpdateResponse,
