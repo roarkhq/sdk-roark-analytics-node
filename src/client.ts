@@ -42,6 +42,11 @@ import {
   ManagedAgentConfigRevision,
 } from './resources/agent-config';
 import {
+  AgentConversation,
+  AgentConversationCreateParams,
+  AgentConversationCreateResponse,
+} from './resources/agent-conversation';
+import {
   AgentDraft,
   AgentDraftCreateParams,
   AgentDraftCreateResponse,
@@ -115,21 +120,6 @@ import {
   BenchmarkListTargetScoreSamplesResponse,
 } from './resources/benchmark';
 import {
-  CalendarConnection,
-  CalendarConnectionCheckResponse,
-  CalendarConnectionCreateParams,
-  CalendarConnectionCreateResponse,
-  CalendarConnectionDeleteResponse,
-  CalendarConnectionGetByIDResponse,
-  CalendarConnectionGetTargetParams,
-  CalendarConnectionGetTargetResponse,
-  CalendarConnectionListParams,
-  CalendarConnectionListResponse,
-  CalendarConnectionListTargetsResponse,
-  CalendarConnectionUpdateParams,
-  CalendarConnectionUpdateResponse,
-} from './resources/calendar-connection';
-import {
   Call,
   CallAppendToolInvocationsParams,
   CallAppendToolInvocationsResponse,
@@ -160,6 +150,35 @@ import {
   ConfigFlowStep,
 } from './resources/config';
 import {
+  Conversation,
+  ConversationGetByIDResponse,
+  ConversationListParams,
+  ConversationListResponse,
+} from './resources/conversation';
+import {
+  Customer,
+  CustomerClearAttributeParams,
+  CustomerClearAttributeResponse,
+  CustomerCreateFieldParams,
+  CustomerCreateFieldResponse,
+  CustomerDeleteFieldResponse,
+  CustomerDeleteResponse,
+  CustomerGetByIDResponse,
+  CustomerListConversationsParams,
+  CustomerListConversationsResponse,
+  CustomerListFieldsResponse,
+  CustomerListParams,
+  CustomerListResponse,
+  CustomerSetAttributeParams,
+  CustomerSetAttributeResponse,
+  CustomerUnlockAttributeParams,
+  CustomerUnlockAttributeResponse,
+  CustomerUpdateFieldParams,
+  CustomerUpdateFieldResponse,
+  CustomerUpdateNotesParams,
+  CustomerUpdateNotesResponse,
+} from './resources/customer';
+import {
   CustomerFlow,
   CustomerFlowCreateParams,
   CustomerFlowCreateResponse,
@@ -188,23 +207,6 @@ import {
   CustomerFlowEdgeCaseUpdateParams,
   CustomerFlowEdgeCaseUpdateResponse,
 } from './resources/customer-flow-edge-case';
-import {
-  CustomerProfile,
-  CustomerProfileClearAttributeParams,
-  CustomerProfileClearAttributeResponse,
-  CustomerProfileDeleteResponse,
-  CustomerProfileGetByIDResponse,
-  CustomerProfileListConversationsParams,
-  CustomerProfileListConversationsResponse,
-  CustomerProfileListParams,
-  CustomerProfileListResponse,
-  CustomerProfileSetAttributeParams,
-  CustomerProfileSetAttributeResponse,
-  CustomerProfileUnlockAttributeParams,
-  CustomerProfileUnlockAttributeResponse,
-  CustomerProfileUpdateNotesParams,
-  CustomerProfileUpdateNotesResponse,
-} from './resources/customer-profile';
 import {
   Dashboard,
   DashboardCreateParams,
@@ -1186,6 +1188,7 @@ export class Roark {
   me: API.Me = new API.Me(this);
   project: API.Project = new API.Project(this);
   usage: API.Usage = new API.Usage(this);
+  conversation: API.Conversation = new API.Conversation(this);
   call: API.Call = new API.Call(this);
   analytics: API.Analytics = new API.Analytics(this);
   dashboard: API.Dashboard = new API.Dashboard(this);
@@ -1204,7 +1207,7 @@ export class Roark {
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
-  customerProfile: API.CustomerProfile = new API.CustomerProfile(this);
+  customer: API.Customer = new API.Customer(this);
   simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
   simulationTemplate: API.SimulationTemplate = new API.SimulationTemplate(this);
   agentConfig: API.AgentConfig = new API.AgentConfig(this);
@@ -1217,9 +1220,9 @@ export class Roark {
   agentPrompt: API.AgentPrompt = new API.AgentPrompt(this);
   agentVersion: API.AgentVersion = new API.AgentVersion(this);
   agentDraft: API.AgentDraft = new API.AgentDraft(this);
+  agentConversation: API.AgentConversation = new API.AgentConversation(this);
   tool: API.Tool = new API.Tool(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
-  calendarConnection: API.CalendarConnection = new API.CalendarConnection(this);
   webhook: API.Webhook = new API.Webhook(this);
   benchmark: API.Benchmark = new API.Benchmark(this);
   config: API.Config = new API.Config(this);
@@ -1229,6 +1232,7 @@ Roark.Health = Health;
 Roark.Me = Me;
 Roark.Project = Project;
 Roark.Usage = Usage;
+Roark.Conversation = Conversation;
 Roark.Call = Call;
 Roark.Analytics = Analytics;
 Roark.Dashboard = Dashboard;
@@ -1247,7 +1251,7 @@ Roark.SimulationRunGroup = SimulationRunGroup;
 Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationPersona = SimulationPersona;
-Roark.CustomerProfile = CustomerProfile;
+Roark.Customer = Customer;
 Roark.SimulationEnvironment = SimulationEnvironment;
 Roark.SimulationTemplate = SimulationTemplate;
 Roark.AgentConfig = AgentConfig;
@@ -1260,9 +1264,9 @@ Roark.PhoneNumber = PhoneNumber;
 Roark.AgentPrompt = AgentPrompt;
 Roark.AgentVersion = AgentVersion;
 Roark.AgentDraft = AgentDraft;
+Roark.AgentConversation = AgentConversation;
 Roark.Tool = Tool;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
-Roark.CalendarConnection = CalendarConnection;
 Roark.Webhook = Webhook;
 Roark.Benchmark = Benchmark;
 Roark.Config = Config;
@@ -1285,6 +1289,13 @@ export declare namespace Roark {
   export { Project as Project, type ProjectListResponse as ProjectListResponse };
 
   export { Usage as Usage, type UsageGetResponse as UsageGetResponse, type UsageGetParams as UsageGetParams };
+
+  export {
+    Conversation as Conversation,
+    type ConversationListResponse as ConversationListResponse,
+    type ConversationGetByIDResponse as ConversationGetByIDResponse,
+    type ConversationListParams as ConversationListParams,
+  };
 
   export {
     Call as Call,
@@ -1499,21 +1510,27 @@ export declare namespace Roark {
   };
 
   export {
-    CustomerProfile as CustomerProfile,
-    type CustomerProfileListResponse as CustomerProfileListResponse,
-    type CustomerProfileDeleteResponse as CustomerProfileDeleteResponse,
-    type CustomerProfileClearAttributeResponse as CustomerProfileClearAttributeResponse,
-    type CustomerProfileGetByIDResponse as CustomerProfileGetByIDResponse,
-    type CustomerProfileListConversationsResponse as CustomerProfileListConversationsResponse,
-    type CustomerProfileSetAttributeResponse as CustomerProfileSetAttributeResponse,
-    type CustomerProfileUnlockAttributeResponse as CustomerProfileUnlockAttributeResponse,
-    type CustomerProfileUpdateNotesResponse as CustomerProfileUpdateNotesResponse,
-    type CustomerProfileListParams as CustomerProfileListParams,
-    type CustomerProfileClearAttributeParams as CustomerProfileClearAttributeParams,
-    type CustomerProfileListConversationsParams as CustomerProfileListConversationsParams,
-    type CustomerProfileSetAttributeParams as CustomerProfileSetAttributeParams,
-    type CustomerProfileUnlockAttributeParams as CustomerProfileUnlockAttributeParams,
-    type CustomerProfileUpdateNotesParams as CustomerProfileUpdateNotesParams,
+    Customer as Customer,
+    type CustomerListResponse as CustomerListResponse,
+    type CustomerDeleteResponse as CustomerDeleteResponse,
+    type CustomerClearAttributeResponse as CustomerClearAttributeResponse,
+    type CustomerCreateFieldResponse as CustomerCreateFieldResponse,
+    type CustomerDeleteFieldResponse as CustomerDeleteFieldResponse,
+    type CustomerGetByIDResponse as CustomerGetByIDResponse,
+    type CustomerListConversationsResponse as CustomerListConversationsResponse,
+    type CustomerListFieldsResponse as CustomerListFieldsResponse,
+    type CustomerSetAttributeResponse as CustomerSetAttributeResponse,
+    type CustomerUnlockAttributeResponse as CustomerUnlockAttributeResponse,
+    type CustomerUpdateFieldResponse as CustomerUpdateFieldResponse,
+    type CustomerUpdateNotesResponse as CustomerUpdateNotesResponse,
+    type CustomerListParams as CustomerListParams,
+    type CustomerClearAttributeParams as CustomerClearAttributeParams,
+    type CustomerCreateFieldParams as CustomerCreateFieldParams,
+    type CustomerListConversationsParams as CustomerListConversationsParams,
+    type CustomerSetAttributeParams as CustomerSetAttributeParams,
+    type CustomerUnlockAttributeParams as CustomerUnlockAttributeParams,
+    type CustomerUpdateFieldParams as CustomerUpdateFieldParams,
+    type CustomerUpdateNotesParams as CustomerUpdateNotesParams,
   };
 
   export {
@@ -1663,6 +1680,12 @@ export declare namespace Roark {
   };
 
   export {
+    AgentConversation as AgentConversation,
+    type AgentConversationCreateResponse as AgentConversationCreateResponse,
+    type AgentConversationCreateParams as AgentConversationCreateParams,
+  };
+
+  export {
     Tool as Tool,
     type ToolCreateResponse as ToolCreateResponse,
     type ToolUpdateResponse as ToolUpdateResponse,
@@ -1683,22 +1706,6 @@ export declare namespace Roark {
     type HTTPRequestDefinitionCreateParams as HTTPRequestDefinitionCreateParams,
     type HTTPRequestDefinitionUpdateParams as HTTPRequestDefinitionUpdateParams,
     type HTTPRequestDefinitionListParams as HTTPRequestDefinitionListParams,
-  };
-
-  export {
-    CalendarConnection as CalendarConnection,
-    type CalendarConnectionCreateResponse as CalendarConnectionCreateResponse,
-    type CalendarConnectionUpdateResponse as CalendarConnectionUpdateResponse,
-    type CalendarConnectionListResponse as CalendarConnectionListResponse,
-    type CalendarConnectionDeleteResponse as CalendarConnectionDeleteResponse,
-    type CalendarConnectionCheckResponse as CalendarConnectionCheckResponse,
-    type CalendarConnectionGetByIDResponse as CalendarConnectionGetByIDResponse,
-    type CalendarConnectionGetTargetResponse as CalendarConnectionGetTargetResponse,
-    type CalendarConnectionListTargetsResponse as CalendarConnectionListTargetsResponse,
-    type CalendarConnectionCreateParams as CalendarConnectionCreateParams,
-    type CalendarConnectionUpdateParams as CalendarConnectionUpdateParams,
-    type CalendarConnectionListParams as CalendarConnectionListParams,
-    type CalendarConnectionGetTargetParams as CalendarConnectionGetTargetParams,
   };
 
   export {

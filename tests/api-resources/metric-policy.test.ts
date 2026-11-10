@@ -11,7 +11,7 @@ describe('resource metricPolicy', () => {
   test('create: only required params', async () => {
     const responsePromise = client.metricPolicy.create({
       metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-      modality: 'call',
+      modality: 'voice',
       name: 'Evaluate all inbound calls',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -38,7 +38,7 @@ describe('resource metricPolicy', () => {
           },
         },
       ],
-      modality: 'call',
+      modality: 'voice',
       name: 'Evaluate all inbound calls',
       conditions: [
         {

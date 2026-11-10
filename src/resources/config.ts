@@ -86,6 +86,8 @@ export namespace Bundle {
 
     llm?: AgentConfig.Llm;
 
+    modalities?: Array<'voice' | 'chat' | 'call'>;
+
     prompt?: string | null;
 
     provider?:
@@ -400,7 +402,7 @@ export namespace Bundle {
 
     metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-    modality: 'call' | 'chat';
+    modality: 'voice' | 'chat' | 'call';
 
     name: string;
 
@@ -1638,6 +1640,8 @@ export namespace Bundle {
 
       llm?: AgentConfig.Llm;
 
+      modalities?: Array<'voice' | 'chat' | 'call'>;
+
       prompt?: string | null;
 
       provider?:
@@ -1952,7 +1956,7 @@ export namespace Bundle {
 
       metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-      modality: 'call' | 'chat';
+      modality: 'voice' | 'chat' | 'call';
 
       name: string;
 
@@ -3361,6 +3365,8 @@ export namespace ConfigApplyParams {
 
     llm?: AgentConfig.Llm;
 
+    modalities?: Array<'voice' | 'chat' | 'call'>;
+
     prompt?: string | null;
 
     provider?:
@@ -3675,7 +3681,7 @@ export namespace ConfigApplyParams {
 
     metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-    modality: 'call' | 'chat';
+    modality: 'voice' | 'chat' | 'call';
 
     name: string;
 
@@ -4913,6 +4919,8 @@ export namespace ConfigApplyParams {
 
       llm?: AgentConfig.Llm;
 
+      modalities?: Array<'voice' | 'chat' | 'call'>;
+
       prompt?: string | null;
 
       provider?:
@@ -5227,7 +5235,7 @@ export namespace ConfigApplyParams {
 
       metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-      modality: 'call' | 'chat';
+      modality: 'voice' | 'chat' | 'call';
 
       name: string;
 
@@ -6447,6 +6455,8 @@ export namespace ConfigDiffParams {
 
     llm?: AgentConfig.Llm;
 
+    modalities?: Array<'voice' | 'chat' | 'call'>;
+
     prompt?: string | null;
 
     provider?:
@@ -6761,7 +6771,7 @@ export namespace ConfigDiffParams {
 
     metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-    modality: 'call' | 'chat';
+    modality: 'voice' | 'chat' | 'call';
 
     name: string;
 
@@ -7999,6 +8009,8 @@ export namespace ConfigDiffParams {
 
       llm?: AgentConfig.Llm;
 
+      modalities?: Array<'voice' | 'chat' | 'call'>;
+
       prompt?: string | null;
 
       provider?:
@@ -8313,7 +8325,7 @@ export namespace ConfigDiffParams {
 
       metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-      modality: 'call' | 'chat';
+      modality: 'voice' | 'chat' | 'call';
 
       name: string;
 

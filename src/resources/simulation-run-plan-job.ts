@@ -1668,7 +1668,11 @@ export namespace SimulationRunPlanJobGetCostResponse {
         | 'TRANSCRIPTION'
         | 'INTERNAL_LLM'
         | 'INTERNAL_STT'
-        | 'PHONE_NUMBER';
+        | 'PHONE_NUMBER'
+        | 'HOSTED_AGENT_LLM'
+        | 'HOSTED_AGENT_TTS'
+        | 'HOSTED_AGENT_STT'
+        | 'HOSTED_AGENT_TELEPHONY';
 
       /**
        * SIMULATION or POST_CALL.
@@ -1723,7 +1727,11 @@ export namespace SimulationRunPlanJobGetCostResponse {
           | 'TRANSCRIPTION'
           | 'INTERNAL_LLM'
           | 'INTERNAL_STT'
-          | 'PHONE_NUMBER';
+          | 'PHONE_NUMBER'
+          | 'HOSTED_AGENT_LLM'
+          | 'HOSTED_AGENT_TTS'
+          | 'HOSTED_AGENT_STT'
+          | 'HOSTED_AGENT_TELEPHONY';
 
         /**
          * SIMULATION or POST_CALL.
