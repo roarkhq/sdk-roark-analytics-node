@@ -9,8 +9,10 @@ export class Tool extends APIResource {
   /**
    * Creates a tool and declares its first version. A tool only recorded from calls
    * under the same name is adopted; one already declared returns 409. Give it a
-   * `runtime` for a hosted agent to call your endpoint. Header values are returned
-   * on read, so keep secrets out of them.
+   * `runtime` for a hosted agent to call your endpoint, a `calendar` for it to book
+   * on a calendar connected to the project, or `mcp` for it to call a tool on an MCP
+   * server connected to the project. Header values are returned on read, so keep
+   * secrets out of them.
    *
    * @example
    * ```ts
@@ -25,10 +27,11 @@ export class Tool extends APIResource {
   }
 
   /**
-   * Replaces the tool: its name, scope, inputs, description, grading hints and
-   * runtime. A field left out is cleared, so omitting agentId makes the tool
-   * project-wide. A change declares a new version; agent versions pinned to an older
-   * one keep it.
+   * Replaces the tool: its name, scope, inputs, description, grading hints, runtime,
+   * calendar and MCP tool. A field left out is cleared, so omitting agentId makes
+   * the tool project-wide and omitting calendar or mcp makes it an ordinary tool. A
+   * change declares a new version; agent versions pinned to an older one keep it. A
+   * tool managed by config-as-code returns 409.
    *
    * @example
    * ```ts
@@ -101,6 +104,11 @@ export namespace ToolCreateResponse {
      */
     agentId: string | null;
 
+    /**
+     * What a calendar tool books into. Roark runs it; it has no runtime.
+     */
+    calendar: Data.Calendar | null;
+
     createdAt: string;
 
     description: string | null;
@@ -116,6 +124,12 @@ export namespace ToolCreateResponse {
      * When the agent should call it, for grading
      */
     invocationCriteria: string | null;
+
+    /**
+     * A tool on one of the project's MCP servers. The server runs it and defines its
+     * arguments.
+     */
+    mcp: Data.Mcp | null;
 
     name: string;
 
@@ -143,6 +157,74 @@ export namespace ToolCreateResponse {
   }
 
   export namespace Data {
+    /**
+     * What a calendar tool books into. Roark runs it; it has no runtime.
+     */
+    export interface Calendar {
+      /**
+       * The kinds of appointment the tool may reach
+       */
+      appointmentTypes: Array<Calendar.AppointmentType>;
+
+      /**
+       * The connected calendar the tool books on
+       */
+      calendarConnectionId: string;
+
+      messages: Calendar.Messages;
+
+      /**
+       * The one action this tool takes on the calendar
+       */
+      operation: 'CHECK_AVAILABILITY' | 'BOOK' | 'LOOKUP_BOOKING' | 'RESCHEDULE' | 'CANCEL' | 'LIST_BOOKINGS';
+
+      /**
+       * Every call books on a simulated calendar instead of the customer's
+       */
+      simulate: boolean;
+    }
+
+    export namespace Calendar {
+      export interface AppointmentType {
+        /**
+         * Only for an event type offering several durations
+         */
+        durationMinutes: number | null;
+
+        /**
+         * For Cal.com: the event type it books
+         */
+        eventTypeId: number | null;
+
+        /**
+         * What the agent passes to name it
+         */
+        name: string;
+
+        /**
+         * The line that tells the agent when it applies
+         */
+        whenToUse: string | null;
+      }
+
+      export interface Messages {
+        /**
+         * Said as the request goes out
+         */
+        before: string | null;
+
+        /**
+         * Given to the agent to say when the request fails
+         */
+        failure: string | null;
+
+        /**
+         * Said once if the request is slow
+         */
+        slow: string | null;
+      }
+    }
+
     export interface Input {
       /**
        * What the input is, so the agent fills it in right
@@ -163,6 +245,43 @@ export namespace ToolCreateResponse {
        * string, number or boolean
        */
       type: 'string' | 'number' | 'boolean';
+    }
+
+    /**
+     * A tool on one of the project's MCP servers. The server runs it and defines its
+     * arguments.
+     */
+    export interface Mcp {
+      /**
+       * The MCP server the tool calls
+       */
+      mcpServerId: string;
+
+      messages: Mcp.Messages;
+
+      /**
+       * The tool as the server names it
+       */
+      tool: string;
+    }
+
+    export namespace Mcp {
+      export interface Messages {
+        /**
+         * Said as the request goes out
+         */
+        before: string | null;
+
+        /**
+         * Given to the agent to say when the request fails
+         */
+        failure: string | null;
+
+        /**
+         * Said once if the request is slow
+         */
+        slow: string | null;
+      }
     }
 
     /**
@@ -252,6 +371,11 @@ export namespace ToolUpdateResponse {
      */
     agentId: string | null;
 
+    /**
+     * What a calendar tool books into. Roark runs it; it has no runtime.
+     */
+    calendar: Data.Calendar | null;
+
     createdAt: string;
 
     description: string | null;
@@ -267,6 +391,12 @@ export namespace ToolUpdateResponse {
      * When the agent should call it, for grading
      */
     invocationCriteria: string | null;
+
+    /**
+     * A tool on one of the project's MCP servers. The server runs it and defines its
+     * arguments.
+     */
+    mcp: Data.Mcp | null;
 
     name: string;
 
@@ -294,6 +424,74 @@ export namespace ToolUpdateResponse {
   }
 
   export namespace Data {
+    /**
+     * What a calendar tool books into. Roark runs it; it has no runtime.
+     */
+    export interface Calendar {
+      /**
+       * The kinds of appointment the tool may reach
+       */
+      appointmentTypes: Array<Calendar.AppointmentType>;
+
+      /**
+       * The connected calendar the tool books on
+       */
+      calendarConnectionId: string;
+
+      messages: Calendar.Messages;
+
+      /**
+       * The one action this tool takes on the calendar
+       */
+      operation: 'CHECK_AVAILABILITY' | 'BOOK' | 'LOOKUP_BOOKING' | 'RESCHEDULE' | 'CANCEL' | 'LIST_BOOKINGS';
+
+      /**
+       * Every call books on a simulated calendar instead of the customer's
+       */
+      simulate: boolean;
+    }
+
+    export namespace Calendar {
+      export interface AppointmentType {
+        /**
+         * Only for an event type offering several durations
+         */
+        durationMinutes: number | null;
+
+        /**
+         * For Cal.com: the event type it books
+         */
+        eventTypeId: number | null;
+
+        /**
+         * What the agent passes to name it
+         */
+        name: string;
+
+        /**
+         * The line that tells the agent when it applies
+         */
+        whenToUse: string | null;
+      }
+
+      export interface Messages {
+        /**
+         * Said as the request goes out
+         */
+        before: string | null;
+
+        /**
+         * Given to the agent to say when the request fails
+         */
+        failure: string | null;
+
+        /**
+         * Said once if the request is slow
+         */
+        slow: string | null;
+      }
+    }
+
     export interface Input {
       /**
        * What the input is, so the agent fills it in right
@@ -314,6 +512,43 @@ export namespace ToolUpdateResponse {
        * string, number or boolean
        */
       type: 'string' | 'number' | 'boolean';
+    }
+
+    /**
+     * A tool on one of the project's MCP servers. The server runs it and defines its
+     * arguments.
+     */
+    export interface Mcp {
+      /**
+       * The MCP server the tool calls
+       */
+      mcpServerId: string;
+
+      messages: Mcp.Messages;
+
+      /**
+       * The tool as the server names it
+       */
+      tool: string;
+    }
+
+    export namespace Mcp {
+      export interface Messages {
+        /**
+         * Said as the request goes out
+         */
+        before: string | null;
+
+        /**
+         * Given to the agent to say when the request fails
+         */
+        failure: string | null;
+
+        /**
+         * Said once if the request is slow
+         */
+        slow: string | null;
+      }
     }
 
     /**
@@ -403,6 +638,11 @@ export namespace ToolListResponse {
      */
     agentId: string | null;
 
+    /**
+     * What a calendar tool books into. Roark runs it; it has no runtime.
+     */
+    calendar: Data.Calendar | null;
+
     createdAt: string;
 
     description: string | null;
@@ -418,6 +658,12 @@ export namespace ToolListResponse {
      * When the agent should call it, for grading
      */
     invocationCriteria: string | null;
+
+    /**
+     * A tool on one of the project's MCP servers. The server runs it and defines its
+     * arguments.
+     */
+    mcp: Data.Mcp | null;
 
     name: string;
 
@@ -445,6 +691,74 @@ export namespace ToolListResponse {
   }
 
   export namespace Data {
+    /**
+     * What a calendar tool books into. Roark runs it; it has no runtime.
+     */
+    export interface Calendar {
+      /**
+       * The kinds of appointment the tool may reach
+       */
+      appointmentTypes: Array<Calendar.AppointmentType>;
+
+      /**
+       * The connected calendar the tool books on
+       */
+      calendarConnectionId: string;
+
+      messages: Calendar.Messages;
+
+      /**
+       * The one action this tool takes on the calendar
+       */
+      operation: 'CHECK_AVAILABILITY' | 'BOOK' | 'LOOKUP_BOOKING' | 'RESCHEDULE' | 'CANCEL' | 'LIST_BOOKINGS';
+
+      /**
+       * Every call books on a simulated calendar instead of the customer's
+       */
+      simulate: boolean;
+    }
+
+    export namespace Calendar {
+      export interface AppointmentType {
+        /**
+         * Only for an event type offering several durations
+         */
+        durationMinutes: number | null;
+
+        /**
+         * For Cal.com: the event type it books
+         */
+        eventTypeId: number | null;
+
+        /**
+         * What the agent passes to name it
+         */
+        name: string;
+
+        /**
+         * The line that tells the agent when it applies
+         */
+        whenToUse: string | null;
+      }
+
+      export interface Messages {
+        /**
+         * Said as the request goes out
+         */
+        before: string | null;
+
+        /**
+         * Given to the agent to say when the request fails
+         */
+        failure: string | null;
+
+        /**
+         * Said once if the request is slow
+         */
+        slow: string | null;
+      }
+    }
+
     export interface Input {
       /**
        * What the input is, so the agent fills it in right
@@ -465,6 +779,43 @@ export namespace ToolListResponse {
        * string, number or boolean
        */
       type: 'string' | 'number' | 'boolean';
+    }
+
+    /**
+     * A tool on one of the project's MCP servers. The server runs it and defines its
+     * arguments.
+     */
+    export interface Mcp {
+      /**
+       * The MCP server the tool calls
+       */
+      mcpServerId: string;
+
+      messages: Mcp.Messages;
+
+      /**
+       * The tool as the server names it
+       */
+      tool: string;
+    }
+
+    export namespace Mcp {
+      export interface Messages {
+        /**
+         * Said as the request goes out
+         */
+        before: string | null;
+
+        /**
+         * Given to the agent to say when the request fails
+         */
+        failure: string | null;
+
+        /**
+         * Said once if the request is slow
+         */
+        slow: string | null;
+      }
     }
 
     /**
@@ -566,6 +917,11 @@ export namespace ToolGetByIDResponse {
      */
     agentId: string | null;
 
+    /**
+     * What a calendar tool books into. Roark runs it; it has no runtime.
+     */
+    calendar: Data.Calendar | null;
+
     createdAt: string;
 
     description: string | null;
@@ -581,6 +937,12 @@ export namespace ToolGetByIDResponse {
      * When the agent should call it, for grading
      */
     invocationCriteria: string | null;
+
+    /**
+     * A tool on one of the project's MCP servers. The server runs it and defines its
+     * arguments.
+     */
+    mcp: Data.Mcp | null;
 
     name: string;
 
@@ -608,6 +970,74 @@ export namespace ToolGetByIDResponse {
   }
 
   export namespace Data {
+    /**
+     * What a calendar tool books into. Roark runs it; it has no runtime.
+     */
+    export interface Calendar {
+      /**
+       * The kinds of appointment the tool may reach
+       */
+      appointmentTypes: Array<Calendar.AppointmentType>;
+
+      /**
+       * The connected calendar the tool books on
+       */
+      calendarConnectionId: string;
+
+      messages: Calendar.Messages;
+
+      /**
+       * The one action this tool takes on the calendar
+       */
+      operation: 'CHECK_AVAILABILITY' | 'BOOK' | 'LOOKUP_BOOKING' | 'RESCHEDULE' | 'CANCEL' | 'LIST_BOOKINGS';
+
+      /**
+       * Every call books on a simulated calendar instead of the customer's
+       */
+      simulate: boolean;
+    }
+
+    export namespace Calendar {
+      export interface AppointmentType {
+        /**
+         * Only for an event type offering several durations
+         */
+        durationMinutes: number | null;
+
+        /**
+         * For Cal.com: the event type it books
+         */
+        eventTypeId: number | null;
+
+        /**
+         * What the agent passes to name it
+         */
+        name: string;
+
+        /**
+         * The line that tells the agent when it applies
+         */
+        whenToUse: string | null;
+      }
+
+      export interface Messages {
+        /**
+         * Said as the request goes out
+         */
+        before: string | null;
+
+        /**
+         * Given to the agent to say when the request fails
+         */
+        failure: string | null;
+
+        /**
+         * Said once if the request is slow
+         */
+        slow: string | null;
+      }
+    }
+
     export interface Input {
       /**
        * What the input is, so the agent fills it in right
@@ -628,6 +1058,43 @@ export namespace ToolGetByIDResponse {
        * string, number or boolean
        */
       type: 'string' | 'number' | 'boolean';
+    }
+
+    /**
+     * A tool on one of the project's MCP servers. The server runs it and defines its
+     * arguments.
+     */
+    export interface Mcp {
+      /**
+       * The MCP server the tool calls
+       */
+      mcpServerId: string;
+
+      messages: Mcp.Messages;
+
+      /**
+       * The tool as the server names it
+       */
+      tool: string;
+    }
+
+    export namespace Mcp {
+      export interface Messages {
+        /**
+         * Said as the request goes out
+         */
+        before: string | null;
+
+        /**
+         * Given to the agent to say when the request fails
+         */
+        failure: string | null;
+
+        /**
+         * Said once if the request is slow
+         */
+        slow: string | null;
+      }
     }
 
     /**
@@ -714,11 +1181,25 @@ export interface ToolCreateParams {
 
   agentId?: string | null;
 
+  /**
+   * Makes this a calendar tool, which Roark runs against a connected calendar: it
+   * takes no runtime and no inputs. Omit or null for any other tool; on update,
+   * omitting it makes the tool an ordinary one.
+   */
+  calendar?: ToolCreateParams.Calendar | null;
+
   expectedResult?: string | null;
 
   inputs?: Array<ToolCreateParams.Input>;
 
   invocationCriteria?: string | null;
+
+  /**
+   * Makes this a tool on one of the project's MCP servers: it takes no runtime, no
+   * inputs and no calendar, and the description replaces the server's own. On
+   * update, omitting it makes the tool an ordinary one.
+   */
+  mcp?: ToolCreateParams.Mcp | null;
 
   /**
    * Omit or null for a tool that is only graded
@@ -727,6 +1208,46 @@ export interface ToolCreateParams {
 }
 
 export namespace ToolCreateParams {
+  /**
+   * Makes this a calendar tool, which Roark runs against a connected calendar: it
+   * takes no runtime and no inputs. Omit or null for any other tool; on update,
+   * omitting it makes the tool an ordinary one.
+   */
+  export interface Calendar {
+    appointmentTypes: Array<Calendar.AppointmentType>;
+
+    calendarConnectionId: string;
+
+    operation: 'CHECK_AVAILABILITY' | 'BOOK' | 'LOOKUP_BOOKING' | 'RESCHEDULE' | 'CANCEL' | 'LIST_BOOKINGS';
+
+    messages?: Calendar.Messages;
+
+    simulate?: boolean;
+  }
+
+  export namespace Calendar {
+    export interface AppointmentType {
+      /**
+       * For Cal.com: the event type to book
+       */
+      eventTypeId: number;
+
+      name: string;
+
+      durationMinutes?: number | null;
+
+      whenToUse?: string | null;
+    }
+
+    export interface Messages {
+      before?: string | null;
+
+      failure?: string | null;
+
+      slow?: string | null;
+    }
+  }
+
   export interface Input {
     name: string;
 
@@ -735,6 +1256,32 @@ export namespace ToolCreateParams {
     description?: string;
 
     required?: boolean;
+  }
+
+  /**
+   * Makes this a tool on one of the project's MCP servers: it takes no runtime, no
+   * inputs and no calendar, and the description replaces the server's own. On
+   * update, omitting it makes the tool an ordinary one.
+   */
+  export interface Mcp {
+    mcpServerId: string;
+
+    /**
+     * The tool as the server names it
+     */
+    tool: string;
+
+    messages?: Mcp.Messages;
+  }
+
+  export namespace Mcp {
+    export interface Messages {
+      before?: string | null;
+
+      failure?: string | null;
+
+      slow?: string | null;
+    }
   }
 
   /**
@@ -791,11 +1338,25 @@ export interface ToolUpdateParams {
 
   agentId?: string | null;
 
+  /**
+   * Makes this a calendar tool, which Roark runs against a connected calendar: it
+   * takes no runtime and no inputs. Omit or null for any other tool; on update,
+   * omitting it makes the tool an ordinary one.
+   */
+  calendar?: ToolUpdateParams.Calendar | null;
+
   expectedResult?: string | null;
 
   inputs?: Array<ToolUpdateParams.Input>;
 
   invocationCriteria?: string | null;
+
+  /**
+   * Makes this a tool on one of the project's MCP servers: it takes no runtime, no
+   * inputs and no calendar, and the description replaces the server's own. On
+   * update, omitting it makes the tool an ordinary one.
+   */
+  mcp?: ToolUpdateParams.Mcp | null;
 
   /**
    * Omit or null for a tool that is only graded
@@ -804,6 +1365,46 @@ export interface ToolUpdateParams {
 }
 
 export namespace ToolUpdateParams {
+  /**
+   * Makes this a calendar tool, which Roark runs against a connected calendar: it
+   * takes no runtime and no inputs. Omit or null for any other tool; on update,
+   * omitting it makes the tool an ordinary one.
+   */
+  export interface Calendar {
+    appointmentTypes: Array<Calendar.AppointmentType>;
+
+    calendarConnectionId: string;
+
+    operation: 'CHECK_AVAILABILITY' | 'BOOK' | 'LOOKUP_BOOKING' | 'RESCHEDULE' | 'CANCEL' | 'LIST_BOOKINGS';
+
+    messages?: Calendar.Messages;
+
+    simulate?: boolean;
+  }
+
+  export namespace Calendar {
+    export interface AppointmentType {
+      /**
+       * For Cal.com: the event type to book
+       */
+      eventTypeId: number;
+
+      name: string;
+
+      durationMinutes?: number | null;
+
+      whenToUse?: string | null;
+    }
+
+    export interface Messages {
+      before?: string | null;
+
+      failure?: string | null;
+
+      slow?: string | null;
+    }
+  }
+
   export interface Input {
     name: string;
 
@@ -812,6 +1413,32 @@ export namespace ToolUpdateParams {
     description?: string;
 
     required?: boolean;
+  }
+
+  /**
+   * Makes this a tool on one of the project's MCP servers: it takes no runtime, no
+   * inputs and no calendar, and the description replaces the server's own. On
+   * update, omitting it makes the tool an ordinary one.
+   */
+  export interface Mcp {
+    mcpServerId: string;
+
+    /**
+     * The tool as the server names it
+     */
+    tool: string;
+
+    messages?: Mcp.Messages;
+  }
+
+  export namespace Mcp {
+    export interface Messages {
+      before?: string | null;
+
+      failure?: string | null;
+
+      slow?: string | null;
+    }
   }
 
   /**

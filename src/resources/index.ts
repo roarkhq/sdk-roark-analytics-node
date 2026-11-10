@@ -25,6 +25,11 @@ export {
   type AgentConfigResolveParams,
 } from './agent-config';
 export {
+  AgentConversation,
+  type AgentConversationCreateResponse,
+  type AgentConversationCreateParams,
+} from './agent-conversation';
+export {
   AgentDraft,
   type AgentDraftCreateResponse,
   type AgentDraftUpdateResponse,
@@ -98,21 +103,6 @@ export {
   type BenchmarkListTargetScoreSamplesParams,
 } from './benchmark';
 export {
-  CalendarConnection,
-  type CalendarConnectionCreateResponse,
-  type CalendarConnectionUpdateResponse,
-  type CalendarConnectionListResponse,
-  type CalendarConnectionDeleteResponse,
-  type CalendarConnectionCheckResponse,
-  type CalendarConnectionGetByIDResponse,
-  type CalendarConnectionGetTargetResponse,
-  type CalendarConnectionListTargetsResponse,
-  type CalendarConnectionCreateParams,
-  type CalendarConnectionUpdateParams,
-  type CalendarConnectionListParams,
-  type CalendarConnectionGetTargetParams,
-} from './calendar-connection';
-export {
   Call,
   type CallCreateResponse,
   type CallListResponse,
@@ -143,6 +133,35 @@ export {
   type ConfigDiffParams,
 } from './config';
 export {
+  Conversation,
+  type ConversationListResponse,
+  type ConversationGetByIDResponse,
+  type ConversationListParams,
+} from './conversation';
+export {
+  Customer,
+  type CustomerListResponse,
+  type CustomerDeleteResponse,
+  type CustomerClearAttributeResponse,
+  type CustomerCreateFieldResponse,
+  type CustomerDeleteFieldResponse,
+  type CustomerGetByIDResponse,
+  type CustomerListConversationsResponse,
+  type CustomerListFieldsResponse,
+  type CustomerSetAttributeResponse,
+  type CustomerUnlockAttributeResponse,
+  type CustomerUpdateFieldResponse,
+  type CustomerUpdateNotesResponse,
+  type CustomerListParams,
+  type CustomerClearAttributeParams,
+  type CustomerCreateFieldParams,
+  type CustomerListConversationsParams,
+  type CustomerSetAttributeParams,
+  type CustomerUnlockAttributeParams,
+  type CustomerUpdateFieldParams,
+  type CustomerUpdateNotesParams,
+} from './customer';
+export {
   CustomerFlow,
   type FlowStep,
   type CustomerFlowCreateResponse,
@@ -171,23 +190,6 @@ export {
   type CustomerFlowEdgeCasePromoteParams,
   type CustomerFlowEdgeCaseRemoveParams,
 } from './customer-flow-edge-case';
-export {
-  CustomerProfile,
-  type CustomerProfileListResponse,
-  type CustomerProfileDeleteResponse,
-  type CustomerProfileClearAttributeResponse,
-  type CustomerProfileGetByIDResponse,
-  type CustomerProfileListConversationsResponse,
-  type CustomerProfileSetAttributeResponse,
-  type CustomerProfileUnlockAttributeResponse,
-  type CustomerProfileUpdateNotesResponse,
-  type CustomerProfileListParams,
-  type CustomerProfileClearAttributeParams,
-  type CustomerProfileListConversationsParams,
-  type CustomerProfileSetAttributeParams,
-  type CustomerProfileUnlockAttributeParams,
-  type CustomerProfileUpdateNotesParams,
-} from './customer-profile';
 export {
   Dashboard,
   type DashboardCreateResponse,

@@ -175,9 +175,9 @@ export namespace AgentVersionListResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -595,9 +595,9 @@ export namespace AgentVersionGetByIDResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -998,9 +998,9 @@ export namespace AgentVersionRollbackResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.

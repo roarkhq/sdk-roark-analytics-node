@@ -204,9 +204,9 @@ export namespace AgentDraftCreateResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -607,9 +607,9 @@ export namespace AgentDraftUpdateResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -1010,9 +1010,9 @@ export namespace AgentDraftDeleteResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -1413,9 +1413,9 @@ export namespace AgentDraftGetResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -1816,9 +1816,9 @@ export namespace AgentDraftPublishResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -2192,7 +2192,7 @@ export namespace AgentDraftUpdateParams {
 
     language?: string | null;
 
-    modalities?: Array<'call' | 'chat'>;
+    modalities?: Array<'voice' | 'chat' | 'call'>;
 
     subAgents?: Array<Settings.SubAgent>;
 

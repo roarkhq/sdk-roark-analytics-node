@@ -14,7 +14,7 @@ export class MetricPolicy extends APIResource {
    * ```ts
    * const metricPolicy = await client.metricPolicy.create({
    *   metrics: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
-   *   modality: 'call',
+   *   modality: 'voice',
    *   name: 'Evaluate all inbound calls',
    * });
    * ```
@@ -750,10 +750,11 @@ export interface MetricPolicyCreateParams {
   metrics: Array<MetricPolicyCreateParams.Metric>;
 
   /**
-   * Modality this policy targets. A policy fires for exactly one modality and can
-   * only reference metrics that support that modality.
+   * Modality this policy targets: `voice` or `chat` (`call` is still accepted for
+   * `voice`). A policy fires for exactly one modality and can only reference metrics
+   * that support that modality.
    */
-  modality: 'call' | 'chat';
+  modality: 'voice' | 'chat' | 'call';
 
   /**
    * Name of the metric policy

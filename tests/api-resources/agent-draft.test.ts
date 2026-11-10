@@ -66,7 +66,7 @@ describe('resource agentDraft', () => {
         idleTimeoutSeconds: 1,
         interruptionMode: 'ALLOW',
         language: 'xx',
-        modalities: ['call'],
+        modalities: ['voice'],
         subAgents: [
           {
             handoffs: [{ description: 'x', history: 'SHARED', note: 'x', once: true, to: 'main' }],
