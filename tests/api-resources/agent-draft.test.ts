@@ -66,7 +66,7 @@ describe('resource agentDraft', () => {
         idleTimeoutSeconds: 1,
         interruptionMode: 'ALLOW',
         language: 'xx',
-        modalities: ['call'],
+        modalities: ['voice'],
         subAgents: [
           {
             handoffs: [{ description: 'x', history: 'SHARED', note: 'x', once: true, to: 'main' }],
@@ -103,6 +103,7 @@ describe('resource agentDraft', () => {
             tools: [{ pinnedVersion: 1, toolDefinitionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
           },
         ],
+        vadMaxSilenceSecs: 0,
         vadStartSecs: 0,
         vadStopSecs: 0,
       },

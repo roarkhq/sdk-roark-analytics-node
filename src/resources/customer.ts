@@ -5,7 +5,7 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
-export class CustomerProfile extends APIResource {
+export class Customer extends APIResource {
   /**
    * Returns the people who have talked to your agents in this project. Customers we
    * hold nothing about beyond their identifier are left out unless includeNoData is
@@ -13,30 +13,30 @@ export class CustomerProfile extends APIResource {
    *
    * @example
    * ```ts
-   * const customerProfiles =
-   *   await client.customerProfile.list();
+   * const customers = await client.customer.list();
    * ```
    */
   list(
-    query: CustomerProfileListParams | null | undefined = {},
+    query: CustomerListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<CustomerProfileListResponse> {
-    return this._client.get('/v1/customer-profile', { query, ...options });
+  ): APIPromise<CustomerListResponse> {
+    return this._client.get('/v1/customer', { query, ...options });
   }
 
   /**
-   * Permanently removes the profile, its fields, evidence and notes. Conversations
-   * are kept. A new conversation from the same identifier creates a new profile.
+   * Permanently removes the customer, with their fields, evidence and notes.
+   * Conversations are kept. A new conversation from the same identifier starts a new
+   * customer.
    *
    * @example
    * ```ts
-   * const customerProfile = await client.customerProfile.delete(
+   * const customer = await client.customer.delete(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    * );
    * ```
    */
-  delete(customerProfileID: string, options?: RequestOptions): APIPromise<CustomerProfileDeleteResponse> {
-    return this._client.delete(path`/v1/customer-profile/${customerProfileID}`, options);
+  delete(customerProfileID: string, options?: RequestOptions): APIPromise<CustomerDeleteResponse> {
+    return this._client.delete(path`/v1/customer/${customerProfileID}`, options);
   }
 
   /**
@@ -44,48 +44,66 @@ export class CustomerProfile extends APIResource {
    *
    * @example
    * ```ts
-   * const response =
-   *   await client.customerProfile.clearAttribute('FULL_NAME', {
-   *     customerProfileId:
-   *       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   });
+   * const response = await client.customer.clearAttribute('x', {
+   *   customerProfileId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * });
    * ```
    */
   clearAttribute(
-    key:
-      | 'FULL_NAME'
-      | 'PREFERRED_NAME'
-      | 'ACCOUNT_ID'
-      | 'COMPANY'
-      | 'JOB_TITLE'
-      | 'EMAIL'
-      | 'ALTERNATE_PHONE'
-      | 'AGE'
-      | 'GENDER'
-      | 'LANGUAGE'
-      | 'LOCATION'
-      | 'TIMEZONE'
-      | 'BEST_TIME_TO_REACH'
-      | 'PREFERRED_CHANNEL',
-    params: CustomerProfileClearAttributeParams,
+    key: string,
+    params: CustomerClearAttributeParams,
     options?: RequestOptions,
-  ): APIPromise<CustomerProfileClearAttributeResponse> {
+  ): APIPromise<CustomerClearAttributeResponse> {
     const { customerProfileId } = params;
-    return this._client.delete(path`/v1/customer-profile/${customerProfileId}/attributes/${key}`, options);
+    return this._client.delete(path`/v1/customer/${customerProfileId}/attributes/${key}`, options);
   }
 
   /**
-   * Get a customer profile
+   * Adds a field of your project's own. With extract on, conversations fill it from
+   * what customers say, guided by its description.
    *
    * @example
    * ```ts
-   * const response = await client.customerProfile.getByID(
+   * const response = await client.customer.createField({
+   *   extract: true,
+   *   key: 'plan_tier',
+   *   label: 'x',
+   *   valueType: 'TEXT',
+   * });
+   * ```
+   */
+  createField(
+    body: CustomerCreateFieldParams,
+    options?: RequestOptions,
+  ): APIPromise<CustomerCreateFieldResponse> {
+    return this._client.post('/v1/customer/fields', { body, ...options });
+  }
+
+  /**
+   * Deletes a field of your project's own. Its values stop showing on customers. A
+   * built-in field cannot be deleted; turn it off instead.
+   *
+   * @example
+   * ```ts
+   * const response = await client.customer.deleteField('x');
+   * ```
+   */
+  deleteField(key: string, options?: RequestOptions): APIPromise<CustomerDeleteFieldResponse> {
+    return this._client.delete(path`/v1/customer/fields/${key}`, options);
+  }
+
+  /**
+   * Get a customer
+   *
+   * @example
+   * ```ts
+   * const response = await client.customer.getByID(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    * );
    * ```
    */
-  getByID(customerProfileID: string, options?: RequestOptions): APIPromise<CustomerProfileGetByIDResponse> {
-    return this._client.get(path`/v1/customer-profile/${customerProfileID}`, options);
+  getByID(customerProfileID: string, options?: RequestOptions): APIPromise<CustomerGetByIDResponse> {
+    return this._client.get(path`/v1/customer/${customerProfileID}`, options);
   }
 
   /**
@@ -93,21 +111,30 @@ export class CustomerProfile extends APIResource {
    *
    * @example
    * ```ts
-   * const response =
-   *   await client.customerProfile.listConversations(
-   *     'customerProfileId',
-   *   );
+   * const response = await client.customer.listConversations(
+   *   'customerProfileId',
+   * );
    * ```
    */
   listConversations(
     customerProfileID: string,
-    query: CustomerProfileListConversationsParams | null | undefined = {},
+    query: CustomerListConversationsParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<CustomerProfileListConversationsResponse> {
-    return this._client.get(path`/v1/customer-profile/${customerProfileID}/conversations`, {
-      query,
-      ...options,
-    });
+  ): APIPromise<CustomerListConversationsResponse> {
+    return this._client.get(path`/v1/customer/${customerProfileID}/conversations`, { query, ...options });
+  }
+
+  /**
+   * The fields this project's customers can hold, in display order. Use a field's
+   * key to filter, sort and set attributes.
+   *
+   * @example
+   * ```ts
+   * const response = await client.customer.listFields();
+   * ```
+   */
+  listFields(options?: RequestOptions): APIPromise<CustomerListFieldsResponse> {
+    return this._client.get('/v1/customer/fields', options);
   }
 
   /**
@@ -115,40 +142,19 @@ export class CustomerProfile extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.customerProfile.setAttribute(
-   *   'FULL_NAME',
-   *   {
-   *     customerProfileId:
-   *       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *     value: 'x',
-   *   },
-   * );
+   * const response = await client.customer.setAttribute('x', {
+   *   customerProfileId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   value: 'x',
+   * });
    * ```
    */
   setAttribute(
-    key:
-      | 'FULL_NAME'
-      | 'PREFERRED_NAME'
-      | 'ACCOUNT_ID'
-      | 'COMPANY'
-      | 'JOB_TITLE'
-      | 'EMAIL'
-      | 'ALTERNATE_PHONE'
-      | 'AGE'
-      | 'GENDER'
-      | 'LANGUAGE'
-      | 'LOCATION'
-      | 'TIMEZONE'
-      | 'BEST_TIME_TO_REACH'
-      | 'PREFERRED_CHANNEL',
-    params: CustomerProfileSetAttributeParams,
+    key: string,
+    params: CustomerSetAttributeParams,
     options?: RequestOptions,
-  ): APIPromise<CustomerProfileSetAttributeResponse> {
+  ): APIPromise<CustomerSetAttributeResponse> {
     const { customerProfileId, ...body } = params;
-    return this._client.put(path`/v1/customer-profile/${customerProfileId}/attributes/${key}`, {
-      body,
-      ...options,
-    });
+    return this._client.put(path`/v1/customer/${customerProfileId}/attributes/${key}`, { body, ...options });
   }
 
   /**
@@ -157,40 +163,39 @@ export class CustomerProfile extends APIResource {
    *
    * @example
    * ```ts
-   * const response =
-   *   await client.customerProfile.unlockAttribute(
-   *     'FULL_NAME',
-   *     {
-   *       customerProfileId:
-   *         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *     },
-   *   );
+   * const response = await client.customer.unlockAttribute(
+   *   'x',
+   *   {
+   *     customerProfileId:
+   *       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   },
+   * );
    * ```
    */
   unlockAttribute(
-    key:
-      | 'FULL_NAME'
-      | 'PREFERRED_NAME'
-      | 'ACCOUNT_ID'
-      | 'COMPANY'
-      | 'JOB_TITLE'
-      | 'EMAIL'
-      | 'ALTERNATE_PHONE'
-      | 'AGE'
-      | 'GENDER'
-      | 'LANGUAGE'
-      | 'LOCATION'
-      | 'TIMEZONE'
-      | 'BEST_TIME_TO_REACH'
-      | 'PREFERRED_CHANNEL',
-    params: CustomerProfileUnlockAttributeParams,
+    key: string,
+    params: CustomerUnlockAttributeParams,
     options?: RequestOptions,
-  ): APIPromise<CustomerProfileUnlockAttributeResponse> {
+  ): APIPromise<CustomerUnlockAttributeResponse> {
     const { customerProfileId } = params;
-    return this._client.post(
-      path`/v1/customer-profile/${customerProfileId}/attributes/${key}/unlock`,
-      options,
-    );
+    return this._client.post(path`/v1/customer/${customerProfileId}/attributes/${key}/unlock`, options);
+  }
+
+  /**
+   * Changes a field. A built-in field can only be turned on or off for your project;
+   * any field of your project's own can change everything but its key.
+   *
+   * @example
+   * ```ts
+   * const response = await client.customer.updateField('x');
+   * ```
+   */
+  updateField(
+    key: string,
+    body: CustomerUpdateFieldParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerUpdateFieldResponse> {
+    return this._client.patch(path`/v1/customer/fields/${key}`, { body, ...options });
   }
 
   /**
@@ -199,7 +204,7 @@ export class CustomerProfile extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.customerProfile.updateNotes(
+   * const response = await client.customer.updateNotes(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    *   { notes: 'notes' },
    * );
@@ -207,18 +212,18 @@ export class CustomerProfile extends APIResource {
    */
   updateNotes(
     customerProfileID: string,
-    body: CustomerProfileUpdateNotesParams,
+    body: CustomerUpdateNotesParams,
     options?: RequestOptions,
-  ): APIPromise<CustomerProfileUpdateNotesResponse> {
-    return this._client.put(path`/v1/customer-profile/${customerProfileID}/notes`, { body, ...options });
+  ): APIPromise<CustomerUpdateNotesResponse> {
+    return this._client.put(path`/v1/customer/${customerProfileID}/notes`, { body, ...options });
   }
 }
 
-export interface CustomerProfileListResponse {
-  data: CustomerProfileListResponse.Data;
+export interface CustomerListResponse {
+  data: CustomerListResponse.Data;
 }
 
-export namespace CustomerProfileListResponse {
+export namespace CustomerListResponse {
   export interface Data {
     items: Array<Data.Item>;
 
@@ -230,7 +235,7 @@ export namespace CustomerProfileListResponse {
   export namespace Data {
     export interface Item {
       /**
-       * Unique identifier of the customer profile
+       * Unique identifier of the customer
        */
       id: string;
 
@@ -291,25 +296,17 @@ export namespace CustomerProfileListResponse {
         history: Array<Attribute.History>;
 
         /**
+         * True when the value was inferred from the conversation, such as a gender read
+         * from a name, rather than stated. A stated value always replaces it.
+         */
+        isInferred: boolean;
+
+        /**
          * True when newer conversations cannot change this field
          */
         isLocked: boolean;
 
-        key:
-          | 'FULL_NAME'
-          | 'PREFERRED_NAME'
-          | 'ACCOUNT_ID'
-          | 'COMPANY'
-          | 'JOB_TITLE'
-          | 'EMAIL'
-          | 'ALTERNATE_PHONE'
-          | 'AGE'
-          | 'GENDER'
-          | 'LANGUAGE'
-          | 'LOCATION'
-          | 'TIMEZONE'
-          | 'BEST_TIME_TO_REACH'
-          | 'PREFERRED_CHANNEL';
+        key: string;
 
         observedAt: string;
 
@@ -375,24 +372,24 @@ export namespace CustomerProfileListResponse {
   }
 }
 
-export interface CustomerProfileDeleteResponse {
-  data: CustomerProfileDeleteResponse.Data;
+export interface CustomerDeleteResponse {
+  data: CustomerDeleteResponse.Data;
 }
 
-export namespace CustomerProfileDeleteResponse {
+export namespace CustomerDeleteResponse {
   export interface Data {
     success: boolean;
   }
 }
 
-export interface CustomerProfileClearAttributeResponse {
-  data: CustomerProfileClearAttributeResponse.Data;
+export interface CustomerClearAttributeResponse {
+  data: CustomerClearAttributeResponse.Data;
 }
 
-export namespace CustomerProfileClearAttributeResponse {
+export namespace CustomerClearAttributeResponse {
   export interface Data {
     /**
-     * Unique identifier of the customer profile
+     * Unique identifier of the customer
      */
     id: string;
 
@@ -453,25 +450,17 @@ export namespace CustomerProfileClearAttributeResponse {
       history: Array<Attribute.History>;
 
       /**
+       * True when the value was inferred from the conversation, such as a gender read
+       * from a name, rather than stated. A stated value always replaces it.
+       */
+      isInferred: boolean;
+
+      /**
        * True when newer conversations cannot change this field
        */
       isLocked: boolean;
 
-      key:
-        | 'FULL_NAME'
-        | 'PREFERRED_NAME'
-        | 'ACCOUNT_ID'
-        | 'COMPANY'
-        | 'JOB_TITLE'
-        | 'EMAIL'
-        | 'ALTERNATE_PHONE'
-        | 'AGE'
-        | 'GENDER'
-        | 'LANGUAGE'
-        | 'LOCATION'
-        | 'TIMEZONE'
-        | 'BEST_TIME_TO_REACH'
-        | 'PREFERRED_CHANNEL';
+      key: string;
 
       observedAt: string;
 
@@ -536,14 +525,70 @@ export namespace CustomerProfileClearAttributeResponse {
   }
 }
 
-export interface CustomerProfileGetByIDResponse {
-  data: CustomerProfileGetByIDResponse.Data;
+export interface CustomerCreateFieldResponse {
+  data: CustomerCreateFieldResponse.Data;
 }
 
-export namespace CustomerProfileGetByIDResponse {
+export namespace CustomerCreateFieldResponse {
   export interface Data {
     /**
-     * Unique identifier of the customer profile
+     * What extraction looks for in a conversation
+     */
+    description: string | null;
+
+    /**
+     * Whether conversations fill this field on this project: the project's own setting
+     * where it made one
+     */
+    extract: boolean;
+
+    /**
+     * What filters, sorts and attribute routes name the field by
+     */
+    key: string;
+
+    label: string;
+
+    /**
+     * The project redaction setting that, when on, keeps conversations from filling
+     * this field
+     */
+    redactedBy:
+      | 'redactName'
+      | 'redactEmail'
+      | 'redactPhone'
+      | 'redactDateOfBirth'
+      | 'redactAddress'
+      | 'redactBankAccountNumber'
+      | null;
+
+    /**
+     * SYSTEM for a built-in field, CUSTOM for one your project defined
+     */
+    source: 'SYSTEM' | 'CUSTOM';
+
+    valueType: 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE' | 'PHONE_NUMBER' | 'EMAIL' | 'CURRENCY';
+  }
+}
+
+export interface CustomerDeleteFieldResponse {
+  data: CustomerDeleteFieldResponse.Data;
+}
+
+export namespace CustomerDeleteFieldResponse {
+  export interface Data {
+    success: boolean;
+  }
+}
+
+export interface CustomerGetByIDResponse {
+  data: CustomerGetByIDResponse.Data;
+}
+
+export namespace CustomerGetByIDResponse {
+  export interface Data {
+    /**
+     * Unique identifier of the customer
      */
     id: string;
 
@@ -604,25 +649,17 @@ export namespace CustomerProfileGetByIDResponse {
       history: Array<Attribute.History>;
 
       /**
+       * True when the value was inferred from the conversation, such as a gender read
+       * from a name, rather than stated. A stated value always replaces it.
+       */
+      isInferred: boolean;
+
+      /**
        * True when newer conversations cannot change this field
        */
       isLocked: boolean;
 
-      key:
-        | 'FULL_NAME'
-        | 'PREFERRED_NAME'
-        | 'ACCOUNT_ID'
-        | 'COMPANY'
-        | 'JOB_TITLE'
-        | 'EMAIL'
-        | 'ALTERNATE_PHONE'
-        | 'AGE'
-        | 'GENDER'
-        | 'LANGUAGE'
-        | 'LOCATION'
-        | 'TIMEZONE'
-        | 'BEST_TIME_TO_REACH'
-        | 'PREFERRED_CHANNEL';
+      key: string;
 
       observedAt: string;
 
@@ -687,11 +724,11 @@ export namespace CustomerProfileGetByIDResponse {
   }
 }
 
-export interface CustomerProfileListConversationsResponse {
-  data: CustomerProfileListConversationsResponse.Data;
+export interface CustomerListConversationsResponse {
+  data: CustomerListConversationsResponse.Data;
 }
 
-export namespace CustomerProfileListConversationsResponse {
+export namespace CustomerListConversationsResponse {
   export interface Data {
     items: Array<Data.Item>;
 
@@ -704,7 +741,10 @@ export namespace CustomerProfileListConversationsResponse {
     export interface Item {
       id: string;
 
-      conversationType: 'call' | 'chat';
+      /**
+       * `voice` or `chat`.
+       */
+      conversationType: 'voice' | 'chat';
 
       durationMs: number | null;
 
@@ -717,14 +757,60 @@ export namespace CustomerProfileListConversationsResponse {
   }
 }
 
-export interface CustomerProfileSetAttributeResponse {
-  data: CustomerProfileSetAttributeResponse.Data;
+export interface CustomerListFieldsResponse {
+  data: Array<CustomerListFieldsResponse.Data>;
 }
 
-export namespace CustomerProfileSetAttributeResponse {
+export namespace CustomerListFieldsResponse {
   export interface Data {
     /**
-     * Unique identifier of the customer profile
+     * What extraction looks for in a conversation
+     */
+    description: string | null;
+
+    /**
+     * Whether conversations fill this field on this project: the project's own setting
+     * where it made one
+     */
+    extract: boolean;
+
+    /**
+     * What filters, sorts and attribute routes name the field by
+     */
+    key: string;
+
+    label: string;
+
+    /**
+     * The project redaction setting that, when on, keeps conversations from filling
+     * this field
+     */
+    redactedBy:
+      | 'redactName'
+      | 'redactEmail'
+      | 'redactPhone'
+      | 'redactDateOfBirth'
+      | 'redactAddress'
+      | 'redactBankAccountNumber'
+      | null;
+
+    /**
+     * SYSTEM for a built-in field, CUSTOM for one your project defined
+     */
+    source: 'SYSTEM' | 'CUSTOM';
+
+    valueType: 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE' | 'PHONE_NUMBER' | 'EMAIL' | 'CURRENCY';
+  }
+}
+
+export interface CustomerSetAttributeResponse {
+  data: CustomerSetAttributeResponse.Data;
+}
+
+export namespace CustomerSetAttributeResponse {
+  export interface Data {
+    /**
+     * Unique identifier of the customer
      */
     id: string;
 
@@ -785,25 +871,17 @@ export namespace CustomerProfileSetAttributeResponse {
       history: Array<Attribute.History>;
 
       /**
+       * True when the value was inferred from the conversation, such as a gender read
+       * from a name, rather than stated. A stated value always replaces it.
+       */
+      isInferred: boolean;
+
+      /**
        * True when newer conversations cannot change this field
        */
       isLocked: boolean;
 
-      key:
-        | 'FULL_NAME'
-        | 'PREFERRED_NAME'
-        | 'ACCOUNT_ID'
-        | 'COMPANY'
-        | 'JOB_TITLE'
-        | 'EMAIL'
-        | 'ALTERNATE_PHONE'
-        | 'AGE'
-        | 'GENDER'
-        | 'LANGUAGE'
-        | 'LOCATION'
-        | 'TIMEZONE'
-        | 'BEST_TIME_TO_REACH'
-        | 'PREFERRED_CHANNEL';
+      key: string;
 
       observedAt: string;
 
@@ -868,14 +946,14 @@ export namespace CustomerProfileSetAttributeResponse {
   }
 }
 
-export interface CustomerProfileUnlockAttributeResponse {
-  data: CustomerProfileUnlockAttributeResponse.Data;
+export interface CustomerUnlockAttributeResponse {
+  data: CustomerUnlockAttributeResponse.Data;
 }
 
-export namespace CustomerProfileUnlockAttributeResponse {
+export namespace CustomerUnlockAttributeResponse {
   export interface Data {
     /**
-     * Unique identifier of the customer profile
+     * Unique identifier of the customer
      */
     id: string;
 
@@ -936,25 +1014,17 @@ export namespace CustomerProfileUnlockAttributeResponse {
       history: Array<Attribute.History>;
 
       /**
+       * True when the value was inferred from the conversation, such as a gender read
+       * from a name, rather than stated. A stated value always replaces it.
+       */
+      isInferred: boolean;
+
+      /**
        * True when newer conversations cannot change this field
        */
       isLocked: boolean;
 
-      key:
-        | 'FULL_NAME'
-        | 'PREFERRED_NAME'
-        | 'ACCOUNT_ID'
-        | 'COMPANY'
-        | 'JOB_TITLE'
-        | 'EMAIL'
-        | 'ALTERNATE_PHONE'
-        | 'AGE'
-        | 'GENDER'
-        | 'LANGUAGE'
-        | 'LOCATION'
-        | 'TIMEZONE'
-        | 'BEST_TIME_TO_REACH'
-        | 'PREFERRED_CHANNEL';
+      key: string;
 
       observedAt: string;
 
@@ -1019,14 +1089,60 @@ export namespace CustomerProfileUnlockAttributeResponse {
   }
 }
 
-export interface CustomerProfileUpdateNotesResponse {
-  data: CustomerProfileUpdateNotesResponse.Data;
+export interface CustomerUpdateFieldResponse {
+  data: CustomerUpdateFieldResponse.Data;
 }
 
-export namespace CustomerProfileUpdateNotesResponse {
+export namespace CustomerUpdateFieldResponse {
   export interface Data {
     /**
-     * Unique identifier of the customer profile
+     * What extraction looks for in a conversation
+     */
+    description: string | null;
+
+    /**
+     * Whether conversations fill this field on this project: the project's own setting
+     * where it made one
+     */
+    extract: boolean;
+
+    /**
+     * What filters, sorts and attribute routes name the field by
+     */
+    key: string;
+
+    label: string;
+
+    /**
+     * The project redaction setting that, when on, keeps conversations from filling
+     * this field
+     */
+    redactedBy:
+      | 'redactName'
+      | 'redactEmail'
+      | 'redactPhone'
+      | 'redactDateOfBirth'
+      | 'redactAddress'
+      | 'redactBankAccountNumber'
+      | null;
+
+    /**
+     * SYSTEM for a built-in field, CUSTOM for one your project defined
+     */
+    source: 'SYSTEM' | 'CUSTOM';
+
+    valueType: 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE' | 'PHONE_NUMBER' | 'EMAIL' | 'CURRENCY';
+  }
+}
+
+export interface CustomerUpdateNotesResponse {
+  data: CustomerUpdateNotesResponse.Data;
+}
+
+export namespace CustomerUpdateNotesResponse {
+  export interface Data {
+    /**
+     * Unique identifier of the customer
      */
     id: string;
 
@@ -1087,25 +1203,17 @@ export namespace CustomerProfileUpdateNotesResponse {
       history: Array<Attribute.History>;
 
       /**
+       * True when the value was inferred from the conversation, such as a gender read
+       * from a name, rather than stated. A stated value always replaces it.
+       */
+      isInferred: boolean;
+
+      /**
        * True when newer conversations cannot change this field
        */
       isLocked: boolean;
 
-      key:
-        | 'FULL_NAME'
-        | 'PREFERRED_NAME'
-        | 'ACCOUNT_ID'
-        | 'COMPANY'
-        | 'JOB_TITLE'
-        | 'EMAIL'
-        | 'ALTERNATE_PHONE'
-        | 'AGE'
-        | 'GENDER'
-        | 'LANGUAGE'
-        | 'LOCATION'
-        | 'TIMEZONE'
-        | 'BEST_TIME_TO_REACH'
-        | 'PREFERRED_CHANNEL';
+      key: string;
 
       observedAt: string;
 
@@ -1170,28 +1278,14 @@ export namespace CustomerProfileUpdateNotesResponse {
   }
 }
 
-export interface CustomerProfileListParams {
+export interface CustomerListParams {
   agentId?: string;
 
   /**
-   * Filter by this field. Use with fieldOperator and, unless checking presence,
-   * fieldValue.
+   * Filter by this field, a key from GET /v1/customer/fields. Use with fieldOperator
+   * and, unless checking presence, fieldValue.
    */
-  fieldKey?:
-    | 'FULL_NAME'
-    | 'PREFERRED_NAME'
-    | 'ACCOUNT_ID'
-    | 'COMPANY'
-    | 'JOB_TITLE'
-    | 'EMAIL'
-    | 'ALTERNATE_PHONE'
-    | 'AGE'
-    | 'GENDER'
-    | 'LANGUAGE'
-    | 'LOCATION'
-    | 'TIMEZONE'
-    | 'BEST_TIME_TO_REACH'
-    | 'PREFERRED_CHANNEL';
+  fieldKey?: string;
 
   /**
    * How fieldValue is compared, ignoring case. NOT_EQUALS includes customers without
@@ -1209,53 +1303,55 @@ export interface CustomerProfileListParams {
 
   limit?: number;
 
-  modality?: 'call' | 'chat';
+  modality?: 'voice' | 'chat' | 'call';
 
   page?: number;
 
   search?: string;
 
   /**
-   * A column, or field.<KEY> (for example field.COMPANY) to sort by a field's value.
-   * Customers without a value sort last.
+   * lastSeenAt (the default), firstSeenAt, conversationCount, voiceCount, chatCount,
+   * talkTimeMs or displayName, or field.<key> (for example field.COMPANY) to sort by
+   * a field's value. Field keys come from GET /v1/customer/fields. Customers without
+   * a value sort last.
    */
-  sortBy?:
-    | 'lastSeenAt'
-    | 'firstSeenAt'
-    | 'conversationCount'
-    | 'voiceCount'
-    | 'chatCount'
-    | 'talkTimeMs'
-    | 'displayName'
-    | 'field.FULL_NAME'
-    | 'field.PREFERRED_NAME'
-    | 'field.ACCOUNT_ID'
-    | 'field.COMPANY'
-    | 'field.JOB_TITLE'
-    | 'field.EMAIL'
-    | 'field.ALTERNATE_PHONE'
-    | 'field.AGE'
-    | 'field.GENDER'
-    | 'field.LANGUAGE'
-    | 'field.LOCATION'
-    | 'field.TIMEZONE'
-    | 'field.BEST_TIME_TO_REACH'
-    | 'field.PREFERRED_CHANNEL';
+  sortBy?: string;
 
   sortDirection?: 'asc' | 'desc';
 }
 
-export interface CustomerProfileClearAttributeParams {
+export interface CustomerClearAttributeParams {
   customerProfileId: string;
 }
 
-export interface CustomerProfileListConversationsParams {
+export interface CustomerCreateFieldParams {
+  /**
+   * Whether conversations fill this field
+   */
+  extract: boolean;
+
+  /**
+   * Starts with a letter; letters, numbers and underscores only. Fixed once created.
+   */
+  key: string;
+
+  label: string;
+
+  valueType: 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE' | 'PHONE_NUMBER' | 'EMAIL' | 'CURRENCY';
+
+  /**
+   * What the agent listens for in a conversation. Required when extract is true.
+   */
+  description?: string | null;
+}
+
+export interface CustomerListConversationsParams {
   limit?: number;
 
   page?: number;
 }
 
-export interface CustomerProfileSetAttributeParams {
+export interface CustomerSetAttributeParams {
   /**
    * Path param
    */
@@ -1268,32 +1364,48 @@ export interface CustomerProfileSetAttributeParams {
   value: string;
 }
 
-export interface CustomerProfileUnlockAttributeParams {
+export interface CustomerUnlockAttributeParams {
   customerProfileId: string;
 }
 
-export interface CustomerProfileUpdateNotesParams {
+export interface CustomerUpdateFieldParams {
+  description?: string | null;
+
+  extract?: boolean;
+
+  label?: string;
+
+  valueType?: 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE' | 'PHONE_NUMBER' | 'EMAIL' | 'CURRENCY';
+}
+
+export interface CustomerUpdateNotesParams {
   /**
    * Replaces the existing notes. Null or empty clears them.
    */
   notes: string | null;
 }
 
-export declare namespace CustomerProfile {
+export declare namespace Customer {
   export {
-    type CustomerProfileListResponse as CustomerProfileListResponse,
-    type CustomerProfileDeleteResponse as CustomerProfileDeleteResponse,
-    type CustomerProfileClearAttributeResponse as CustomerProfileClearAttributeResponse,
-    type CustomerProfileGetByIDResponse as CustomerProfileGetByIDResponse,
-    type CustomerProfileListConversationsResponse as CustomerProfileListConversationsResponse,
-    type CustomerProfileSetAttributeResponse as CustomerProfileSetAttributeResponse,
-    type CustomerProfileUnlockAttributeResponse as CustomerProfileUnlockAttributeResponse,
-    type CustomerProfileUpdateNotesResponse as CustomerProfileUpdateNotesResponse,
-    type CustomerProfileListParams as CustomerProfileListParams,
-    type CustomerProfileClearAttributeParams as CustomerProfileClearAttributeParams,
-    type CustomerProfileListConversationsParams as CustomerProfileListConversationsParams,
-    type CustomerProfileSetAttributeParams as CustomerProfileSetAttributeParams,
-    type CustomerProfileUnlockAttributeParams as CustomerProfileUnlockAttributeParams,
-    type CustomerProfileUpdateNotesParams as CustomerProfileUpdateNotesParams,
+    type CustomerListResponse as CustomerListResponse,
+    type CustomerDeleteResponse as CustomerDeleteResponse,
+    type CustomerClearAttributeResponse as CustomerClearAttributeResponse,
+    type CustomerCreateFieldResponse as CustomerCreateFieldResponse,
+    type CustomerDeleteFieldResponse as CustomerDeleteFieldResponse,
+    type CustomerGetByIDResponse as CustomerGetByIDResponse,
+    type CustomerListConversationsResponse as CustomerListConversationsResponse,
+    type CustomerListFieldsResponse as CustomerListFieldsResponse,
+    type CustomerSetAttributeResponse as CustomerSetAttributeResponse,
+    type CustomerUnlockAttributeResponse as CustomerUnlockAttributeResponse,
+    type CustomerUpdateFieldResponse as CustomerUpdateFieldResponse,
+    type CustomerUpdateNotesResponse as CustomerUpdateNotesResponse,
+    type CustomerListParams as CustomerListParams,
+    type CustomerClearAttributeParams as CustomerClearAttributeParams,
+    type CustomerCreateFieldParams as CustomerCreateFieldParams,
+    type CustomerListConversationsParams as CustomerListConversationsParams,
+    type CustomerSetAttributeParams as CustomerSetAttributeParams,
+    type CustomerUnlockAttributeParams as CustomerUnlockAttributeParams,
+    type CustomerUpdateFieldParams as CustomerUpdateFieldParams,
+    type CustomerUpdateNotesParams as CustomerUpdateNotesParams,
   };
 }

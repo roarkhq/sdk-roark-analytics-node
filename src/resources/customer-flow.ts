@@ -194,6 +194,12 @@ export class CustomerFlow extends APIResource {
  * `CUSTOMER_FIRST_MESSAGE` is the retired name for that opening case: still
  * accepted, stored and returned as `CUSTOMER_VERBATIM_TURN`.
  *
+ * A step's `content` may carry caller cues that steer the simulated caller from
+ * that point: `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+ * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+ * in on your agent (on an `AGENT_TURN`, cut in while your agent says that line).
+ * Cues are voice only. See "Caller cues" in the scripted flows concept.
+ *
  * The two DTMF types are mirror images and both require `dtmfDigits`.
  * `CUSTOMER_DTMF` is keys the simulated caller presses while navigating your
  * agent. `AGENT_DTMF` is keys your agent under test is expected to press while
@@ -752,6 +758,28 @@ export namespace CustomerFlowCreateResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -866,6 +894,22 @@ export namespace CustomerFlowCreateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -874,6 +918,59 @@ export namespace CustomerFlowCreateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -1002,9 +1099,11 @@ export namespace CustomerFlowCreateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -1231,6 +1330,22 @@ export namespace CustomerFlowCreateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -1239,6 +1354,59 @@ export namespace CustomerFlowCreateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -1367,9 +1535,11 @@ export namespace CustomerFlowCreateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -1595,6 +1765,28 @@ export namespace CustomerFlowCreateResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -1672,7 +1864,11 @@ export namespace CustomerFlowCreateResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -1721,6 +1917,22 @@ export namespace CustomerFlowCreateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -1729,6 +1941,59 @@ export namespace CustomerFlowCreateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -1854,9 +2119,11 @@ export namespace CustomerFlowCreateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -2104,9 +2371,11 @@ export namespace CustomerFlowCreateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -2296,7 +2565,11 @@ export namespace CustomerFlowCreateResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -2345,6 +2618,22 @@ export namespace CustomerFlowCreateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -2353,6 +2642,59 @@ export namespace CustomerFlowCreateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -2478,9 +2820,11 @@ export namespace CustomerFlowCreateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -2728,9 +3072,11 @@ export namespace CustomerFlowCreateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -2931,6 +3277,28 @@ export namespace CustomerFlowCreateResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -3038,6 +3406,22 @@ export namespace CustomerFlowCreateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -3046,6 +3430,59 @@ export namespace CustomerFlowCreateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -3174,9 +3611,11 @@ export namespace CustomerFlowCreateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -3396,6 +3835,22 @@ export namespace CustomerFlowCreateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -3404,6 +3859,59 @@ export namespace CustomerFlowCreateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -3532,9 +4040,11 @@ export namespace CustomerFlowCreateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -3789,6 +4299,28 @@ export namespace CustomerFlowUpdateResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -3903,6 +4435,22 @@ export namespace CustomerFlowUpdateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -3911,6 +4459,59 @@ export namespace CustomerFlowUpdateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -4039,9 +4640,11 @@ export namespace CustomerFlowUpdateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -4268,6 +4871,22 @@ export namespace CustomerFlowUpdateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -4276,6 +4895,59 @@ export namespace CustomerFlowUpdateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -4404,9 +5076,11 @@ export namespace CustomerFlowUpdateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -4632,6 +5306,28 @@ export namespace CustomerFlowUpdateResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -4709,7 +5405,11 @@ export namespace CustomerFlowUpdateResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -4758,6 +5458,22 @@ export namespace CustomerFlowUpdateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -4766,6 +5482,59 @@ export namespace CustomerFlowUpdateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -4891,9 +5660,11 @@ export namespace CustomerFlowUpdateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -5141,9 +5912,11 @@ export namespace CustomerFlowUpdateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -5333,7 +6106,11 @@ export namespace CustomerFlowUpdateResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -5382,6 +6159,22 @@ export namespace CustomerFlowUpdateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -5390,6 +6183,59 @@ export namespace CustomerFlowUpdateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -5515,9 +6361,11 @@ export namespace CustomerFlowUpdateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -5765,9 +6613,11 @@ export namespace CustomerFlowUpdateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -5968,6 +6818,28 @@ export namespace CustomerFlowUpdateResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -6075,6 +6947,22 @@ export namespace CustomerFlowUpdateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -6083,6 +6971,59 @@ export namespace CustomerFlowUpdateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -6211,9 +7152,11 @@ export namespace CustomerFlowUpdateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -6433,6 +7376,22 @@ export namespace CustomerFlowUpdateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -6441,6 +7400,59 @@ export namespace CustomerFlowUpdateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -6569,9 +7581,11 @@ export namespace CustomerFlowUpdateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -6829,6 +7843,28 @@ export namespace CustomerFlowListResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -6943,6 +7979,22 @@ export namespace CustomerFlowListResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -6951,6 +8003,59 @@ export namespace CustomerFlowListResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -7079,9 +8184,11 @@ export namespace CustomerFlowListResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -7308,6 +8415,22 @@ export namespace CustomerFlowListResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -7316,6 +8439,59 @@ export namespace CustomerFlowListResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -7444,9 +8620,11 @@ export namespace CustomerFlowListResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -7672,6 +8850,28 @@ export namespace CustomerFlowListResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -7749,7 +8949,11 @@ export namespace CustomerFlowListResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -7798,6 +9002,22 @@ export namespace CustomerFlowListResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -7806,6 +9026,59 @@ export namespace CustomerFlowListResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -7931,9 +9204,11 @@ export namespace CustomerFlowListResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -8181,9 +9456,11 @@ export namespace CustomerFlowListResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -8373,7 +9650,11 @@ export namespace CustomerFlowListResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -8422,6 +9703,22 @@ export namespace CustomerFlowListResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -8430,6 +9727,59 @@ export namespace CustomerFlowListResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -8555,9 +9905,11 @@ export namespace CustomerFlowListResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -8805,9 +10157,11 @@ export namespace CustomerFlowListResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -9008,6 +10362,28 @@ export namespace CustomerFlowListResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -9115,6 +10491,22 @@ export namespace CustomerFlowListResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -9123,6 +10515,59 @@ export namespace CustomerFlowListResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -9251,9 +10696,11 @@ export namespace CustomerFlowListResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -9473,6 +10920,22 @@ export namespace CustomerFlowListResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -9481,6 +10944,59 @@ export namespace CustomerFlowListResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -9609,9 +11125,11 @@ export namespace CustomerFlowListResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -9896,6 +11414,28 @@ export namespace CustomerFlowDuplicateResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -10010,6 +11550,22 @@ export namespace CustomerFlowDuplicateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -10018,6 +11574,59 @@ export namespace CustomerFlowDuplicateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -10146,9 +11755,11 @@ export namespace CustomerFlowDuplicateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -10375,6 +11986,22 @@ export namespace CustomerFlowDuplicateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -10383,6 +12010,59 @@ export namespace CustomerFlowDuplicateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -10511,9 +12191,11 @@ export namespace CustomerFlowDuplicateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -10739,6 +12421,28 @@ export namespace CustomerFlowDuplicateResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -10816,7 +12520,11 @@ export namespace CustomerFlowDuplicateResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -10865,6 +12573,22 @@ export namespace CustomerFlowDuplicateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -10873,6 +12597,59 @@ export namespace CustomerFlowDuplicateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -10998,9 +12775,11 @@ export namespace CustomerFlowDuplicateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -11248,9 +13027,11 @@ export namespace CustomerFlowDuplicateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -11440,7 +13221,11 @@ export namespace CustomerFlowDuplicateResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -11489,6 +13274,22 @@ export namespace CustomerFlowDuplicateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -11497,6 +13298,59 @@ export namespace CustomerFlowDuplicateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -11622,9 +13476,11 @@ export namespace CustomerFlowDuplicateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -11872,9 +13728,11 @@ export namespace CustomerFlowDuplicateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -12075,6 +13933,28 @@ export namespace CustomerFlowDuplicateResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -12182,6 +14062,22 @@ export namespace CustomerFlowDuplicateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -12190,6 +14086,59 @@ export namespace CustomerFlowDuplicateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -12318,9 +14267,11 @@ export namespace CustomerFlowDuplicateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -12540,6 +14491,22 @@ export namespace CustomerFlowDuplicateResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -12548,6 +14515,59 @@ export namespace CustomerFlowDuplicateResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -12676,9 +14696,11 @@ export namespace CustomerFlowDuplicateResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -12933,6 +14955,28 @@ export namespace CustomerFlowGetByIDResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -13047,6 +15091,22 @@ export namespace CustomerFlowGetByIDResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -13055,6 +15115,59 @@ export namespace CustomerFlowGetByIDResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -13183,9 +15296,11 @@ export namespace CustomerFlowGetByIDResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -13412,6 +15527,22 @@ export namespace CustomerFlowGetByIDResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -13420,6 +15551,59 @@ export namespace CustomerFlowGetByIDResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -13548,9 +15732,11 @@ export namespace CustomerFlowGetByIDResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -13776,6 +15962,28 @@ export namespace CustomerFlowGetByIDResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -13853,7 +16061,11 @@ export namespace CustomerFlowGetByIDResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -13902,6 +16114,22 @@ export namespace CustomerFlowGetByIDResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -13910,6 +16138,59 @@ export namespace CustomerFlowGetByIDResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -14035,9 +16316,11 @@ export namespace CustomerFlowGetByIDResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -14285,9 +16568,11 @@ export namespace CustomerFlowGetByIDResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -14477,7 +16762,11 @@ export namespace CustomerFlowGetByIDResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -14526,6 +16815,22 @@ export namespace CustomerFlowGetByIDResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -14534,6 +16839,59 @@ export namespace CustomerFlowGetByIDResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -14659,9 +17017,11 @@ export namespace CustomerFlowGetByIDResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -14909,9 +17269,11 @@ export namespace CustomerFlowGetByIDResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -15112,6 +17474,28 @@ export namespace CustomerFlowGetByIDResponse {
       description: string | null;
 
       /**
+       * The industry the agent serves
+       */
+      industry:
+        | 'HEALTHCARE'
+        | 'FINANCIAL_SERVICES'
+        | 'INSURANCE'
+        | 'DEBT_COLLECTION'
+        | 'RETAIL'
+        | 'TRAVEL_AND_HOSPITALITY'
+        | 'TELECOMMUNICATIONS'
+        | 'TECHNOLOGY'
+        | 'PUBLIC_SECTOR'
+        | 'UTILITIES'
+        | 'LOGISTICS'
+        | 'AUTOMOTIVE'
+        | 'HOME_SERVICES'
+        | 'RESTAURANTS'
+        | 'EDUCATION'
+        | 'OTHER'
+        | null;
+
+      /**
        * Name of the agent
        */
       name: string;
@@ -15219,6 +17603,22 @@ export namespace CustomerFlowGetByIDResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -15227,6 +17627,59 @@ export namespace CustomerFlowGetByIDResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -15355,9 +17808,11 @@ export namespace CustomerFlowGetByIDResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -15577,6 +18032,22 @@ export namespace CustomerFlowGetByIDResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -15585,6 +18056,59 @@ export namespace CustomerFlowGetByIDResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -15713,9 +18237,11 @@ export namespace CustomerFlowGetByIDResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -15972,6 +18498,22 @@ export namespace CustomerFlowReplaceGraphResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -15980,6 +18522,59 @@ export namespace CustomerFlowReplaceGraphResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -16108,9 +18703,11 @@ export namespace CustomerFlowReplaceGraphResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -16300,7 +18897,11 @@ export namespace CustomerFlowReplaceGraphResponse {
       /**
        * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
        * hands the phone to that persona mid-call; the sentences around the mention say
-       * when.
+       * when. Caller cues steer the caller from that point in the brief:
+       * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+       * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+       * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+       * concept.
        */
       prompt?: string | null;
 
@@ -16349,6 +18950,22 @@ export namespace CustomerFlowReplaceGraphResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -16357,6 +18974,59 @@ export namespace CustomerFlowReplaceGraphResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       export interface HandoffPersona {
@@ -16482,9 +19152,11 @@ export namespace CustomerFlowReplaceGraphResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -16732,9 +19404,11 @@ export namespace CustomerFlowReplaceGraphResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -16954,6 +19628,22 @@ export namespace CustomerFlowReplaceGraphResponse {
          */
         createdAt: string;
 
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        lineCustom: Environment.LineCustom | null;
+
+        /**
+         * The phone line the simulated caller is on: packet loss applied to its 20 ms
+         * audio packets, per direction. The loss pattern is seeded per call, so a redial
+         * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+         * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+         * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+         * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+         * burst of up to 10 packets (omit it for random loss).
+         */
+        lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
         name: string;
 
         /**
@@ -16962,6 +19652,59 @@ export namespace CustomerFlowReplaceGraphResponse {
         updatedAt: string;
 
         description?: string | null;
+      }
+
+      export namespace Environment {
+        /**
+         * The per-direction loss of a CUSTOM line.
+         */
+        export interface LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          fromAgent?: LineCustom.FromAgent;
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          toAgent?: LineCustom.ToAgent;
+        }
+
+        export namespace LineCustom {
+          /**
+           * The agent's audio on its way to the caller: what the caller hears. Omit for no
+           * loss.
+           */
+          export interface FromAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+
+          /**
+           * The caller's audio on its way to the agent: what the agent hears. Omit for no
+           * loss.
+           */
+          export interface ToAgent {
+            /**
+             * Share of packets lost, 0 to 20 in steps of 0.5.
+             */
+            packetLossPercent: number;
+
+            /**
+             * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+             */
+            meanBurstPackets?: number;
+          }
+        }
       }
 
       /**
@@ -17090,9 +19833,11 @@ export namespace CustomerFlowReplaceGraphResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -17332,6 +20077,22 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        */
       createdAt: string;
 
+      /**
+       * The per-direction loss of a CUSTOM line.
+       */
+      lineCustom: Environment.LineCustom | null;
+
+      /**
+       * The phone line the simulated caller is on: packet loss applied to its 20 ms
+       * audio packets, per direction. The loss pattern is seeded per call, so a redial
+       * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+       * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+       * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+       * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+       * burst of up to 10 packets (omit it for random loss).
+       */
+      lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
       name: string;
 
       /**
@@ -17340,6 +20101,59 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       updatedAt: string;
 
       description?: string | null;
+    }
+
+    export namespace Environment {
+      /**
+       * The per-direction loss of a CUSTOM line.
+       */
+      export interface LineCustom {
+        /**
+         * The agent's audio on its way to the caller: what the caller hears. Omit for no
+         * loss.
+         */
+        fromAgent?: LineCustom.FromAgent;
+
+        /**
+         * The caller's audio on its way to the agent: what the agent hears. Omit for no
+         * loss.
+         */
+        toAgent?: LineCustom.ToAgent;
+      }
+
+      export namespace LineCustom {
+        /**
+         * The agent's audio on its way to the caller: what the caller hears. Omit for no
+         * loss.
+         */
+        export interface FromAgent {
+          /**
+           * Share of packets lost, 0 to 20 in steps of 0.5.
+           */
+          packetLossPercent: number;
+
+          /**
+           * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+           */
+          meanBurstPackets?: number;
+        }
+
+        /**
+         * The caller's audio on its way to the agent: what the agent hears. Omit for no
+         * loss.
+         */
+        export interface ToAgent {
+          /**
+           * Share of packets lost, 0 to 20 in steps of 0.5.
+           */
+          packetLossPercent: number;
+
+          /**
+           * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+           */
+          meanBurstPackets?: number;
+        }
+      }
     }
 
     /**
@@ -17468,9 +20282,11 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        * How much the persona talks over the agent while it is still speaking. OFF waits
        * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
        * taking the floor, which tests whether the agent wrongly stops for them.
-       * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-       * Timing is randomised per turn, so two runs of the same persona do not interrupt
-       * at identical moments.
+       * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+       * so readily, though never on every turn. The moments are chosen from what the
+       * agent is saying, such as reading back a number or starting a long explanation,
+       * not on a timer. A customer flow can also say exactly when to cut in, which
+       * applies at any level.
        */
       interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -17660,7 +20476,11 @@ export namespace CustomerFlowUpdateHappyPathResponse {
     /**
      * The brief the simulated customer improvises from. A `@{persona:<id>}` mention
      * hands the phone to that persona mid-call; the sentences around the mention say
-     * when.
+     * when. Caller cues steer the caller from that point in the brief:
+     * `#{emotion:<emotion>}`, `#{language:<ISO 639-1 code>}`,
+     * `#{noise:<environmentId>}`, and `#{interrupt}`, whose sentence says when to cut
+     * in on your agent. Cues are voice only. See "Caller cues" in the customer flows
+     * concept.
      */
     prompt?: string | null;
 
@@ -17709,6 +20529,22 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        */
       createdAt: string;
 
+      /**
+       * The per-direction loss of a CUSTOM line.
+       */
+      lineCustom: Environment.LineCustom | null;
+
+      /**
+       * The phone line the simulated caller is on: packet loss applied to its 20 ms
+       * audio packets, per direction. The loss pattern is seeded per call, so a redial
+       * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+       * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+       * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+       * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+       * burst of up to 10 packets (omit it for random loss).
+       */
+      lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
       name: string;
 
       /**
@@ -17717,6 +20553,59 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       updatedAt: string;
 
       description?: string | null;
+    }
+
+    export namespace Environment {
+      /**
+       * The per-direction loss of a CUSTOM line.
+       */
+      export interface LineCustom {
+        /**
+         * The agent's audio on its way to the caller: what the caller hears. Omit for no
+         * loss.
+         */
+        fromAgent?: LineCustom.FromAgent;
+
+        /**
+         * The caller's audio on its way to the agent: what the agent hears. Omit for no
+         * loss.
+         */
+        toAgent?: LineCustom.ToAgent;
+      }
+
+      export namespace LineCustom {
+        /**
+         * The agent's audio on its way to the caller: what the caller hears. Omit for no
+         * loss.
+         */
+        export interface FromAgent {
+          /**
+           * Share of packets lost, 0 to 20 in steps of 0.5.
+           */
+          packetLossPercent: number;
+
+          /**
+           * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+           */
+          meanBurstPackets?: number;
+        }
+
+        /**
+         * The caller's audio on its way to the agent: what the agent hears. Omit for no
+         * loss.
+         */
+        export interface ToAgent {
+          /**
+           * Share of packets lost, 0 to 20 in steps of 0.5.
+           */
+          packetLossPercent: number;
+
+          /**
+           * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+           */
+          meanBurstPackets?: number;
+        }
+      }
     }
 
     export interface HandoffPersona {
@@ -17842,9 +20731,11 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        * How much the persona talks over the agent while it is still speaking. OFF waits
        * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
        * taking the floor, which tests whether the agent wrongly stops for them.
-       * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-       * Timing is randomised per turn, so two runs of the same persona do not interrupt
-       * at identical moments.
+       * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+       * so readily, though never on every turn. The moments are chosen from what the
+       * agent is saying, such as reading back a number or starting a long explanation,
+       * not on a timer. A customer flow can also say exactly when to cut in, which
+       * applies at any level.
        */
       interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -18092,9 +20983,11 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        * How much the persona talks over the agent while it is still speaking. OFF waits
        * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
        * taking the floor, which tests whether the agent wrongly stops for them.
-       * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-       * Timing is randomised per turn, so two runs of the same persona do not interrupt
-       * at identical moments.
+       * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+       * so readily, though never on every turn. The moments are chosen from what the
+       * agent is saying, such as reading back a number or starting a long explanation,
+       * not on a timer. A customer flow can also say exactly when to cut in, which
+       * applies at any level.
        */
       interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -18314,6 +21207,22 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        */
       createdAt: string;
 
+      /**
+       * The per-direction loss of a CUSTOM line.
+       */
+      lineCustom: Environment.LineCustom | null;
+
+      /**
+       * The phone line the simulated caller is on: packet loss applied to its 20 ms
+       * audio packets, per direction. The loss pattern is seeded per call, so a redial
+       * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+       * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+       * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+       * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+       * burst of up to 10 packets (omit it for random loss).
+       */
+      lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
       name: string;
 
       /**
@@ -18322,6 +21231,59 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       updatedAt: string;
 
       description?: string | null;
+    }
+
+    export namespace Environment {
+      /**
+       * The per-direction loss of a CUSTOM line.
+       */
+      export interface LineCustom {
+        /**
+         * The agent's audio on its way to the caller: what the caller hears. Omit for no
+         * loss.
+         */
+        fromAgent?: LineCustom.FromAgent;
+
+        /**
+         * The caller's audio on its way to the agent: what the agent hears. Omit for no
+         * loss.
+         */
+        toAgent?: LineCustom.ToAgent;
+      }
+
+      export namespace LineCustom {
+        /**
+         * The agent's audio on its way to the caller: what the caller hears. Omit for no
+         * loss.
+         */
+        export interface FromAgent {
+          /**
+           * Share of packets lost, 0 to 20 in steps of 0.5.
+           */
+          packetLossPercent: number;
+
+          /**
+           * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+           */
+          meanBurstPackets?: number;
+        }
+
+        /**
+         * The caller's audio on its way to the agent: what the agent hears. Omit for no
+         * loss.
+         */
+        export interface ToAgent {
+          /**
+           * Share of packets lost, 0 to 20 in steps of 0.5.
+           */
+          packetLossPercent: number;
+
+          /**
+           * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+           */
+          meanBurstPackets?: number;
+        }
+      }
     }
 
     /**
@@ -18450,9 +21412,11 @@ export namespace CustomerFlowUpdateHappyPathResponse {
        * How much the persona talks over the agent while it is still speaking. OFF waits
        * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
        * taking the floor, which tests whether the agent wrongly stops for them.
-       * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-       * Timing is randomised per turn, so two runs of the same persona do not interrupt
-       * at identical moments.
+       * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+       * so readily, though never on every turn. The moments are chosen from what the
+       * agent is saying, such as reading back a number or starting a long explanation,
+       * not on a timer. A customer flow can also say exactly when to cut in, which
+       * applies at any level.
        */
       interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -18731,6 +21695,13 @@ export declare namespace CustomerFlowCreateParams {
 
       precededByCustomerFlowVariantId?: string | null;
 
+      /**
+       * The brief the simulated customer improvises from. Caller cues steer the caller
+       * from that point in the brief: `#{emotion:<emotion>}`,
+       * `#{language:<ISO 639-1 code>}`, `#{noise:<environmentId>}`, and `#{interrupt}`,
+       * whose sentence says when to cut in on your agent. Cues are voice only. See
+       * "Caller cues" in the customer flows concept.
+       */
       prompt?: string | null;
     }
 
@@ -18782,6 +21753,13 @@ export declare namespace CustomerFlowCreateParams {
 
       precededByCustomerFlowVariantId?: string | null;
 
+      /**
+       * The brief the simulated customer improvises from. Caller cues steer the caller
+       * from that point in the brief: `#{emotion:<emotion>}`,
+       * `#{language:<ISO 639-1 code>}`, `#{noise:<environmentId>}`, and `#{interrupt}`,
+       * whose sentence says when to cut in on your agent. Cues are voice only. See
+       * "Caller cues" in the customer flows concept.
+       */
       prompt?: string | null;
     }
 
@@ -18951,6 +21929,13 @@ export interface CustomerFlowUpdateHappyPathParams {
 
   precededByCustomerFlowVariantId?: string | null;
 
+  /**
+   * Improv flows only. The brief the simulated customer improvises from. Caller cues
+   * steer the caller from that point in the brief: `#{emotion:<emotion>}`,
+   * `#{language:<ISO 639-1 code>}`, `#{noise:<environmentId>}`, and `#{interrupt}`,
+   * whose sentence says when to cut in on your agent. Cues are voice only. See
+   * "Caller cues" in the customer flows concept.
+   */
   prompt?: string | null;
 
   title?: string;

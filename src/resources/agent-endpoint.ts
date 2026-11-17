@@ -126,7 +126,8 @@ export namespace AgentEndpointCreateResponse {
       | 'ELEVENLABS_WS'
       | 'KORE'
       | 'GOOGLE_CES'
-      | 'DAILY';
+      | 'DAILY'
+      | 'ROARK_WEBRTC';
 
     /**
      * Last update timestamp
@@ -199,7 +200,8 @@ export namespace AgentEndpointUpdateResponse {
       | 'ELEVENLABS_WS'
       | 'KORE'
       | 'GOOGLE_CES'
-      | 'DAILY';
+      | 'DAILY'
+      | 'ROARK_WEBRTC';
 
     /**
      * Last update timestamp
@@ -271,7 +273,8 @@ export namespace AgentEndpointListResponse {
       | 'ELEVENLABS_WS'
       | 'KORE'
       | 'GOOGLE_CES'
-      | 'DAILY';
+      | 'DAILY'
+      | 'ROARK_WEBRTC';
 
     /**
      * Last update timestamp
@@ -361,7 +364,8 @@ export namespace AgentEndpointGetByIDResponse {
       | 'ELEVENLABS_WS'
       | 'KORE'
       | 'GOOGLE_CES'
-      | 'DAILY';
+      | 'DAILY'
+      | 'ROARK_WEBRTC';
 
     /**
      * Last update timestamp

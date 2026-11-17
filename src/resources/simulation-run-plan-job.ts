@@ -571,6 +571,11 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       | 'ENDING_SIMULATIONS';
 
     /**
+     * A paced run: the dial rate it was started with, and the rate it achieved.
+     */
+    dialRate?: Data.DialRate | null;
+
+    /**
      * When the job ended
      */
     endedAt?: string | null;
@@ -804,7 +809,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'ELEVENLABS_WS'
           | 'KORE'
           | 'GOOGLE_CES'
-          | 'DAILY';
+          | 'DAILY'
+          | 'ROARK_WEBRTC';
       }
 
       /**
@@ -1002,9 +1008,11 @@ export namespace SimulationRunPlanJobGetByIDResponse {
          * How much the persona talks over the agent while it is still speaking. OFF waits
          * its turn. BACKCHANNEL makes listening noises ("mm-hm") over the agent without
          * taking the floor, which tests whether the agent wrongly stops for them.
-         * OCCASIONAL adds cutting in on some long agent turns, HEAVY on most of them.
-         * Timing is randomised per turn, so two runs of the same persona do not interrupt
-         * at identical moments.
+         * OCCASIONAL also cuts in where a caller like this plausibly would, and HEAVY does
+         * so readily, though never on every turn. The moments are chosen from what the
+         * agent is saying, such as reading back a number or starting a long explanation,
+         * not on a timer. A customer flow can also say exactly when to cut in, which
+         * applies at any level.
          */
         interruption: 'OFF' | 'BACKCHANNEL' | 'OCCASIONAL' | 'HEAVY';
 
@@ -1140,6 +1148,29 @@ export namespace SimulationRunPlanJobGetByIDResponse {
          */
         description?: string | null;
       }
+    }
+
+    /**
+     * A paced run: the dial rate it was started with, and the rate it achieved.
+     */
+    export interface DialRate {
+      /**
+       * Simulations started per second after the ramp, from the first start past it to
+       * the last. Below the target when concurrency or phone capacity held the run back.
+       * `null` until two have started.
+       */
+      achievedCallsPerSecond: number | null;
+
+      /**
+       * The ramp up to that rate, in seconds. `null` when the run started at the full
+       * rate.
+       */
+      rampUpSeconds: number | null;
+
+      /**
+       * The `callsPerSecond` the plan asked for when this run started.
+       */
+      targetCallsPerSecond: number;
     }
 
     /**
@@ -1668,7 +1699,12 @@ export namespace SimulationRunPlanJobGetCostResponse {
         | 'TRANSCRIPTION'
         | 'INTERNAL_LLM'
         | 'INTERNAL_STT'
-        | 'PHONE_NUMBER';
+        | 'PHONE_NUMBER'
+        | 'AI_AGENT'
+        | 'HOSTED_AGENT_LLM'
+        | 'HOSTED_AGENT_TTS'
+        | 'HOSTED_AGENT_STT'
+        | 'HOSTED_AGENT_TELEPHONY';
 
       /**
        * SIMULATION or POST_CALL.
@@ -1723,7 +1759,12 @@ export namespace SimulationRunPlanJobGetCostResponse {
           | 'TRANSCRIPTION'
           | 'INTERNAL_LLM'
           | 'INTERNAL_STT'
-          | 'PHONE_NUMBER';
+          | 'PHONE_NUMBER'
+          | 'AI_AGENT'
+          | 'HOSTED_AGENT_LLM'
+          | 'HOSTED_AGENT_TTS'
+          | 'HOSTED_AGENT_STT'
+          | 'HOSTED_AGENT_TELEPHONY';
 
         /**
          * SIMULATION or POST_CALL.

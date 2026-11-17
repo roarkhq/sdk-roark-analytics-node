@@ -44,6 +44,18 @@ Methods:
 
 - <code title="get /v1/usage">client.usage.<a href="./src/resources/usage.ts">get</a>({ ...params }) -> UsageGetResponse</code>
 
+# Conversation
+
+Types:
+
+- <code><a href="./src/resources/conversation.ts">ConversationListResponse</a></code>
+- <code><a href="./src/resources/conversation.ts">ConversationGetByIDResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/conversation">client.conversation.<a href="./src/resources/conversation.ts">list</a>({ ...params }) -> ConversationListResponse</code>
+- <code title="get /v1/conversation/{conversationId}">client.conversation.<a href="./src/resources/conversation.ts">getByID</a>(conversationID) -> ConversationGetByIDResponse</code>
+
 # Call
 
 Types:
@@ -360,29 +372,37 @@ Methods:
 - <code title="get /v1/persona">client.simulationPersona.<a href="./src/resources/simulation-persona.ts">list</a>({ ...params }) -> SimulationPersonaListResponse</code>
 - <code title="get /v1/persona/{personaId}">client.simulationPersona.<a href="./src/resources/simulation-persona.ts">getByID</a>(personaID) -> SimulationPersonaGetByIDResponse</code>
 
-# CustomerProfile
+# Customer
 
 Types:
 
-- <code><a href="./src/resources/customer-profile.ts">CustomerProfileListResponse</a></code>
-- <code><a href="./src/resources/customer-profile.ts">CustomerProfileDeleteResponse</a></code>
-- <code><a href="./src/resources/customer-profile.ts">CustomerProfileClearAttributeResponse</a></code>
-- <code><a href="./src/resources/customer-profile.ts">CustomerProfileGetByIDResponse</a></code>
-- <code><a href="./src/resources/customer-profile.ts">CustomerProfileListConversationsResponse</a></code>
-- <code><a href="./src/resources/customer-profile.ts">CustomerProfileSetAttributeResponse</a></code>
-- <code><a href="./src/resources/customer-profile.ts">CustomerProfileUnlockAttributeResponse</a></code>
-- <code><a href="./src/resources/customer-profile.ts">CustomerProfileUpdateNotesResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerListResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerDeleteResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerClearAttributeResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerCreateFieldResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerDeleteFieldResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerGetByIDResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerListConversationsResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerListFieldsResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerSetAttributeResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerUnlockAttributeResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerUpdateFieldResponse</a></code>
+- <code><a href="./src/resources/customer.ts">CustomerUpdateNotesResponse</a></code>
 
 Methods:
 
-- <code title="get /v1/customer-profile">client.customerProfile.<a href="./src/resources/customer-profile.ts">list</a>({ ...params }) -> CustomerProfileListResponse</code>
-- <code title="delete /v1/customer-profile/{customerProfileId}">client.customerProfile.<a href="./src/resources/customer-profile.ts">delete</a>(customerProfileID) -> CustomerProfileDeleteResponse</code>
-- <code title="delete /v1/customer-profile/{customerProfileId}/attributes/{key}">client.customerProfile.<a href="./src/resources/customer-profile.ts">clearAttribute</a>(key, { ...params }) -> CustomerProfileClearAttributeResponse</code>
-- <code title="get /v1/customer-profile/{customerProfileId}">client.customerProfile.<a href="./src/resources/customer-profile.ts">getByID</a>(customerProfileID) -> CustomerProfileGetByIDResponse</code>
-- <code title="get /v1/customer-profile/{customerProfileId}/conversations">client.customerProfile.<a href="./src/resources/customer-profile.ts">listConversations</a>(customerProfileID, { ...params }) -> CustomerProfileListConversationsResponse</code>
-- <code title="put /v1/customer-profile/{customerProfileId}/attributes/{key}">client.customerProfile.<a href="./src/resources/customer-profile.ts">setAttribute</a>(key, { ...params }) -> CustomerProfileSetAttributeResponse</code>
-- <code title="post /v1/customer-profile/{customerProfileId}/attributes/{key}/unlock">client.customerProfile.<a href="./src/resources/customer-profile.ts">unlockAttribute</a>(key, { ...params }) -> CustomerProfileUnlockAttributeResponse</code>
-- <code title="put /v1/customer-profile/{customerProfileId}/notes">client.customerProfile.<a href="./src/resources/customer-profile.ts">updateNotes</a>(customerProfileID, { ...params }) -> CustomerProfileUpdateNotesResponse</code>
+- <code title="get /v1/customer">client.customer.<a href="./src/resources/customer.ts">list</a>({ ...params }) -> CustomerListResponse</code>
+- <code title="delete /v1/customer/{customerProfileId}">client.customer.<a href="./src/resources/customer.ts">delete</a>(customerProfileID) -> CustomerDeleteResponse</code>
+- <code title="delete /v1/customer/{customerProfileId}/attributes/{key}">client.customer.<a href="./src/resources/customer.ts">clearAttribute</a>(key, { ...params }) -> CustomerClearAttributeResponse</code>
+- <code title="post /v1/customer/fields">client.customer.<a href="./src/resources/customer.ts">createField</a>({ ...params }) -> CustomerCreateFieldResponse</code>
+- <code title="delete /v1/customer/fields/{key}">client.customer.<a href="./src/resources/customer.ts">deleteField</a>(key) -> CustomerDeleteFieldResponse</code>
+- <code title="get /v1/customer/{customerProfileId}">client.customer.<a href="./src/resources/customer.ts">getByID</a>(customerProfileID) -> CustomerGetByIDResponse</code>
+- <code title="get /v1/customer/{customerProfileId}/conversations">client.customer.<a href="./src/resources/customer.ts">listConversations</a>(customerProfileID, { ...params }) -> CustomerListConversationsResponse</code>
+- <code title="get /v1/customer/fields">client.customer.<a href="./src/resources/customer.ts">listFields</a>() -> CustomerListFieldsResponse</code>
+- <code title="put /v1/customer/{customerProfileId}/attributes/{key}">client.customer.<a href="./src/resources/customer.ts">setAttribute</a>(key, { ...params }) -> CustomerSetAttributeResponse</code>
+- <code title="post /v1/customer/{customerProfileId}/attributes/{key}/unlock">client.customer.<a href="./src/resources/customer.ts">unlockAttribute</a>(key, { ...params }) -> CustomerUnlockAttributeResponse</code>
+- <code title="patch /v1/customer/fields/{key}">client.customer.<a href="./src/resources/customer.ts">updateField</a>(key, { ...params }) -> CustomerUpdateFieldResponse</code>
+- <code title="put /v1/customer/{customerProfileId}/notes">client.customer.<a href="./src/resources/customer.ts">updateNotes</a>(customerProfileID, { ...params }) -> CustomerUpdateNotesResponse</code>
 
 # SimulationEnvironment
 
@@ -567,6 +587,26 @@ Methods:
 - <code title="get /v1/agent/{agentId}/prompts">client.agentPrompt.<a href="./src/resources/agent-prompt.ts">list</a>(agentID) -> AgentPromptListResponse</code>
 - <code title="get /v1/agent/{agentId}/prompts/{promptId}/versions">client.agentPrompt.<a href="./src/resources/agent-prompt.ts">listVersions</a>(promptID, { ...params }) -> AgentPromptListVersionsResponse</code>
 
+# AgentSetup
+
+Types:
+
+- <code><a href="./src/resources/agent-setup.ts">AgentSetupCreateResponse</a></code>
+- <code><a href="./src/resources/agent-setup.ts">AgentSetupAnswerQuestionResponse</a></code>
+- <code><a href="./src/resources/agent-setup.ts">AgentSetupCancelResponse</a></code>
+- <code><a href="./src/resources/agent-setup.ts">AgentSetupGetByIDResponse</a></code>
+- <code><a href="./src/resources/agent-setup.ts">AgentSetupGetLatestResponse</a></code>
+- <code><a href="./src/resources/agent-setup.ts">AgentSetupSendGuidanceResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/agent/{agentId}/setup">client.agentSetup.<a href="./src/resources/agent-setup.ts">create</a>(agentID, { ...params }) -> AgentSetupCreateResponse</code>
+- <code title="post /v1/agent/{agentId}/setup/{setupId}/answer">client.agentSetup.<a href="./src/resources/agent-setup.ts">answerQuestion</a>(setupID, { ...params }) -> AgentSetupAnswerQuestionResponse</code>
+- <code title="post /v1/agent/{agentId}/setup/{setupId}/cancel">client.agentSetup.<a href="./src/resources/agent-setup.ts">cancel</a>(setupID, { ...params }) -> AgentSetupCancelResponse</code>
+- <code title="get /v1/agent/{agentId}/setup/{setupId}">client.agentSetup.<a href="./src/resources/agent-setup.ts">getByID</a>(setupID, { ...params }) -> AgentSetupGetByIDResponse</code>
+- <code title="get /v1/agent/{agentId}/setup">client.agentSetup.<a href="./src/resources/agent-setup.ts">getLatest</a>(agentID) -> AgentSetupGetLatestResponse</code>
+- <code title="post /v1/agent/{agentId}/setup/{setupId}/guidance">client.agentSetup.<a href="./src/resources/agent-setup.ts">sendGuidance</a>(setupID, { ...params }) -> AgentSetupSendGuidanceResponse</code>
+
 # AgentVersion
 
 Types:
@@ -598,6 +638,16 @@ Methods:
 - <code title="delete /v1/agent/{agentId}/draft">client.agentDraft.<a href="./src/resources/agent-draft.ts">delete</a>(agentID) -> AgentDraftDeleteResponse</code>
 - <code title="get /v1/agent/{agentId}/draft">client.agentDraft.<a href="./src/resources/agent-draft.ts">get</a>(agentID) -> AgentDraftGetResponse</code>
 - <code title="post /v1/agent/{agentId}/draft/publish">client.agentDraft.<a href="./src/resources/agent-draft.ts">publish</a>(agentID, { ...params }) -> AgentDraftPublishResponse</code>
+
+# AgentConversation
+
+Types:
+
+- <code><a href="./src/resources/agent-conversation.ts">AgentConversationCreateResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/agent/{agentId}/conversations">client.agentConversation.<a href="./src/resources/agent-conversation.ts">create</a>(agentID, { ...params }) -> AgentConversationCreateResponse</code>
 
 # Tool
 
@@ -642,20 +692,82 @@ Types:
 - <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionListResponse</a></code>
 - <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionDeleteResponse</a></code>
 - <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionCheckResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionCreateTargetResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionDeleteTargetResponse</a></code>
 - <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionGetByIDResponse</a></code>
 - <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionGetTargetResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionListCalendarsResponse</a></code>
 - <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionListTargetsResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionStartCalendlyOauthResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionStartGoogleOauthResponse</a></code>
+- <code><a href="./src/resources/calendar-connection.ts">CalendarConnectionUpdateTargetResponse</a></code>
 
 Methods:
 
-- <code title="post /v1/calendar-connection">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">create</a>({ ...params }) -> CalendarConnectionCreateResponse</code>
-- <code title="patch /v1/calendar-connection/{connectionId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">update</a>(connectionID, { ...params }) -> CalendarConnectionUpdateResponse</code>
-- <code title="get /v1/calendar-connection">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">list</a>({ ...params }) -> CalendarConnectionListResponse</code>
-- <code title="delete /v1/calendar-connection/{connectionId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">delete</a>(connectionID) -> CalendarConnectionDeleteResponse</code>
-- <code title="post /v1/calendar-connection/{connectionId}/check">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">check</a>(connectionID) -> CalendarConnectionCheckResponse</code>
-- <code title="get /v1/calendar-connection/{connectionId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">getByID</a>(connectionID) -> CalendarConnectionGetByIDResponse</code>
-- <code title="get /v1/calendar-connection/{connectionId}/targets/{targetId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">getTarget</a>(targetID, { ...params }) -> CalendarConnectionGetTargetResponse</code>
-- <code title="get /v1/calendar-connection/{connectionId}/targets">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">listTargets</a>(connectionID) -> CalendarConnectionListTargetsResponse</code>
+- <code title="post /v1/connections/calendar">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">create</a>({ ...params }) -> CalendarConnectionCreateResponse</code>
+- <code title="patch /v1/connections/calendar/{connectionId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">update</a>(connectionID, { ...params }) -> CalendarConnectionUpdateResponse</code>
+- <code title="get /v1/connections/calendar">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">list</a>({ ...params }) -> CalendarConnectionListResponse</code>
+- <code title="delete /v1/connections/calendar/{connectionId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">delete</a>(connectionID) -> CalendarConnectionDeleteResponse</code>
+- <code title="post /v1/connections/calendar/{connectionId}/check">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">check</a>(connectionID) -> CalendarConnectionCheckResponse</code>
+- <code title="post /v1/connections/calendar/{connectionId}/targets">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">createTarget</a>(connectionID, { ...params }) -> CalendarConnectionCreateTargetResponse</code>
+- <code title="delete /v1/connections/calendar/{connectionId}/targets/{targetId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">deleteTarget</a>(targetID, { ...params }) -> CalendarConnectionDeleteTargetResponse</code>
+- <code title="get /v1/connections/calendar/{connectionId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">getByID</a>(connectionID) -> CalendarConnectionGetByIDResponse</code>
+- <code title="get /v1/connections/calendar/{connectionId}/targets/{targetId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">getTarget</a>(targetID, { ...params }) -> CalendarConnectionGetTargetResponse</code>
+- <code title="get /v1/connections/calendar/{connectionId}/calendars">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">listCalendars</a>(connectionID) -> CalendarConnectionListCalendarsResponse</code>
+- <code title="get /v1/connections/calendar/{connectionId}/targets">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">listTargets</a>(connectionID) -> CalendarConnectionListTargetsResponse</code>
+- <code title="post /v1/connections/calendar/calendly/authorize-url">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">startCalendlyOauth</a>({ ...params }) -> CalendarConnectionStartCalendlyOauthResponse</code>
+- <code title="post /v1/connections/calendar/google/authorize-url">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">startGoogleOauth</a>({ ...params }) -> CalendarConnectionStartGoogleOauthResponse</code>
+- <code title="put /v1/connections/calendar/{connectionId}/targets/{targetId}">client.calendarConnection.<a href="./src/resources/calendar-connection.ts">updateTarget</a>(targetID, { ...params }) -> CalendarConnectionUpdateTargetResponse</code>
+
+# McpServer
+
+Types:
+
+- <code><a href="./src/resources/mcp-server.ts">McpServerCreateResponse</a></code>
+- <code><a href="./src/resources/mcp-server.ts">McpServerUpdateResponse</a></code>
+- <code><a href="./src/resources/mcp-server.ts">McpServerListResponse</a></code>
+- <code><a href="./src/resources/mcp-server.ts">McpServerDeleteResponse</a></code>
+- <code><a href="./src/resources/mcp-server.ts">McpServerDiscoverResponse</a></code>
+- <code><a href="./src/resources/mcp-server.ts">McpServerGetByIDResponse</a></code>
+- <code><a href="./src/resources/mcp-server.ts">McpServerRefreshResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/connections/mcp-server">client.mcpServer.<a href="./src/resources/mcp-server.ts">create</a>({ ...params }) -> McpServerCreateResponse</code>
+- <code title="patch /v1/connections/mcp-server/{serverId}">client.mcpServer.<a href="./src/resources/mcp-server.ts">update</a>(serverID, { ...params }) -> McpServerUpdateResponse</code>
+- <code title="get /v1/connections/mcp-server">client.mcpServer.<a href="./src/resources/mcp-server.ts">list</a>() -> McpServerListResponse</code>
+- <code title="delete /v1/connections/mcp-server/{serverId}">client.mcpServer.<a href="./src/resources/mcp-server.ts">delete</a>(serverID) -> McpServerDeleteResponse</code>
+- <code title="post /v1/connections/mcp-server/discover">client.mcpServer.<a href="./src/resources/mcp-server.ts">discover</a>({ ...params }) -> McpServerDiscoverResponse</code>
+- <code title="get /v1/connections/mcp-server/{serverId}">client.mcpServer.<a href="./src/resources/mcp-server.ts">getByID</a>(serverID) -> McpServerGetByIDResponse</code>
+- <code title="post /v1/connections/mcp-server/{serverId}/refresh">client.mcpServer.<a href="./src/resources/mcp-server.ts">refresh</a>(serverID) -> McpServerRefreshResponse</code>
+
+# AgentConnection
+
+Types:
+
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionCreateResponse</a></code>
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionUpdateResponse</a></code>
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionListResponse</a></code>
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionDeleteResponse</a></code>
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionCancelBackfillResponse</a></code>
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionCreateBackfillResponse</a></code>
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionDiscoverResponse</a></code>
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionGetByIDResponse</a></code>
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionListBackfillsResponse</a></code>
+- <code><a href="./src/resources/agent-connection.ts">AgentConnectionListProvidersResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/connections/agent">client.agentConnection.<a href="./src/resources/agent-connection.ts">create</a>({ ...params }) -> AgentConnectionCreateResponse</code>
+- <code title="patch /v1/connections/agent/{connectionId}">client.agentConnection.<a href="./src/resources/agent-connection.ts">update</a>(connectionID, { ...params }) -> AgentConnectionUpdateResponse</code>
+- <code title="get /v1/connections/agent">client.agentConnection.<a href="./src/resources/agent-connection.ts">list</a>({ ...params }) -> AgentConnectionListResponse</code>
+- <code title="delete /v1/connections/agent/{connectionId}">client.agentConnection.<a href="./src/resources/agent-connection.ts">delete</a>(connectionID) -> AgentConnectionDeleteResponse</code>
+- <code title="post /v1/connections/agent/{connectionId}/backfills/{backfillId}/cancel">client.agentConnection.<a href="./src/resources/agent-connection.ts">cancelBackfill</a>(backfillID, { ...params }) -> AgentConnectionCancelBackfillResponse</code>
+- <code title="post /v1/connections/agent/{connectionId}/backfills">client.agentConnection.<a href="./src/resources/agent-connection.ts">createBackfill</a>(connectionID, { ...params }) -> AgentConnectionCreateBackfillResponse</code>
+- <code title="post /v1/connections/agent/discover">client.agentConnection.<a href="./src/resources/agent-connection.ts">discover</a>({ ...params }) -> AgentConnectionDiscoverResponse</code>
+- <code title="get /v1/connections/agent/{connectionId}">client.agentConnection.<a href="./src/resources/agent-connection.ts">getByID</a>(connectionID) -> AgentConnectionGetByIDResponse</code>
+- <code title="get /v1/connections/agent/{connectionId}/backfills">client.agentConnection.<a href="./src/resources/agent-connection.ts">listBackfills</a>(connectionID) -> AgentConnectionListBackfillsResponse</code>
+- <code title="get /v1/connections/agent/providers">client.agentConnection.<a href="./src/resources/agent-connection.ts">listProviders</a>() -> AgentConnectionListProvidersResponse</code>
 
 # Webhook
 

@@ -112,6 +112,8 @@ export namespace WebhookCreateResponse {
       | 'CHAT_ANALYSIS_FAILED'
       | 'ISSUE_OPENED'
       | 'ISSUE_RESOLVED'
+      | 'AGENT_SETUP_COMPLETED'
+      | 'AGENT_SETUP_FAILED'
     >;
 
     /**
@@ -185,6 +187,8 @@ export namespace WebhookListResponse {
       | 'CHAT_ANALYSIS_FAILED'
       | 'ISSUE_OPENED'
       | 'ISSUE_RESOLVED'
+      | 'AGENT_SETUP_COMPLETED'
+      | 'AGENT_SETUP_FAILED'
     >;
 
     /**
@@ -284,6 +288,8 @@ export namespace WebhookGetByIDResponse {
       | 'CHAT_ANALYSIS_FAILED'
       | 'ISSUE_OPENED'
       | 'ISSUE_RESOLVED'
+      | 'AGENT_SETUP_COMPLETED'
+      | 'AGENT_SETUP_FAILED'
     >;
 
     /**
@@ -327,6 +333,8 @@ export interface WebhookCreateParams {
     | 'CHAT_ANALYSIS_FAILED'
     | 'ISSUE_OPENED'
     | 'ISSUE_RESOLVED'
+    | 'AGENT_SETUP_COMPLETED'
+    | 'AGENT_SETUP_FAILED'
   >;
 
   /**

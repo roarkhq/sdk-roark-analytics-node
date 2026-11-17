@@ -1,4 +1,4 @@
-configured_endpoints: 188
+configured_endpoints: 224
 openapi_spec_url: https://api.roark.ai/doc
-openapi_spec_hash: 0bc48b68636488cecc6d0d7ccd2b3a1e
-config_hash: bd8e9a9a4458f6220048a888e6bb1365
+openapi_spec_hash: 389038ef6d22f33fed4ab9e7c5176bf5
+config_hash: c312fd96c49efd0118dba9e6682701f2
