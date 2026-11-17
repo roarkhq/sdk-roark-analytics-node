@@ -145,6 +145,18 @@ export namespace SimulationRunPlanCreateResponse {
       agentEndpoints: Array<RunPlan.AgentEndpoint>;
 
       /**
+       * The most simulations a run starts per second (0.01-10), fractional allowed: 0.2
+       * starts one every 5 seconds. Omitted or `null` starts them as fast as
+       * `maxConcurrentJobs` allows. The concurrency limit still applies on top, so a run
+       * holds the rate only while calls last under `maxConcurrentJobs` /
+       * `callsPerSecond` seconds. A run reports the rate it achieved as
+       * `dialRate.achievedCallsPerSecond`. A rate above the project's concurrency limit
+       * / 30 is refused with 400: that limit could only hold it with calls under 30
+       * seconds.
+       */
+      callsPerSecond: number | null;
+
+      /**
        * The reference value of `comparisonProperty`, such as `NONE` for
        * `BACKGROUND_NOISE`: shown first in the results. Whether a value did
        * significantly worse does not depend on it: that is decided against every other
@@ -169,6 +181,7 @@ export namespace SimulationRunPlanCreateResponse {
         | 'INTENT_CLARITY'
         | 'LANGUAGE'
         | 'INTERRUPTION'
+        | 'LINE_QUALITY'
         | 'MEMORY_RELIABILITY'
         | 'RESPONSE_TIMING'
         | 'SPEECH_CLARITY'
@@ -289,6 +302,12 @@ export namespace SimulationRunPlanCreateResponse {
        * Personas included in this run plan. Only meaningful alongside `scenarios`.
        */
       personas: Array<RunPlan.Persona>;
+
+      /**
+       * Seconds over which the rate climbs linearly from 0 to `callsPerSecond` (0-3600).
+       * Omitted, `null` or 0 starts at the full rate. Only used with `callsPerSecond`.
+       */
+      rampUpSeconds: number | null;
 
       /**
        * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
@@ -429,6 +448,7 @@ export namespace SimulationRunPlanCreateResponse {
             | 'INTENT_CLARITY'
             | 'LANGUAGE'
             | 'INTERRUPTION'
+            | 'LINE_QUALITY'
             | 'MEMORY_RELIABILITY'
             | 'RESPONSE_TIMING'
             | 'SPEECH_CLARITY'
@@ -555,6 +575,18 @@ export namespace SimulationRunPlanUpdateResponse {
     agentEndpoints: Array<Data.AgentEndpoint>;
 
     /**
+     * The most simulations a run starts per second (0.01-10), fractional allowed: 0.2
+     * starts one every 5 seconds. Omitted or `null` starts them as fast as
+     * `maxConcurrentJobs` allows. The concurrency limit still applies on top, so a run
+     * holds the rate only while calls last under `maxConcurrentJobs` /
+     * `callsPerSecond` seconds. A run reports the rate it achieved as
+     * `dialRate.achievedCallsPerSecond`. A rate above the project's concurrency limit
+     * / 30 is refused with 400: that limit could only hold it with calls under 30
+     * seconds.
+     */
+    callsPerSecond: number | null;
+
+    /**
      * The reference value of `comparisonProperty`, such as `NONE` for
      * `BACKGROUND_NOISE`: shown first in the results. Whether a value did
      * significantly worse does not depend on it: that is decided against every other
@@ -579,6 +611,7 @@ export namespace SimulationRunPlanUpdateResponse {
       | 'INTENT_CLARITY'
       | 'LANGUAGE'
       | 'INTERRUPTION'
+      | 'LINE_QUALITY'
       | 'MEMORY_RELIABILITY'
       | 'RESPONSE_TIMING'
       | 'SPEECH_CLARITY'
@@ -699,6 +732,12 @@ export namespace SimulationRunPlanUpdateResponse {
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
+
+    /**
+     * Seconds over which the rate climbs linearly from 0 to `callsPerSecond` (0-3600).
+     * Omitted, `null` or 0 starts at the full rate. Only used with `callsPerSecond`.
+     */
+    rampUpSeconds: number | null;
 
     /**
      * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
@@ -839,6 +878,7 @@ export namespace SimulationRunPlanUpdateResponse {
           | 'INTENT_CLARITY'
           | 'LANGUAGE'
           | 'INTERRUPTION'
+          | 'LINE_QUALITY'
           | 'MEMORY_RELIABILITY'
           | 'RESPONSE_TIMING'
           | 'SPEECH_CLARITY'
@@ -929,6 +969,18 @@ export namespace SimulationRunPlanListResponse {
     agentEndpoints: Array<Data.AgentEndpoint>;
 
     /**
+     * The most simulations a run starts per second (0.01-10), fractional allowed: 0.2
+     * starts one every 5 seconds. Omitted or `null` starts them as fast as
+     * `maxConcurrentJobs` allows. The concurrency limit still applies on top, so a run
+     * holds the rate only while calls last under `maxConcurrentJobs` /
+     * `callsPerSecond` seconds. A run reports the rate it achieved as
+     * `dialRate.achievedCallsPerSecond`. A rate above the project's concurrency limit
+     * / 30 is refused with 400: that limit could only hold it with calls under 30
+     * seconds.
+     */
+    callsPerSecond: number | null;
+
+    /**
      * The reference value of `comparisonProperty`, such as `NONE` for
      * `BACKGROUND_NOISE`: shown first in the results. Whether a value did
      * significantly worse does not depend on it: that is decided against every other
@@ -953,6 +1005,7 @@ export namespace SimulationRunPlanListResponse {
       | 'INTENT_CLARITY'
       | 'LANGUAGE'
       | 'INTERRUPTION'
+      | 'LINE_QUALITY'
       | 'MEMORY_RELIABILITY'
       | 'RESPONSE_TIMING'
       | 'SPEECH_CLARITY'
@@ -1073,6 +1126,12 @@ export namespace SimulationRunPlanListResponse {
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
+
+    /**
+     * Seconds over which the rate climbs linearly from 0 to `callsPerSecond` (0-3600).
+     * Omitted, `null` or 0 starts at the full rate. Only used with `callsPerSecond`.
+     */
+    rampUpSeconds: number | null;
 
     /**
      * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
@@ -1213,6 +1272,7 @@ export namespace SimulationRunPlanListResponse {
           | 'INTENT_CLARITY'
           | 'LANGUAGE'
           | 'INTERRUPTION'
+          | 'LINE_QUALITY'
           | 'MEMORY_RELIABILITY'
           | 'RESPONSE_TIMING'
           | 'SPEECH_CLARITY'
@@ -1331,6 +1391,18 @@ export namespace SimulationRunPlanGetByIDResponse {
     agentEndpoints: Array<Data.AgentEndpoint>;
 
     /**
+     * The most simulations a run starts per second (0.01-10), fractional allowed: 0.2
+     * starts one every 5 seconds. Omitted or `null` starts them as fast as
+     * `maxConcurrentJobs` allows. The concurrency limit still applies on top, so a run
+     * holds the rate only while calls last under `maxConcurrentJobs` /
+     * `callsPerSecond` seconds. A run reports the rate it achieved as
+     * `dialRate.achievedCallsPerSecond`. A rate above the project's concurrency limit
+     * / 30 is refused with 400: that limit could only hold it with calls under 30
+     * seconds.
+     */
+    callsPerSecond: number | null;
+
+    /**
      * The reference value of `comparisonProperty`, such as `NONE` for
      * `BACKGROUND_NOISE`: shown first in the results. Whether a value did
      * significantly worse does not depend on it: that is decided against every other
@@ -1355,6 +1427,7 @@ export namespace SimulationRunPlanGetByIDResponse {
       | 'INTENT_CLARITY'
       | 'LANGUAGE'
       | 'INTERRUPTION'
+      | 'LINE_QUALITY'
       | 'MEMORY_RELIABILITY'
       | 'RESPONSE_TIMING'
       | 'SPEECH_CLARITY'
@@ -1475,6 +1548,12 @@ export namespace SimulationRunPlanGetByIDResponse {
      * Personas included in this run plan. Only meaningful alongside `scenarios`.
      */
     personas: Array<Data.Persona>;
+
+    /**
+     * Seconds over which the rate climbs linearly from 0 to `callsPerSecond` (0-3600).
+     * Omitted, `null` or 0 starts at the full rate. Only used with `callsPerSecond`.
+     */
+    rampUpSeconds: number | null;
 
     /**
      * @deprecated Deprecated: use `flows` instead. Scenarios included in this run
@@ -1615,6 +1694,7 @@ export namespace SimulationRunPlanGetByIDResponse {
           | 'INTENT_CLARITY'
           | 'LANGUAGE'
           | 'INTERRUPTION'
+          | 'LINE_QUALITY'
           | 'MEMORY_RELIABILITY'
           | 'RESPONSE_TIMING'
           | 'SPEECH_CLARITY'
@@ -1714,6 +1794,18 @@ export declare namespace SimulationRunPlanCreateParams {
     autoRun?: boolean;
 
     /**
+     * The most simulations a run starts per second (0.01-10), fractional allowed: 0.2
+     * starts one every 5 seconds. Omitted or `null` starts them as fast as
+     * `maxConcurrentJobs` allows. The concurrency limit still applies on top, so a run
+     * holds the rate only while calls last under `maxConcurrentJobs` /
+     * `callsPerSecond` seconds. A run reports the rate it achieved as
+     * `dialRate.achievedCallsPerSecond`. A rate above the project's concurrency limit
+     * / 30 is refused with 400: that limit could only hold it with calls under 30
+     * seconds.
+     */
+    callsPerSecond?: number | null;
+
+    /**
      * The reference value of `comparisonProperty`, for example `NONE` for
      * `BACKGROUND_NOISE` or `NORMAL` for `SPEECH_PACE`: shown first in the results.
      * Must be a value that property can take. Whether a value did significantly worse
@@ -1751,6 +1843,7 @@ export declare namespace SimulationRunPlanCreateParams {
       | 'INTENT_CLARITY'
       | 'LANGUAGE'
       | 'INTERRUPTION'
+      | 'LINE_QUALITY'
       | 'MEMORY_RELIABILITY'
       | 'RESPONSE_TIMING'
       | 'SPEECH_CLARITY'
@@ -1919,6 +2012,12 @@ export declare namespace SimulationRunPlanCreateParams {
     personas?: Array<CreateRunPlanFromConfig.Persona>;
 
     /**
+     * Seconds over which the rate climbs linearly from 0 to `callsPerSecond` (0-3600).
+     * Omitted, `null` or 0 starts at the full rate. Only used with `callsPerSecond`.
+     */
+    rampUpSeconds?: number | null;
+
+    /**
      * @deprecated Deprecated: use `flows` instead. Scenarios to include in this run
      * plan. The same scenario ID can appear multiple times with different variables.
      */
@@ -2053,6 +2152,7 @@ export declare namespace SimulationRunPlanCreateParams {
           | 'INTENT_CLARITY'
           | 'LANGUAGE'
           | 'INTERRUPTION'
+          | 'LINE_QUALITY'
           | 'MEMORY_RELIABILITY'
           | 'RESPONSE_TIMING'
           | 'SPEECH_CLARITY'
@@ -2185,6 +2285,18 @@ export declare namespace SimulationRunPlanCreateParams {
      * one of them here again keeps it once, with the success criteria you set on it.
      */
     additionalMetrics?: Array<CreateRunPlanFromTemplate.AdditionalMetric>;
+
+    /**
+     * The most simulations a run starts per second (0.01-10), fractional allowed: 0.2
+     * starts one every 5 seconds. Omitted or `null` starts them as fast as
+     * `maxConcurrentJobs` allows. The concurrency limit still applies on top, so a run
+     * holds the rate only while calls last under `maxConcurrentJobs` /
+     * `callsPerSecond` seconds. A run reports the rate it achieved as
+     * `dialRate.achievedCallsPerSecond`. A rate above the project's concurrency limit
+     * / 30 is refused with 400: that limit could only hold it with calls under 30
+     * seconds.
+     */
+    callsPerSecond?: number | null;
 
     /**
      * The sweep's reference value, shown first in the results. Defaults to the
@@ -2328,6 +2440,12 @@ export declare namespace SimulationRunPlanCreateParams {
      * expected for each. Every question runs as its own graded call.
      */
     questions?: Array<CreateRunPlanFromTemplate.Question>;
+
+    /**
+     * Seconds over which the rate climbs linearly from 0 to `callsPerSecond` (0-3600).
+     * Omitted, `null` or 0 starts at the full rate. Only used with `callsPerSecond`.
+     */
+    rampUpSeconds?: number | null;
 
     /**
      * Timeout in seconds for silence detection
@@ -2499,6 +2617,7 @@ export declare namespace SimulationRunPlanCreateParams {
           | 'INTENT_CLARITY'
           | 'LANGUAGE'
           | 'INTERRUPTION'
+          | 'LINE_QUALITY'
           | 'MEMORY_RELIABILITY'
           | 'RESPONSE_TIMING'
           | 'SPEECH_CLARITY'
@@ -2571,6 +2690,18 @@ export interface SimulationRunPlanUpdateParams {
   agentEndpoints?: Array<SimulationRunPlanUpdateParams.AgentEndpoint>;
 
   /**
+   * The most simulations a run starts per second (0.01-10), fractional allowed: 0.2
+   * starts one every 5 seconds. Omitted or `null` starts them as fast as
+   * `maxConcurrentJobs` allows. The concurrency limit still applies on top, so a run
+   * holds the rate only while calls last under `maxConcurrentJobs` /
+   * `callsPerSecond` seconds. A run reports the rate it achieved as
+   * `dialRate.achievedCallsPerSecond`. A rate above the project's concurrency limit
+   * / 30 is refused with 400: that limit could only hold it with calls under 30
+   * seconds. Send `null` to remove the rate; omit to leave it unchanged.
+   */
+  callsPerSecond?: number | null;
+
+  /**
    * The reference value, shown first in the results. See `POST /v1/simulation/plan`.
    *
    * A real value cannot be sent on its own: the property it belongs to decides which
@@ -2606,6 +2737,7 @@ export interface SimulationRunPlanUpdateParams {
     | 'INTENT_CLARITY'
     | 'LANGUAGE'
     | 'INTERRUPTION'
+    | 'LINE_QUALITY'
     | 'MEMORY_RELIABILITY'
     | 'RESPONSE_TIMING'
     | 'SPEECH_CLARITY'
@@ -2735,6 +2867,13 @@ export interface SimulationRunPlanUpdateParams {
    * Personas to include in this run plan
    */
   personas?: Array<SimulationRunPlanUpdateParams.Persona>;
+
+  /**
+   * Seconds over which the rate climbs linearly from 0 to `callsPerSecond` (0-3600).
+   * Omitted, `null` or 0 starts at the full rate. Only used with `callsPerSecond`.
+   * Send `null` to remove the ramp; omit to leave it unchanged.
+   */
+  rampUpSeconds?: number | null;
 
   /**
    * @deprecated Deprecated: use `flows` instead. Replaces the scenarios on this run
@@ -2872,6 +3011,7 @@ export namespace SimulationRunPlanUpdateParams {
         | 'INTENT_CLARITY'
         | 'LANGUAGE'
         | 'INTERRUPTION'
+        | 'LINE_QUALITY'
         | 'MEMORY_RELIABILITY'
         | 'RESPONSE_TIMING'
         | 'SPEECH_CLARITY'

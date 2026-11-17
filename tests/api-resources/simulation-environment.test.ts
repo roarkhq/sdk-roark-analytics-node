@@ -28,6 +28,11 @@ describe('resource simulationEnvironment', () => {
       name: 'Busy call centre',
       backgroundNoiseVolume: 0.3,
       description: 'Open-plan office at peak hours',
+      lineCustom: {
+        fromAgent: { packetLossPercent: 3, meanBurstPackets: 3 },
+        toAgent: { packetLossPercent: 3, meanBurstPackets: 3 },
+      },
+      lineQuality: 'CELL_EDGE',
     });
   });
 
@@ -51,6 +56,11 @@ describe('resource simulationEnvironment', () => {
           backgroundNoise: 'OFFICE',
           backgroundNoiseVolume: 0.3,
           description: 'Open-plan office at peak hours',
+          lineCustom: {
+            fromAgent: { packetLossPercent: 3, meanBurstPackets: 3 },
+            toAgent: { packetLossPercent: 3, meanBurstPackets: 3 },
+          },
+          lineQuality: 'CELL_EDGE',
           name: 'Busy call centre',
         },
         { path: '/_stainless_unknown_path' },

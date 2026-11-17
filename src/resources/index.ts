@@ -25,6 +25,30 @@ export {
   type AgentConfigResolveParams,
 } from './agent-config';
 export {
+  AgentConnection,
+  type AgentConnectionCreateResponse,
+  type AgentConnectionUpdateResponse,
+  type AgentConnectionListResponse,
+  type AgentConnectionDeleteResponse,
+  type AgentConnectionCancelBackfillResponse,
+  type AgentConnectionCreateBackfillResponse,
+  type AgentConnectionDiscoverResponse,
+  type AgentConnectionGetByIDResponse,
+  type AgentConnectionListBackfillsResponse,
+  type AgentConnectionListProvidersResponse,
+  type AgentConnectionCreateParams,
+  type AgentConnectionUpdateParams,
+  type AgentConnectionListParams,
+  type AgentConnectionCancelBackfillParams,
+  type AgentConnectionCreateBackfillParams,
+  type AgentConnectionDiscoverParams,
+} from './agent-connection';
+export {
+  AgentConversation,
+  type AgentConversationCreateResponse,
+  type AgentConversationCreateParams,
+} from './agent-conversation';
+export {
   AgentDraft,
   type AgentDraftCreateResponse,
   type AgentDraftUpdateResponse,
@@ -53,6 +77,20 @@ export {
   type AgentPromptUpdateParams,
   type AgentPromptListVersionsParams,
 } from './agent-prompt';
+export {
+  AgentSetup,
+  type AgentSetupCreateResponse,
+  type AgentSetupAnswerQuestionResponse,
+  type AgentSetupCancelResponse,
+  type AgentSetupGetByIDResponse,
+  type AgentSetupGetLatestResponse,
+  type AgentSetupSendGuidanceResponse,
+  type AgentSetupCreateParams,
+  type AgentSetupAnswerQuestionParams,
+  type AgentSetupCancelParams,
+  type AgentSetupGetByIDParams,
+  type AgentSetupSendGuidanceParams,
+} from './agent-setup';
 export {
   AgentVersion,
   type AgentVersionListResponse,
@@ -104,13 +142,24 @@ export {
   type CalendarConnectionListResponse,
   type CalendarConnectionDeleteResponse,
   type CalendarConnectionCheckResponse,
+  type CalendarConnectionCreateTargetResponse,
+  type CalendarConnectionDeleteTargetResponse,
   type CalendarConnectionGetByIDResponse,
   type CalendarConnectionGetTargetResponse,
+  type CalendarConnectionListCalendarsResponse,
   type CalendarConnectionListTargetsResponse,
+  type CalendarConnectionStartCalendlyOauthResponse,
+  type CalendarConnectionStartGoogleOauthResponse,
+  type CalendarConnectionUpdateTargetResponse,
   type CalendarConnectionCreateParams,
   type CalendarConnectionUpdateParams,
   type CalendarConnectionListParams,
+  type CalendarConnectionCreateTargetParams,
+  type CalendarConnectionDeleteTargetParams,
   type CalendarConnectionGetTargetParams,
+  type CalendarConnectionStartCalendlyOauthParams,
+  type CalendarConnectionStartGoogleOauthParams,
+  type CalendarConnectionUpdateTargetParams,
 } from './calendar-connection';
 export {
   Call,
@@ -143,6 +192,35 @@ export {
   type ConfigDiffParams,
 } from './config';
 export {
+  Conversation,
+  type ConversationListResponse,
+  type ConversationGetByIDResponse,
+  type ConversationListParams,
+} from './conversation';
+export {
+  Customer,
+  type CustomerListResponse,
+  type CustomerDeleteResponse,
+  type CustomerClearAttributeResponse,
+  type CustomerCreateFieldResponse,
+  type CustomerDeleteFieldResponse,
+  type CustomerGetByIDResponse,
+  type CustomerListConversationsResponse,
+  type CustomerListFieldsResponse,
+  type CustomerSetAttributeResponse,
+  type CustomerUnlockAttributeResponse,
+  type CustomerUpdateFieldResponse,
+  type CustomerUpdateNotesResponse,
+  type CustomerListParams,
+  type CustomerClearAttributeParams,
+  type CustomerCreateFieldParams,
+  type CustomerListConversationsParams,
+  type CustomerSetAttributeParams,
+  type CustomerUnlockAttributeParams,
+  type CustomerUpdateFieldParams,
+  type CustomerUpdateNotesParams,
+} from './customer';
+export {
   CustomerFlow,
   type FlowStep,
   type CustomerFlowCreateResponse,
@@ -171,23 +249,6 @@ export {
   type CustomerFlowEdgeCasePromoteParams,
   type CustomerFlowEdgeCaseRemoveParams,
 } from './customer-flow-edge-case';
-export {
-  CustomerProfile,
-  type CustomerProfileListResponse,
-  type CustomerProfileDeleteResponse,
-  type CustomerProfileClearAttributeResponse,
-  type CustomerProfileGetByIDResponse,
-  type CustomerProfileListConversationsResponse,
-  type CustomerProfileSetAttributeResponse,
-  type CustomerProfileUnlockAttributeResponse,
-  type CustomerProfileUpdateNotesResponse,
-  type CustomerProfileListParams,
-  type CustomerProfileClearAttributeParams,
-  type CustomerProfileListConversationsParams,
-  type CustomerProfileSetAttributeParams,
-  type CustomerProfileUnlockAttributeParams,
-  type CustomerProfileUpdateNotesParams,
-} from './customer-profile';
 export {
   Dashboard,
   type DashboardCreateResponse,
@@ -236,6 +297,19 @@ export {
   type LiveReportListDocumentsParams,
   type LiveReportRunParams,
 } from './live-report';
+export {
+  McpServer,
+  type McpServerCreateResponse,
+  type McpServerUpdateResponse,
+  type McpServerListResponse,
+  type McpServerDeleteResponse,
+  type McpServerDiscoverResponse,
+  type McpServerGetByIDResponse,
+  type McpServerRefreshResponse,
+  type McpServerCreateParams,
+  type McpServerUpdateParams,
+  type McpServerDiscoverParams,
+} from './mcp-server';
 export {
   Me,
   type MeCreateAPIKeyResponse,

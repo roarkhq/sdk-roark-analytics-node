@@ -86,6 +86,8 @@ export namespace Bundle {
 
     llm?: AgentConfig.Llm;
 
+    modalities?: Array<'voice' | 'chat' | 'call'>;
+
     prompt?: string | null;
 
     provider?:
@@ -129,17 +131,28 @@ export namespace Bundle {
     export interface Llm {
       model: string;
 
-      provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+      provider:
+        | 'OPENAI'
+        | 'ANTHROPIC'
+        | 'GOOGLE'
+        | 'XAI'
+        | 'ULTRAVOX'
+        | 'AWS'
+        | 'ELEVENLABS'
+        | 'GROQ'
+        | 'META'
+        | 'RIME'
+        | 'PHONIC';
     }
 
     export interface Stt {
       model: string;
 
-      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
     }
 
     export interface Tts {
-      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
       voiceId: string;
 
@@ -400,7 +413,7 @@ export namespace Bundle {
 
     metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-    modality: 'call' | 'chat';
+    modality: 'voice' | 'chat' | 'call';
 
     name: string;
 
@@ -586,6 +599,8 @@ export namespace Bundle {
 
     name: string;
 
+    callsPerSecond?: number | null;
+
     description?: string | null;
 
     endCallPhrases?: Array<string>;
@@ -609,6 +624,8 @@ export namespace Bundle {
     noResponseRetryBackoffSeconds?: number;
 
     notify?: SimulationPlanConfig.Notify;
+
+    rampUpSeconds?: number | null;
 
     schedule?:
       | SimulationPlanConfig.UnionMember0
@@ -770,6 +787,8 @@ export namespace Bundle {
 
     template: 'question-answer-check';
 
+    callsPerSecond?: number | null;
+
     description?: string | null;
 
     endCallPhrases?: Array<string>;
@@ -797,6 +816,8 @@ export namespace Bundle {
     noResponseRetryBackoffSeconds?: number;
 
     notify?: QaSimulationPlanConfig.Notify;
+
+    rampUpSeconds?: number | null;
 
     schedule?:
       | QaSimulationPlanConfig.UnionMember0
@@ -1108,6 +1129,8 @@ export namespace Bundle {
         | 'CHAT_ANALYSIS_FAILED'
         | 'ISSUE_OPENED'
         | 'ISSUE_RESOLVED'
+        | 'AGENT_SETUP_COMPLETED'
+        | 'AGENT_SETUP_FAILED'
       >;
 
       type: 'event';
@@ -1191,11 +1214,15 @@ export namespace Bundle {
 
     export namespace UnionMember1 {
       export interface AppointmentType {
-        eventTypeId: number;
-
         name: string;
 
+        calendarTarget?: string | null;
+
         durationMinutes?: number | null;
+
+        eventTypeId?: number | null;
+
+        eventTypeUri?: string | null;
 
         whenToUse?: string | null;
       }
@@ -1638,6 +1665,8 @@ export namespace Bundle {
 
       llm?: AgentConfig.Llm;
 
+      modalities?: Array<'voice' | 'chat' | 'call'>;
+
       prompt?: string | null;
 
       provider?:
@@ -1681,17 +1710,28 @@ export namespace Bundle {
       export interface Llm {
         model: string;
 
-        provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+        provider:
+          | 'OPENAI'
+          | 'ANTHROPIC'
+          | 'GOOGLE'
+          | 'XAI'
+          | 'ULTRAVOX'
+          | 'AWS'
+          | 'ELEVENLABS'
+          | 'GROQ'
+          | 'META'
+          | 'RIME'
+          | 'PHONIC';
       }
 
       export interface Stt {
         model: string;
 
-        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
       }
 
       export interface Tts {
-        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
         voiceId: string;
 
@@ -1952,7 +1992,7 @@ export namespace Bundle {
 
       metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-      modality: 'call' | 'chat';
+      modality: 'voice' | 'chat' | 'call';
 
       name: string;
 
@@ -2138,6 +2178,8 @@ export namespace Bundle {
 
       name: string;
 
+      callsPerSecond?: number | null;
+
       description?: string | null;
 
       endCallPhrases?: Array<string>;
@@ -2161,6 +2203,8 @@ export namespace Bundle {
       noResponseRetryBackoffSeconds?: number;
 
       notify?: SimulationPlanConfig.Notify;
+
+      rampUpSeconds?: number | null;
 
       schedule?:
         | SimulationPlanConfig.UnionMember0
@@ -2322,6 +2366,8 @@ export namespace Bundle {
 
       template: 'question-answer-check';
 
+      callsPerSecond?: number | null;
+
       description?: string | null;
 
       endCallPhrases?: Array<string>;
@@ -2349,6 +2395,8 @@ export namespace Bundle {
       noResponseRetryBackoffSeconds?: number;
 
       notify?: QaSimulationPlanConfig.Notify;
+
+      rampUpSeconds?: number | null;
 
       schedule?:
         | QaSimulationPlanConfig.UnionMember0
@@ -2660,6 +2708,8 @@ export namespace Bundle {
           | 'CHAT_ANALYSIS_FAILED'
           | 'ISSUE_OPENED'
           | 'ISSUE_RESOLVED'
+          | 'AGENT_SETUP_COMPLETED'
+          | 'AGENT_SETUP_FAILED'
         >;
 
         type: 'event';
@@ -2749,11 +2799,15 @@ export namespace Bundle {
 
       export namespace UnionMember1 {
         export interface AppointmentType {
-          eventTypeId: number;
-
           name: string;
 
+          calendarTarget?: string | null;
+
           durationMinutes?: number | null;
+
+          eventTypeId?: number | null;
+
+          eventTypeUri?: string | null;
 
           whenToUse?: string | null;
         }
@@ -3361,6 +3415,8 @@ export namespace ConfigApplyParams {
 
     llm?: AgentConfig.Llm;
 
+    modalities?: Array<'voice' | 'chat' | 'call'>;
+
     prompt?: string | null;
 
     provider?:
@@ -3404,17 +3460,28 @@ export namespace ConfigApplyParams {
     export interface Llm {
       model: string;
 
-      provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+      provider:
+        | 'OPENAI'
+        | 'ANTHROPIC'
+        | 'GOOGLE'
+        | 'XAI'
+        | 'ULTRAVOX'
+        | 'AWS'
+        | 'ELEVENLABS'
+        | 'GROQ'
+        | 'META'
+        | 'RIME'
+        | 'PHONIC';
     }
 
     export interface Stt {
       model: string;
 
-      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
     }
 
     export interface Tts {
-      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
       voiceId: string;
 
@@ -3675,7 +3742,7 @@ export namespace ConfigApplyParams {
 
     metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-    modality: 'call' | 'chat';
+    modality: 'voice' | 'chat' | 'call';
 
     name: string;
 
@@ -3861,6 +3928,8 @@ export namespace ConfigApplyParams {
 
     name: string;
 
+    callsPerSecond?: number | null;
+
     description?: string | null;
 
     endCallPhrases?: Array<string>;
@@ -3884,6 +3953,8 @@ export namespace ConfigApplyParams {
     noResponseRetryBackoffSeconds?: number;
 
     notify?: SimulationPlanConfig.Notify;
+
+    rampUpSeconds?: number | null;
 
     schedule?:
       | SimulationPlanConfig.UnionMember0
@@ -4045,6 +4116,8 @@ export namespace ConfigApplyParams {
 
     template: 'question-answer-check';
 
+    callsPerSecond?: number | null;
+
     description?: string | null;
 
     endCallPhrases?: Array<string>;
@@ -4072,6 +4145,8 @@ export namespace ConfigApplyParams {
     noResponseRetryBackoffSeconds?: number;
 
     notify?: QaSimulationPlanConfig.Notify;
+
+    rampUpSeconds?: number | null;
 
     schedule?:
       | QaSimulationPlanConfig.UnionMember0
@@ -4383,6 +4458,8 @@ export namespace ConfigApplyParams {
         | 'CHAT_ANALYSIS_FAILED'
         | 'ISSUE_OPENED'
         | 'ISSUE_RESOLVED'
+        | 'AGENT_SETUP_COMPLETED'
+        | 'AGENT_SETUP_FAILED'
       >;
 
       type: 'event';
@@ -4466,11 +4543,15 @@ export namespace ConfigApplyParams {
 
     export namespace UnionMember1 {
       export interface AppointmentType {
-        eventTypeId: number;
-
         name: string;
 
+        calendarTarget?: string | null;
+
         durationMinutes?: number | null;
+
+        eventTypeId?: number | null;
+
+        eventTypeUri?: string | null;
 
         whenToUse?: string | null;
       }
@@ -4913,6 +4994,8 @@ export namespace ConfigApplyParams {
 
       llm?: AgentConfig.Llm;
 
+      modalities?: Array<'voice' | 'chat' | 'call'>;
+
       prompt?: string | null;
 
       provider?:
@@ -4956,17 +5039,28 @@ export namespace ConfigApplyParams {
       export interface Llm {
         model: string;
 
-        provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+        provider:
+          | 'OPENAI'
+          | 'ANTHROPIC'
+          | 'GOOGLE'
+          | 'XAI'
+          | 'ULTRAVOX'
+          | 'AWS'
+          | 'ELEVENLABS'
+          | 'GROQ'
+          | 'META'
+          | 'RIME'
+          | 'PHONIC';
       }
 
       export interface Stt {
         model: string;
 
-        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
       }
 
       export interface Tts {
-        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
         voiceId: string;
 
@@ -5227,7 +5321,7 @@ export namespace ConfigApplyParams {
 
       metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-      modality: 'call' | 'chat';
+      modality: 'voice' | 'chat' | 'call';
 
       name: string;
 
@@ -5413,6 +5507,8 @@ export namespace ConfigApplyParams {
 
       name: string;
 
+      callsPerSecond?: number | null;
+
       description?: string | null;
 
       endCallPhrases?: Array<string>;
@@ -5436,6 +5532,8 @@ export namespace ConfigApplyParams {
       noResponseRetryBackoffSeconds?: number;
 
       notify?: SimulationPlanConfig.Notify;
+
+      rampUpSeconds?: number | null;
 
       schedule?:
         | SimulationPlanConfig.UnionMember0
@@ -5597,6 +5695,8 @@ export namespace ConfigApplyParams {
 
       template: 'question-answer-check';
 
+      callsPerSecond?: number | null;
+
       description?: string | null;
 
       endCallPhrases?: Array<string>;
@@ -5624,6 +5724,8 @@ export namespace ConfigApplyParams {
       noResponseRetryBackoffSeconds?: number;
 
       notify?: QaSimulationPlanConfig.Notify;
+
+      rampUpSeconds?: number | null;
 
       schedule?:
         | QaSimulationPlanConfig.UnionMember0
@@ -5935,6 +6037,8 @@ export namespace ConfigApplyParams {
           | 'CHAT_ANALYSIS_FAILED'
           | 'ISSUE_OPENED'
           | 'ISSUE_RESOLVED'
+          | 'AGENT_SETUP_COMPLETED'
+          | 'AGENT_SETUP_FAILED'
         >;
 
         type: 'event';
@@ -6024,11 +6128,15 @@ export namespace ConfigApplyParams {
 
       export namespace UnionMember1 {
         export interface AppointmentType {
-          eventTypeId: number;
-
           name: string;
 
+          calendarTarget?: string | null;
+
           durationMinutes?: number | null;
+
+          eventTypeId?: number | null;
+
+          eventTypeUri?: string | null;
 
           whenToUse?: string | null;
         }
@@ -6447,6 +6555,8 @@ export namespace ConfigDiffParams {
 
     llm?: AgentConfig.Llm;
 
+    modalities?: Array<'voice' | 'chat' | 'call'>;
+
     prompt?: string | null;
 
     provider?:
@@ -6490,17 +6600,28 @@ export namespace ConfigDiffParams {
     export interface Llm {
       model: string;
 
-      provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+      provider:
+        | 'OPENAI'
+        | 'ANTHROPIC'
+        | 'GOOGLE'
+        | 'XAI'
+        | 'ULTRAVOX'
+        | 'AWS'
+        | 'ELEVENLABS'
+        | 'GROQ'
+        | 'META'
+        | 'RIME'
+        | 'PHONIC';
     }
 
     export interface Stt {
       model: string;
 
-      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
     }
 
     export interface Tts {
-      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
       voiceId: string;
 
@@ -6761,7 +6882,7 @@ export namespace ConfigDiffParams {
 
     metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-    modality: 'call' | 'chat';
+    modality: 'voice' | 'chat' | 'call';
 
     name: string;
 
@@ -6947,6 +7068,8 @@ export namespace ConfigDiffParams {
 
     name: string;
 
+    callsPerSecond?: number | null;
+
     description?: string | null;
 
     endCallPhrases?: Array<string>;
@@ -6970,6 +7093,8 @@ export namespace ConfigDiffParams {
     noResponseRetryBackoffSeconds?: number;
 
     notify?: SimulationPlanConfig.Notify;
+
+    rampUpSeconds?: number | null;
 
     schedule?:
       | SimulationPlanConfig.UnionMember0
@@ -7131,6 +7256,8 @@ export namespace ConfigDiffParams {
 
     template: 'question-answer-check';
 
+    callsPerSecond?: number | null;
+
     description?: string | null;
 
     endCallPhrases?: Array<string>;
@@ -7158,6 +7285,8 @@ export namespace ConfigDiffParams {
     noResponseRetryBackoffSeconds?: number;
 
     notify?: QaSimulationPlanConfig.Notify;
+
+    rampUpSeconds?: number | null;
 
     schedule?:
       | QaSimulationPlanConfig.UnionMember0
@@ -7469,6 +7598,8 @@ export namespace ConfigDiffParams {
         | 'CHAT_ANALYSIS_FAILED'
         | 'ISSUE_OPENED'
         | 'ISSUE_RESOLVED'
+        | 'AGENT_SETUP_COMPLETED'
+        | 'AGENT_SETUP_FAILED'
       >;
 
       type: 'event';
@@ -7552,11 +7683,15 @@ export namespace ConfigDiffParams {
 
     export namespace UnionMember1 {
       export interface AppointmentType {
-        eventTypeId: number;
-
         name: string;
 
+        calendarTarget?: string | null;
+
         durationMinutes?: number | null;
+
+        eventTypeId?: number | null;
+
+        eventTypeUri?: string | null;
 
         whenToUse?: string | null;
       }
@@ -7999,6 +8134,8 @@ export namespace ConfigDiffParams {
 
       llm?: AgentConfig.Llm;
 
+      modalities?: Array<'voice' | 'chat' | 'call'>;
+
       prompt?: string | null;
 
       provider?:
@@ -8042,17 +8179,28 @@ export namespace ConfigDiffParams {
       export interface Llm {
         model: string;
 
-        provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+        provider:
+          | 'OPENAI'
+          | 'ANTHROPIC'
+          | 'GOOGLE'
+          | 'XAI'
+          | 'ULTRAVOX'
+          | 'AWS'
+          | 'ELEVENLABS'
+          | 'GROQ'
+          | 'META'
+          | 'RIME'
+          | 'PHONIC';
       }
 
       export interface Stt {
         model: string;
 
-        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
       }
 
       export interface Tts {
-        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
         voiceId: string;
 
@@ -8313,7 +8461,7 @@ export namespace ConfigDiffParams {
 
       metrics: Array<string | CollectorConfig.CollectorMetricConfig>;
 
-      modality: 'call' | 'chat';
+      modality: 'voice' | 'chat' | 'call';
 
       name: string;
 
@@ -8499,6 +8647,8 @@ export namespace ConfigDiffParams {
 
       name: string;
 
+      callsPerSecond?: number | null;
+
       description?: string | null;
 
       endCallPhrases?: Array<string>;
@@ -8522,6 +8672,8 @@ export namespace ConfigDiffParams {
       noResponseRetryBackoffSeconds?: number;
 
       notify?: SimulationPlanConfig.Notify;
+
+      rampUpSeconds?: number | null;
 
       schedule?:
         | SimulationPlanConfig.UnionMember0
@@ -8683,6 +8835,8 @@ export namespace ConfigDiffParams {
 
       template: 'question-answer-check';
 
+      callsPerSecond?: number | null;
+
       description?: string | null;
 
       endCallPhrases?: Array<string>;
@@ -8710,6 +8864,8 @@ export namespace ConfigDiffParams {
       noResponseRetryBackoffSeconds?: number;
 
       notify?: QaSimulationPlanConfig.Notify;
+
+      rampUpSeconds?: number | null;
 
       schedule?:
         | QaSimulationPlanConfig.UnionMember0
@@ -9021,6 +9177,8 @@ export namespace ConfigDiffParams {
           | 'CHAT_ANALYSIS_FAILED'
           | 'ISSUE_OPENED'
           | 'ISSUE_RESOLVED'
+          | 'AGENT_SETUP_COMPLETED'
+          | 'AGENT_SETUP_FAILED'
         >;
 
         type: 'event';
@@ -9110,11 +9268,15 @@ export namespace ConfigDiffParams {
 
       export namespace UnionMember1 {
         export interface AppointmentType {
-          eventTypeId: number;
-
           name: string;
 
+          calendarTarget?: string | null;
+
           durationMinutes?: number | null;
+
+          eventTypeId?: number | null;
+
+          eventTypeUri?: string | null;
 
           whenToUse?: string | null;
         }

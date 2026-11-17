@@ -2850,7 +2850,9 @@ export declare namespace MetricCreateDefinitionParams {
 
     /**
      * LLM prompt/criteria for evaluating this metric. Required for BOOLEAN, NUMERIC,
-     * TEXT, and SCALE types.
+     * TEXT, and SCALE types. A custom metric prompt must include a transcript variable
+     * such as `{{transcript}}` and `{{world_context}}`, which gives the judge the
+     * current date and time when it grades.
      */
     llmPrompt?: string;
 
@@ -3270,7 +3272,10 @@ export interface MetricUpdateDefinitionParams {
   httpRequest?: MetricUpdateDefinitionParams.HTTPRequest;
 
   /**
-   * New LLM prompt (only for LLM_JUDGE metrics whose prompt is editable)
+   * New LLM prompt (only for LLM_JUDGE metrics whose prompt is editable). A custom
+   * metric prompt must include a transcript variable such as `{{transcript}}` and
+   * `{{world_context}}`, which gives the judge the current date and time when it
+   * grades.
    */
   llmPrompt?: string;
 

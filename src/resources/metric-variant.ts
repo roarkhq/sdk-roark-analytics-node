@@ -410,7 +410,10 @@ export interface MetricVariantUpdateParams {
   gradesShortCalls?: boolean;
 
   /**
-   * Body param: The rubric this variant applies. LLM judge metrics only.
+   * Body param: The rubric this variant applies. LLM judge metrics only. A custom
+   * metric prompt must include a transcript variable such as `{{transcript}}` and
+   * `{{world_context}}`, which gives the judge the current date and time when it
+   * grades.
    */
   llmPrompt?: string;
 

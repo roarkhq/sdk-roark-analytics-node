@@ -33,7 +33,8 @@ describe('resource metric', () => {
       booleanTrueLabel: 'booleanTrueLabel',
       classificationOptions: [{ description: 'description', displayOrder: 0, label: 'label' }],
       gradesShortCalls: true,
-      llmPrompt: 'Evaluate whether the customer expressed satisfaction with the service provided.',
+      llmPrompt:
+        'Evaluate whether the customer expressed satisfaction with the service provided.\n\n{{transcript}}\n\nContext: {{world_context}}',
       maxClassifications: 1,
       metricId: 'customer_satisfaction',
       participantRole: 'AGENT',

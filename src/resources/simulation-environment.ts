@@ -139,6 +139,22 @@ export namespace SimulationEnvironmentCreateResponse {
      */
     createdAt: string;
 
+    /**
+     * The per-direction loss of a CUSTOM line.
+     */
+    lineCustom: Data.LineCustom | null;
+
+    /**
+     * The phone line the simulated caller is on: packet loss applied to its 20 ms
+     * audio packets, per direction. The loss pattern is seeded per call, so a redial
+     * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+     * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+     * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+     * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+     * burst of up to 10 packets (omit it for random loss).
+     */
+    lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
     name: string;
 
     /**
@@ -147,6 +163,59 @@ export namespace SimulationEnvironmentCreateResponse {
     updatedAt: string;
 
     description?: string | null;
+  }
+
+  export namespace Data {
+    /**
+     * The per-direction loss of a CUSTOM line.
+     */
+    export interface LineCustom {
+      /**
+       * The agent's audio on its way to the caller: what the caller hears. Omit for no
+       * loss.
+       */
+      fromAgent?: LineCustom.FromAgent;
+
+      /**
+       * The caller's audio on its way to the agent: what the agent hears. Omit for no
+       * loss.
+       */
+      toAgent?: LineCustom.ToAgent;
+    }
+
+    export namespace LineCustom {
+      /**
+       * The agent's audio on its way to the caller: what the caller hears. Omit for no
+       * loss.
+       */
+      export interface FromAgent {
+        /**
+         * Share of packets lost, 0 to 20 in steps of 0.5.
+         */
+        packetLossPercent: number;
+
+        /**
+         * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+         */
+        meanBurstPackets?: number;
+      }
+
+      /**
+       * The caller's audio on its way to the agent: what the agent hears. Omit for no
+       * loss.
+       */
+      export interface ToAgent {
+        /**
+         * Share of packets lost, 0 to 20 in steps of 0.5.
+         */
+        packetLossPercent: number;
+
+        /**
+         * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+         */
+        meanBurstPackets?: number;
+      }
+    }
   }
 }
 
@@ -189,6 +258,22 @@ export namespace SimulationEnvironmentUpdateResponse {
      */
     createdAt: string;
 
+    /**
+     * The per-direction loss of a CUSTOM line.
+     */
+    lineCustom: Data.LineCustom | null;
+
+    /**
+     * The phone line the simulated caller is on: packet loss applied to its 20 ms
+     * audio packets, per direction. The loss pattern is seeded per call, so a redial
+     * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+     * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+     * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+     * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+     * burst of up to 10 packets (omit it for random loss).
+     */
+    lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
     name: string;
 
     /**
@@ -197,6 +282,59 @@ export namespace SimulationEnvironmentUpdateResponse {
     updatedAt: string;
 
     description?: string | null;
+  }
+
+  export namespace Data {
+    /**
+     * The per-direction loss of a CUSTOM line.
+     */
+    export interface LineCustom {
+      /**
+       * The agent's audio on its way to the caller: what the caller hears. Omit for no
+       * loss.
+       */
+      fromAgent?: LineCustom.FromAgent;
+
+      /**
+       * The caller's audio on its way to the agent: what the agent hears. Omit for no
+       * loss.
+       */
+      toAgent?: LineCustom.ToAgent;
+    }
+
+    export namespace LineCustom {
+      /**
+       * The agent's audio on its way to the caller: what the caller hears. Omit for no
+       * loss.
+       */
+      export interface FromAgent {
+        /**
+         * Share of packets lost, 0 to 20 in steps of 0.5.
+         */
+        packetLossPercent: number;
+
+        /**
+         * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+         */
+        meanBurstPackets?: number;
+      }
+
+      /**
+       * The caller's audio on its way to the agent: what the agent hears. Omit for no
+       * loss.
+       */
+      export interface ToAgent {
+        /**
+         * Share of packets lost, 0 to 20 in steps of 0.5.
+         */
+        packetLossPercent: number;
+
+        /**
+         * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+         */
+        meanBurstPackets?: number;
+      }
+    }
   }
 }
 
@@ -240,6 +378,22 @@ export namespace SimulationEnvironmentListResponse {
      */
     createdAt: string;
 
+    /**
+     * The per-direction loss of a CUSTOM line.
+     */
+    lineCustom: Data.LineCustom | null;
+
+    /**
+     * The phone line the simulated caller is on: packet loss applied to its 20 ms
+     * audio packets, per direction. The loss pattern is seeded per call, so a redial
+     * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+     * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+     * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+     * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+     * burst of up to 10 packets (omit it for random loss).
+     */
+    lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
     name: string;
 
     /**
@@ -248,6 +402,59 @@ export namespace SimulationEnvironmentListResponse {
     updatedAt: string;
 
     description?: string | null;
+  }
+
+  export namespace Data {
+    /**
+     * The per-direction loss of a CUSTOM line.
+     */
+    export interface LineCustom {
+      /**
+       * The agent's audio on its way to the caller: what the caller hears. Omit for no
+       * loss.
+       */
+      fromAgent?: LineCustom.FromAgent;
+
+      /**
+       * The caller's audio on its way to the agent: what the agent hears. Omit for no
+       * loss.
+       */
+      toAgent?: LineCustom.ToAgent;
+    }
+
+    export namespace LineCustom {
+      /**
+       * The agent's audio on its way to the caller: what the caller hears. Omit for no
+       * loss.
+       */
+      export interface FromAgent {
+        /**
+         * Share of packets lost, 0 to 20 in steps of 0.5.
+         */
+        packetLossPercent: number;
+
+        /**
+         * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+         */
+        meanBurstPackets?: number;
+      }
+
+      /**
+       * The caller's audio on its way to the agent: what the agent hears. Omit for no
+       * loss.
+       */
+      export interface ToAgent {
+        /**
+         * Share of packets lost, 0 to 20 in steps of 0.5.
+         */
+        packetLossPercent: number;
+
+        /**
+         * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+         */
+        meanBurstPackets?: number;
+      }
+    }
   }
 
   export interface Pagination {
@@ -325,6 +532,22 @@ export namespace SimulationEnvironmentGetByIDResponse {
      */
     createdAt: string;
 
+    /**
+     * The per-direction loss of a CUSTOM line.
+     */
+    lineCustom: Data.LineCustom | null;
+
+    /**
+     * The phone line the simulated caller is on: packet loss applied to its 20 ms
+     * audio packets, per direction. The loss pattern is seeded per call, so a redial
+     * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+     * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+     * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+     * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+     * burst of up to 10 packets (omit it for random loss).
+     */
+    lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
     name: string;
 
     /**
@@ -333,6 +556,59 @@ export namespace SimulationEnvironmentGetByIDResponse {
     updatedAt: string;
 
     description?: string | null;
+  }
+
+  export namespace Data {
+    /**
+     * The per-direction loss of a CUSTOM line.
+     */
+    export interface LineCustom {
+      /**
+       * The agent's audio on its way to the caller: what the caller hears. Omit for no
+       * loss.
+       */
+      fromAgent?: LineCustom.FromAgent;
+
+      /**
+       * The caller's audio on its way to the agent: what the agent hears. Omit for no
+       * loss.
+       */
+      toAgent?: LineCustom.ToAgent;
+    }
+
+    export namespace LineCustom {
+      /**
+       * The agent's audio on its way to the caller: what the caller hears. Omit for no
+       * loss.
+       */
+      export interface FromAgent {
+        /**
+         * Share of packets lost, 0 to 20 in steps of 0.5.
+         */
+        packetLossPercent: number;
+
+        /**
+         * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+         */
+        meanBurstPackets?: number;
+      }
+
+      /**
+       * The caller's audio on its way to the agent: what the agent hears. Omit for no
+       * loss.
+       */
+      export interface ToAgent {
+        /**
+         * Share of packets lost, 0 to 20 in steps of 0.5.
+         */
+        packetLossPercent: number;
+
+        /**
+         * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+         */
+        meanBurstPackets?: number;
+      }
+    }
   }
 }
 
@@ -370,6 +646,75 @@ export interface SimulationEnvironmentCreateParams {
    * Optional note on when to use this environment
    */
   description?: string | null;
+
+  /**
+   * The per-direction loss of a CUSTOM line.
+   */
+  lineCustom?: SimulationEnvironmentCreateParams.LineCustom | null;
+
+  /**
+   * The phone line the simulated caller is on: packet loss applied to its 20 ms
+   * audio packets, per direction. The loss pattern is seeded per call, so a redial
+   * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+   * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+   * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+   * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+   * burst of up to 10 packets (omit it for random loss). Defaults to CLEAR.
+   */
+  lineQuality?: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+}
+
+export namespace SimulationEnvironmentCreateParams {
+  /**
+   * The per-direction loss of a CUSTOM line.
+   */
+  export interface LineCustom {
+    /**
+     * The agent's audio on its way to the caller: what the caller hears. Omit for no
+     * loss.
+     */
+    fromAgent?: LineCustom.FromAgent;
+
+    /**
+     * The caller's audio on its way to the agent: what the agent hears. Omit for no
+     * loss.
+     */
+    toAgent?: LineCustom.ToAgent;
+  }
+
+  export namespace LineCustom {
+    /**
+     * The agent's audio on its way to the caller: what the caller hears. Omit for no
+     * loss.
+     */
+    export interface FromAgent {
+      /**
+       * Share of packets lost, 0 to 20 in steps of 0.5.
+       */
+      packetLossPercent: number;
+
+      /**
+       * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+       */
+      meanBurstPackets?: number;
+    }
+
+    /**
+     * The caller's audio on its way to the agent: what the agent hears. Omit for no
+     * loss.
+     */
+    export interface ToAgent {
+      /**
+       * Share of packets lost, 0 to 20 in steps of 0.5.
+       */
+      packetLossPercent: number;
+
+      /**
+       * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+       */
+      meanBurstPackets?: number;
+    }
+  }
 }
 
 export interface SimulationEnvironmentUpdateParams {
@@ -403,9 +748,78 @@ export interface SimulationEnvironmentUpdateParams {
   description?: string | null;
 
   /**
+   * The per-direction loss of a CUSTOM line.
+   */
+  lineCustom?: SimulationEnvironmentUpdateParams.LineCustom | null;
+
+  /**
+   * The phone line the simulated caller is on: packet loss applied to its 20 ms
+   * audio packets, per direction. The loss pattern is seeded per call, so a redial
+   * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
+   * CELL_EDGE: 5% in 80 ms gaps, both ways. POOR_CONNECTION: 10% in 120 ms gaps,
+   * both ways. ONE_WAY_DEGRADED: 8% in 80 ms gaps, toward the agent only. CUSTOM:
+   * the per-direction loss in `lineCustom`, up to 20% in 0.5 steps, with a mean
+   * burst of up to 10 packets (omit it for random loss). Defaults to CLEAR.
+   */
+  lineQuality?: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
+  /**
    * Display name, shown wherever a flow variant references the environment
    */
   name?: string;
+}
+
+export namespace SimulationEnvironmentUpdateParams {
+  /**
+   * The per-direction loss of a CUSTOM line.
+   */
+  export interface LineCustom {
+    /**
+     * The agent's audio on its way to the caller: what the caller hears. Omit for no
+     * loss.
+     */
+    fromAgent?: LineCustom.FromAgent;
+
+    /**
+     * The caller's audio on its way to the agent: what the agent hears. Omit for no
+     * loss.
+     */
+    toAgent?: LineCustom.ToAgent;
+  }
+
+  export namespace LineCustom {
+    /**
+     * The agent's audio on its way to the caller: what the caller hears. Omit for no
+     * loss.
+     */
+    export interface FromAgent {
+      /**
+       * Share of packets lost, 0 to 20 in steps of 0.5.
+       */
+      packetLossPercent: number;
+
+      /**
+       * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+       */
+      meanBurstPackets?: number;
+    }
+
+    /**
+     * The caller's audio on its way to the agent: what the agent hears. Omit for no
+     * loss.
+     */
+    export interface ToAgent {
+      /**
+       * Share of packets lost, 0 to 20 in steps of 0.5.
+       */
+      packetLossPercent: number;
+
+      /**
+       * Mean length of a loss gap in 20 ms packets, 2 to 10. Omit for random loss.
+       */
+      meanBurstPackets?: number;
+    }
+  }
 }
 
 export interface SimulationEnvironmentListParams {

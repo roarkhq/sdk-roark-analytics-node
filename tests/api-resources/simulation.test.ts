@@ -56,6 +56,7 @@ describe('resource simulation', () => {
         agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
         direction: 'INBOUND',
         maxSimulationDurationSeconds: 300,
+        callsPerSecond: 0.5,
         comparisonBaseline: 'NONE',
         comparisonProperty: 'BACKGROUND_NOISE',
         comparisonValues: [
@@ -100,6 +101,7 @@ describe('resource simulation', () => {
         name: 'Billing regression',
         noResponseRetryBackoffSeconds: 90,
         personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+        rampUpSeconds: 60,
         scenarios: [
           {
             id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
