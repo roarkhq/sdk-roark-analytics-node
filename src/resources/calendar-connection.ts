@@ -26,7 +26,7 @@ export class CalendarConnection extends APIResource {
     body: CalendarConnectionCreateParams,
     options?: RequestOptions,
   ): APIPromise<CalendarConnectionCreateResponse> {
-    return this._client.post('/v1/calendar-connection', { body, ...options });
+    return this._client.post('/v1/connections/calendar', { body, ...options });
   }
 
   /**
@@ -45,7 +45,7 @@ export class CalendarConnection extends APIResource {
     body: CalendarConnectionUpdateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<CalendarConnectionUpdateResponse> {
-    return this._client.patch(path`/v1/calendar-connection/${connectionID}`, { body, ...options });
+    return this._client.patch(path`/v1/connections/calendar/${connectionID}`, { body, ...options });
   }
 
   /**
@@ -63,7 +63,7 @@ export class CalendarConnection extends APIResource {
     query: CalendarConnectionListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<CalendarConnectionListResponse> {
-    return this._client.get('/v1/calendar-connection', { query, ...options });
+    return this._client.get('/v1/connections/calendar', { query, ...options });
   }
 
   /**
@@ -83,7 +83,7 @@ export class CalendarConnection extends APIResource {
    * ```
    */
   delete(connectionID: string, options?: RequestOptions): APIPromise<CalendarConnectionDeleteResponse> {
-    return this._client.delete(path`/v1/calendar-connection/${connectionID}`, options);
+    return this._client.delete(path`/v1/connections/calendar/${connectionID}`, options);
   }
 
   /**
@@ -100,7 +100,59 @@ export class CalendarConnection extends APIResource {
    * ```
    */
   check(connectionID: string, options?: RequestOptions): APIPromise<CalendarConnectionCheckResponse> {
-    return this._client.post(path`/v1/calendar-connection/${connectionID}/check`, options);
+    return this._client.post(path`/v1/connections/calendar/${connectionID}/check`, options);
+  }
+
+  /**
+   * Only for a connection whose `capabilities.roarkOwnsBookingPolicy` is true. A
+   * calendar with no scheduling of its own has nothing an agent can be pointed at,
+   * so the thing a calendar tool books into is created here: the calendar, how long
+   * an appointment runs, and the hours it is offered in. The policy and the hours
+   * are written together, because a target with no hours offers nothing. Refused if
+   * the calendar is one the account can only read.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.calendarConnection.createTarget(
+   *     'connectionId',
+   *     {
+   *       calendarId: 'clinic@example.com',
+   *       durationMinutes: 30,
+   *       name: 'Front desk',
+   *     },
+   *   );
+   * ```
+   */
+  createTarget(
+    connectionID: string,
+    body: CalendarConnectionCreateTargetParams,
+    options?: RequestOptions,
+  ): APIPromise<CalendarConnectionCreateTargetResponse> {
+    return this._client.post(path`/v1/connections/calendar/${connectionID}/targets`, { body, ...options });
+  }
+
+  /**
+   * Refused while a calendar tool still books into it, naming the tools. A dangling
+   * binding would otherwise be found by whoever next tried to ship the agent, who is
+   * not the person who deleted the target. Appointments already recorded against it
+   * are kept.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.calendarConnection.deleteTarget('targetId', {
+   *     connectionId: 'connectionId',
+   *   });
+   * ```
+   */
+  deleteTarget(
+    targetID: string,
+    params: CalendarConnectionDeleteTargetParams,
+    options?: RequestOptions,
+  ): APIPromise<CalendarConnectionDeleteTargetResponse> {
+    const { connectionId } = params;
+    return this._client.delete(path`/v1/connections/calendar/${connectionId}/targets/${targetID}`, options);
   }
 
   /**
@@ -113,7 +165,7 @@ export class CalendarConnection extends APIResource {
    * ```
    */
   getByID(connectionID: string, options?: RequestOptions): APIPromise<CalendarConnectionGetByIDResponse> {
-    return this._client.get(path`/v1/calendar-connection/${connectionID}`, options);
+    return this._client.get(path`/v1/connections/calendar/${connectionID}`, options);
   }
 
   /**
@@ -139,7 +191,29 @@ export class CalendarConnection extends APIResource {
     options?: RequestOptions,
   ): APIPromise<CalendarConnectionGetTargetResponse> {
     const { connectionId } = params;
-    return this._client.get(path`/v1/calendar-connection/${connectionId}/targets/${targetID}`, options);
+    return this._client.get(path`/v1/connections/calendar/${connectionId}/targets/${targetID}`, options);
+  }
+
+  /**
+   * Only for a connection whose `capabilities.roarkOwnsBookingPolicy` is true: on a
+   * scheduling system the bookable things already exist and `GET /targets` returns
+   * them. Calendars the account can only read are left out rather than listed and
+   * refused: one would answer availability perfectly well and then fail the booking,
+   * mid-call, with a caller on the line.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.calendarConnection.listCalendars(
+   *     'connectionId',
+   *   );
+   * ```
+   */
+  listCalendars(
+    connectionID: string,
+    options?: RequestOptions,
+  ): APIPromise<CalendarConnectionListCalendarsResponse> {
+    return this._client.get(path`/v1/connections/calendar/${connectionID}/calendars`, options);
   }
 
   /**
@@ -161,7 +235,79 @@ export class CalendarConnection extends APIResource {
     connectionID: string,
     options?: RequestOptions,
   ): APIPromise<CalendarConnectionListTargetsResponse> {
-    return this._client.get(path`/v1/calendar-connection/${connectionID}/targets`, options);
+    return this._client.get(path`/v1/connections/calendar/${connectionID}/targets`, options);
+  }
+
+  /**
+   * Returns a URL to open in a browser. Calendly has no credential a request body
+   * can carry, so connecting one is two steps: ask for this URL, let the customer
+   * consent, and Roark finishes the rest server-side (it exchanges the code,
+   * verifies the credential, reads the account’s own timezone when none was given,
+   * and stores the connection). Nothing is created until the customer consents, and
+   * a link that is not used expires. Read the result with
+   * `GET /v1/connections/calendar?provider=CALENDLY`.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.calendarConnection.startCalendlyOauth();
+   * ```
+   */
+  startCalendlyOauth(
+    body: CalendarConnectionStartCalendlyOauthParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CalendarConnectionStartCalendlyOauthResponse> {
+    return this._client.post('/v1/connections/calendar/calendly/authorize-url', { body, ...options });
+  }
+
+  /**
+   * Returns a URL to open in a browser. Google has no credential a request body can
+   * carry, so connecting one is two steps: ask for this URL, let the customer
+   * consent, and Roark finishes the rest server-side (it exchanges the code,
+   * verifies that both calendar permissions were granted, reads the account’s own
+   * timezone when none was given, and stores the connection). Nothing is created
+   * until the customer consents, and a link that is not used expires. Read the
+   * result with `GET /v1/connections/calendar?provider=GOOGLE`.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.calendarConnection.startGoogleOauth();
+   * ```
+   */
+  startGoogleOauth(
+    body: CalendarConnectionStartGoogleOauthParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CalendarConnectionStartGoogleOauthResponse> {
+    return this._client.post('/v1/connections/calendar/google/authorize-url', { body, ...options });
+  }
+
+  /**
+   * Changes what agents ALREADY PUBLISHED against this target book, with no new tool
+   * version, the same thing editing a Cal.com event type on cal.com does. `hours`
+   * replaces the whole week when present, because a rota is described as a week and
+   * a partial update of one window has no meaning anybody would expect. The calendar
+   * cannot be changed: it is the target’s identity for the booking ledger, so moving
+   * it would orphan every appointment made on the old one.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.calendarConnection.updateTarget('targetId', {
+   *     connectionId: 'connectionId',
+   *   });
+   * ```
+   */
+  updateTarget(
+    targetID: string,
+    params: CalendarConnectionUpdateTargetParams,
+    options?: RequestOptions,
+  ): APIPromise<CalendarConnectionUpdateTargetResponse> {
+    const { connectionId, ...body } = params;
+    return this._client.put(path`/v1/connections/calendar/${connectionId}/targets/${targetID}`, {
+      body,
+      ...options,
+    });
   }
 }
 
@@ -216,9 +362,10 @@ export namespace CalendarConnectionCreateResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is the only provider that can be connected
-     * today; GOOGLE and CALENDLY are described by `capabilities` but not yet
-     * connectable.
+     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * CALENDLY are connected by consent, through
+     * `POST /v1/connections/calendar/google/authorize-url` and
+     * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
     provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
 
@@ -259,7 +406,9 @@ export namespace CalendarConnectionCreateResponse {
      */
     export interface Capabilities {
       /**
-       * How this provider is authenticated.
+       * How a credential is obtained, which is the whole of what connecting looks like:
+       * API_KEY takes a key in the create body, OAUTH sends the customer to the provider
+       * and Roark stores the result itself.
        */
       auth: 'API_KEY' | 'OAUTH';
 
@@ -286,9 +435,11 @@ export namespace CalendarConnectionCreateResponse {
       requiresAttendeeEmail: boolean;
 
       /**
-       * True for a raw calendar, which exposes only events and free/busy. Roark then
-       * owns bookable hours, duration, buffers, lead time and horizon, because the
-       * provider has no notion of them.
+       * True for a calendar that exposes only events and free/busy. Roark then owns the
+       * bookable hours, duration, buffers, lead time and horizon, because the provider
+       * has no notion of them. A tool on one of these is pointed at a bookable target
+       * you create through this API, rather than at something that already exists on the
+       * account. Read this instead of matching on the provider name.
        */
       roarkOwnsBookingPolicy: boolean;
 
@@ -353,9 +504,10 @@ export namespace CalendarConnectionUpdateResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is the only provider that can be connected
-     * today; GOOGLE and CALENDLY are described by `capabilities` but not yet
-     * connectable.
+     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * CALENDLY are connected by consent, through
+     * `POST /v1/connections/calendar/google/authorize-url` and
+     * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
     provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
 
@@ -396,7 +548,9 @@ export namespace CalendarConnectionUpdateResponse {
      */
     export interface Capabilities {
       /**
-       * How this provider is authenticated.
+       * How a credential is obtained, which is the whole of what connecting looks like:
+       * API_KEY takes a key in the create body, OAUTH sends the customer to the provider
+       * and Roark stores the result itself.
        */
       auth: 'API_KEY' | 'OAUTH';
 
@@ -423,9 +577,11 @@ export namespace CalendarConnectionUpdateResponse {
       requiresAttendeeEmail: boolean;
 
       /**
-       * True for a raw calendar, which exposes only events and free/busy. Roark then
-       * owns bookable hours, duration, buffers, lead time and horizon, because the
-       * provider has no notion of them.
+       * True for a calendar that exposes only events and free/busy. Roark then owns the
+       * bookable hours, duration, buffers, lead time and horizon, because the provider
+       * has no notion of them. A tool on one of these is pointed at a bookable target
+       * you create through this API, rather than at something that already exists on the
+       * account. Read this instead of matching on the provider name.
        */
       roarkOwnsBookingPolicy: boolean;
 
@@ -488,9 +644,10 @@ export namespace CalendarConnectionListResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is the only provider that can be connected
-     * today; GOOGLE and CALENDLY are described by `capabilities` but not yet
-     * connectable.
+     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * CALENDLY are connected by consent, through
+     * `POST /v1/connections/calendar/google/authorize-url` and
+     * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
     provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
 
@@ -531,7 +688,9 @@ export namespace CalendarConnectionListResponse {
      */
     export interface Capabilities {
       /**
-       * How this provider is authenticated.
+       * How a credential is obtained, which is the whole of what connecting looks like:
+       * API_KEY takes a key in the create body, OAUTH sends the customer to the provider
+       * and Roark stores the result itself.
        */
       auth: 'API_KEY' | 'OAUTH';
 
@@ -558,9 +717,11 @@ export namespace CalendarConnectionListResponse {
       requiresAttendeeEmail: boolean;
 
       /**
-       * True for a raw calendar, which exposes only events and free/busy. Roark then
-       * owns bookable hours, duration, buffers, lead time and horizon, because the
-       * provider has no notion of them.
+       * True for a calendar that exposes only events and free/busy. Roark then owns the
+       * bookable hours, duration, buffers, lead time and horizon, because the provider
+       * has no notion of them. A tool on one of these is pointed at a bookable target
+       * you create through this API, rather than at something that already exists on the
+       * account. Read this instead of matching on the provider name.
        */
       roarkOwnsBookingPolicy: boolean;
 
@@ -660,9 +821,10 @@ export namespace CalendarConnectionCheckResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is the only provider that can be connected
-     * today; GOOGLE and CALENDLY are described by `capabilities` but not yet
-     * connectable.
+     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * CALENDLY are connected by consent, through
+     * `POST /v1/connections/calendar/google/authorize-url` and
+     * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
     provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
 
@@ -703,7 +865,9 @@ export namespace CalendarConnectionCheckResponse {
      */
     export interface Capabilities {
       /**
-       * How this provider is authenticated.
+       * How a credential is obtained, which is the whole of what connecting looks like:
+       * API_KEY takes a key in the create body, OAUTH sends the customer to the provider
+       * and Roark stores the result itself.
        */
       auth: 'API_KEY' | 'OAUTH';
 
@@ -730,9 +894,11 @@ export namespace CalendarConnectionCheckResponse {
       requiresAttendeeEmail: boolean;
 
       /**
-       * True for a raw calendar, which exposes only events and free/busy. Roark then
-       * owns bookable hours, duration, buffers, lead time and horizon, because the
-       * provider has no notion of them.
+       * True for a calendar that exposes only events and free/busy. Roark then owns the
+       * bookable hours, duration, buffers, lead time and horizon, because the provider
+       * has no notion of them. A tool on one of these is pointed at a bookable target
+       * you create through this API, rather than at something that already exists on the
+       * account. Read this instead of matching on the provider name.
        */
       roarkOwnsBookingPolicy: boolean;
 
@@ -743,6 +909,170 @@ export namespace CalendarConnectionCheckResponse {
        */
       slotHold: 'RESERVATION' | 'NONE';
     }
+  }
+}
+
+export interface CalendarConnectionCreateTargetResponse {
+  /**
+   * Something on a connected account an agent can be pointed at: a Cal.com event
+   * type, or a bookable target on a calendar whose booking policy Roark owns.
+   */
+  data: CalendarConnectionCreateTargetResponse.Data;
+}
+
+export namespace CalendarConnectionCreateTargetResponse {
+  /**
+   * Something on a connected account an agent can be pointed at: a Cal.com event
+   * type, or a bookable target on a calendar whose booking policy Roark owns.
+   */
+  export interface Data {
+    /**
+     * Identifier within this connection. Pass it back to read one target in detail.
+     */
+    id: string;
+
+    /**
+     * How long an appointment runs, when the provider fixes one length.
+     */
+    durationMinutes: number | null;
+
+    /**
+     * Other lengths this target offers, when it offers a choice. A calendar tool pins
+     * one of these with `durationMinutes`; an empty list means the length is not the
+     * customer’s to choose.
+     */
+    durationOptions: Array<number>;
+
+    /**
+     * Hidden on the provider’s own booking page. Still bookable through this API.
+     */
+    isHidden: boolean;
+
+    /**
+     * What the customer called it on the provider.
+     */
+    label: string;
+
+    /**
+     * The booking policy Roark applies, for a calendar with no scheduling of its own.
+     * Null on a scheduling system, which owns its own rules, so this one field says
+     * which kind of provider you are looking at without matching on the provider name.
+     */
+    policy: Data.Policy | null;
+
+    /**
+     * A human has to accept before it is an appointment. An agent booking one of these
+     * must say "requested", never "confirmed".
+     */
+    requiresConfirmation: boolean;
+
+    /**
+     * Ready to put on a calendar tool, so nothing has to assemble one by hand.
+     */
+    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2;
+  }
+
+  export namespace Data {
+    /**
+     * The booking policy Roark applies, for a calendar with no scheduling of its own.
+     * Null on a scheduling system, which owns its own rules, so this one field says
+     * which kind of provider you are looking at without matching on the provider name.
+     */
+    export interface Policy {
+      /**
+       * Whether an all-day event closes the day. On by default: a calendar marks all-day
+       * events free unless their creator says otherwise, so a public holiday entered as
+       * one would otherwise still be bookable.
+       */
+      allDayEventsBlock: boolean;
+
+      bufferAfterMinutes: number;
+
+      /**
+       * Dead time before an appointment, counted as busy.
+       */
+      bufferBeforeMinutes: number;
+
+      durationMinutes: number;
+
+      /**
+       * How far ahead appointments may be made.
+       */
+      horizonDays: number;
+
+      hours: Array<Policy.Hour>;
+
+      /**
+       * How soon from now an appointment may be made.
+       */
+      minNoticeMinutes: number;
+
+      /**
+       * The grid slots are offered on, measured from each bookable window’s own start
+       * rather than the hour.
+       */
+      slotIntervalMinutes: number;
+    }
+
+    export namespace Policy {
+      /**
+       * One window of the week appointments are offered in. A window that runs past
+       * midnight is two entries on two weekdays; a day the business is closed is simply
+       * absent.
+       */
+      export interface Hour {
+        endMinute: number;
+
+        /**
+         * Minutes from local midnight, in the connection’s timezone.
+         */
+        startMinute: number;
+
+        /**
+         * ISO weekday: Monday is 1, Sunday is 7.
+         */
+        weekday: number;
+      }
+    }
+
+    export interface UnionMember0 {
+      eventTypeId: number;
+
+      provider: 'CAL_COM';
+    }
+
+    export interface UnionMember1 {
+      calendarId: string;
+
+      provider: 'GOOGLE';
+
+      targetId: string;
+    }
+
+    export interface UnionMember2 {
+      /**
+       * The event type, by URI rather than by id: Calendly names every resource with an
+       * absolute URL and its own API takes that URL back.
+       */
+      eventTypeUri: string;
+
+      provider: 'CALENDLY';
+    }
+  }
+}
+
+export interface CalendarConnectionDeleteTargetResponse {
+  data: CalendarConnectionDeleteTargetResponse.Data;
+}
+
+export namespace CalendarConnectionDeleteTargetResponse {
+  export interface Data {
+    /**
+     * Identifier of the deleted target.
+     */
+    id: string;
+
+    deleted: true;
   }
 }
 
@@ -797,9 +1127,10 @@ export namespace CalendarConnectionGetByIDResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is the only provider that can be connected
-     * today; GOOGLE and CALENDLY are described by `capabilities` but not yet
-     * connectable.
+     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * CALENDLY are connected by consent, through
+     * `POST /v1/connections/calendar/google/authorize-url` and
+     * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
     provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
 
@@ -840,7 +1171,9 @@ export namespace CalendarConnectionGetByIDResponse {
      */
     export interface Capabilities {
       /**
-       * How this provider is authenticated.
+       * How a credential is obtained, which is the whole of what connecting looks like:
+       * API_KEY takes a key in the create body, OAUTH sends the customer to the provider
+       * and Roark stores the result itself.
        */
       auth: 'API_KEY' | 'OAUTH';
 
@@ -867,9 +1200,11 @@ export namespace CalendarConnectionGetByIDResponse {
       requiresAttendeeEmail: boolean;
 
       /**
-       * True for a raw calendar, which exposes only events and free/busy. Roark then
-       * owns bookable hours, duration, buffers, lead time and horizon, because the
-       * provider has no notion of them.
+       * True for a calendar that exposes only events and free/busy. Roark then owns the
+       * bookable hours, duration, buffers, lead time and horizon, because the provider
+       * has no notion of them. A tool on one of these is pointed at a bookable target
+       * you create through this API, rather than at something that already exists on the
+       * account. Read this instead of matching on the provider name.
        */
       roarkOwnsBookingPolicy: boolean;
 
@@ -886,7 +1221,7 @@ export namespace CalendarConnectionGetByIDResponse {
 export interface CalendarConnectionGetTargetResponse {
   /**
    * Something on a connected account an agent can be pointed at: a Cal.com event
-   * type today, a Google calendar when that lands.
+   * type, or a bookable target on a calendar whose booking policy Roark owns.
    */
   data: CalendarConnectionGetTargetResponse.Data;
 }
@@ -894,7 +1229,7 @@ export interface CalendarConnectionGetTargetResponse {
 export namespace CalendarConnectionGetTargetResponse {
   /**
    * Something on a connected account an agent can be pointed at: a Cal.com event
-   * type today, a Google calendar when that lands.
+   * type, or a bookable target on a calendar whose booking policy Roark owns.
    */
   export interface Data {
     /**
@@ -925,9 +1260,17 @@ export namespace CalendarConnectionGetTargetResponse {
     label: string;
 
     /**
-     * Slugs a booking is refused without, as the provider names them (`email`,
-     * `name`). The attendee object itself needs only a name and a timezone, so this is
-     * the only place that says whether an agent has to collect an email.
+     * The booking policy Roark applies, for a calendar with no scheduling of its own.
+     * Null on a scheduling system, which owns its own rules, so this one field says
+     * which kind of provider you are looking at without matching on the provider name.
+     */
+    policy: Data.Policy | null;
+
+    /**
+     * What a booking is refused without, as the provider names it (`email`, `name`, or
+     * a Calendly event type’s own required questions). On Cal.com the attendee object
+     * itself needs only a name and a timezone, so this is the only place that says
+     * whether an agent has to collect an email; on Calendly both are always required.
      */
     requiredBookingFields: Array<string>;
 
@@ -946,18 +1289,128 @@ export namespace CalendarConnectionGetTargetResponse {
     /**
      * Ready to put on a calendar tool, so nothing has to assemble one by hand.
      */
-    target: Data.Target;
+    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2;
   }
 
   export namespace Data {
     /**
-     * Ready to put on a calendar tool, so nothing has to assemble one by hand.
+     * The booking policy Roark applies, for a calendar with no scheduling of its own.
+     * Null on a scheduling system, which owns its own rules, so this one field says
+     * which kind of provider you are looking at without matching on the provider name.
      */
-    export interface Target {
+    export interface Policy {
+      /**
+       * Whether an all-day event closes the day. On by default: a calendar marks all-day
+       * events free unless their creator says otherwise, so a public holiday entered as
+       * one would otherwise still be bookable.
+       */
+      allDayEventsBlock: boolean;
+
+      bufferAfterMinutes: number;
+
+      /**
+       * Dead time before an appointment, counted as busy.
+       */
+      bufferBeforeMinutes: number;
+
+      durationMinutes: number;
+
+      /**
+       * How far ahead appointments may be made.
+       */
+      horizonDays: number;
+
+      hours: Array<Policy.Hour>;
+
+      /**
+       * How soon from now an appointment may be made.
+       */
+      minNoticeMinutes: number;
+
+      /**
+       * The grid slots are offered on, measured from each bookable window’s own start
+       * rather than the hour.
+       */
+      slotIntervalMinutes: number;
+    }
+
+    export namespace Policy {
+      /**
+       * One window of the week appointments are offered in. A window that runs past
+       * midnight is two entries on two weekdays; a day the business is closed is simply
+       * absent.
+       */
+      export interface Hour {
+        endMinute: number;
+
+        /**
+         * Minutes from local midnight, in the connection’s timezone.
+         */
+        startMinute: number;
+
+        /**
+         * ISO weekday: Monday is 1, Sunday is 7.
+         */
+        weekday: number;
+      }
+    }
+
+    export interface UnionMember0 {
       eventTypeId: number;
 
       provider: 'CAL_COM';
     }
+
+    export interface UnionMember1 {
+      calendarId: string;
+
+      provider: 'GOOGLE';
+
+      targetId: string;
+    }
+
+    export interface UnionMember2 {
+      /**
+       * The event type, by URI rather than by id: Calendly names every resource with an
+       * absolute URL and its own API takes that URL back.
+       */
+      eventTypeUri: string;
+
+      provider: 'CALENDLY';
+    }
+  }
+}
+
+export interface CalendarConnectionListCalendarsResponse {
+  data: Array<CalendarConnectionListCalendarsResponse.Data>;
+}
+
+export namespace CalendarConnectionListCalendarsResponse {
+  /**
+   * A calendar on the connected account that a bookable target can be created on.
+   */
+  export interface Data {
+    /**
+     * Pass this as `calendarId` when creating a target.
+     */
+    id: string;
+
+    /**
+     * Always true: a calendar that cannot be written to is not listed.
+     */
+    canWrite: boolean;
+
+    isPrimary: boolean;
+
+    /**
+     * What the calendar is called on the account.
+     */
+    label: string;
+
+    /**
+     * The calendar’s own timezone, when it reports one.
+     */
+    timezone: string | null;
   }
 }
 
@@ -968,7 +1421,7 @@ export interface CalendarConnectionListTargetsResponse {
 export namespace CalendarConnectionListTargetsResponse {
   /**
    * Something on a connected account an agent can be pointed at: a Cal.com event
-   * type today, a Google calendar when that lands.
+   * type, or a bookable target on a calendar whose booking policy Roark owns.
    */
   export interface Data {
     /**
@@ -999,6 +1452,13 @@ export namespace CalendarConnectionListTargetsResponse {
     label: string;
 
     /**
+     * The booking policy Roark applies, for a calendar with no scheduling of its own.
+     * Null on a scheduling system, which owns its own rules, so this one field says
+     * which kind of provider you are looking at without matching on the provider name.
+     */
+    policy: Data.Policy | null;
+
+    /**
      * A human has to accept before it is an appointment. An agent booking one of these
      * must say "requested", never "confirmed".
      */
@@ -1007,26 +1467,305 @@ export namespace CalendarConnectionListTargetsResponse {
     /**
      * Ready to put on a calendar tool, so nothing has to assemble one by hand.
      */
-    target: Data.Target;
+    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2;
   }
 
   export namespace Data {
     /**
-     * Ready to put on a calendar tool, so nothing has to assemble one by hand.
+     * The booking policy Roark applies, for a calendar with no scheduling of its own.
+     * Null on a scheduling system, which owns its own rules, so this one field says
+     * which kind of provider you are looking at without matching on the provider name.
      */
-    export interface Target {
+    export interface Policy {
+      /**
+       * Whether an all-day event closes the day. On by default: a calendar marks all-day
+       * events free unless their creator says otherwise, so a public holiday entered as
+       * one would otherwise still be bookable.
+       */
+      allDayEventsBlock: boolean;
+
+      bufferAfterMinutes: number;
+
+      /**
+       * Dead time before an appointment, counted as busy.
+       */
+      bufferBeforeMinutes: number;
+
+      durationMinutes: number;
+
+      /**
+       * How far ahead appointments may be made.
+       */
+      horizonDays: number;
+
+      hours: Array<Policy.Hour>;
+
+      /**
+       * How soon from now an appointment may be made.
+       */
+      minNoticeMinutes: number;
+
+      /**
+       * The grid slots are offered on, measured from each bookable window’s own start
+       * rather than the hour.
+       */
+      slotIntervalMinutes: number;
+    }
+
+    export namespace Policy {
+      /**
+       * One window of the week appointments are offered in. A window that runs past
+       * midnight is two entries on two weekdays; a day the business is closed is simply
+       * absent.
+       */
+      export interface Hour {
+        endMinute: number;
+
+        /**
+         * Minutes from local midnight, in the connection’s timezone.
+         */
+        startMinute: number;
+
+        /**
+         * ISO weekday: Monday is 1, Sunday is 7.
+         */
+        weekday: number;
+      }
+    }
+
+    export interface UnionMember0 {
       eventTypeId: number;
 
       provider: 'CAL_COM';
+    }
+
+    export interface UnionMember1 {
+      calendarId: string;
+
+      provider: 'GOOGLE';
+
+      targetId: string;
+    }
+
+    export interface UnionMember2 {
+      /**
+       * The event type, by URI rather than by id: Calendly names every resource with an
+       * absolute URL and its own API takes that URL back.
+       */
+      eventTypeUri: string;
+
+      provider: 'CALENDLY';
+    }
+  }
+}
+
+export interface CalendarConnectionStartCalendlyOauthResponse {
+  data: CalendarConnectionStartCalendlyOauthResponse.Data;
+}
+
+export namespace CalendarConnectionStartCalendlyOauthResponse {
+  export interface Data {
+    /**
+     * Open this in a browser. After the customer consents, the provider returns to
+     * Roark, which exchanges the code, verifies the credential and stores the
+     * connection. Read the result with `GET /v1/connections/calendar?provider=…`.
+     */
+    authorizeUrl: string;
+
+    /**
+     * When the link stops working, ISO 8601. Start again after that.
+     */
+    expiresAt: string;
+
+    /**
+     * The opaque single-use value this flow is identified by, echoed so a caller can
+     * correlate its own UI. Not a credential and not accepted anywhere as one.
+     */
+    state: string;
+  }
+}
+
+export interface CalendarConnectionStartGoogleOauthResponse {
+  data: CalendarConnectionStartGoogleOauthResponse.Data;
+}
+
+export namespace CalendarConnectionStartGoogleOauthResponse {
+  export interface Data {
+    /**
+     * Open this in a browser. After the customer consents, the provider returns to
+     * Roark, which exchanges the code, verifies the credential and stores the
+     * connection. Read the result with `GET /v1/connections/calendar?provider=…`.
+     */
+    authorizeUrl: string;
+
+    /**
+     * When the link stops working, ISO 8601. Start again after that.
+     */
+    expiresAt: string;
+
+    /**
+     * The opaque single-use value this flow is identified by, echoed so a caller can
+     * correlate its own UI. Not a credential and not accepted anywhere as one.
+     */
+    state: string;
+  }
+}
+
+export interface CalendarConnectionUpdateTargetResponse {
+  /**
+   * Something on a connected account an agent can be pointed at: a Cal.com event
+   * type, or a bookable target on a calendar whose booking policy Roark owns.
+   */
+  data: CalendarConnectionUpdateTargetResponse.Data;
+}
+
+export namespace CalendarConnectionUpdateTargetResponse {
+  /**
+   * Something on a connected account an agent can be pointed at: a Cal.com event
+   * type, or a bookable target on a calendar whose booking policy Roark owns.
+   */
+  export interface Data {
+    /**
+     * Identifier within this connection. Pass it back to read one target in detail.
+     */
+    id: string;
+
+    /**
+     * How long an appointment runs, when the provider fixes one length.
+     */
+    durationMinutes: number | null;
+
+    /**
+     * Other lengths this target offers, when it offers a choice. A calendar tool pins
+     * one of these with `durationMinutes`; an empty list means the length is not the
+     * customer’s to choose.
+     */
+    durationOptions: Array<number>;
+
+    /**
+     * Hidden on the provider’s own booking page. Still bookable through this API.
+     */
+    isHidden: boolean;
+
+    /**
+     * What the customer called it on the provider.
+     */
+    label: string;
+
+    /**
+     * The booking policy Roark applies, for a calendar with no scheduling of its own.
+     * Null on a scheduling system, which owns its own rules, so this one field says
+     * which kind of provider you are looking at without matching on the provider name.
+     */
+    policy: Data.Policy | null;
+
+    /**
+     * A human has to accept before it is an appointment. An agent booking one of these
+     * must say "requested", never "confirmed".
+     */
+    requiresConfirmation: boolean;
+
+    /**
+     * Ready to put on a calendar tool, so nothing has to assemble one by hand.
+     */
+    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2;
+  }
+
+  export namespace Data {
+    /**
+     * The booking policy Roark applies, for a calendar with no scheduling of its own.
+     * Null on a scheduling system, which owns its own rules, so this one field says
+     * which kind of provider you are looking at without matching on the provider name.
+     */
+    export interface Policy {
+      /**
+       * Whether an all-day event closes the day. On by default: a calendar marks all-day
+       * events free unless their creator says otherwise, so a public holiday entered as
+       * one would otherwise still be bookable.
+       */
+      allDayEventsBlock: boolean;
+
+      bufferAfterMinutes: number;
+
+      /**
+       * Dead time before an appointment, counted as busy.
+       */
+      bufferBeforeMinutes: number;
+
+      durationMinutes: number;
+
+      /**
+       * How far ahead appointments may be made.
+       */
+      horizonDays: number;
+
+      hours: Array<Policy.Hour>;
+
+      /**
+       * How soon from now an appointment may be made.
+       */
+      minNoticeMinutes: number;
+
+      /**
+       * The grid slots are offered on, measured from each bookable window’s own start
+       * rather than the hour.
+       */
+      slotIntervalMinutes: number;
+    }
+
+    export namespace Policy {
+      /**
+       * One window of the week appointments are offered in. A window that runs past
+       * midnight is two entries on two weekdays; a day the business is closed is simply
+       * absent.
+       */
+      export interface Hour {
+        endMinute: number;
+
+        /**
+         * Minutes from local midnight, in the connection’s timezone.
+         */
+        startMinute: number;
+
+        /**
+         * ISO weekday: Monday is 1, Sunday is 7.
+         */
+        weekday: number;
+      }
+    }
+
+    export interface UnionMember0 {
+      eventTypeId: number;
+
+      provider: 'CAL_COM';
+    }
+
+    export interface UnionMember1 {
+      calendarId: string;
+
+      provider: 'GOOGLE';
+
+      targetId: string;
+    }
+
+    export interface UnionMember2 {
+      /**
+       * The event type, by URI rather than by id: Calendly names every resource with an
+       * absolute URL and its own API takes that URL back.
+       */
+      eventTypeUri: string;
+
+      provider: 'CALENDLY';
     }
   }
 }
 
 export interface CalendarConnectionCreateParams {
   /**
-   * For CAL*COM: a Cal.com API key (starts with `cal*`). It is verified against
-   * Cal.com before anything is stored, so an invalid key is a 400 and no connection
-   * is created. Stored encrypted and never returned.
+   * The provider account’s API key. For CAL*COM, a Cal.com API key (starts with
+   * `cal*`). It is verified against the provider before anything is stored, so an
+   * invalid key is a 400 and no connection is created. Stored encrypted and never
+   * returned.
    */
   apiKey: string;
 
@@ -1036,9 +1775,10 @@ export interface CalendarConnectionCreateParams {
   label: string;
 
   /**
-   * Who holds the calendar. CAL_COM is the only provider that can be connected
-   * today; GOOGLE and CALENDLY are described by `capabilities` but not yet
-   * connectable.
+   * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+   * CALENDLY are connected by consent, through
+   * `POST /v1/connections/calendar/google/authorize-url` and
+   * `POST /v1/connections/calendar/calendly/authorize-url`.
    */
   provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
 
@@ -1071,11 +1811,95 @@ export interface CalendarConnectionUpdateParams {
 
 export interface CalendarConnectionListParams {
   /**
-   * Who holds the calendar. CAL_COM is the only provider that can be connected
-   * today; GOOGLE and CALENDLY are described by `capabilities` but not yet
-   * connectable.
+   * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+   * CALENDLY are connected by consent, through
+   * `POST /v1/connections/calendar/google/authorize-url` and
+   * `POST /v1/connections/calendar/calendly/authorize-url`.
    */
   provider?: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
+}
+
+export interface CalendarConnectionCreateTargetParams {
+  /**
+   * The calendar to write appointments to, from
+   * `GET /v1/connections/calendar/{connectionId}/calendars`. `primary` is accepted
+   * and stored as the account’s own id.
+   */
+  calendarId: string;
+
+  durationMinutes: number;
+
+  /**
+   * Unique within the connection, and how a config file refers to this target.
+   * Letters, digits, spaces, \_ or -.
+   */
+  name: string;
+
+  /**
+   * Whether an all-day event closes the day. Defaults to true, because a calendar
+   * marks all-day events free unless their creator says otherwise and a public
+   * holiday entered as one would otherwise be bookable.
+   */
+  allDayEventsBlock?: boolean | null;
+
+  bufferAfterMinutes?: number | null;
+
+  /**
+   * Dead time before an appointment, counted as busy when a slot is offered.
+   * Defaults to 0.
+   */
+  bufferBeforeMinutes?: number | null;
+
+  /**
+   * How far ahead appointments may be made. Defaults to 30.
+   */
+  horizonDays?: number | null;
+
+  /**
+   * The windows of the week appointments are offered in. Omit to adopt Monday to
+   * Friday, 09:00 to 17:00. A target with no windows offers nothing at all, which
+   * reads to a caller as a permanently full diary.
+   */
+  hours?: Array<CalendarConnectionCreateTargetParams.Hour> | null;
+
+  /**
+   * How soon from now an appointment may be made. Defaults to 120.
+   */
+  minNoticeMinutes?: number | null;
+
+  /**
+   * The grid slots are offered on. Defaults to the duration, which gives
+   * back-to-back appointments.
+   */
+  slotIntervalMinutes?: number | null;
+}
+
+export namespace CalendarConnectionCreateTargetParams {
+  /**
+   * One window of the week appointments are offered in. A window that runs past
+   * midnight is two entries on two weekdays; a day the business is closed is simply
+   * absent.
+   */
+  export interface Hour {
+    endMinute: number;
+
+    /**
+     * Minutes from local midnight, in the connection’s timezone.
+     */
+    startMinute: number;
+
+    /**
+     * ISO weekday: Monday is 1, Sunday is 7.
+     */
+    weekday: number;
+  }
+}
+
+export interface CalendarConnectionDeleteTargetParams {
+  /**
+   * Calendar connection ID
+   */
+  connectionId: string;
 }
 
 export interface CalendarConnectionGetTargetParams {
@@ -1085,6 +1909,143 @@ export interface CalendarConnectionGetTargetParams {
   connectionId: string;
 }
 
+export interface CalendarConnectionStartCalendlyOauthParams {
+  /**
+   * Reconnect an existing connection instead of creating one: the consent screen
+   * replaces that connection’s credential in place, so every tool bound to it keeps
+   * working. Use this when a connection reports `INVALID_CREDENTIALS`. The
+   * connection’s existing name and timezone are kept, so `label` is ignored when
+   * this is set.
+   */
+  calendarConnectionId?: string | null;
+
+  /**
+   * Customer-facing name for the connection, unique within the project. Required
+   * unless `calendarConnectionId` is set, and decided now because the consent screen
+   * has nowhere to carry it.
+   */
+  label?: string | null;
+
+  /**
+   * The named IANA timezone to offer slots in, for example `America/Los_Angeles`.
+   * Omit to adopt the Calendly account’s own. A fixed offset such as `-08:00` is
+   * rejected: it does not observe DST.
+   */
+  timezone?: string | null;
+}
+
+export interface CalendarConnectionStartGoogleOauthParams {
+  /**
+   * Reconnect an existing connection instead of creating one: the consent screen
+   * replaces that connection’s credential in place, so every tool bound to it keeps
+   * working. Use this when a connection reports `INVALID_CREDENTIALS`. The
+   * connection’s existing name and timezone are kept, so `label` is ignored when
+   * this is set.
+   */
+  calendarConnectionId?: string | null;
+
+  /**
+   * Customer-facing name for the connection, unique within the project. Required
+   * unless `calendarConnectionId` is set, and decided now because the consent screen
+   * has nowhere to carry it.
+   */
+  label?: string | null;
+
+  /**
+   * The Google account to preselect on the consent screen. A hint only: it is
+   * ignored if the user is signed into another account, and nothing is authorized by
+   * it.
+   */
+  loginHint?: string | null;
+
+  /**
+   * The named IANA timezone to offer slots in, for example `America/Los_Angeles`.
+   * Omit to adopt the Google account’s own. A fixed offset such as `-08:00` is
+   * rejected: it does not observe DST.
+   */
+  timezone?: string | null;
+}
+
+export interface CalendarConnectionUpdateTargetParams {
+  /**
+   * Path param: Calendar connection ID
+   */
+  connectionId: string;
+
+  /**
+   * Body param: Whether an all-day event closes the day. Defaults to true, because a
+   * calendar marks all-day events free unless their creator says otherwise and a
+   * public holiday entered as one would otherwise be bookable.
+   */
+  allDayEventsBlock?: boolean | null;
+
+  /**
+   * Body param
+   */
+  bufferAfterMinutes?: number | null;
+
+  /**
+   * Body param: Dead time before an appointment, counted as busy when a slot is
+   * offered. Defaults to 0.
+   */
+  bufferBeforeMinutes?: number | null;
+
+  /**
+   * Body param
+   */
+  durationMinutes?: number;
+
+  /**
+   * Body param: How far ahead appointments may be made. Defaults to 30.
+   */
+  horizonDays?: number | null;
+
+  /**
+   * Body param: The windows of the week appointments are offered in. Omit to adopt
+   * Monday to Friday, 09:00 to 17:00. A target with no windows offers nothing at
+   * all, which reads to a caller as a permanently full diary.
+   */
+  hours?: Array<CalendarConnectionUpdateTargetParams.Hour> | null;
+
+  /**
+   * Body param: How soon from now an appointment may be made. Defaults to 120.
+   */
+  minNoticeMinutes?: number | null;
+
+  /**
+   * Body param: Unique within the connection, and how a config file refers to this
+   * target. Letters, digits, spaces, \_ or -.
+   */
+  name?: string;
+
+  /**
+   * Body param: The grid slots are offered on. Defaults to the duration, which gives
+   * back-to-back appointments.
+   */
+  slotIntervalMinutes?: number | null;
+}
+
+export namespace CalendarConnectionUpdateTargetParams {
+  /**
+   * One window of the week appointments are offered in. A window that runs past
+   * midnight is two entries on two weekdays; a day the business is closed is simply
+   * absent.
+   */
+  export interface Hour {
+    endMinute: number;
+
+    /**
+     * Minutes from local midnight, in the connection’s timezone.
+     */
+    startMinute: number;
+
+    /**
+     * ISO weekday: Monday is 1, Sunday is 7.
+     */
+    weekday: number;
+  }
+}
+
 export declare namespace CalendarConnection {
   export {
     type CalendarConnectionCreateResponse as CalendarConnectionCreateResponse,
@@ -1092,12 +2053,23 @@ export declare namespace CalendarConnection {
     type CalendarConnectionListResponse as CalendarConnectionListResponse,
     type CalendarConnectionDeleteResponse as CalendarConnectionDeleteResponse,
     type CalendarConnectionCheckResponse as CalendarConnectionCheckResponse,
+    type CalendarConnectionCreateTargetResponse as CalendarConnectionCreateTargetResponse,
+    type CalendarConnectionDeleteTargetResponse as CalendarConnectionDeleteTargetResponse,
     type CalendarConnectionGetByIDResponse as CalendarConnectionGetByIDResponse,
     type CalendarConnectionGetTargetResponse as CalendarConnectionGetTargetResponse,
+    type CalendarConnectionListCalendarsResponse as CalendarConnectionListCalendarsResponse,
     type CalendarConnectionListTargetsResponse as CalendarConnectionListTargetsResponse,
+    type CalendarConnectionStartCalendlyOauthResponse as CalendarConnectionStartCalendlyOauthResponse,
+    type CalendarConnectionStartGoogleOauthResponse as CalendarConnectionStartGoogleOauthResponse,
+    type CalendarConnectionUpdateTargetResponse as CalendarConnectionUpdateTargetResponse,
     type CalendarConnectionCreateParams as CalendarConnectionCreateParams,
     type CalendarConnectionUpdateParams as CalendarConnectionUpdateParams,
     type CalendarConnectionListParams as CalendarConnectionListParams,
+    type CalendarConnectionCreateTargetParams as CalendarConnectionCreateTargetParams,
+    type CalendarConnectionDeleteTargetParams as CalendarConnectionDeleteTargetParams,
     type CalendarConnectionGetTargetParams as CalendarConnectionGetTargetParams,
+    type CalendarConnectionStartCalendlyOauthParams as CalendarConnectionStartCalendlyOauthParams,
+    type CalendarConnectionStartGoogleOauthParams as CalendarConnectionStartGoogleOauthParams,
+    type CalendarConnectionUpdateTargetParams as CalendarConnectionUpdateTargetParams,
   };
 }

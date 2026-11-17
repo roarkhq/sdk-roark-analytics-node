@@ -31,6 +31,7 @@ describe('resource simulationRunPlan', () => {
       maxSimulationDurationSeconds: 300,
       name: 'My Run Plan',
       autoRun: false,
+      callsPerSecond: 0.5,
       comparisonBaseline: 'NONE',
       comparisonProperty: 'BACKGROUND_NOISE',
       comparisonValues: [
@@ -78,6 +79,7 @@ describe('resource simulationRunPlan', () => {
         slack: [{ channelId: 'C07ABCDEF12', channelName: 'qa-reports' }],
       },
       personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+      rampUpSeconds: 60,
       scenarios: [
         {
           id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -106,6 +108,7 @@ describe('resource simulationRunPlan', () => {
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           agentEndpoints: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+          callsPerSecond: 0.01,
           comparisonBaseline: 'comparisonBaseline',
           comparisonProperty: 'ACCENT',
           comparisonValues: [
@@ -157,6 +160,7 @@ describe('resource simulationRunPlan', () => {
             slack: [{ channelId: 'C07ABCDEF12', channelName: 'qa-reports' }],
           },
           personas: [{ id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e' }],
+          rampUpSeconds: 0,
           scenarios: [
             {
               id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',

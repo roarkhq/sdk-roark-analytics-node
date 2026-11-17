@@ -42,6 +42,30 @@ import {
   ManagedAgentConfigRevision,
 } from './resources/agent-config';
 import {
+  AgentConnection,
+  AgentConnectionCancelBackfillParams,
+  AgentConnectionCancelBackfillResponse,
+  AgentConnectionCreateBackfillParams,
+  AgentConnectionCreateBackfillResponse,
+  AgentConnectionCreateParams,
+  AgentConnectionCreateResponse,
+  AgentConnectionDeleteResponse,
+  AgentConnectionDiscoverParams,
+  AgentConnectionDiscoverResponse,
+  AgentConnectionGetByIDResponse,
+  AgentConnectionListBackfillsResponse,
+  AgentConnectionListParams,
+  AgentConnectionListProvidersResponse,
+  AgentConnectionListResponse,
+  AgentConnectionUpdateParams,
+  AgentConnectionUpdateResponse,
+} from './resources/agent-connection';
+import {
+  AgentConversation,
+  AgentConversationCreateParams,
+  AgentConversationCreateResponse,
+} from './resources/agent-conversation';
+import {
   AgentDraft,
   AgentDraftCreateParams,
   AgentDraftCreateResponse,
@@ -70,6 +94,20 @@ import {
   AgentPromptUpdateParams,
   AgentPromptUpdateResponse,
 } from './resources/agent-prompt';
+import {
+  AgentSetup,
+  AgentSetupAnswerQuestionParams,
+  AgentSetupAnswerQuestionResponse,
+  AgentSetupCancelParams,
+  AgentSetupCancelResponse,
+  AgentSetupCreateParams,
+  AgentSetupCreateResponse,
+  AgentSetupGetByIDParams,
+  AgentSetupGetByIDResponse,
+  AgentSetupGetLatestResponse,
+  AgentSetupSendGuidanceParams,
+  AgentSetupSendGuidanceResponse,
+} from './resources/agent-setup';
 import {
   AgentVersion,
   AgentVersionGetByIDParams,
@@ -119,15 +157,26 @@ import {
   CalendarConnectionCheckResponse,
   CalendarConnectionCreateParams,
   CalendarConnectionCreateResponse,
+  CalendarConnectionCreateTargetParams,
+  CalendarConnectionCreateTargetResponse,
   CalendarConnectionDeleteResponse,
+  CalendarConnectionDeleteTargetParams,
+  CalendarConnectionDeleteTargetResponse,
   CalendarConnectionGetByIDResponse,
   CalendarConnectionGetTargetParams,
   CalendarConnectionGetTargetResponse,
+  CalendarConnectionListCalendarsResponse,
   CalendarConnectionListParams,
   CalendarConnectionListResponse,
   CalendarConnectionListTargetsResponse,
+  CalendarConnectionStartCalendlyOauthParams,
+  CalendarConnectionStartCalendlyOauthResponse,
+  CalendarConnectionStartGoogleOauthParams,
+  CalendarConnectionStartGoogleOauthResponse,
   CalendarConnectionUpdateParams,
   CalendarConnectionUpdateResponse,
+  CalendarConnectionUpdateTargetParams,
+  CalendarConnectionUpdateTargetResponse,
 } from './resources/calendar-connection';
 import {
   Call,
@@ -160,6 +209,35 @@ import {
   ConfigFlowStep,
 } from './resources/config';
 import {
+  Conversation,
+  ConversationGetByIDResponse,
+  ConversationListParams,
+  ConversationListResponse,
+} from './resources/conversation';
+import {
+  Customer,
+  CustomerClearAttributeParams,
+  CustomerClearAttributeResponse,
+  CustomerCreateFieldParams,
+  CustomerCreateFieldResponse,
+  CustomerDeleteFieldResponse,
+  CustomerDeleteResponse,
+  CustomerGetByIDResponse,
+  CustomerListConversationsParams,
+  CustomerListConversationsResponse,
+  CustomerListFieldsResponse,
+  CustomerListParams,
+  CustomerListResponse,
+  CustomerSetAttributeParams,
+  CustomerSetAttributeResponse,
+  CustomerUnlockAttributeParams,
+  CustomerUnlockAttributeResponse,
+  CustomerUpdateFieldParams,
+  CustomerUpdateFieldResponse,
+  CustomerUpdateNotesParams,
+  CustomerUpdateNotesResponse,
+} from './resources/customer';
+import {
   CustomerFlow,
   CustomerFlowCreateParams,
   CustomerFlowCreateResponse,
@@ -188,23 +266,6 @@ import {
   CustomerFlowEdgeCaseUpdateParams,
   CustomerFlowEdgeCaseUpdateResponse,
 } from './resources/customer-flow-edge-case';
-import {
-  CustomerProfile,
-  CustomerProfileClearAttributeParams,
-  CustomerProfileClearAttributeResponse,
-  CustomerProfileDeleteResponse,
-  CustomerProfileGetByIDResponse,
-  CustomerProfileListConversationsParams,
-  CustomerProfileListConversationsResponse,
-  CustomerProfileListParams,
-  CustomerProfileListResponse,
-  CustomerProfileSetAttributeParams,
-  CustomerProfileSetAttributeResponse,
-  CustomerProfileUnlockAttributeParams,
-  CustomerProfileUnlockAttributeResponse,
-  CustomerProfileUpdateNotesParams,
-  CustomerProfileUpdateNotesResponse,
-} from './resources/customer-profile';
 import {
   Dashboard,
   DashboardCreateParams,
@@ -253,6 +314,19 @@ import {
   LiveReportUpdateParams,
   LiveReportUpdateResponse,
 } from './resources/live-report';
+import {
+  McpServer,
+  McpServerCreateParams,
+  McpServerCreateResponse,
+  McpServerDeleteResponse,
+  McpServerDiscoverParams,
+  McpServerDiscoverResponse,
+  McpServerGetByIDResponse,
+  McpServerListResponse,
+  McpServerRefreshResponse,
+  McpServerUpdateParams,
+  McpServerUpdateResponse,
+} from './resources/mcp-server';
 import {
   Me,
   MeCreateAPIKeyParams,
@@ -1186,6 +1260,7 @@ export class Roark {
   me: API.Me = new API.Me(this);
   project: API.Project = new API.Project(this);
   usage: API.Usage = new API.Usage(this);
+  conversation: API.Conversation = new API.Conversation(this);
   call: API.Call = new API.Call(this);
   analytics: API.Analytics = new API.Analytics(this);
   dashboard: API.Dashboard = new API.Dashboard(this);
@@ -1204,7 +1279,7 @@ export class Roark {
   simulationRunPlan: API.SimulationRunPlan = new API.SimulationRunPlan(this);
   simulationRunPlanJob: API.SimulationRunPlanJob = new API.SimulationRunPlanJob(this);
   simulationPersona: API.SimulationPersona = new API.SimulationPersona(this);
-  customerProfile: API.CustomerProfile = new API.CustomerProfile(this);
+  customer: API.Customer = new API.Customer(this);
   simulationEnvironment: API.SimulationEnvironment = new API.SimulationEnvironment(this);
   simulationTemplate: API.SimulationTemplate = new API.SimulationTemplate(this);
   agentConfig: API.AgentConfig = new API.AgentConfig(this);
@@ -1215,11 +1290,15 @@ export class Roark {
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
   phoneNumber: API.PhoneNumber = new API.PhoneNumber(this);
   agentPrompt: API.AgentPrompt = new API.AgentPrompt(this);
+  agentSetup: API.AgentSetup = new API.AgentSetup(this);
   agentVersion: API.AgentVersion = new API.AgentVersion(this);
   agentDraft: API.AgentDraft = new API.AgentDraft(this);
+  agentConversation: API.AgentConversation = new API.AgentConversation(this);
   tool: API.Tool = new API.Tool(this);
   httpRequestDefinition: API.HTTPRequestDefinition = new API.HTTPRequestDefinition(this);
   calendarConnection: API.CalendarConnection = new API.CalendarConnection(this);
+  mcpServer: API.McpServer = new API.McpServer(this);
+  agentConnection: API.AgentConnection = new API.AgentConnection(this);
   webhook: API.Webhook = new API.Webhook(this);
   benchmark: API.Benchmark = new API.Benchmark(this);
   config: API.Config = new API.Config(this);
@@ -1229,6 +1308,7 @@ Roark.Health = Health;
 Roark.Me = Me;
 Roark.Project = Project;
 Roark.Usage = Usage;
+Roark.Conversation = Conversation;
 Roark.Call = Call;
 Roark.Analytics = Analytics;
 Roark.Dashboard = Dashboard;
@@ -1247,7 +1327,7 @@ Roark.SimulationRunGroup = SimulationRunGroup;
 Roark.SimulationRunPlan = SimulationRunPlan;
 Roark.SimulationRunPlanJob = SimulationRunPlanJob;
 Roark.SimulationPersona = SimulationPersona;
-Roark.CustomerProfile = CustomerProfile;
+Roark.Customer = Customer;
 Roark.SimulationEnvironment = SimulationEnvironment;
 Roark.SimulationTemplate = SimulationTemplate;
 Roark.AgentConfig = AgentConfig;
@@ -1258,11 +1338,15 @@ Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
 Roark.PhoneNumber = PhoneNumber;
 Roark.AgentPrompt = AgentPrompt;
+Roark.AgentSetup = AgentSetup;
 Roark.AgentVersion = AgentVersion;
 Roark.AgentDraft = AgentDraft;
+Roark.AgentConversation = AgentConversation;
 Roark.Tool = Tool;
 Roark.HTTPRequestDefinition = HTTPRequestDefinition;
 Roark.CalendarConnection = CalendarConnection;
+Roark.McpServer = McpServer;
+Roark.AgentConnection = AgentConnection;
 Roark.Webhook = Webhook;
 Roark.Benchmark = Benchmark;
 Roark.Config = Config;
@@ -1285,6 +1369,13 @@ export declare namespace Roark {
   export { Project as Project, type ProjectListResponse as ProjectListResponse };
 
   export { Usage as Usage, type UsageGetResponse as UsageGetResponse, type UsageGetParams as UsageGetParams };
+
+  export {
+    Conversation as Conversation,
+    type ConversationListResponse as ConversationListResponse,
+    type ConversationGetByIDResponse as ConversationGetByIDResponse,
+    type ConversationListParams as ConversationListParams,
+  };
 
   export {
     Call as Call,
@@ -1499,21 +1590,27 @@ export declare namespace Roark {
   };
 
   export {
-    CustomerProfile as CustomerProfile,
-    type CustomerProfileListResponse as CustomerProfileListResponse,
-    type CustomerProfileDeleteResponse as CustomerProfileDeleteResponse,
-    type CustomerProfileClearAttributeResponse as CustomerProfileClearAttributeResponse,
-    type CustomerProfileGetByIDResponse as CustomerProfileGetByIDResponse,
-    type CustomerProfileListConversationsResponse as CustomerProfileListConversationsResponse,
-    type CustomerProfileSetAttributeResponse as CustomerProfileSetAttributeResponse,
-    type CustomerProfileUnlockAttributeResponse as CustomerProfileUnlockAttributeResponse,
-    type CustomerProfileUpdateNotesResponse as CustomerProfileUpdateNotesResponse,
-    type CustomerProfileListParams as CustomerProfileListParams,
-    type CustomerProfileClearAttributeParams as CustomerProfileClearAttributeParams,
-    type CustomerProfileListConversationsParams as CustomerProfileListConversationsParams,
-    type CustomerProfileSetAttributeParams as CustomerProfileSetAttributeParams,
-    type CustomerProfileUnlockAttributeParams as CustomerProfileUnlockAttributeParams,
-    type CustomerProfileUpdateNotesParams as CustomerProfileUpdateNotesParams,
+    Customer as Customer,
+    type CustomerListResponse as CustomerListResponse,
+    type CustomerDeleteResponse as CustomerDeleteResponse,
+    type CustomerClearAttributeResponse as CustomerClearAttributeResponse,
+    type CustomerCreateFieldResponse as CustomerCreateFieldResponse,
+    type CustomerDeleteFieldResponse as CustomerDeleteFieldResponse,
+    type CustomerGetByIDResponse as CustomerGetByIDResponse,
+    type CustomerListConversationsResponse as CustomerListConversationsResponse,
+    type CustomerListFieldsResponse as CustomerListFieldsResponse,
+    type CustomerSetAttributeResponse as CustomerSetAttributeResponse,
+    type CustomerUnlockAttributeResponse as CustomerUnlockAttributeResponse,
+    type CustomerUpdateFieldResponse as CustomerUpdateFieldResponse,
+    type CustomerUpdateNotesResponse as CustomerUpdateNotesResponse,
+    type CustomerListParams as CustomerListParams,
+    type CustomerClearAttributeParams as CustomerClearAttributeParams,
+    type CustomerCreateFieldParams as CustomerCreateFieldParams,
+    type CustomerListConversationsParams as CustomerListConversationsParams,
+    type CustomerSetAttributeParams as CustomerSetAttributeParams,
+    type CustomerUnlockAttributeParams as CustomerUnlockAttributeParams,
+    type CustomerUpdateFieldParams as CustomerUpdateFieldParams,
+    type CustomerUpdateNotesParams as CustomerUpdateNotesParams,
   };
 
   export {
@@ -1641,6 +1738,21 @@ export declare namespace Roark {
   };
 
   export {
+    AgentSetup as AgentSetup,
+    type AgentSetupCreateResponse as AgentSetupCreateResponse,
+    type AgentSetupAnswerQuestionResponse as AgentSetupAnswerQuestionResponse,
+    type AgentSetupCancelResponse as AgentSetupCancelResponse,
+    type AgentSetupGetByIDResponse as AgentSetupGetByIDResponse,
+    type AgentSetupGetLatestResponse as AgentSetupGetLatestResponse,
+    type AgentSetupSendGuidanceResponse as AgentSetupSendGuidanceResponse,
+    type AgentSetupCreateParams as AgentSetupCreateParams,
+    type AgentSetupAnswerQuestionParams as AgentSetupAnswerQuestionParams,
+    type AgentSetupCancelParams as AgentSetupCancelParams,
+    type AgentSetupGetByIDParams as AgentSetupGetByIDParams,
+    type AgentSetupSendGuidanceParams as AgentSetupSendGuidanceParams,
+  };
+
+  export {
     AgentVersion as AgentVersion,
     type AgentVersionListResponse as AgentVersionListResponse,
     type AgentVersionGetByIDResponse as AgentVersionGetByIDResponse,
@@ -1660,6 +1772,12 @@ export declare namespace Roark {
     type AgentDraftCreateParams as AgentDraftCreateParams,
     type AgentDraftUpdateParams as AgentDraftUpdateParams,
     type AgentDraftPublishParams as AgentDraftPublishParams,
+  };
+
+  export {
+    AgentConversation as AgentConversation,
+    type AgentConversationCreateResponse as AgentConversationCreateResponse,
+    type AgentConversationCreateParams as AgentConversationCreateParams,
   };
 
   export {
@@ -1692,13 +1810,58 @@ export declare namespace Roark {
     type CalendarConnectionListResponse as CalendarConnectionListResponse,
     type CalendarConnectionDeleteResponse as CalendarConnectionDeleteResponse,
     type CalendarConnectionCheckResponse as CalendarConnectionCheckResponse,
+    type CalendarConnectionCreateTargetResponse as CalendarConnectionCreateTargetResponse,
+    type CalendarConnectionDeleteTargetResponse as CalendarConnectionDeleteTargetResponse,
     type CalendarConnectionGetByIDResponse as CalendarConnectionGetByIDResponse,
     type CalendarConnectionGetTargetResponse as CalendarConnectionGetTargetResponse,
+    type CalendarConnectionListCalendarsResponse as CalendarConnectionListCalendarsResponse,
     type CalendarConnectionListTargetsResponse as CalendarConnectionListTargetsResponse,
+    type CalendarConnectionStartCalendlyOauthResponse as CalendarConnectionStartCalendlyOauthResponse,
+    type CalendarConnectionStartGoogleOauthResponse as CalendarConnectionStartGoogleOauthResponse,
+    type CalendarConnectionUpdateTargetResponse as CalendarConnectionUpdateTargetResponse,
     type CalendarConnectionCreateParams as CalendarConnectionCreateParams,
     type CalendarConnectionUpdateParams as CalendarConnectionUpdateParams,
     type CalendarConnectionListParams as CalendarConnectionListParams,
+    type CalendarConnectionCreateTargetParams as CalendarConnectionCreateTargetParams,
+    type CalendarConnectionDeleteTargetParams as CalendarConnectionDeleteTargetParams,
     type CalendarConnectionGetTargetParams as CalendarConnectionGetTargetParams,
+    type CalendarConnectionStartCalendlyOauthParams as CalendarConnectionStartCalendlyOauthParams,
+    type CalendarConnectionStartGoogleOauthParams as CalendarConnectionStartGoogleOauthParams,
+    type CalendarConnectionUpdateTargetParams as CalendarConnectionUpdateTargetParams,
+  };
+
+  export {
+    McpServer as McpServer,
+    type McpServerCreateResponse as McpServerCreateResponse,
+    type McpServerUpdateResponse as McpServerUpdateResponse,
+    type McpServerListResponse as McpServerListResponse,
+    type McpServerDeleteResponse as McpServerDeleteResponse,
+    type McpServerDiscoverResponse as McpServerDiscoverResponse,
+    type McpServerGetByIDResponse as McpServerGetByIDResponse,
+    type McpServerRefreshResponse as McpServerRefreshResponse,
+    type McpServerCreateParams as McpServerCreateParams,
+    type McpServerUpdateParams as McpServerUpdateParams,
+    type McpServerDiscoverParams as McpServerDiscoverParams,
+  };
+
+  export {
+    AgentConnection as AgentConnection,
+    type AgentConnectionCreateResponse as AgentConnectionCreateResponse,
+    type AgentConnectionUpdateResponse as AgentConnectionUpdateResponse,
+    type AgentConnectionListResponse as AgentConnectionListResponse,
+    type AgentConnectionDeleteResponse as AgentConnectionDeleteResponse,
+    type AgentConnectionCancelBackfillResponse as AgentConnectionCancelBackfillResponse,
+    type AgentConnectionCreateBackfillResponse as AgentConnectionCreateBackfillResponse,
+    type AgentConnectionDiscoverResponse as AgentConnectionDiscoverResponse,
+    type AgentConnectionGetByIDResponse as AgentConnectionGetByIDResponse,
+    type AgentConnectionListBackfillsResponse as AgentConnectionListBackfillsResponse,
+    type AgentConnectionListProvidersResponse as AgentConnectionListProvidersResponse,
+    type AgentConnectionCreateParams as AgentConnectionCreateParams,
+    type AgentConnectionUpdateParams as AgentConnectionUpdateParams,
+    type AgentConnectionListParams as AgentConnectionListParams,
+    type AgentConnectionCancelBackfillParams as AgentConnectionCancelBackfillParams,
+    type AgentConnectionCreateBackfillParams as AgentConnectionCreateBackfillParams,
+    type AgentConnectionDiscoverParams as AgentConnectionDiscoverParams,
   };
 
   export {

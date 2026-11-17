@@ -24,9 +24,30 @@ describe('resource tool', () => {
       description: 'x',
       name: 'book_appointment',
       agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      calendar: {
+        appointmentTypes: [
+          {
+            name: 'checkup',
+            calendarTargetId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            durationMinutes: 1,
+            eventTypeId: 1,
+            eventTypeUri: 'eventTypeUri',
+            whenToUse: 'x',
+          },
+        ],
+        calendarConnectionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        operation: 'CHECK_AVAILABILITY',
+        messages: { before: 'before', failure: 'failure', slow: 'slow' },
+        simulate: true,
+      },
       expectedResult: 'expectedResult',
       inputs: [{ name: 'date', type: 'string', description: 'description', required: true }],
       invocationCriteria: 'invocationCriteria',
+      mcp: {
+        mcpServerId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        tool: 'x',
+        messages: { before: 'before', failure: 'failure', slow: 'slow' },
+      },
       runtime: {
         request: {
           url: 'https://example.com',
@@ -61,9 +82,30 @@ describe('resource tool', () => {
       description: 'x',
       name: 'book_appointment',
       agentId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      calendar: {
+        appointmentTypes: [
+          {
+            name: 'checkup',
+            calendarTargetId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            durationMinutes: 1,
+            eventTypeId: 1,
+            eventTypeUri: 'eventTypeUri',
+            whenToUse: 'x',
+          },
+        ],
+        calendarConnectionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        operation: 'CHECK_AVAILABILITY',
+        messages: { before: 'before', failure: 'failure', slow: 'slow' },
+        simulate: true,
+      },
       expectedResult: 'expectedResult',
       inputs: [{ name: 'date', type: 'string', description: 'description', required: true }],
       invocationCriteria: 'invocationCriteria',
+      mcp: {
+        mcpServerId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        tool: 'x',
+        messages: { before: 'before', failure: 'failure', slow: 'slow' },
+      },
       runtime: {
         request: {
           url: 'https://example.com',

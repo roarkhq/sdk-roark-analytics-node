@@ -116,7 +116,12 @@ export namespace UsageGetResponse {
           | 'TRANSCRIPTION'
           | 'INTERNAL_LLM'
           | 'INTERNAL_STT'
-          | 'PHONE_NUMBER';
+          | 'PHONE_NUMBER'
+          | 'AI_AGENT'
+          | 'HOSTED_AGENT_LLM'
+          | 'HOSTED_AGENT_TTS'
+          | 'HOSTED_AGENT_STT'
+          | 'HOSTED_AGENT_TELEPHONY';
 
         /**
          * Whether this cost came from a SIMULATION or a production call (POST_CALL).

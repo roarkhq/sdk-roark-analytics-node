@@ -204,9 +204,9 @@ export namespace AgentDraftCreateResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -248,8 +248,22 @@ export namespace AgentDraftCreateResponse {
      */
     updatedAt: string;
 
+    /**
+     * The longest silence the agent waits through when the caller sounds unfinished,
+     * never shorter than vadStopSecs. Null uses vadStopSecs when that is set, else the
+     * default.
+     */
+    vadMaxSilenceSecs: number | null;
+
+    /**
+     * Seconds of speech before it counts as the caller talking. Null uses the default.
+     */
     vadStartSecs: number | null;
 
+    /**
+     * Seconds of silence before the agent checks whether the caller has finished. Null
+     * uses the default.
+     */
     vadStopSecs: number | null;
 
     /**
@@ -364,7 +378,18 @@ export namespace AgentDraftCreateResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -391,7 +416,7 @@ export namespace AgentDraftCreateResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
 
           smartFormat: boolean | null;
 
@@ -407,7 +432,7 @@ export namespace AgentDraftCreateResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -462,7 +487,18 @@ export namespace AgentDraftCreateResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -607,9 +643,9 @@ export namespace AgentDraftUpdateResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -651,8 +687,22 @@ export namespace AgentDraftUpdateResponse {
      */
     updatedAt: string;
 
+    /**
+     * The longest silence the agent waits through when the caller sounds unfinished,
+     * never shorter than vadStopSecs. Null uses vadStopSecs when that is set, else the
+     * default.
+     */
+    vadMaxSilenceSecs: number | null;
+
+    /**
+     * Seconds of speech before it counts as the caller talking. Null uses the default.
+     */
     vadStartSecs: number | null;
 
+    /**
+     * Seconds of silence before the agent checks whether the caller has finished. Null
+     * uses the default.
+     */
     vadStopSecs: number | null;
 
     /**
@@ -767,7 +817,18 @@ export namespace AgentDraftUpdateResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -794,7 +855,7 @@ export namespace AgentDraftUpdateResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
 
           smartFormat: boolean | null;
 
@@ -810,7 +871,7 @@ export namespace AgentDraftUpdateResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -865,7 +926,18 @@ export namespace AgentDraftUpdateResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -1010,9 +1082,9 @@ export namespace AgentDraftDeleteResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -1054,8 +1126,22 @@ export namespace AgentDraftDeleteResponse {
      */
     updatedAt: string;
 
+    /**
+     * The longest silence the agent waits through when the caller sounds unfinished,
+     * never shorter than vadStopSecs. Null uses vadStopSecs when that is set, else the
+     * default.
+     */
+    vadMaxSilenceSecs: number | null;
+
+    /**
+     * Seconds of speech before it counts as the caller talking. Null uses the default.
+     */
     vadStartSecs: number | null;
 
+    /**
+     * Seconds of silence before the agent checks whether the caller has finished. Null
+     * uses the default.
+     */
     vadStopSecs: number | null;
 
     /**
@@ -1170,7 +1256,18 @@ export namespace AgentDraftDeleteResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -1197,7 +1294,7 @@ export namespace AgentDraftDeleteResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
 
           smartFormat: boolean | null;
 
@@ -1213,7 +1310,7 @@ export namespace AgentDraftDeleteResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -1268,7 +1365,18 @@ export namespace AgentDraftDeleteResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -1413,9 +1521,9 @@ export namespace AgentDraftGetResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -1457,8 +1565,22 @@ export namespace AgentDraftGetResponse {
      */
     updatedAt: string;
 
+    /**
+     * The longest silence the agent waits through when the caller sounds unfinished,
+     * never shorter than vadStopSecs. Null uses vadStopSecs when that is set, else the
+     * default.
+     */
+    vadMaxSilenceSecs: number | null;
+
+    /**
+     * Seconds of speech before it counts as the caller talking. Null uses the default.
+     */
     vadStartSecs: number | null;
 
+    /**
+     * Seconds of silence before the agent checks whether the caller has finished. Null
+     * uses the default.
+     */
     vadStopSecs: number | null;
 
     /**
@@ -1573,7 +1695,18 @@ export namespace AgentDraftGetResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -1600,7 +1733,7 @@ export namespace AgentDraftGetResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
 
           smartFormat: boolean | null;
 
@@ -1616,7 +1749,7 @@ export namespace AgentDraftGetResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -1671,7 +1804,18 @@ export namespace AgentDraftGetResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -1816,9 +1960,9 @@ export namespace AgentDraftPublishResponse {
     language: string | null;
 
     /**
-     * Whether the agent takes calls, chats, or both.
+     * Whether the agent talks by voice, in chats, or both: `voice`, `chat`.
      */
-    modalities: Array<'call' | 'chat'>;
+    modalities: Array<'voice' | 'chat'>;
 
     /**
      * ISO 8601.
@@ -1860,8 +2004,22 @@ export namespace AgentDraftPublishResponse {
      */
     updatedAt: string;
 
+    /**
+     * The longest silence the agent waits through when the caller sounds unfinished,
+     * never shorter than vadStopSecs. Null uses vadStopSecs when that is set, else the
+     * default.
+     */
+    vadMaxSilenceSecs: number | null;
+
+    /**
+     * Seconds of speech before it counts as the caller talking. Null uses the default.
+     */
     vadStartSecs: number | null;
 
+    /**
+     * Seconds of silence before the agent checks whether the caller has finished. Null
+     * uses the default.
+     */
     vadStopSecs: number | null;
 
     /**
@@ -1976,7 +2134,18 @@ export namespace AgentDraftPublishResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -2003,7 +2172,7 @@ export namespace AgentDraftPublishResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
 
           smartFormat: boolean | null;
 
@@ -2019,7 +2188,7 @@ export namespace AgentDraftPublishResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -2074,7 +2243,18 @@ export namespace AgentDraftPublishResponse {
            */
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           /**
            * 0 to 2.
@@ -2192,9 +2372,11 @@ export namespace AgentDraftUpdateParams {
 
     language?: string | null;
 
-    modalities?: Array<'call' | 'chat'>;
+    modalities?: Array<'voice' | 'chat' | 'call'>;
 
     subAgents?: Array<Settings.SubAgent>;
+
+    vadMaxSilenceSecs?: number | null;
 
     vadStartSecs?: number | null;
 
@@ -2245,7 +2427,18 @@ export namespace AgentDraftUpdateParams {
         export interface Llm {
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           maxTokens?: number | null;
 
@@ -2255,7 +2448,7 @@ export namespace AgentDraftUpdateParams {
         export interface Stt {
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS';
+          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
 
           endpointingMs?: number | null;
 
@@ -2269,7 +2462,7 @@ export namespace AgentDraftUpdateParams {
         export interface Tt {
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME';
+          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
 
           voiceId: string;
 
@@ -2291,7 +2484,18 @@ export namespace AgentDraftUpdateParams {
         export interface SpeechToSpeech {
           model: string;
 
-          provider: 'OPENAI' | 'ANTHROPIC' | 'GOOGLE' | 'XAI' | 'ULTRAVOX' | 'AWS' | 'ELEVENLABS';
+          provider:
+            | 'OPENAI'
+            | 'ANTHROPIC'
+            | 'GOOGLE'
+            | 'XAI'
+            | 'ULTRAVOX'
+            | 'AWS'
+            | 'ELEVENLABS'
+            | 'GROQ'
+            | 'META'
+            | 'RIME'
+            | 'PHONIC';
 
           backendModel?: string | null;
 
