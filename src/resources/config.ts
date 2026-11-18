@@ -1129,8 +1129,8 @@ export namespace Bundle {
         | 'CHAT_ANALYSIS_FAILED'
         | 'ISSUE_OPENED'
         | 'ISSUE_RESOLVED'
-        | 'AGENT_SETUP_COMPLETED'
-        | 'AGENT_SETUP_FAILED'
+        | 'SIMULATION_RESOURCE_GENERATION_COMPLETED'
+        | 'SIMULATION_RESOURCE_GENERATION_FAILED'
       >;
 
       type: 'event';
@@ -2708,8 +2708,8 @@ export namespace Bundle {
           | 'CHAT_ANALYSIS_FAILED'
           | 'ISSUE_OPENED'
           | 'ISSUE_RESOLVED'
-          | 'AGENT_SETUP_COMPLETED'
-          | 'AGENT_SETUP_FAILED'
+          | 'SIMULATION_RESOURCE_GENERATION_COMPLETED'
+          | 'SIMULATION_RESOURCE_GENERATION_FAILED'
         >;
 
         type: 'event';
@@ -4458,8 +4458,8 @@ export namespace ConfigApplyParams {
         | 'CHAT_ANALYSIS_FAILED'
         | 'ISSUE_OPENED'
         | 'ISSUE_RESOLVED'
-        | 'AGENT_SETUP_COMPLETED'
-        | 'AGENT_SETUP_FAILED'
+        | 'SIMULATION_RESOURCE_GENERATION_COMPLETED'
+        | 'SIMULATION_RESOURCE_GENERATION_FAILED'
       >;
 
       type: 'event';
@@ -6037,8 +6037,8 @@ export namespace ConfigApplyParams {
           | 'CHAT_ANALYSIS_FAILED'
           | 'ISSUE_OPENED'
           | 'ISSUE_RESOLVED'
-          | 'AGENT_SETUP_COMPLETED'
-          | 'AGENT_SETUP_FAILED'
+          | 'SIMULATION_RESOURCE_GENERATION_COMPLETED'
+          | 'SIMULATION_RESOURCE_GENERATION_FAILED'
         >;
 
         type: 'event';
@@ -7598,8 +7598,8 @@ export namespace ConfigDiffParams {
         | 'CHAT_ANALYSIS_FAILED'
         | 'ISSUE_OPENED'
         | 'ISSUE_RESOLVED'
-        | 'AGENT_SETUP_COMPLETED'
-        | 'AGENT_SETUP_FAILED'
+        | 'SIMULATION_RESOURCE_GENERATION_COMPLETED'
+        | 'SIMULATION_RESOURCE_GENERATION_FAILED'
       >;
 
       type: 'event';
@@ -9177,8 +9177,8 @@ export namespace ConfigDiffParams {
           | 'CHAT_ANALYSIS_FAILED'
           | 'ISSUE_OPENED'
           | 'ISSUE_RESOLVED'
-          | 'AGENT_SETUP_COMPLETED'
-          | 'AGENT_SETUP_FAILED'
+          | 'SIMULATION_RESOURCE_GENERATION_COMPLETED'
+          | 'SIMULATION_RESOURCE_GENERATION_FAILED'
         >;
 
         type: 'event';
