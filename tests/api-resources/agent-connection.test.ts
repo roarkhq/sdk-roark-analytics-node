@@ -31,7 +31,6 @@ describe('resource agentConnection', () => {
       agentIds: ['x'],
       agentNames: ['x'],
       agentScope: 'ALL',
-      autoSetUpAgents: true,
       capabilities: ['PULL_AGENTS'],
       samplingRate: 1,
     });
@@ -57,7 +56,6 @@ describe('resource agentConnection', () => {
       agentNames: ['x'],
       agentScope: 'ALL',
       apiKey: 'x',
-      autoSetUpAgents: true,
       capabilities: ['PULL_AGENTS'],
       name: 'Production Retell',
       samplingRate: 1,

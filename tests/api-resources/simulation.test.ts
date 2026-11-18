@@ -8,6 +8,120 @@ const client = new Roark({
 });
 
 describe('resource simulation', () => {
+  test('answerResourceGeneration: only required params', async () => {
+    const responsePromise = client.simulation.answerResourceGeneration(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      { text: 'x' },
+    );
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('answerResourceGeneration: required and optional params', async () => {
+    const response = await client.simulation.answerResourceGeneration(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      { text: 'x' },
+    );
+  });
+
+  test('cancelResourceGeneration', async () => {
+    const responsePromise = client.simulation.cancelResourceGeneration(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    );
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('generateResources: only required params', async () => {
+    const responsePromise = client.simulation.generateResources({
+      agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('generateResources: required and optional params', async () => {
+    const response = await client.simulation.generateResources({
+      agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+      agentEndpointId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      capabilities: ['APPOINTMENT_BOOKING'],
+      explore: { enabled: true, maxConversationMinutes: 1, maxConversations: 1 },
+      industry: 'HEALTHCARE',
+      testingInstructions: 'testingInstructions',
+      websiteUrl: 'https://example.com',
+    });
+  });
+
+  test('getResourceGeneration', async () => {
+    const responsePromise = client.simulation.getResourceGeneration('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('guideResourceGeneration: only required params', async () => {
+    const responsePromise = client.simulation.guideResourceGeneration(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      { text: 'x' },
+    );
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('guideResourceGeneration: required and optional params', async () => {
+    const response = await client.simulation.guideResourceGeneration('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      text: 'x',
+    });
+  });
+
+  test('listResourceGenerations', async () => {
+    const responsePromise = client.simulation.listResourceGenerations();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('listResourceGenerations: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.simulation.listResourceGenerations(
+        {
+          agentIds: 'agentIds',
+          limit: 1,
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(Roark.NotFoundError);
+  });
+
   test('mockTool: only required params', async () => {
     const responsePromise = client.simulation.mockTool({
       simulationJobId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',

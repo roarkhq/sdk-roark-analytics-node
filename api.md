@@ -48,12 +48,10 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/conversation.ts">ConversationListResponse</a></code>
 - <code><a href="./src/resources/conversation.ts">ConversationGetByIDResponse</a></code>
 
 Methods:
 
-- <code title="get /v1/conversation">client.conversation.<a href="./src/resources/conversation.ts">list</a>({ ...params }) -> ConversationListResponse</code>
 - <code title="get /v1/conversation/{conversationId}">client.conversation.<a href="./src/resources/conversation.ts">getByID</a>(conversationID) -> ConversationGetByIDResponse</code>
 
 # Call
@@ -220,11 +218,23 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/simulation.ts">SimulationAnswerResourceGenerationResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationCancelResourceGenerationResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationGenerateResourcesResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationGetResourceGenerationResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationGuideResourceGenerationResponse</a></code>
+- <code><a href="./src/resources/simulation.ts">SimulationListResourceGenerationsResponse</a></code>
 - <code><a href="./src/resources/simulation.ts">SimulationMockToolResponse</a></code>
 - <code><a href="./src/resources/simulation.ts">SimulationRunResponse</a></code>
 
 Methods:
 
+- <code title="post /v1/simulation/generations/resources/{generationId}/answer">client.simulation.<a href="./src/resources/simulation.ts">answerResourceGeneration</a>(generationID, { ...params }) -> SimulationAnswerResourceGenerationResponse</code>
+- <code title="post /v1/simulation/generations/resources/{generationId}/cancel">client.simulation.<a href="./src/resources/simulation.ts">cancelResourceGeneration</a>(generationID) -> SimulationCancelResourceGenerationResponse</code>
+- <code title="post /v1/simulation/generations/resources">client.simulation.<a href="./src/resources/simulation.ts">generateResources</a>({ ...params }) -> SimulationGenerateResourcesResponse</code>
+- <code title="get /v1/simulation/generations/resources/{generationId}">client.simulation.<a href="./src/resources/simulation.ts">getResourceGeneration</a>(generationID) -> SimulationGetResourceGenerationResponse</code>
+- <code title="post /v1/simulation/generations/resources/{generationId}/guidance">client.simulation.<a href="./src/resources/simulation.ts">guideResourceGeneration</a>(generationID, { ...params }) -> SimulationGuideResourceGenerationResponse</code>
+- <code title="get /v1/simulation/generations/resources">client.simulation.<a href="./src/resources/simulation.ts">listResourceGenerations</a>({ ...params }) -> SimulationListResourceGenerationsResponse</code>
 - <code title="post /v1/simulation/tool-mock">client.simulation.<a href="./src/resources/simulation.ts">mockTool</a>({ ...params }) -> SimulationMockToolResponse</code>
 - <code title="post /v1/simulation/run">client.simulation.<a href="./src/resources/simulation.ts">run</a>({ ...params }) -> SimulationRunResponse</code>
 
@@ -503,6 +513,20 @@ Methods:
 - <code title="put /v1/customer-flow/{flowId}/graph">client.customerFlow.<a href="./src/resources/customer-flow.ts">replaceGraph</a>(flowID, { ...params }) -> CustomerFlowReplaceGraphResponse</code>
 - <code title="put /v1/customer-flow/{flowId}/happy-path">client.customerFlow.<a href="./src/resources/customer-flow.ts">updateHappyPath</a>(flowID, { ...params }) -> CustomerFlowUpdateHappyPathResponse</code>
 
+# CustomerFlowFolder
+
+Types:
+
+- <code><a href="./src/resources/customer-flow-folder.ts">CustomerFlowFolderCreateResponse</a></code>
+- <code><a href="./src/resources/customer-flow-folder.ts">CustomerFlowFolderListResponse</a></code>
+- <code><a href="./src/resources/customer-flow-folder.ts">CustomerFlowFolderDeleteResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/customer-flow/folder">client.customerFlowFolder.<a href="./src/resources/customer-flow-folder.ts">create</a>({ ...params }) -> CustomerFlowFolderCreateResponse</code>
+- <code title="get /v1/customer-flow/folder">client.customerFlowFolder.<a href="./src/resources/customer-flow-folder.ts">list</a>() -> CustomerFlowFolderListResponse</code>
+- <code title="delete /v1/customer-flow/folder/{folderId}">client.customerFlowFolder.<a href="./src/resources/customer-flow-folder.ts">delete</a>(folderID) -> CustomerFlowFolderDeleteResponse</code>
+
 # CustomerFlowEdgeCase
 
 Types:
@@ -586,26 +610,6 @@ Methods:
 - <code title="put /v1/agent/{agentId}/prompts">client.agentPrompt.<a href="./src/resources/agent-prompt.ts">update</a>(agentID, { ...params }) -> AgentPromptUpdateResponse</code>
 - <code title="get /v1/agent/{agentId}/prompts">client.agentPrompt.<a href="./src/resources/agent-prompt.ts">list</a>(agentID) -> AgentPromptListResponse</code>
 - <code title="get /v1/agent/{agentId}/prompts/{promptId}/versions">client.agentPrompt.<a href="./src/resources/agent-prompt.ts">listVersions</a>(promptID, { ...params }) -> AgentPromptListVersionsResponse</code>
-
-# AgentSetup
-
-Types:
-
-- <code><a href="./src/resources/agent-setup.ts">AgentSetupCreateResponse</a></code>
-- <code><a href="./src/resources/agent-setup.ts">AgentSetupAnswerQuestionResponse</a></code>
-- <code><a href="./src/resources/agent-setup.ts">AgentSetupCancelResponse</a></code>
-- <code><a href="./src/resources/agent-setup.ts">AgentSetupGetByIDResponse</a></code>
-- <code><a href="./src/resources/agent-setup.ts">AgentSetupGetLatestResponse</a></code>
-- <code><a href="./src/resources/agent-setup.ts">AgentSetupSendGuidanceResponse</a></code>
-
-Methods:
-
-- <code title="post /v1/agent/{agentId}/setup">client.agentSetup.<a href="./src/resources/agent-setup.ts">create</a>(agentID, { ...params }) -> AgentSetupCreateResponse</code>
-- <code title="post /v1/agent/{agentId}/setup/{setupId}/answer">client.agentSetup.<a href="./src/resources/agent-setup.ts">answerQuestion</a>(setupID, { ...params }) -> AgentSetupAnswerQuestionResponse</code>
-- <code title="post /v1/agent/{agentId}/setup/{setupId}/cancel">client.agentSetup.<a href="./src/resources/agent-setup.ts">cancel</a>(setupID, { ...params }) -> AgentSetupCancelResponse</code>
-- <code title="get /v1/agent/{agentId}/setup/{setupId}">client.agentSetup.<a href="./src/resources/agent-setup.ts">getByID</a>(setupID, { ...params }) -> AgentSetupGetByIDResponse</code>
-- <code title="get /v1/agent/{agentId}/setup">client.agentSetup.<a href="./src/resources/agent-setup.ts">getLatest</a>(agentID) -> AgentSetupGetLatestResponse</code>
-- <code title="post /v1/agent/{agentId}/setup/{setupId}/guidance">client.agentSetup.<a href="./src/resources/agent-setup.ts">sendGuidance</a>(setupID, { ...params }) -> AgentSetupSendGuidanceResponse</code>
 
 # AgentVersion
 

@@ -22,11 +22,6 @@ describe('resource agent', () => {
   test('create: required and optional params', async () => {
     const response = await client.agent.create({
       name: 'x',
-      autoSetup: {
-        capabilities: ['APPOINTMENT_BOOKING'],
-        enabled: true,
-        explore: { enabled: true, maxConversationMinutes: 1, maxConversations: 1 },
-      },
       customId: 'customId',
       description: 'description',
       endpoint: {
@@ -38,8 +33,6 @@ describe('resource agent', () => {
       },
       industry: 'HEALTHCARE',
       prompt: 'x',
-      testingInstructions: 'testingInstructions',
-      websiteUrl: 'https://example.com',
     });
   });
 

@@ -8,8 +8,8 @@ import { path } from '../internal/utils/path';
 export class SimulationGroup extends APIResource {
   /**
    * Saves a named set of plans to run together, again and again. Nothing runs yet:
-   * POST /v1/simulation/group/{groupId}/run starts one run of every plan and groups
-   * them into a run group with one combined report.
+   * `POST /v1/simulation/group/{groupId}/run` starts one run of every plan and
+   * groups them into a run group with one combined report.
    *
    * Slack channels need Slack connected to the project. Email is on by default.
    *
@@ -105,9 +105,9 @@ export class SimulationGroup extends APIResource {
   }
 
   /**
-   * Starts one run of every plan in the group, exactly as POST
-   * /v1/simulation/plan/{planId}/job would for each, and groups the runs into a run
-   * group whose combined report is announced through the group's notification
+   * Starts one run of every plan in the group, exactly as
+   * `POST /v1/simulation/plan/{planId}/job` would for each, and groups the runs into
+   * a run group whose combined report is announced through the group's notification
    * settings once it is ready. This places real calls. Config-managed groups can be
    * run here too.
    *
@@ -164,8 +164,8 @@ export namespace SimulationGroupCreateResponse {
     lastRunAt: string | null;
 
     /**
-     * The most recent run group it started, readable at GET
-     * /v1/simulation/run-group/{groupId}. Null when it has never run.
+     * The most recent run group it started, readable at
+     * `GET /v1/simulation/run-group/{groupId}`. Null when it has never run.
      */
     latestRunGroupId: string | null;
 
@@ -257,8 +257,8 @@ export namespace SimulationGroupUpdateResponse {
     lastRunAt: string | null;
 
     /**
-     * The most recent run group it started, readable at GET
-     * /v1/simulation/run-group/{groupId}. Null when it has never run.
+     * The most recent run group it started, readable at
+     * `GET /v1/simulation/run-group/{groupId}`. Null when it has never run.
      */
     latestRunGroupId: string | null;
 
@@ -348,8 +348,8 @@ export namespace SimulationGroupListResponse {
     lastRunAt: string | null;
 
     /**
-     * The most recent run group it started, readable at GET
-     * /v1/simulation/run-group/{groupId}. Null when it has never run.
+     * The most recent run group it started, readable at
+     * `GET /v1/simulation/run-group/{groupId}`. Null when it has never run.
      */
     latestRunGroupId: string | null;
 
@@ -467,8 +467,8 @@ export namespace SimulationGroupGetByIDResponse {
     lastRunAt: string | null;
 
     /**
-     * The most recent run group it started, readable at GET
-     * /v1/simulation/run-group/{groupId}. Null when it has never run.
+     * The most recent run group it started, readable at
+     * `GET /v1/simulation/run-group/{groupId}`. Null when it has never run.
      */
     latestRunGroupId: string | null;
 

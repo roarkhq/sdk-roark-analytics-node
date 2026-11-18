@@ -98,6 +98,7 @@ describe('resource customerFlow', () => {
       agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
       branchingMode: 'DETERMINISTIC',
       description: 'description',
+      folderId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       offScriptPolicy: {
         maxAttempts: 1,
         reaction: 'STAY_SILENT',
@@ -132,6 +133,7 @@ describe('resource customerFlow', () => {
           agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
           branchingMode: 'DETERMINISTIC',
           description: 'description',
+          folderId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           offScriptPolicy: {
             maxAttempts: 1,
             reaction: 'STAY_SILENT',
@@ -164,6 +166,7 @@ describe('resource customerFlow', () => {
       client.customerFlow.list(
         {
           after: 'after',
+          folderId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
           includeSystem: 'true',
           limit: 1,
           searchText: 'searchText',
