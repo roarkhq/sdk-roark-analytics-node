@@ -559,7 +559,8 @@ export namespace AgentBuildParams {
       | 'GROQ'
       | 'META'
       | 'RIME'
-      | 'PHONIC';
+      | 'PHONIC'
+      | 'SMALLEST';
   }
 
   /**
@@ -574,7 +575,14 @@ export namespace AgentBuildParams {
     /**
      * Speech-to-text provider, for example DEEPGRAM
      */
-    provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+    provider:
+      | 'DEEPGRAM'
+      | 'OPENAI_WHISPER'
+      | 'SPEECHMATICS'
+      | 'ASSEMBLYAI'
+      | 'ELEVENLABS'
+      | 'SONIOX'
+      | 'SMALLEST';
   }
 
   /**
@@ -584,7 +592,15 @@ export namespace AgentBuildParams {
     /**
      * Text-to-speech provider, for example ELEVENLABS
      */
-    provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+    provider:
+      | 'CARTESIA'
+      | 'ELEVENLABS'
+      | 'OPENAI'
+      | 'RIME'
+      | 'ASSEMBLYAI'
+      | 'DEEPGRAM'
+      | 'FISH_AUDIO'
+      | 'SMALLEST';
 
     /**
      * The provider's id for the voice
