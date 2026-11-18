@@ -769,6 +769,57 @@ describe('retries', () => {
     expect(count).toEqual(3);
   });
 
+  test('retried POST sends the same Idempotency-Key on every attempt', async () => {
+    const keys: (string | null)[] = [];
+    const testFetch = async (url: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
+      keys.push((init.headers as Headers).get('Idempotency-Key'));
+      if (keys.length <= 2) {
+        return new Response(undefined, { status: 503, headers: { 'Retry-After': '0.01' } });
+      }
+      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
+    };
+
+    const client = new Roark({ bearerToken: 'My Bearer Token', fetch: testFetch, maxRetries: 4 });
+
+    expect(await client.request({ path: '/foo', method: 'post', body: {} })).toEqual({ a: 1 });
+    expect(keys).toHaveLength(3);
+    expect(keys[0]).toEqual(expect.any(String));
+    expect(new Set(keys).size).toEqual(1);
+
+    await client.request({ path: '/foo', method: 'post', body: {} });
+    expect(keys[3]).toEqual(expect.any(String));
+    expect(keys[3]).not.toEqual(keys[0]);
+  });
+
+  test('a caller-supplied idempotency key is sent as-is', async () => {
+    let key: string | null = null;
+    const testFetch = async (url: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
+      key = (init.headers as Headers).get('Idempotency-Key');
+      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
+    };
+
+    const client = new Roark({ bearerToken: 'My Bearer Token', fetch: testFetch });
+
+    await client.request({ path: '/foo', method: 'post', body: {}, idempotencyKey: 'my-key' });
+    expect(key).toEqual('my-key');
+  });
+
+  test('GET sends no Idempotency-Key', async () => {
+    const keys: (string | null)[] = [];
+    const testFetch = async (url: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
+      keys.push((init.headers as Headers).get('Idempotency-Key'));
+      if (keys.length === 1) {
+        return new Response(undefined, { status: 503, headers: { 'Retry-After': '0.01' } });
+      }
+      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
+    };
+
+    const client = new Roark({ bearerToken: 'My Bearer Token', fetch: testFetch });
+
+    expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
+    expect(keys).toEqual([null, null]);
+  });
+
   test('omit retry count header', async () => {
     let count = 0;
     let capturedRequest: RequestInit | undefined;
