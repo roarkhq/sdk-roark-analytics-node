@@ -54,7 +54,7 @@ export class Simulation extends APIResource {
    * Works out what to test for an existing agent, then creates the customer flows,
    * metrics and checks to simulate it, and a run plan that runs them. It does not
    * create or change the agent. Runs in the background: watch the
-   * `agent.setup.completed` webhook, or poll
+   * `simulation.resource_generation.completed` webhook, or poll
    * `GET /v1/simulation/generations/resources/{generationId}`. Takes one agent for
    * now. Refused while another generation for the agent is running. Needs the
    * 'simulation:create' and 'metric:create' permissions. Exploration also needs
