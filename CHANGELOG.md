@@ -1,5 +1,21 @@
 # Changelog
 
+## [9.0.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v8.0.1...v9.0.0) (2026-11-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** removes resources, methods and types from the public surface.
+
+### Features
+
+* **api:** api update ([#1453](https://github.com/roarkhq/sdk-roark-analytics-node/issues/1453)) ([423b241](https://github.com/roarkhq/sdk-roark-analytics-node/commit/423b241297b928781f09dfc135fc93c061add859))
+
+
+### Chores
+
+* fold next into main ([b303c5d](https://github.com/roarkhq/sdk-roark-analytics-node/commit/b303c5dcbf768cc346cfb4b8327619002265cc38))
+
 ## [8.0.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v8.0.0...v8.0.1) (2026-11-18)
 
 
