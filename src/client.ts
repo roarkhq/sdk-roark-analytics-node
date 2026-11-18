@@ -673,6 +673,9 @@ export class Roark {
     this.maxRetries = options.maxRetries ?? 2;
     this.fetch = options.fetch ?? Shims.getDefaultFetch();
     this.#encoder = Opts.FallbackEncoder;
+    // Every non-GET request carries one key, kept across its retries, so a POST retried after a
+    // timeout or 5xx is answered from the first attempt instead of starting the work again.
+    this.idempotencyHeader = 'Idempotency-Key';
 
     const customHeadersEnv = readEnv('ROARK_CUSTOM_HEADERS');
     if (customHeadersEnv) {
