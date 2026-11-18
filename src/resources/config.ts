@@ -142,17 +142,33 @@ export namespace Bundle {
         | 'GROQ'
         | 'META'
         | 'RIME'
-        | 'PHONIC';
+        | 'PHONIC'
+        | 'SMALLEST';
     }
 
     export interface Stt {
       model: string;
 
-      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+      provider:
+        | 'DEEPGRAM'
+        | 'OPENAI_WHISPER'
+        | 'SPEECHMATICS'
+        | 'ASSEMBLYAI'
+        | 'ELEVENLABS'
+        | 'SONIOX'
+        | 'SMALLEST';
     }
 
     export interface Tts {
-      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+      provider:
+        | 'CARTESIA'
+        | 'ELEVENLABS'
+        | 'OPENAI'
+        | 'RIME'
+        | 'ASSEMBLYAI'
+        | 'DEEPGRAM'
+        | 'FISH_AUDIO'
+        | 'SMALLEST';
 
       voiceId: string;
 
@@ -1721,17 +1737,33 @@ export namespace Bundle {
           | 'GROQ'
           | 'META'
           | 'RIME'
-          | 'PHONIC';
+          | 'PHONIC'
+          | 'SMALLEST';
       }
 
       export interface Stt {
         model: string;
 
-        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+        provider:
+          | 'DEEPGRAM'
+          | 'OPENAI_WHISPER'
+          | 'SPEECHMATICS'
+          | 'ASSEMBLYAI'
+          | 'ELEVENLABS'
+          | 'SONIOX'
+          | 'SMALLEST';
       }
 
       export interface Tts {
-        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+        provider:
+          | 'CARTESIA'
+          | 'ELEVENLABS'
+          | 'OPENAI'
+          | 'RIME'
+          | 'ASSEMBLYAI'
+          | 'DEEPGRAM'
+          | 'FISH_AUDIO'
+          | 'SMALLEST';
 
         voiceId: string;
 
@@ -3471,17 +3503,33 @@ export namespace ConfigApplyParams {
         | 'GROQ'
         | 'META'
         | 'RIME'
-        | 'PHONIC';
+        | 'PHONIC'
+        | 'SMALLEST';
     }
 
     export interface Stt {
       model: string;
 
-      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+      provider:
+        | 'DEEPGRAM'
+        | 'OPENAI_WHISPER'
+        | 'SPEECHMATICS'
+        | 'ASSEMBLYAI'
+        | 'ELEVENLABS'
+        | 'SONIOX'
+        | 'SMALLEST';
     }
 
     export interface Tts {
-      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+      provider:
+        | 'CARTESIA'
+        | 'ELEVENLABS'
+        | 'OPENAI'
+        | 'RIME'
+        | 'ASSEMBLYAI'
+        | 'DEEPGRAM'
+        | 'FISH_AUDIO'
+        | 'SMALLEST';
 
       voiceId: string;
 
@@ -5050,17 +5098,33 @@ export namespace ConfigApplyParams {
           | 'GROQ'
           | 'META'
           | 'RIME'
-          | 'PHONIC';
+          | 'PHONIC'
+          | 'SMALLEST';
       }
 
       export interface Stt {
         model: string;
 
-        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+        provider:
+          | 'DEEPGRAM'
+          | 'OPENAI_WHISPER'
+          | 'SPEECHMATICS'
+          | 'ASSEMBLYAI'
+          | 'ELEVENLABS'
+          | 'SONIOX'
+          | 'SMALLEST';
       }
 
       export interface Tts {
-        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+        provider:
+          | 'CARTESIA'
+          | 'ELEVENLABS'
+          | 'OPENAI'
+          | 'RIME'
+          | 'ASSEMBLYAI'
+          | 'DEEPGRAM'
+          | 'FISH_AUDIO'
+          | 'SMALLEST';
 
         voiceId: string;
 
@@ -6611,17 +6675,33 @@ export namespace ConfigDiffParams {
         | 'GROQ'
         | 'META'
         | 'RIME'
-        | 'PHONIC';
+        | 'PHONIC'
+        | 'SMALLEST';
     }
 
     export interface Stt {
       model: string;
 
-      provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+      provider:
+        | 'DEEPGRAM'
+        | 'OPENAI_WHISPER'
+        | 'SPEECHMATICS'
+        | 'ASSEMBLYAI'
+        | 'ELEVENLABS'
+        | 'SONIOX'
+        | 'SMALLEST';
     }
 
     export interface Tts {
-      provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+      provider:
+        | 'CARTESIA'
+        | 'ELEVENLABS'
+        | 'OPENAI'
+        | 'RIME'
+        | 'ASSEMBLYAI'
+        | 'DEEPGRAM'
+        | 'FISH_AUDIO'
+        | 'SMALLEST';
 
       voiceId: string;
 
@@ -8190,17 +8270,33 @@ export namespace ConfigDiffParams {
           | 'GROQ'
           | 'META'
           | 'RIME'
-          | 'PHONIC';
+          | 'PHONIC'
+          | 'SMALLEST';
       }
 
       export interface Stt {
         model: string;
 
-        provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+        provider:
+          | 'DEEPGRAM'
+          | 'OPENAI_WHISPER'
+          | 'SPEECHMATICS'
+          | 'ASSEMBLYAI'
+          | 'ELEVENLABS'
+          | 'SONIOX'
+          | 'SMALLEST';
       }
 
       export interface Tts {
-        provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+        provider:
+          | 'CARTESIA'
+          | 'ELEVENLABS'
+          | 'OPENAI'
+          | 'RIME'
+          | 'ASSEMBLYAI'
+          | 'DEEPGRAM'
+          | 'FISH_AUDIO'
+          | 'SMALLEST';
 
         voiceId: string;
 
