@@ -6,8 +6,14 @@ Guidance for AI coding agents (Claude Code, Codex, Cursor, etc.) working in this
 
 Most of this SDK is generated from the Roark API's OpenAPI spec by
 [`app-agent-codegen`](https://github.com/roarkhq/app-agent-codegen), which opens a PR here when the API
-changes. Don't hand-edit generated files: the next generation overwrites them. Only `src/lib/` and
+changes. Don't hand-edit generated files: the next generation overwrites them. `src/lib/` and
 `examples/` are hand-written and never touched by codegen (see `CONTRIBUTING.md`).
+
+The runtime is hand-maintained too: `src/core/`, `src/internal/`, `src/error.ts`, and `src/client.ts` outside
+its four generated regions (resource imports, resource properties, static class assignments and the trailing
+`declare namespace`). Codegen splices only those regions, so client behaviour such as retries, auth headers
+and the `Idempotency-Key` header is changed here, by hand. Changes to the generated parts belong in
+`app-agent-codegen` or in `sdk.yml` in `app-roark-analytics`.
 
 ## Config-as-code helpers (`src/lib/config.ts`)
 
