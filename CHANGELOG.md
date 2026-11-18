@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.1](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v8.0.0...v8.0.1) (2026-11-18)
+
+
+### Bug Fixes
+
+* **client:** send an Idempotency-Key so retried requests are not repeated ([#1454](https://github.com/roarkhq/sdk-roark-analytics-node/issues/1454)) ([a5b1e0b](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a5b1e0b8be344d5c55a26cda1192e7e70d38ff76))
+
 ## [8.0.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v7.9.0...v8.0.0) (2026-11-17)
 
 
