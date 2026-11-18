@@ -53,13 +53,15 @@ export class Simulation extends APIResource {
   /**
    * Works out what to test for an existing agent, then creates the customer flows,
    * metrics and checks to simulate it, and a run plan that runs them. It does not
-   * create or change the agent. Runs in the background: watch the
-   * `simulation.resource_generation.completed` webhook, or poll
-   * `GET /v1/simulation/generations/resources/{generationId}`. Takes one agent for
-   * now. Refused while another generation for the agent is running. Needs the
-   * 'simulation:create' and 'metric:create' permissions. Exploration also needs
-   * 'simulation:run', and is turned off for keys without it unless explore.enabled
-   * is set.
+   * create or change the agent. It also reads the agent's recent production calls
+   * and open issues. Run it again and it builds on what earlier generations made,
+   * adding only what changed; when nothing has, it finishes straight away and says
+   * so. Runs in the background: watch the `simulation.resource_generation.completed`
+   * webhook, or poll `GET /v1/simulation/generations/resources/{generationId}`.
+   * Takes one agent for now. Refused while another generation for the agent is
+   * running. Needs the 'simulation:create' and 'metric:create' permissions.
+   * Exploration also needs 'simulation:run', and is turned off for keys without it
+   * unless explore.enabled is set.
    *
    * @example
    * ```ts
@@ -359,7 +361,14 @@ export namespace SimulationAnswerResourceGenerationResponse {
        * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
        * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
        */
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
@@ -380,7 +389,8 @@ export namespace SimulationAnswerResourceGenerationResponse {
     export namespace Item {
       export interface Source {
         /**
-         * The exploration call it came from
+         * The call it came from: an exploration call Roark placed, or one of the agent’s
+         * production calls
          */
         callId: string | null;
 
@@ -394,7 +404,14 @@ export namespace SimulationAnswerResourceGenerationResponse {
          */
         quote: string | null;
 
-        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+        type:
+          | 'CATALOGUE'
+          | 'PROMPT'
+          | 'DESCRIPTION'
+          | 'WEBSITE'
+          | 'EXPLORATION_CALL'
+          | 'INSTRUCTIONS'
+          | 'PRODUCTION_CALL';
 
         /**
          * The page it came from, for website sources
@@ -407,7 +424,14 @@ export namespace SimulationAnswerResourceGenerationResponse {
      * Where one part of testing the agent stands
      */
     export interface Layer {
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
@@ -601,7 +625,14 @@ export namespace SimulationCancelResourceGenerationResponse {
        * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
        * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
        */
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
@@ -622,7 +653,8 @@ export namespace SimulationCancelResourceGenerationResponse {
     export namespace Item {
       export interface Source {
         /**
-         * The exploration call it came from
+         * The call it came from: an exploration call Roark placed, or one of the agent’s
+         * production calls
          */
         callId: string | null;
 
@@ -636,7 +668,14 @@ export namespace SimulationCancelResourceGenerationResponse {
          */
         quote: string | null;
 
-        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+        type:
+          | 'CATALOGUE'
+          | 'PROMPT'
+          | 'DESCRIPTION'
+          | 'WEBSITE'
+          | 'EXPLORATION_CALL'
+          | 'INSTRUCTIONS'
+          | 'PRODUCTION_CALL';
 
         /**
          * The page it came from, for website sources
@@ -649,7 +688,14 @@ export namespace SimulationCancelResourceGenerationResponse {
      * Where one part of testing the agent stands
      */
     export interface Layer {
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
@@ -843,7 +889,14 @@ export namespace SimulationGenerateResourcesResponse {
        * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
        * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
        */
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
@@ -864,7 +917,8 @@ export namespace SimulationGenerateResourcesResponse {
     export namespace Item {
       export interface Source {
         /**
-         * The exploration call it came from
+         * The call it came from: an exploration call Roark placed, or one of the agent’s
+         * production calls
          */
         callId: string | null;
 
@@ -878,7 +932,14 @@ export namespace SimulationGenerateResourcesResponse {
          */
         quote: string | null;
 
-        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+        type:
+          | 'CATALOGUE'
+          | 'PROMPT'
+          | 'DESCRIPTION'
+          | 'WEBSITE'
+          | 'EXPLORATION_CALL'
+          | 'INSTRUCTIONS'
+          | 'PRODUCTION_CALL';
 
         /**
          * The page it came from, for website sources
@@ -891,7 +952,14 @@ export namespace SimulationGenerateResourcesResponse {
      * Where one part of testing the agent stands
      */
     export interface Layer {
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
@@ -1085,7 +1153,14 @@ export namespace SimulationGetResourceGenerationResponse {
        * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
        * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
        */
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
@@ -1106,7 +1181,8 @@ export namespace SimulationGetResourceGenerationResponse {
     export namespace Item {
       export interface Source {
         /**
-         * The exploration call it came from
+         * The call it came from: an exploration call Roark placed, or one of the agent’s
+         * production calls
          */
         callId: string | null;
 
@@ -1120,7 +1196,14 @@ export namespace SimulationGetResourceGenerationResponse {
          */
         quote: string | null;
 
-        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+        type:
+          | 'CATALOGUE'
+          | 'PROMPT'
+          | 'DESCRIPTION'
+          | 'WEBSITE'
+          | 'EXPLORATION_CALL'
+          | 'INSTRUCTIONS'
+          | 'PRODUCTION_CALL';
 
         /**
          * The page it came from, for website sources
@@ -1133,7 +1216,14 @@ export namespace SimulationGetResourceGenerationResponse {
      * Where one part of testing the agent stands
      */
     export interface Layer {
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
@@ -1327,7 +1417,14 @@ export namespace SimulationGuideResourceGenerationResponse {
        * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
        * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
        */
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
@@ -1348,7 +1445,8 @@ export namespace SimulationGuideResourceGenerationResponse {
     export namespace Item {
       export interface Source {
         /**
-         * The exploration call it came from
+         * The call it came from: an exploration call Roark placed, or one of the agent’s
+         * production calls
          */
         callId: string | null;
 
@@ -1362,7 +1460,14 @@ export namespace SimulationGuideResourceGenerationResponse {
          */
         quote: string | null;
 
-        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+        type:
+          | 'CATALOGUE'
+          | 'PROMPT'
+          | 'DESCRIPTION'
+          | 'WEBSITE'
+          | 'EXPLORATION_CALL'
+          | 'INSTRUCTIONS'
+          | 'PRODUCTION_CALL';
 
         /**
          * The page it came from, for website sources
@@ -1375,7 +1480,14 @@ export namespace SimulationGuideResourceGenerationResponse {
      * Where one part of testing the agent stands
      */
     export interface Layer {
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
@@ -1565,7 +1677,14 @@ export namespace SimulationListResourceGenerationsResponse {
        * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
        * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
        */
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
@@ -1586,7 +1705,8 @@ export namespace SimulationListResourceGenerationsResponse {
     export namespace Item {
       export interface Source {
         /**
-         * The exploration call it came from
+         * The call it came from: an exploration call Roark placed, or one of the agent’s
+         * production calls
          */
         callId: string | null;
 
@@ -1600,7 +1720,14 @@ export namespace SimulationListResourceGenerationsResponse {
          */
         quote: string | null;
 
-        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+        type:
+          | 'CATALOGUE'
+          | 'PROMPT'
+          | 'DESCRIPTION'
+          | 'WEBSITE'
+          | 'EXPLORATION_CALL'
+          | 'INSTRUCTIONS'
+          | 'PRODUCTION_CALL';
 
         /**
          * The page it came from, for website sources
@@ -1613,7 +1740,14 @@ export namespace SimulationListResourceGenerationsResponse {
      * Where one part of testing the agent stands
      */
     export interface Layer {
-      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+      layer:
+        | 'CORE'
+        | 'INDUSTRY'
+        | 'CAPABILITY'
+        | 'AGENT_CONTEXT'
+        | 'EXPLORATION'
+        | 'CUSTOMER_INSTRUCTIONS'
+        | 'PRODUCTION_CALLS';
 
       /**
        * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
