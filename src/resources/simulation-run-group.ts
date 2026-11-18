@@ -34,8 +34,8 @@ export class SimulationRunGroup extends APIResource {
 
   /**
    * Returns the run groups in the project, newest first, with their runs and where
-   * each group report stands. Read a report document from GET
-   * /v1/simulation/run-group/{groupId}.
+   * each group report stands. Read a report document from
+   * `GET /v1/simulation/run-group/{groupId}`.
    *
    * @example
    * ```ts

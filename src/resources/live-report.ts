@@ -850,8 +850,8 @@ export namespace LiveReportGetByIDResponse {
 export interface LiveReportGetDocumentResponse {
   /**
    * One written report over one period. `document` is null until `status` is READY;
-   * every number in it comes from the analytics engine (the same reads GET
-   * /v1/dashboard/{dashboardId}/data makes over the same window and filters).
+   * every number in it comes from the analytics engine (the same reads
+   * `GET /v1/dashboard/{dashboardId}/data` makes over the same window and filters).
    */
   data: LiveReportGetDocumentResponse.Data;
 }
@@ -859,8 +859,8 @@ export interface LiveReportGetDocumentResponse {
 export namespace LiveReportGetDocumentResponse {
   /**
    * One written report over one period. `document` is null until `status` is READY;
-   * every number in it comes from the analytics engine (the same reads GET
-   * /v1/dashboard/{dashboardId}/data makes over the same window and filters).
+   * every number in it comes from the analytics engine (the same reads
+   * `GET /v1/dashboard/{dashboardId}/data` makes over the same window and filters).
    */
   export interface Data {
     id: string;
@@ -1477,8 +1477,8 @@ export namespace LiveReportListDocumentsResponse {
   export namespace Data {
     /**
      * One written report over one period. `document` is null until `status` is READY;
-     * every number in it comes from the analytics engine (the same reads GET
-     * /v1/dashboard/{dashboardId}/data makes over the same window and filters).
+     * every number in it comes from the analytics engine (the same reads
+     * `GET /v1/dashboard/{dashboardId}/data` makes over the same window and filters).
      */
     export interface Item {
       id: string;
@@ -2085,8 +2085,8 @@ export namespace LiveReportListDocumentsResponse {
 export interface LiveReportRunResponse {
   /**
    * One written report over one period. `document` is null until `status` is READY;
-   * every number in it comes from the analytics engine (the same reads GET
-   * /v1/dashboard/{dashboardId}/data makes over the same window and filters).
+   * every number in it comes from the analytics engine (the same reads
+   * `GET /v1/dashboard/{dashboardId}/data` makes over the same window and filters).
    */
   data: LiveReportRunResponse.Data;
 }
@@ -2094,8 +2094,8 @@ export interface LiveReportRunResponse {
 export namespace LiveReportRunResponse {
   /**
    * One written report over one period. `document` is null until `status` is READY;
-   * every number in it comes from the analytics engine (the same reads GET
-   * /v1/dashboard/{dashboardId}/data makes over the same window and filters).
+   * every number in it comes from the analytics engine (the same reads
+   * `GET /v1/dashboard/{dashboardId}/data` makes over the same window and filters).
    */
   export interface Data {
     id: string;

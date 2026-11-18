@@ -247,13 +247,6 @@ export namespace AgentConnectionCreateResponse {
      */
     agentScope: 'ALL' | 'SELECTED' | null;
 
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents: boolean;
-
     capabilities: Array<'PULL_AGENTS' | 'PULL_CALLS' | 'PUSH_AGENT_CONFIG'>;
 
     /**
@@ -486,13 +479,6 @@ export namespace AgentConnectionUpdateResponse {
      */
     agentScope: 'ALL' | 'SELECTED' | null;
 
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents: boolean;
-
     capabilities: Array<'PULL_AGENTS' | 'PULL_CALLS' | 'PUSH_AGENT_CONFIG'>;
 
     /**
@@ -719,13 +705,6 @@ export namespace AgentConnectionListResponse {
      * Null for platforms that do not scope by agent.
      */
     agentScope: 'ALL' | 'SELECTED' | null;
-
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents: boolean;
 
     capabilities: Array<'PULL_AGENTS' | 'PULL_CALLS' | 'PUSH_AGENT_CONFIG'>;
 
@@ -1052,13 +1031,6 @@ export namespace AgentConnectionGetByIDResponse {
      */
     agentScope: 'ALL' | 'SELECTED' | null;
 
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents: boolean;
-
     capabilities: Array<'PULL_AGENTS' | 'PULL_CALLS' | 'PUSH_AGENT_CONFIG'>;
 
     /**
@@ -1341,11 +1313,6 @@ export namespace AgentConnectionListProvidersResponse {
     supportsAgentDiscovery: boolean;
 
     /**
-     * Whether `autoSetUpAgents` applies.
-     */
-    supportsAutoSetUp: boolean;
-
-    /**
      * Whether past calls can be imported with a backfill.
      */
     supportsBackfill: boolean;
@@ -1399,13 +1366,6 @@ export declare namespace AgentConnectionCreateParams {
     agentScope?: 'ALL' | 'SELECTED';
 
     /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
-
-    /**
      * What the connection does. Defaults to PULL_AGENTS and PULL_CALLS, plus
      * PUSH_AGENT_CONFIG on Retell, Vapi and ElevenLabs.
      */
@@ -1449,13 +1409,6 @@ export declare namespace AgentConnectionCreateParams {
      * `agentNames`.
      */
     agentScope?: 'ALL' | 'SELECTED';
-
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
 
     /**
      * What the connection does. Defaults to PULL_AGENTS and PULL_CALLS, plus
@@ -1509,13 +1462,6 @@ export declare namespace AgentConnectionCreateParams {
     agentScope?: 'ALL' | 'SELECTED';
 
     /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
-
-    /**
      * What the connection does. Defaults to PULL_AGENTS and PULL_CALLS, plus
      * PUSH_AGENT_CONFIG on Retell, Vapi and ElevenLabs.
      */
@@ -1559,13 +1505,6 @@ export declare namespace AgentConnectionCreateParams {
      * `agentNames`.
      */
     agentScope?: 'ALL' | 'SELECTED';
-
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
 
     /**
      * What the connection does. Defaults to PULL_AGENTS and PULL_CALLS, plus
@@ -1641,13 +1580,6 @@ export declare namespace AgentConnectionCreateParams {
      * `agentNames`.
      */
     agentScope?: 'ALL' | 'SELECTED';
-
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
 
     /**
      * Creates a LiveKit endpoint for each agent the connection brings in, so Roark can
@@ -1934,13 +1866,6 @@ export declare namespace AgentConnectionUpdateParams {
     apiKey?: string;
 
     /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
-
-    /**
      * What the connection does. Defaults to PULL_AGENTS and PULL_CALLS, plus
      * PUSH_AGENT_CONFIG on Retell, Vapi and ElevenLabs.
      */
@@ -1992,13 +1917,6 @@ export declare namespace AgentConnectionUpdateParams {
      * Stored encrypted and never returned.
      */
     apiKey?: string;
-
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
 
     /**
      * What the connection does. Defaults to PULL_AGENTS and PULL_CALLS, plus
@@ -2060,13 +1978,6 @@ export declare namespace AgentConnectionUpdateParams {
     apiKey?: string;
 
     /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
-
-    /**
      * What the connection does. Defaults to PULL_AGENTS and PULL_CALLS, plus
      * PUSH_AGENT_CONFIG on Retell, Vapi and ElevenLabs.
      */
@@ -2118,13 +2029,6 @@ export declare namespace AgentConnectionUpdateParams {
      * Stored encrypted and never returned.
      */
     apiKey?: string;
-
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
 
     /**
      * What the connection does. Defaults to PULL_AGENTS and PULL_CALLS, plus
@@ -2211,13 +2115,6 @@ export declare namespace AgentConnectionUpdateParams {
      * LiveKit API secret. Stored encrypted and never returned.
      */
     apiSecret?: string;
-
-    /**
-     * When true, every agent this connection brings in is set up for testing as it
-     * arrives: Roark drafts its customer flows and metrics, the same as setting the
-     * agent up by hand. Defaults to false.
-     */
-    autoSetUpAgents?: boolean;
 
     /**
      * When the recording starts for a marked room. EAGER starts it at room creation;

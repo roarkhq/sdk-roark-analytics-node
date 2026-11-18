@@ -27,8 +27,8 @@ export class CustomerFlow extends APIResource {
   }
 
   /**
-   * Updates a flow's title, description, branching mode, linked agents or flow-level
-   * expectations. The step graph is replaced through PUT /graph.
+   * Updates a flow's title, description, branching mode, linked agents, flow-level
+   * expectations or folder. The step graph is replaced through PUT /graph.
    *
    * @example
    * ```ts
@@ -673,6 +673,11 @@ export namespace CustomerFlowCreateResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ScriptedCustomerFlow.Folder | null;
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -1227,6 +1232,57 @@ export namespace CustomerFlowCreateResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -1710,6 +1766,11 @@ export namespace CustomerFlowCreateResponse {
      * Every other way of running this flow.
      */
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ImprovCustomerFlow.Folder | null;
 
     /**
      * One brief to run an improv flow with.
@@ -2499,6 +2560,57 @@ export namespace CustomerFlowCreateResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One brief to run an improv flow with.
      */
     export interface HappyPath {
@@ -3224,6 +3336,11 @@ export namespace CustomerFlowCreateResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: VoicemailCustomerFlow.Folder | null;
+
+    /**
      * One voicemail greeting.
      */
     happyPath: VoicemailCustomerFlow.HappyPath | null;
@@ -3736,6 +3853,57 @@ export namespace CustomerFlowCreateResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
     }
 
     /**
@@ -4214,6 +4382,11 @@ export namespace CustomerFlowUpdateResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ScriptedCustomerFlow.Folder | null;
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -4768,6 +4941,57 @@ export namespace CustomerFlowUpdateResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -5251,6 +5475,11 @@ export namespace CustomerFlowUpdateResponse {
      * Every other way of running this flow.
      */
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ImprovCustomerFlow.Folder | null;
 
     /**
      * One brief to run an improv flow with.
@@ -6040,6 +6269,57 @@ export namespace CustomerFlowUpdateResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One brief to run an improv flow with.
      */
     export interface HappyPath {
@@ -6765,6 +7045,11 @@ export namespace CustomerFlowUpdateResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: VoicemailCustomerFlow.Folder | null;
+
+    /**
      * One voicemail greeting.
      */
     happyPath: VoicemailCustomerFlow.HappyPath | null;
@@ -7277,6 +7562,57 @@ export namespace CustomerFlowUpdateResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
     }
 
     /**
@@ -7758,6 +8094,11 @@ export namespace CustomerFlowListResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ScriptedCustomerFlow.Folder | null;
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -8312,6 +8653,57 @@ export namespace CustomerFlowListResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -8795,6 +9187,11 @@ export namespace CustomerFlowListResponse {
      * Every other way of running this flow.
      */
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ImprovCustomerFlow.Folder | null;
 
     /**
      * One brief to run an improv flow with.
@@ -9584,6 +9981,57 @@ export namespace CustomerFlowListResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One brief to run an improv flow with.
      */
     export interface HappyPath {
@@ -10309,6 +10757,11 @@ export namespace CustomerFlowListResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: VoicemailCustomerFlow.Folder | null;
+
+    /**
      * One voicemail greeting.
      */
     happyPath: VoicemailCustomerFlow.HappyPath | null;
@@ -10821,6 +11274,57 @@ export namespace CustomerFlowListResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
     }
 
     /**
@@ -11329,6 +11833,11 @@ export namespace CustomerFlowDuplicateResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ScriptedCustomerFlow.Folder | null;
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -11883,6 +12392,57 @@ export namespace CustomerFlowDuplicateResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -12366,6 +12926,11 @@ export namespace CustomerFlowDuplicateResponse {
      * Every other way of running this flow.
      */
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ImprovCustomerFlow.Folder | null;
 
     /**
      * One brief to run an improv flow with.
@@ -13155,6 +13720,57 @@ export namespace CustomerFlowDuplicateResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One brief to run an improv flow with.
      */
     export interface HappyPath {
@@ -13880,6 +14496,11 @@ export namespace CustomerFlowDuplicateResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: VoicemailCustomerFlow.Folder | null;
+
+    /**
      * One voicemail greeting.
      */
     happyPath: VoicemailCustomerFlow.HappyPath | null;
@@ -14392,6 +15013,57 @@ export namespace CustomerFlowDuplicateResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
     }
 
     /**
@@ -14870,6 +15542,11 @@ export namespace CustomerFlowGetByIDResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ScriptedCustomerFlow.Folder | null;
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -15424,6 +16101,57 @@ export namespace CustomerFlowGetByIDResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One path through a scripted flow. The path engine owns which paths exist, so
      * editing the graph is what creates and removes these.
      */
@@ -15907,6 +16635,11 @@ export namespace CustomerFlowGetByIDResponse {
      * Every other way of running this flow.
      */
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: ImprovCustomerFlow.Folder | null;
 
     /**
      * One brief to run an improv flow with.
@@ -16696,6 +17429,57 @@ export namespace CustomerFlowGetByIDResponse {
     }
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
+    }
+
+    /**
      * One brief to run an improv flow with.
      */
     export interface HappyPath {
@@ -17421,6 +18205,11 @@ export namespace CustomerFlowGetByIDResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    folder: VoicemailCustomerFlow.Folder | null;
+
+    /**
      * One voicemail greeting.
      */
     happyPath: VoicemailCustomerFlow.HappyPath | null;
@@ -17933,6 +18722,57 @@ export namespace CustomerFlowGetByIDResponse {
          */
         secondaryLanguage?: 'EN' | null;
       }
+    }
+
+    /**
+     * A folder that groups customer flows. A flow sits in at most one folder.
+     */
+    export interface Folder {
+      id: string;
+
+      /**
+       * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+       * your flows filed in them.
+       */
+      builtIn: boolean;
+
+      /**
+       * The color the folder is shown with in the app. Folders share the palette labels
+       * use.
+       */
+      color:
+        | 'GREEN'
+        | 'RED'
+        | 'ORANGE'
+        | 'PURPLE'
+        | 'GREY'
+        | 'BLUE'
+        | 'PEACH'
+        | 'TEAL'
+        | 'INDIGO'
+        | 'AMBER'
+        | 'ROSE'
+        | 'CYAN';
+
+      /**
+       * Creation timestamp in ISO 8601 format
+       */
+      createdAt: string;
+
+      /**
+       * What belongs in this folder.
+       */
+      description: string | null;
+
+      /**
+       * The folder name, unique within the project.
+       */
+      name: string;
+
+      /**
+       * Last update timestamp in ISO 8601 format
+       */
+      updatedAt: string;
     }
 
     /**
@@ -21578,6 +22418,12 @@ export declare namespace CustomerFlowCreateParams {
     description?: string | null;
 
     /**
+     * A folder to file the flow in, from GET /v1/customer-flow/folder. Omit to leave
+     * it in no folder.
+     */
+    folderId?: string;
+
+    /**
      * STRICT only. What the simulated customer does when your agent does not say the
      * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
      * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
@@ -21660,6 +22506,12 @@ export declare namespace CustomerFlowCreateParams {
      * name.
      */
     edgeCases?: Array<CreateImprovCustomerFlowInput.EdgeCase>;
+
+    /**
+     * A folder to file the flow in, from GET /v1/customer-flow/folder. Omit to leave
+     * it in no folder.
+     */
+    folderId?: string;
   }
 
   export namespace CreateImprovCustomerFlowInput {
@@ -21799,6 +22651,12 @@ export interface CustomerFlowUpdateParams {
   description?: string | null;
 
   /**
+   * Moves the flow into this folder. Null takes it out of its folder; omit to leave
+   * it where it is.
+   */
+  folderId?: string | null;
+
+  /**
    * STRICT only. What the simulated customer does when your agent does not say the
    * expected line. Each unmatched agent utterance is an attempt: `reaction` runs per
    * attempt (STAY_SILENT, REPEAT its last scripted line, RESPOND once in character
@@ -21861,6 +22719,8 @@ export namespace CustomerFlowUpdateParams {
 
 export interface CustomerFlowListParams {
   after?: string;
+
+  folderId?: string;
 
   includeSystem?: 'true' | 'false';
 

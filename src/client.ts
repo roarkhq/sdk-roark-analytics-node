@@ -95,20 +95,6 @@ import {
   AgentPromptUpdateResponse,
 } from './resources/agent-prompt';
 import {
-  AgentSetup,
-  AgentSetupAnswerQuestionParams,
-  AgentSetupAnswerQuestionResponse,
-  AgentSetupCancelParams,
-  AgentSetupCancelResponse,
-  AgentSetupCreateParams,
-  AgentSetupCreateResponse,
-  AgentSetupGetByIDParams,
-  AgentSetupGetByIDResponse,
-  AgentSetupGetLatestResponse,
-  AgentSetupSendGuidanceParams,
-  AgentSetupSendGuidanceResponse,
-} from './resources/agent-setup';
-import {
   AgentVersion,
   AgentVersionGetByIDParams,
   AgentVersionGetByIDResponse,
@@ -208,12 +194,7 @@ import {
   ConfigDiffResponse,
   ConfigFlowStep,
 } from './resources/config';
-import {
-  Conversation,
-  ConversationGetByIDResponse,
-  ConversationListParams,
-  ConversationListResponse,
-} from './resources/conversation';
+import { Conversation, ConversationGetByIDResponse } from './resources/conversation';
 import {
   Customer,
   CustomerClearAttributeParams,
@@ -266,6 +247,13 @@ import {
   CustomerFlowEdgeCaseUpdateParams,
   CustomerFlowEdgeCaseUpdateResponse,
 } from './resources/customer-flow-edge-case';
+import {
+  CustomerFlowFolder,
+  CustomerFlowFolderCreateParams,
+  CustomerFlowFolderCreateResponse,
+  CustomerFlowFolderDeleteResponse,
+  CustomerFlowFolderListResponse,
+} from './resources/customer-flow-folder';
 import {
   Dashboard,
   DashboardCreateParams,
@@ -393,6 +381,16 @@ import {
 import { Project, ProjectListResponse } from './resources/project';
 import {
   Simulation,
+  SimulationAnswerResourceGenerationParams,
+  SimulationAnswerResourceGenerationResponse,
+  SimulationCancelResourceGenerationResponse,
+  SimulationGenerateResourcesParams,
+  SimulationGenerateResourcesResponse,
+  SimulationGetResourceGenerationResponse,
+  SimulationGuideResourceGenerationParams,
+  SimulationGuideResourceGenerationResponse,
+  SimulationListResourceGenerationsParams,
+  SimulationListResourceGenerationsResponse,
   SimulationMockToolParams,
   SimulationMockToolResponse,
   SimulationRunParams,
@@ -1288,12 +1286,12 @@ export class Roark {
   agentConfig: API.AgentConfig = new API.AgentConfig(this);
   autoimproveJob: API.AutoimproveJob = new API.AutoimproveJob(this);
   customerFlow: API.CustomerFlow = new API.CustomerFlow(this);
+  customerFlowFolder: API.CustomerFlowFolder = new API.CustomerFlowFolder(this);
   customerFlowEdgeCase: API.CustomerFlowEdgeCase = new API.CustomerFlowEdgeCase(this);
   agent: API.Agent = new API.Agent(this);
   agentEndpoint: API.AgentEndpoint = new API.AgentEndpoint(this);
   phoneNumber: API.PhoneNumber = new API.PhoneNumber(this);
   agentPrompt: API.AgentPrompt = new API.AgentPrompt(this);
-  agentSetup: API.AgentSetup = new API.AgentSetup(this);
   agentVersion: API.AgentVersion = new API.AgentVersion(this);
   agentDraft: API.AgentDraft = new API.AgentDraft(this);
   agentConversation: API.AgentConversation = new API.AgentConversation(this);
@@ -1336,12 +1334,12 @@ Roark.SimulationTemplate = SimulationTemplate;
 Roark.AgentConfig = AgentConfig;
 Roark.AutoimproveJob = AutoimproveJob;
 Roark.CustomerFlow = CustomerFlow;
+Roark.CustomerFlowFolder = CustomerFlowFolder;
 Roark.CustomerFlowEdgeCase = CustomerFlowEdgeCase;
 Roark.Agent = Agent;
 Roark.AgentEndpoint = AgentEndpoint;
 Roark.PhoneNumber = PhoneNumber;
 Roark.AgentPrompt = AgentPrompt;
-Roark.AgentSetup = AgentSetup;
 Roark.AgentVersion = AgentVersion;
 Roark.AgentDraft = AgentDraft;
 Roark.AgentConversation = AgentConversation;
@@ -1373,12 +1371,7 @@ export declare namespace Roark {
 
   export { Usage as Usage, type UsageGetResponse as UsageGetResponse, type UsageGetParams as UsageGetParams };
 
-  export {
-    Conversation as Conversation,
-    type ConversationListResponse as ConversationListResponse,
-    type ConversationGetByIDResponse as ConversationGetByIDResponse,
-    type ConversationListParams as ConversationListParams,
-  };
+  export { Conversation as Conversation, type ConversationGetByIDResponse as ConversationGetByIDResponse };
 
   export {
     Call as Call,
@@ -1495,8 +1488,18 @@ export declare namespace Roark {
 
   export {
     Simulation as Simulation,
+    type SimulationAnswerResourceGenerationResponse as SimulationAnswerResourceGenerationResponse,
+    type SimulationCancelResourceGenerationResponse as SimulationCancelResourceGenerationResponse,
+    type SimulationGenerateResourcesResponse as SimulationGenerateResourcesResponse,
+    type SimulationGetResourceGenerationResponse as SimulationGetResourceGenerationResponse,
+    type SimulationGuideResourceGenerationResponse as SimulationGuideResourceGenerationResponse,
+    type SimulationListResourceGenerationsResponse as SimulationListResourceGenerationsResponse,
     type SimulationMockToolResponse as SimulationMockToolResponse,
     type SimulationRunResponse as SimulationRunResponse,
+    type SimulationAnswerResourceGenerationParams as SimulationAnswerResourceGenerationParams,
+    type SimulationGenerateResourcesParams as SimulationGenerateResourcesParams,
+    type SimulationGuideResourceGenerationParams as SimulationGuideResourceGenerationParams,
+    type SimulationListResourceGenerationsParams as SimulationListResourceGenerationsParams,
     type SimulationMockToolParams as SimulationMockToolParams,
     type SimulationRunParams as SimulationRunParams,
   };
@@ -1682,6 +1685,14 @@ export declare namespace Roark {
   };
 
   export {
+    CustomerFlowFolder as CustomerFlowFolder,
+    type CustomerFlowFolderCreateResponse as CustomerFlowFolderCreateResponse,
+    type CustomerFlowFolderListResponse as CustomerFlowFolderListResponse,
+    type CustomerFlowFolderDeleteResponse as CustomerFlowFolderDeleteResponse,
+    type CustomerFlowFolderCreateParams as CustomerFlowFolderCreateParams,
+  };
+
+  export {
     CustomerFlowEdgeCase as CustomerFlowEdgeCase,
     type CustomerFlowEdgeCaseUpdateResponse as CustomerFlowEdgeCaseUpdateResponse,
     type CustomerFlowEdgeCaseAddResponse as CustomerFlowEdgeCaseAddResponse,
@@ -1738,21 +1749,6 @@ export declare namespace Roark {
     type AgentPromptListVersionsResponse as AgentPromptListVersionsResponse,
     type AgentPromptUpdateParams as AgentPromptUpdateParams,
     type AgentPromptListVersionsParams as AgentPromptListVersionsParams,
-  };
-
-  export {
-    AgentSetup as AgentSetup,
-    type AgentSetupCreateResponse as AgentSetupCreateResponse,
-    type AgentSetupAnswerQuestionResponse as AgentSetupAnswerQuestionResponse,
-    type AgentSetupCancelResponse as AgentSetupCancelResponse,
-    type AgentSetupGetByIDResponse as AgentSetupGetByIDResponse,
-    type AgentSetupGetLatestResponse as AgentSetupGetLatestResponse,
-    type AgentSetupSendGuidanceResponse as AgentSetupSendGuidanceResponse,
-    type AgentSetupCreateParams as AgentSetupCreateParams,
-    type AgentSetupAnswerQuestionParams as AgentSetupAnswerQuestionParams,
-    type AgentSetupCancelParams as AgentSetupCancelParams,
-    type AgentSetupGetByIDParams as AgentSetupGetByIDParams,
-    type AgentSetupSendGuidanceParams as AgentSetupSendGuidanceParams,
   };
 
   export {

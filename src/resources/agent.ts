@@ -133,251 +133,9 @@ export namespace AgentCreateResponse {
     name: string;
 
     /**
-     * The tests Roark generated for an agent, and why
-     */
-    setup: Data.Setup | null;
-
-    /**
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
-  }
-
-  export namespace Data {
-    /**
-     * The tests Roark generated for an agent, and why
-     */
-    export interface Setup {
-      /**
-       * Setup ID
-       */
-      id: string;
-
-      /**
-       * What setup did and said, in order
-       */
-      activity: Array<Setup.Activity>;
-
-      agentId: string;
-
-      capabilities: Array<
-        | 'APPOINTMENT_BOOKING'
-        | 'FAQ'
-        | 'IDENTITY_VERIFICATION'
-        | 'ACCOUNT_MANAGEMENT'
-        | 'BILLING_AND_PAYMENTS'
-        | 'ORDER_MANAGEMENT'
-        | 'TROUBLESHOOTING'
-        | 'CALL_ROUTING'
-        | 'LEAD_QUALIFICATION'
-        | 'COLLECTIONS'
-        | 'OUTBOUND_CALLING'
-      >;
-
-      completedAt: string | null;
-
-      createdAt: string;
-
-      errorMessage: string | null;
-
-      explore: Setup.Explore;
-
-      industry:
-        | 'HEALTHCARE'
-        | 'FINANCIAL_SERVICES'
-        | 'INSURANCE'
-        | 'DEBT_COLLECTION'
-        | 'RETAIL'
-        | 'TRAVEL_AND_HOSPITALITY'
-        | 'TELECOMMUNICATIONS'
-        | 'TECHNOLOGY'
-        | 'PUBLIC_SECTOR'
-        | 'UTILITIES'
-        | 'LOGISTICS'
-        | 'AUTOMOTIVE'
-        | 'HOME_SERVICES'
-        | 'RESTAURANTS'
-        | 'EDUCATION'
-        | 'OTHER'
-        | null;
-
-      items: Array<Setup.Item>;
-
-      /**
-       * The checklist setup works through
-       */
-      layers: Array<Setup.Layer>;
-
-      /**
-       * The question setup is waiting on, while NEEDS_INPUT
-       */
-      question: Setup.Question | null;
-
-      /**
-       * The run plan to start once setup completes
-       */
-      runPlanId: string | null;
-
-      /**
-       * PENDING, RUNNING, NEEDS_INPUT (waiting on a question; it goes ahead with the
-       * default if nobody answers), COMPLETED, FAILED or CANCELLED
-       */
-      status: 'PENDING' | 'RUNNING' | 'NEEDS_INPUT' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
-
-      /**
-       * Test data the agent asked for that Roark did not have
-       */
-      testDataNeeded: Array<Setup.TestDataNeeded>;
-    }
-
-    export namespace Setup {
-      /**
-       * One thing setup did or said, in order
-       */
-      export interface Activity {
-        createdAt: string;
-
-        /**
-         * STATUS, REASONING, ACTION, GUIDANCE, QUESTION, ANSWER, EXPLORATION or ERROR
-         */
-        kind:
-          | 'STATUS'
-          | 'REASONING'
-          | 'ACTION'
-          | 'GUIDANCE'
-          | 'QUESTION'
-          | 'ANSWER'
-          | 'EXPLORATION'
-          | 'ERROR';
-
-        text: string;
-      }
-
-      export interface Explore {
-        conversationsUsed: number;
-
-        enabled: boolean;
-
-        maxConversationMinutes: number;
-
-        maxConversations: number;
-      }
-
-      /**
-       * Something setup created or chose to leave out, and why
-       */
-      export interface Item {
-        id: string;
-
-        /**
-         * CREATED, or SKIPPED with the reason
-         */
-        action: 'CREATED' | 'SKIPPED';
-
-        capability:
-          | 'APPOINTMENT_BOOKING'
-          | 'FAQ'
-          | 'IDENTITY_VERIFICATION'
-          | 'ACCOUNT_MANAGEMENT'
-          | 'BILLING_AND_PAYMENTS'
-          | 'ORDER_MANAGEMENT'
-          | 'TROUBLESHOOTING'
-          | 'CALL_ROUTING'
-          | 'LEAD_QUALIFICATION'
-          | 'COLLECTIONS'
-          | 'OUTBOUND_CALLING'
-          | null;
-
-        /**
-         * A flow, a metric, or a pass or fail check
-         */
-        kind: 'FLOW' | 'METRIC' | 'CHECK' | 'LAYER';
-
-        label: string;
-
-        /**
-         * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
-         * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
-         */
-        layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
-
-        /**
-         * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
-         * offered
-         */
-        origin: 'DISCOVERED' | 'INFERRED' | null;
-
-        reason: string;
-
-        /**
-         * The flow or metric it created
-         */
-        resourceId: string | null;
-
-        source: Item.Source;
-      }
-
-      export namespace Item {
-        export interface Source {
-          /**
-           * The exploration call it came from
-           */
-          callId: string | null;
-
-          /**
-           * Where in the call
-           */
-          offsetMs: number | null;
-
-          /**
-           * The words in the source that led to it
-           */
-          quote: string | null;
-
-          type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
-
-          /**
-           * The page it came from, for website sources
-           */
-          url: string | null;
-        }
-      }
-
-      /**
-       * Where one part of testing the agent stands
-       */
-      export interface Layer {
-        layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
-
-        /**
-         * COVERED: tests exist for it, or are added when setup finishes. SKIPPED: setup
-         * could not test it and said why. OPEN: not covered yet; setup does not finish
-         * while a layer is open. NOT_APPLICABLE: nothing to test it from.
-         */
-        status: 'COVERED' | 'SKIPPED' | 'OPEN' | 'NOT_APPLICABLE';
-
-        summary: string;
-      }
-
-      /**
-       * The question setup is waiting on, while NEEDS_INPUT
-       */
-      export interface Question {
-        defaultOption: string;
-
-        options: Array<string>;
-
-        question: string;
-      }
-
-      export interface TestDataNeeded {
-        callId: string | null;
-
-        label: string;
-
-        reason: string;
-      }
-    }
   }
 }
 
@@ -647,11 +405,6 @@ export interface AgentCreateParams {
   name: string;
 
   /**
-   * Controls the flows, metrics and run plan Roark generates for the agent
-   */
-  autoSetup?: AgentCreateParams.AutoSetup | null;
-
-  /**
    * Custom identifier for the agent. Must be unique in the project.
    */
   customId?: string | null;
@@ -667,8 +420,7 @@ export interface AgentCreateParams {
   endpoint?: AgentCreateParams.Endpoint | null;
 
   /**
-   * The industry the agent serves. Picks the default capabilities and industry
-   * checks setup adds.
+   * The industry the agent serves.
    */
   industry?:
     | 'HEALTHCARE'
@@ -690,79 +442,12 @@ export interface AgentCreateParams {
     | null;
 
   /**
-   * The agent's system prompt. Setup reads it to decide what to test.
+   * The agent's system prompt.
    */
   prompt?: string | null;
-
-  /**
-   * What you want tested, in your own words. Each scenario you describe becomes a
-   * flow.
-   */
-  testingInstructions?: string | null;
-
-  /**
-   * A page Roark reads to learn about the business.
-   */
-  websiteUrl?: string | null;
 }
 
 export namespace AgentCreateParams {
-  /**
-   * Controls the flows, metrics and run plan Roark generates for the agent
-   */
-  export interface AutoSetup {
-    /**
-     * The capabilities to test. Omit to let Roark work them out from the agent.
-     */
-    capabilities?: Array<
-      | 'APPOINTMENT_BOOKING'
-      | 'FAQ'
-      | 'IDENTITY_VERIFICATION'
-      | 'ACCOUNT_MANAGEMENT'
-      | 'BILLING_AND_PAYMENTS'
-      | 'ORDER_MANAGEMENT'
-      | 'TROUBLESHOOTING'
-      | 'CALL_ROUTING'
-      | 'LEAD_QUALIFICATION'
-      | 'COLLECTIONS'
-      | 'OUTBOUND_CALLING'
-    >;
-
-    /**
-     * Set to false to skip setup. When omitted, setup runs if you pass a prompt,
-     * endpoint, website or testing instructions.
-     */
-    enabled?: boolean;
-
-    /**
-     * Exploration settings
-     */
-    explore?: AutoSetup.Explore;
-  }
-
-  export namespace AutoSetup {
-    /**
-     * Exploration settings
-     */
-    export interface Explore {
-      /**
-       * Whether Roark calls the agent to discover what it does before finishing setup.
-       * Exploration calls are billed.
-       */
-      enabled?: boolean;
-
-      /**
-       * The longest a single exploration call may last, in minutes.
-       */
-      maxConversationMinutes?: number;
-
-      /**
-       * The most exploration calls Roark places.
-       */
-      maxConversations?: number;
-    }
-  }
-
   /**
    * The phone number or connection Roark calls to test the agent
    */
