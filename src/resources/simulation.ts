@@ -3,8 +3,140 @@
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
+import { path } from '../internal/utils/path';
 
 export class Simulation extends APIResource {
+  /**
+   * Answers the question a simulation resource generation is waiting on (status
+   * NEEDS_INPUT). If nobody answers within 15 minutes, it goes ahead with its
+   * default.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulation.answerResourceGeneration(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     { text: 'x' },
+   *   );
+   * ```
+   */
+  answerResourceGeneration(
+    generationID: string,
+    body: SimulationAnswerResourceGenerationParams,
+    options?: RequestOptions,
+  ): APIPromise<SimulationAnswerResourceGenerationResponse> {
+    return this._client.post(path`/v1/simulation/generations/resources/${generationID}/answer`, {
+      body,
+      ...options,
+    });
+  }
+
+  /**
+   * Stops a running simulation resource generation. Flows and metrics it already
+   * created are kept; no run plan is made. Refused once the generation has finished.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulation.cancelResourceGeneration(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
+   */
+  cancelResourceGeneration(
+    generationID: string,
+    options?: RequestOptions,
+  ): APIPromise<SimulationCancelResourceGenerationResponse> {
+    return this._client.post(path`/v1/simulation/generations/resources/${generationID}/cancel`, options);
+  }
+
+  /**
+   * Works out what to test for an existing agent, then creates the customer flows,
+   * metrics and checks to simulate it, and a run plan that runs them. It does not
+   * create or change the agent. Runs in the background: watch the
+   * `agent.setup.completed` webhook, or poll
+   * `GET /v1/simulation/generations/resources/{generationId}`. Takes one agent for
+   * now. Refused while another generation for the agent is running. Needs the
+   * 'simulation:create' and 'metric:create' permissions. Exploration also needs
+   * 'simulation:run', and is turned off for keys without it unless explore.enabled
+   * is set.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulation.generateResources({
+   *   agentIds: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+   * });
+   * ```
+   */
+  generateResources(
+    body: SimulationGenerateResourcesParams,
+    options?: RequestOptions,
+  ): APIPromise<SimulationGenerateResourcesResponse> {
+    return this._client.post('/v1/simulation/generations/resources', { body, ...options });
+  }
+
+  /**
+   * Returns one simulation resource generation, for example the one a webhook named.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulation.getResourceGeneration(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
+   */
+  getResourceGeneration(
+    generationID: string,
+    options?: RequestOptions,
+  ): APIPromise<SimulationGetResourceGenerationResponse> {
+    return this._client.get(path`/v1/simulation/generations/resources/${generationID}`, options);
+  }
+
+  /**
+   * Tells a running simulation resource generation what to focus on or avoid, in
+   * your own words. It reads it on its next turn and it outranks its own plan.
+   * Refused once the generation has finished.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulation.guideResourceGeneration(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     { text: 'x' },
+   *   );
+   * ```
+   */
+  guideResourceGeneration(
+    generationID: string,
+    body: SimulationGuideResourceGenerationParams,
+    options?: RequestOptions,
+  ): APIPromise<SimulationGuideResourceGenerationResponse> {
+    return this._client.post(path`/v1/simulation/generations/resources/${generationID}/guidance`, {
+      body,
+      ...options,
+    });
+  }
+
+  /**
+   * Returns the project's simulation resource generations, newest first, optionally
+   * only for some agents: each one's progress, the run plan it created, and every
+   * flow, metric and check it added or left out, with the reason and the source it
+   * came from.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulation.listResourceGenerations();
+   * ```
+   */
+  listResourceGenerations(
+    query: SimulationListResourceGenerationsParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<SimulationListResourceGenerationsResponse> {
+    return this._client.get('/v1/simulation/generations/resources', { query, ...options });
+  }
+
   /**
    * The server half of the tool guard for code-first agents. When a guarded tool
    * fires during a Roark test call, send the invocation here instead of executing
@@ -64,6 +196,1454 @@ export class Simulation extends APIResource {
    */
   run(body: SimulationRunParams, options?: RequestOptions): APIPromise<SimulationRunResponse> {
     return this._client.post('/v1/simulation/run', { body, ...options });
+  }
+}
+
+export interface SimulationAnswerResourceGenerationResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  data: SimulationAnswerResourceGenerationResponse.Data;
+}
+
+export namespace SimulationAnswerResourceGenerationResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  export interface Data {
+    /**
+     * Simulation resource generation ID
+     */
+    id: string;
+
+    /**
+     * What the generation did and said, in order
+     */
+    activity: Array<Data.Activity>;
+
+    /**
+     * The agents the inputs were generated for
+     */
+    agentIds: Array<string>;
+
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    >;
+
+    completedAt: string | null;
+
+    createdAt: string;
+
+    errorMessage: string | null;
+
+    explore: Data.Explore;
+
+    industry:
+      | 'HEALTHCARE'
+      | 'FINANCIAL_SERVICES'
+      | 'INSURANCE'
+      | 'DEBT_COLLECTION'
+      | 'RETAIL'
+      | 'TRAVEL_AND_HOSPITALITY'
+      | 'TELECOMMUNICATIONS'
+      | 'TECHNOLOGY'
+      | 'PUBLIC_SECTOR'
+      | 'UTILITIES'
+      | 'LOGISTICS'
+      | 'AUTOMOTIVE'
+      | 'HOME_SERVICES'
+      | 'RESTAURANTS'
+      | 'EDUCATION'
+      | 'OTHER'
+      | null;
+
+    items: Array<Data.Item>;
+
+    /**
+     * The checklist the generation works through
+     */
+    layers: Array<Data.Layer>;
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    question: Data.Question | null;
+
+    /**
+     * The run plan to start once the generation completes
+     */
+    runPlanId: string | null;
+
+    /**
+     * PENDING, RUNNING, NEEDS_INPUT (waiting on a question; it goes ahead with the
+     * default if nobody answers), COMPLETED, FAILED or CANCELLED
+     */
+    status: 'PENDING' | 'RUNNING' | 'NEEDS_INPUT' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+
+    /**
+     * Test data the agent asked for that Roark did not have
+     */
+    testDataNeeded: Array<Data.TestDataNeeded>;
+  }
+
+  export namespace Data {
+    /**
+     * One thing the generation did or said, in order
+     */
+    export interface Activity {
+      createdAt: string;
+
+      /**
+       * STATUS, REASONING, ACTION, GUIDANCE, QUESTION, ANSWER, EXPLORATION or ERROR
+       */
+      kind: 'STATUS' | 'REASONING' | 'ACTION' | 'GUIDANCE' | 'QUESTION' | 'ANSWER' | 'EXPLORATION' | 'ERROR';
+
+      text: string;
+    }
+
+    export interface Explore {
+      conversationsUsed: number;
+
+      enabled: boolean;
+
+      maxConversationMinutes: number;
+
+      maxConversations: number;
+    }
+
+    /**
+     * Something the generation created or chose to leave out, and why
+     */
+    export interface Item {
+      id: string;
+
+      /**
+       * CREATED, or SKIPPED with the reason
+       */
+      action: 'CREATED' | 'SKIPPED';
+
+      capability:
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+        | null;
+
+      /**
+       * A flow, a metric, or a pass or fail check
+       */
+      kind: 'FLOW' | 'METRIC' | 'CHECK' | 'LAYER';
+
+      label: string;
+
+      /**
+       * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
+       * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
+       */
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
+       * offered
+       */
+      origin: 'DISCOVERED' | 'INFERRED' | null;
+
+      reason: string;
+
+      /**
+       * The flow or metric it created
+       */
+      resourceId: string | null;
+
+      source: Item.Source;
+    }
+
+    export namespace Item {
+      export interface Source {
+        /**
+         * The exploration call it came from
+         */
+        callId: string | null;
+
+        /**
+         * Where in the call
+         */
+        offsetMs: number | null;
+
+        /**
+         * The words in the source that led to it
+         */
+        quote: string | null;
+
+        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+
+        /**
+         * The page it came from, for website sources
+         */
+        url: string | null;
+      }
+    }
+
+    /**
+     * Where one part of testing the agent stands
+     */
+    export interface Layer {
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
+       * the generation could not test it and said why. OPEN: not covered yet; the
+       * generation does not finish while a layer is open. NOT_APPLICABLE: nothing to
+       * test it from.
+       */
+      status: 'COVERED' | 'SKIPPED' | 'OPEN' | 'NOT_APPLICABLE';
+
+      summary: string;
+    }
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    export interface Question {
+      defaultOption: string;
+
+      options: Array<string>;
+
+      question: string;
+    }
+
+    export interface TestDataNeeded {
+      callId: string | null;
+
+      label: string;
+
+      reason: string;
+    }
+  }
+}
+
+export interface SimulationCancelResourceGenerationResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  data: SimulationCancelResourceGenerationResponse.Data;
+}
+
+export namespace SimulationCancelResourceGenerationResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  export interface Data {
+    /**
+     * Simulation resource generation ID
+     */
+    id: string;
+
+    /**
+     * What the generation did and said, in order
+     */
+    activity: Array<Data.Activity>;
+
+    /**
+     * The agents the inputs were generated for
+     */
+    agentIds: Array<string>;
+
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    >;
+
+    completedAt: string | null;
+
+    createdAt: string;
+
+    errorMessage: string | null;
+
+    explore: Data.Explore;
+
+    industry:
+      | 'HEALTHCARE'
+      | 'FINANCIAL_SERVICES'
+      | 'INSURANCE'
+      | 'DEBT_COLLECTION'
+      | 'RETAIL'
+      | 'TRAVEL_AND_HOSPITALITY'
+      | 'TELECOMMUNICATIONS'
+      | 'TECHNOLOGY'
+      | 'PUBLIC_SECTOR'
+      | 'UTILITIES'
+      | 'LOGISTICS'
+      | 'AUTOMOTIVE'
+      | 'HOME_SERVICES'
+      | 'RESTAURANTS'
+      | 'EDUCATION'
+      | 'OTHER'
+      | null;
+
+    items: Array<Data.Item>;
+
+    /**
+     * The checklist the generation works through
+     */
+    layers: Array<Data.Layer>;
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    question: Data.Question | null;
+
+    /**
+     * The run plan to start once the generation completes
+     */
+    runPlanId: string | null;
+
+    /**
+     * PENDING, RUNNING, NEEDS_INPUT (waiting on a question; it goes ahead with the
+     * default if nobody answers), COMPLETED, FAILED or CANCELLED
+     */
+    status: 'PENDING' | 'RUNNING' | 'NEEDS_INPUT' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+
+    /**
+     * Test data the agent asked for that Roark did not have
+     */
+    testDataNeeded: Array<Data.TestDataNeeded>;
+  }
+
+  export namespace Data {
+    /**
+     * One thing the generation did or said, in order
+     */
+    export interface Activity {
+      createdAt: string;
+
+      /**
+       * STATUS, REASONING, ACTION, GUIDANCE, QUESTION, ANSWER, EXPLORATION or ERROR
+       */
+      kind: 'STATUS' | 'REASONING' | 'ACTION' | 'GUIDANCE' | 'QUESTION' | 'ANSWER' | 'EXPLORATION' | 'ERROR';
+
+      text: string;
+    }
+
+    export interface Explore {
+      conversationsUsed: number;
+
+      enabled: boolean;
+
+      maxConversationMinutes: number;
+
+      maxConversations: number;
+    }
+
+    /**
+     * Something the generation created or chose to leave out, and why
+     */
+    export interface Item {
+      id: string;
+
+      /**
+       * CREATED, or SKIPPED with the reason
+       */
+      action: 'CREATED' | 'SKIPPED';
+
+      capability:
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+        | null;
+
+      /**
+       * A flow, a metric, or a pass or fail check
+       */
+      kind: 'FLOW' | 'METRIC' | 'CHECK' | 'LAYER';
+
+      label: string;
+
+      /**
+       * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
+       * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
+       */
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
+       * offered
+       */
+      origin: 'DISCOVERED' | 'INFERRED' | null;
+
+      reason: string;
+
+      /**
+       * The flow or metric it created
+       */
+      resourceId: string | null;
+
+      source: Item.Source;
+    }
+
+    export namespace Item {
+      export interface Source {
+        /**
+         * The exploration call it came from
+         */
+        callId: string | null;
+
+        /**
+         * Where in the call
+         */
+        offsetMs: number | null;
+
+        /**
+         * The words in the source that led to it
+         */
+        quote: string | null;
+
+        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+
+        /**
+         * The page it came from, for website sources
+         */
+        url: string | null;
+      }
+    }
+
+    /**
+     * Where one part of testing the agent stands
+     */
+    export interface Layer {
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
+       * the generation could not test it and said why. OPEN: not covered yet; the
+       * generation does not finish while a layer is open. NOT_APPLICABLE: nothing to
+       * test it from.
+       */
+      status: 'COVERED' | 'SKIPPED' | 'OPEN' | 'NOT_APPLICABLE';
+
+      summary: string;
+    }
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    export interface Question {
+      defaultOption: string;
+
+      options: Array<string>;
+
+      question: string;
+    }
+
+    export interface TestDataNeeded {
+      callId: string | null;
+
+      label: string;
+
+      reason: string;
+    }
+  }
+}
+
+export interface SimulationGenerateResourcesResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  data: SimulationGenerateResourcesResponse.Data;
+}
+
+export namespace SimulationGenerateResourcesResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  export interface Data {
+    /**
+     * Simulation resource generation ID
+     */
+    id: string;
+
+    /**
+     * What the generation did and said, in order
+     */
+    activity: Array<Data.Activity>;
+
+    /**
+     * The agents the inputs were generated for
+     */
+    agentIds: Array<string>;
+
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    >;
+
+    completedAt: string | null;
+
+    createdAt: string;
+
+    errorMessage: string | null;
+
+    explore: Data.Explore;
+
+    industry:
+      | 'HEALTHCARE'
+      | 'FINANCIAL_SERVICES'
+      | 'INSURANCE'
+      | 'DEBT_COLLECTION'
+      | 'RETAIL'
+      | 'TRAVEL_AND_HOSPITALITY'
+      | 'TELECOMMUNICATIONS'
+      | 'TECHNOLOGY'
+      | 'PUBLIC_SECTOR'
+      | 'UTILITIES'
+      | 'LOGISTICS'
+      | 'AUTOMOTIVE'
+      | 'HOME_SERVICES'
+      | 'RESTAURANTS'
+      | 'EDUCATION'
+      | 'OTHER'
+      | null;
+
+    items: Array<Data.Item>;
+
+    /**
+     * The checklist the generation works through
+     */
+    layers: Array<Data.Layer>;
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    question: Data.Question | null;
+
+    /**
+     * The run plan to start once the generation completes
+     */
+    runPlanId: string | null;
+
+    /**
+     * PENDING, RUNNING, NEEDS_INPUT (waiting on a question; it goes ahead with the
+     * default if nobody answers), COMPLETED, FAILED or CANCELLED
+     */
+    status: 'PENDING' | 'RUNNING' | 'NEEDS_INPUT' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+
+    /**
+     * Test data the agent asked for that Roark did not have
+     */
+    testDataNeeded: Array<Data.TestDataNeeded>;
+  }
+
+  export namespace Data {
+    /**
+     * One thing the generation did or said, in order
+     */
+    export interface Activity {
+      createdAt: string;
+
+      /**
+       * STATUS, REASONING, ACTION, GUIDANCE, QUESTION, ANSWER, EXPLORATION or ERROR
+       */
+      kind: 'STATUS' | 'REASONING' | 'ACTION' | 'GUIDANCE' | 'QUESTION' | 'ANSWER' | 'EXPLORATION' | 'ERROR';
+
+      text: string;
+    }
+
+    export interface Explore {
+      conversationsUsed: number;
+
+      enabled: boolean;
+
+      maxConversationMinutes: number;
+
+      maxConversations: number;
+    }
+
+    /**
+     * Something the generation created or chose to leave out, and why
+     */
+    export interface Item {
+      id: string;
+
+      /**
+       * CREATED, or SKIPPED with the reason
+       */
+      action: 'CREATED' | 'SKIPPED';
+
+      capability:
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+        | null;
+
+      /**
+       * A flow, a metric, or a pass or fail check
+       */
+      kind: 'FLOW' | 'METRIC' | 'CHECK' | 'LAYER';
+
+      label: string;
+
+      /**
+       * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
+       * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
+       */
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
+       * offered
+       */
+      origin: 'DISCOVERED' | 'INFERRED' | null;
+
+      reason: string;
+
+      /**
+       * The flow or metric it created
+       */
+      resourceId: string | null;
+
+      source: Item.Source;
+    }
+
+    export namespace Item {
+      export interface Source {
+        /**
+         * The exploration call it came from
+         */
+        callId: string | null;
+
+        /**
+         * Where in the call
+         */
+        offsetMs: number | null;
+
+        /**
+         * The words in the source that led to it
+         */
+        quote: string | null;
+
+        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+
+        /**
+         * The page it came from, for website sources
+         */
+        url: string | null;
+      }
+    }
+
+    /**
+     * Where one part of testing the agent stands
+     */
+    export interface Layer {
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
+       * the generation could not test it and said why. OPEN: not covered yet; the
+       * generation does not finish while a layer is open. NOT_APPLICABLE: nothing to
+       * test it from.
+       */
+      status: 'COVERED' | 'SKIPPED' | 'OPEN' | 'NOT_APPLICABLE';
+
+      summary: string;
+    }
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    export interface Question {
+      defaultOption: string;
+
+      options: Array<string>;
+
+      question: string;
+    }
+
+    export interface TestDataNeeded {
+      callId: string | null;
+
+      label: string;
+
+      reason: string;
+    }
+  }
+}
+
+export interface SimulationGetResourceGenerationResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  data: SimulationGetResourceGenerationResponse.Data;
+}
+
+export namespace SimulationGetResourceGenerationResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  export interface Data {
+    /**
+     * Simulation resource generation ID
+     */
+    id: string;
+
+    /**
+     * What the generation did and said, in order
+     */
+    activity: Array<Data.Activity>;
+
+    /**
+     * The agents the inputs were generated for
+     */
+    agentIds: Array<string>;
+
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    >;
+
+    completedAt: string | null;
+
+    createdAt: string;
+
+    errorMessage: string | null;
+
+    explore: Data.Explore;
+
+    industry:
+      | 'HEALTHCARE'
+      | 'FINANCIAL_SERVICES'
+      | 'INSURANCE'
+      | 'DEBT_COLLECTION'
+      | 'RETAIL'
+      | 'TRAVEL_AND_HOSPITALITY'
+      | 'TELECOMMUNICATIONS'
+      | 'TECHNOLOGY'
+      | 'PUBLIC_SECTOR'
+      | 'UTILITIES'
+      | 'LOGISTICS'
+      | 'AUTOMOTIVE'
+      | 'HOME_SERVICES'
+      | 'RESTAURANTS'
+      | 'EDUCATION'
+      | 'OTHER'
+      | null;
+
+    items: Array<Data.Item>;
+
+    /**
+     * The checklist the generation works through
+     */
+    layers: Array<Data.Layer>;
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    question: Data.Question | null;
+
+    /**
+     * The run plan to start once the generation completes
+     */
+    runPlanId: string | null;
+
+    /**
+     * PENDING, RUNNING, NEEDS_INPUT (waiting on a question; it goes ahead with the
+     * default if nobody answers), COMPLETED, FAILED or CANCELLED
+     */
+    status: 'PENDING' | 'RUNNING' | 'NEEDS_INPUT' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+
+    /**
+     * Test data the agent asked for that Roark did not have
+     */
+    testDataNeeded: Array<Data.TestDataNeeded>;
+  }
+
+  export namespace Data {
+    /**
+     * One thing the generation did or said, in order
+     */
+    export interface Activity {
+      createdAt: string;
+
+      /**
+       * STATUS, REASONING, ACTION, GUIDANCE, QUESTION, ANSWER, EXPLORATION or ERROR
+       */
+      kind: 'STATUS' | 'REASONING' | 'ACTION' | 'GUIDANCE' | 'QUESTION' | 'ANSWER' | 'EXPLORATION' | 'ERROR';
+
+      text: string;
+    }
+
+    export interface Explore {
+      conversationsUsed: number;
+
+      enabled: boolean;
+
+      maxConversationMinutes: number;
+
+      maxConversations: number;
+    }
+
+    /**
+     * Something the generation created or chose to leave out, and why
+     */
+    export interface Item {
+      id: string;
+
+      /**
+       * CREATED, or SKIPPED with the reason
+       */
+      action: 'CREATED' | 'SKIPPED';
+
+      capability:
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+        | null;
+
+      /**
+       * A flow, a metric, or a pass or fail check
+       */
+      kind: 'FLOW' | 'METRIC' | 'CHECK' | 'LAYER';
+
+      label: string;
+
+      /**
+       * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
+       * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
+       */
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
+       * offered
+       */
+      origin: 'DISCOVERED' | 'INFERRED' | null;
+
+      reason: string;
+
+      /**
+       * The flow or metric it created
+       */
+      resourceId: string | null;
+
+      source: Item.Source;
+    }
+
+    export namespace Item {
+      export interface Source {
+        /**
+         * The exploration call it came from
+         */
+        callId: string | null;
+
+        /**
+         * Where in the call
+         */
+        offsetMs: number | null;
+
+        /**
+         * The words in the source that led to it
+         */
+        quote: string | null;
+
+        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+
+        /**
+         * The page it came from, for website sources
+         */
+        url: string | null;
+      }
+    }
+
+    /**
+     * Where one part of testing the agent stands
+     */
+    export interface Layer {
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
+       * the generation could not test it and said why. OPEN: not covered yet; the
+       * generation does not finish while a layer is open. NOT_APPLICABLE: nothing to
+       * test it from.
+       */
+      status: 'COVERED' | 'SKIPPED' | 'OPEN' | 'NOT_APPLICABLE';
+
+      summary: string;
+    }
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    export interface Question {
+      defaultOption: string;
+
+      options: Array<string>;
+
+      question: string;
+    }
+
+    export interface TestDataNeeded {
+      callId: string | null;
+
+      label: string;
+
+      reason: string;
+    }
+  }
+}
+
+export interface SimulationGuideResourceGenerationResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  data: SimulationGuideResourceGenerationResponse.Data;
+}
+
+export namespace SimulationGuideResourceGenerationResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  export interface Data {
+    /**
+     * Simulation resource generation ID
+     */
+    id: string;
+
+    /**
+     * What the generation did and said, in order
+     */
+    activity: Array<Data.Activity>;
+
+    /**
+     * The agents the inputs were generated for
+     */
+    agentIds: Array<string>;
+
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    >;
+
+    completedAt: string | null;
+
+    createdAt: string;
+
+    errorMessage: string | null;
+
+    explore: Data.Explore;
+
+    industry:
+      | 'HEALTHCARE'
+      | 'FINANCIAL_SERVICES'
+      | 'INSURANCE'
+      | 'DEBT_COLLECTION'
+      | 'RETAIL'
+      | 'TRAVEL_AND_HOSPITALITY'
+      | 'TELECOMMUNICATIONS'
+      | 'TECHNOLOGY'
+      | 'PUBLIC_SECTOR'
+      | 'UTILITIES'
+      | 'LOGISTICS'
+      | 'AUTOMOTIVE'
+      | 'HOME_SERVICES'
+      | 'RESTAURANTS'
+      | 'EDUCATION'
+      | 'OTHER'
+      | null;
+
+    items: Array<Data.Item>;
+
+    /**
+     * The checklist the generation works through
+     */
+    layers: Array<Data.Layer>;
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    question: Data.Question | null;
+
+    /**
+     * The run plan to start once the generation completes
+     */
+    runPlanId: string | null;
+
+    /**
+     * PENDING, RUNNING, NEEDS_INPUT (waiting on a question; it goes ahead with the
+     * default if nobody answers), COMPLETED, FAILED or CANCELLED
+     */
+    status: 'PENDING' | 'RUNNING' | 'NEEDS_INPUT' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+
+    /**
+     * Test data the agent asked for that Roark did not have
+     */
+    testDataNeeded: Array<Data.TestDataNeeded>;
+  }
+
+  export namespace Data {
+    /**
+     * One thing the generation did or said, in order
+     */
+    export interface Activity {
+      createdAt: string;
+
+      /**
+       * STATUS, REASONING, ACTION, GUIDANCE, QUESTION, ANSWER, EXPLORATION or ERROR
+       */
+      kind: 'STATUS' | 'REASONING' | 'ACTION' | 'GUIDANCE' | 'QUESTION' | 'ANSWER' | 'EXPLORATION' | 'ERROR';
+
+      text: string;
+    }
+
+    export interface Explore {
+      conversationsUsed: number;
+
+      enabled: boolean;
+
+      maxConversationMinutes: number;
+
+      maxConversations: number;
+    }
+
+    /**
+     * Something the generation created or chose to leave out, and why
+     */
+    export interface Item {
+      id: string;
+
+      /**
+       * CREATED, or SKIPPED with the reason
+       */
+      action: 'CREATED' | 'SKIPPED';
+
+      capability:
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+        | null;
+
+      /**
+       * A flow, a metric, or a pass or fail check
+       */
+      kind: 'FLOW' | 'METRIC' | 'CHECK' | 'LAYER';
+
+      label: string;
+
+      /**
+       * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
+       * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
+       */
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
+       * offered
+       */
+      origin: 'DISCOVERED' | 'INFERRED' | null;
+
+      reason: string;
+
+      /**
+       * The flow or metric it created
+       */
+      resourceId: string | null;
+
+      source: Item.Source;
+    }
+
+    export namespace Item {
+      export interface Source {
+        /**
+         * The exploration call it came from
+         */
+        callId: string | null;
+
+        /**
+         * Where in the call
+         */
+        offsetMs: number | null;
+
+        /**
+         * The words in the source that led to it
+         */
+        quote: string | null;
+
+        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+
+        /**
+         * The page it came from, for website sources
+         */
+        url: string | null;
+      }
+    }
+
+    /**
+     * Where one part of testing the agent stands
+     */
+    export interface Layer {
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
+       * the generation could not test it and said why. OPEN: not covered yet; the
+       * generation does not finish while a layer is open. NOT_APPLICABLE: nothing to
+       * test it from.
+       */
+      status: 'COVERED' | 'SKIPPED' | 'OPEN' | 'NOT_APPLICABLE';
+
+      summary: string;
+    }
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    export interface Question {
+      defaultOption: string;
+
+      options: Array<string>;
+
+      question: string;
+    }
+
+    export interface TestDataNeeded {
+      callId: string | null;
+
+      label: string;
+
+      reason: string;
+    }
+  }
+}
+
+export interface SimulationListResourceGenerationsResponse {
+  data: Array<SimulationListResourceGenerationsResponse.Data>;
+}
+
+export namespace SimulationListResourceGenerationsResponse {
+  /**
+   * The simulation resources Roark generated for agents: the flows, metrics, checks
+   * and run plan, and why
+   */
+  export interface Data {
+    /**
+     * Simulation resource generation ID
+     */
+    id: string;
+
+    /**
+     * What the generation did and said, in order
+     */
+    activity: Array<Data.Activity>;
+
+    /**
+     * The agents the inputs were generated for
+     */
+    agentIds: Array<string>;
+
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    >;
+
+    completedAt: string | null;
+
+    createdAt: string;
+
+    errorMessage: string | null;
+
+    explore: Data.Explore;
+
+    industry:
+      | 'HEALTHCARE'
+      | 'FINANCIAL_SERVICES'
+      | 'INSURANCE'
+      | 'DEBT_COLLECTION'
+      | 'RETAIL'
+      | 'TRAVEL_AND_HOSPITALITY'
+      | 'TELECOMMUNICATIONS'
+      | 'TECHNOLOGY'
+      | 'PUBLIC_SECTOR'
+      | 'UTILITIES'
+      | 'LOGISTICS'
+      | 'AUTOMOTIVE'
+      | 'HOME_SERVICES'
+      | 'RESTAURANTS'
+      | 'EDUCATION'
+      | 'OTHER'
+      | null;
+
+    items: Array<Data.Item>;
+
+    /**
+     * The checklist the generation works through
+     */
+    layers: Array<Data.Layer>;
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    question: Data.Question | null;
+
+    /**
+     * The run plan to start once the generation completes
+     */
+    runPlanId: string | null;
+
+    /**
+     * PENDING, RUNNING, NEEDS_INPUT (waiting on a question; it goes ahead with the
+     * default if nobody answers), COMPLETED, FAILED or CANCELLED
+     */
+    status: 'PENDING' | 'RUNNING' | 'NEEDS_INPUT' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+
+    /**
+     * Test data the agent asked for that Roark did not have
+     */
+    testDataNeeded: Array<Data.TestDataNeeded>;
+  }
+
+  export namespace Data {
+    /**
+     * One thing the generation did or said, in order
+     */
+    export interface Activity {
+      createdAt: string;
+
+      /**
+       * STATUS, REASONING, ACTION, GUIDANCE, QUESTION, ANSWER, EXPLORATION or ERROR
+       */
+      kind: 'STATUS' | 'REASONING' | 'ACTION' | 'GUIDANCE' | 'QUESTION' | 'ANSWER' | 'EXPLORATION' | 'ERROR';
+
+      text: string;
+    }
+
+    export interface Explore {
+      conversationsUsed: number;
+
+      enabled: boolean;
+
+      maxConversationMinutes: number;
+
+      maxConversations: number;
+    }
+
+    /**
+     * Something the generation created or chose to leave out, and why
+     */
+    export interface Item {
+      id: string;
+
+      /**
+       * CREATED, or SKIPPED with the reason
+       */
+      action: 'CREATED' | 'SKIPPED';
+
+      capability:
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+        | null;
+
+      /**
+       * A flow, a metric, or a pass or fail check
+       */
+      kind: 'FLOW' | 'METRIC' | 'CHECK' | 'LAYER';
+
+      label: string;
+
+      /**
+       * Why it exists: CORE (every agent), INDUSTRY, CAPABILITY, AGENT_CONTEXT (your
+       * prompt or website), EXPLORATION or CUSTOMER_INSTRUCTIONS
+       */
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * Exploration only: DISCOVERED on a call, or INFERRED from a path the agent
+       * offered
+       */
+      origin: 'DISCOVERED' | 'INFERRED' | null;
+
+      reason: string;
+
+      /**
+       * The flow or metric it created
+       */
+      resourceId: string | null;
+
+      source: Item.Source;
+    }
+
+    export namespace Item {
+      export interface Source {
+        /**
+         * The exploration call it came from
+         */
+        callId: string | null;
+
+        /**
+         * Where in the call
+         */
+        offsetMs: number | null;
+
+        /**
+         * The words in the source that led to it
+         */
+        quote: string | null;
+
+        type: 'CATALOGUE' | 'PROMPT' | 'DESCRIPTION' | 'WEBSITE' | 'EXPLORATION_CALL' | 'INSTRUCTIONS';
+
+        /**
+         * The page it came from, for website sources
+         */
+        url: string | null;
+      }
+    }
+
+    /**
+     * Where one part of testing the agent stands
+     */
+    export interface Layer {
+      layer: 'CORE' | 'INDUSTRY' | 'CAPABILITY' | 'AGENT_CONTEXT' | 'EXPLORATION' | 'CUSTOMER_INSTRUCTIONS';
+
+      /**
+       * COVERED: tests exist for it, or are added when the generation finishes. SKIPPED:
+       * the generation could not test it and said why. OPEN: not covered yet; the
+       * generation does not finish while a layer is open. NOT_APPLICABLE: nothing to
+       * test it from.
+       */
+      status: 'COVERED' | 'SKIPPED' | 'OPEN' | 'NOT_APPLICABLE';
+
+      summary: string;
+    }
+
+    /**
+     * The question the generation is waiting on, while NEEDS_INPUT
+     */
+    export interface Question {
+      defaultOption: string;
+
+      options: Array<string>;
+
+      question: string;
+    }
+
+    export interface TestDataNeeded {
+      callId: string | null;
+
+      label: string;
+
+      reason: string;
+    }
   }
 }
 
@@ -141,7 +1721,7 @@ export namespace SimulationRunResponse {
     simulationRunPlanId: string;
 
     /**
-     * The run. Poll it with GET /v1/simulation/plan/job/{jobId}.
+     * The run. Poll it with `GET /v1/simulation/plan/job/{jobId}`.
      */
     simulationRunPlanJobId: string;
 
@@ -163,6 +1743,123 @@ export namespace SimulationRunResponse {
       | 'CANCELLING'
       | 'ENDING_SIMULATIONS';
   }
+}
+
+export interface SimulationAnswerResourceGenerationParams {
+  /**
+   * What you want the generation to know
+   */
+  text: string;
+}
+
+export interface SimulationGenerateResourcesParams {
+  /**
+   * The agents to generate simulation resources for. One agent per generation for
+   * now.
+   */
+  agentIds: Array<string>;
+
+  /**
+   * The endpoint the run plan calls. Defaults to the agent's newest endpoint.
+   */
+  agentEndpointId?: string;
+
+  /**
+   * The capabilities to test. Omit to let Roark work them out from the agent.
+   */
+  capabilities?: Array<
+    | 'APPOINTMENT_BOOKING'
+    | 'FAQ'
+    | 'IDENTITY_VERIFICATION'
+    | 'ACCOUNT_MANAGEMENT'
+    | 'BILLING_AND_PAYMENTS'
+    | 'ORDER_MANAGEMENT'
+    | 'TROUBLESHOOTING'
+    | 'CALL_ROUTING'
+    | 'LEAD_QUALIFICATION'
+    | 'COLLECTIONS'
+    | 'OUTBOUND_CALLING'
+  >;
+
+  /**
+   * Exploration settings
+   */
+  explore?: SimulationGenerateResourcesParams.Explore;
+
+  /**
+   * The industry the agent serves.
+   */
+  industry?:
+    | 'HEALTHCARE'
+    | 'FINANCIAL_SERVICES'
+    | 'INSURANCE'
+    | 'DEBT_COLLECTION'
+    | 'RETAIL'
+    | 'TRAVEL_AND_HOSPITALITY'
+    | 'TELECOMMUNICATIONS'
+    | 'TECHNOLOGY'
+    | 'PUBLIC_SECTOR'
+    | 'UTILITIES'
+    | 'LOGISTICS'
+    | 'AUTOMOTIVE'
+    | 'HOME_SERVICES'
+    | 'RESTAURANTS'
+    | 'EDUCATION'
+    | 'OTHER';
+
+  /**
+   * What you want tested, in your own words. Each scenario you describe becomes a
+   * flow.
+   */
+  testingInstructions?: string;
+
+  /**
+   * A page Roark reads to learn about the business.
+   */
+  websiteUrl?: string;
+}
+
+export namespace SimulationGenerateResourcesParams {
+  /**
+   * Exploration settings
+   */
+  export interface Explore {
+    /**
+     * Whether Roark calls the agent to discover what it does before finishing the
+     * generation. Exploration calls are billed.
+     */
+    enabled?: boolean;
+
+    /**
+     * The longest a single exploration call may last, in minutes.
+     */
+    maxConversationMinutes?: number;
+
+    /**
+     * The most exploration calls Roark places.
+     */
+    maxConversations?: number;
+  }
+}
+
+export interface SimulationGuideResourceGenerationParams {
+  /**
+   * What you want the generation to know
+   */
+  text: string;
+}
+
+export interface SimulationListResourceGenerationsParams {
+  /**
+   * Only generations for these agents, comma-separated, at most 100. Omit for every
+   * agent.
+   */
+  agentIds?: string;
+
+  /**
+   * How many to return, newest first. Default 20, max 50.
+   */
+  limit?: number;
 }
 
 export interface SimulationMockToolParams {
@@ -733,8 +2430,8 @@ export declare namespace SimulationRunParams {
 
   export interface RunSimulationFromPlanID {
     /**
-     * The run plan to run, saved or hidden. Rename or unhide it with PUT
-     * /v1/simulation/plan/{planId}.
+     * The run plan to run, saved or hidden. Rename or unhide it with
+     * `PUT /v1/simulation/plan/{planId}`.
      */
     planId: string;
 
@@ -1292,8 +2989,18 @@ export declare namespace SimulationRunParams {
 
 export declare namespace Simulation {
   export {
+    type SimulationAnswerResourceGenerationResponse as SimulationAnswerResourceGenerationResponse,
+    type SimulationCancelResourceGenerationResponse as SimulationCancelResourceGenerationResponse,
+    type SimulationGenerateResourcesResponse as SimulationGenerateResourcesResponse,
+    type SimulationGetResourceGenerationResponse as SimulationGetResourceGenerationResponse,
+    type SimulationGuideResourceGenerationResponse as SimulationGuideResourceGenerationResponse,
+    type SimulationListResourceGenerationsResponse as SimulationListResourceGenerationsResponse,
     type SimulationMockToolResponse as SimulationMockToolResponse,
     type SimulationRunResponse as SimulationRunResponse,
+    type SimulationAnswerResourceGenerationParams as SimulationAnswerResourceGenerationParams,
+    type SimulationGenerateResourcesParams as SimulationGenerateResourcesParams,
+    type SimulationGuideResourceGenerationParams as SimulationGuideResourceGenerationParams,
+    type SimulationListResourceGenerationsParams as SimulationListResourceGenerationsParams,
     type SimulationMockToolParams as SimulationMockToolParams,
     type SimulationRunParams as SimulationRunParams,
   };

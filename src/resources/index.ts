@@ -78,20 +78,6 @@ export {
   type AgentPromptListVersionsParams,
 } from './agent-prompt';
 export {
-  AgentSetup,
-  type AgentSetupCreateResponse,
-  type AgentSetupAnswerQuestionResponse,
-  type AgentSetupCancelResponse,
-  type AgentSetupGetByIDResponse,
-  type AgentSetupGetLatestResponse,
-  type AgentSetupSendGuidanceResponse,
-  type AgentSetupCreateParams,
-  type AgentSetupAnswerQuestionParams,
-  type AgentSetupCancelParams,
-  type AgentSetupGetByIDParams,
-  type AgentSetupSendGuidanceParams,
-} from './agent-setup';
-export {
   AgentVersion,
   type AgentVersionListResponse,
   type AgentVersionGetByIDResponse,
@@ -191,12 +177,7 @@ export {
   type ConfigApplyParams,
   type ConfigDiffParams,
 } from './config';
-export {
-  Conversation,
-  type ConversationListResponse,
-  type ConversationGetByIDResponse,
-  type ConversationListParams,
-} from './conversation';
+export { Conversation, type ConversationGetByIDResponse } from './conversation';
 export {
   Customer,
   type CustomerListResponse,
@@ -249,6 +230,13 @@ export {
   type CustomerFlowEdgeCasePromoteParams,
   type CustomerFlowEdgeCaseRemoveParams,
 } from './customer-flow-edge-case';
+export {
+  CustomerFlowFolder,
+  type CustomerFlowFolderCreateResponse,
+  type CustomerFlowFolderListResponse,
+  type CustomerFlowFolderDeleteResponse,
+  type CustomerFlowFolderCreateParams,
+} from './customer-flow-folder';
 export {
   Dashboard,
   type DashboardCreateResponse,
@@ -376,8 +364,18 @@ export {
 export { Project, type ProjectListResponse } from './project';
 export {
   Simulation,
+  type SimulationAnswerResourceGenerationResponse,
+  type SimulationCancelResourceGenerationResponse,
+  type SimulationGenerateResourcesResponse,
+  type SimulationGetResourceGenerationResponse,
+  type SimulationGuideResourceGenerationResponse,
+  type SimulationListResourceGenerationsResponse,
   type SimulationMockToolResponse,
   type SimulationRunResponse,
+  type SimulationAnswerResourceGenerationParams,
+  type SimulationGenerateResourcesParams,
+  type SimulationGuideResourceGenerationParams,
+  type SimulationListResourceGenerationsParams,
   type SimulationMockToolParams,
   type SimulationRunParams,
 } from './simulation';

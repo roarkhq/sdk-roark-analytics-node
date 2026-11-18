@@ -7,12 +7,12 @@ import { path } from '../internal/utils/path';
 
 export class Me extends APIResource {
   /**
-   * Mints a credential that acts as you, for a CLI or an automation. The key value
-   * is returned exactly once, in the `key` field: capture it now, it is unreadable
-   * afterwards. Requires a personal credential (a project API key is refused) and
-   * admin on the project the credential defaults to. The new credential can never
-   * exceed the one that created it: not in scope, not in permissions, and not in
-   * lifetime. Omit a field to copy it from the calling credential.
+   * Requires a personal API key (a project API key is refused) and admin on the
+   * project the new key defaults to. Mints a personal API key that acts as you, for
+   * a CLI or an automation. The key value is returned exactly once, in the `key`
+   * field: capture it now, it is unreadable afterwards. The new key can never exceed
+   * the one that created it: not in scope, not in permissions, and not in lifetime.
+   * Omit a field to copy it from the calling credential.
    *
    * @example
    * ```ts
@@ -41,10 +41,10 @@ export class Me extends APIResource {
   }
 
   /**
-   * Returns the credentials that act as you: the ones created in the dashboard, from
-   * `roark auth login`, and MCP connectors. Requires a personal credential; a
-   * project API key is refused. Defaults to ACTIVE, pass ?status=REVOKED to see
-   * revoked ones. The key value itself is never returned.
+   * Requires a personal API key; a project API key is refused. Returns the personal
+   * API keys that act as you: the ones created in the dashboard, from
+   * `roark auth login`, and MCP connectors. Defaults to ACTIVE, pass ?status=REVOKED
+   * to see revoked ones. The key value itself is never returned.
    *
    * @example
    * ```ts
@@ -59,9 +59,10 @@ export class Me extends APIResource {
   }
 
   /**
-   * Revokes a credential that acts as you. It stops working immediately. A
-   * credential may revoke itself, which is what `roark auth logout` does. Repeating
-   * the call is safe; an unknown id, or one belonging to someone else, answers 404.
+   * Requires a personal API key. Revokes one of your personal API keys; it stops
+   * working immediately. A key may revoke itself, which is what `roark auth logout`
+   * does. Repeating the call is safe; an unknown id, or one belonging to someone
+   * else, answers 404.
    *
    * @example
    * ```ts
@@ -192,14 +193,14 @@ export namespace MeGetResponse {
 
 export interface MeListAPIKeysResponse {
   /**
-   * The credentials that act as the caller
+   * Your personal API keys
    */
   data: MeListAPIKeysResponse.Data;
 }
 
 export namespace MeListAPIKeysResponse {
   /**
-   * The credentials that act as the caller
+   * Your personal API keys
    */
   export interface Data {
     apiKeys: Array<Data.APIKey>;
@@ -207,7 +208,7 @@ export namespace MeListAPIKeysResponse {
 
   export namespace Data {
     /**
-     * A credential that acts as the caller
+     * A personal API key: a credential that acts as you
      */
     export interface APIKey {
       /**
@@ -263,20 +264,20 @@ export namespace MeListAPIKeysResponse {
 
 export interface MeRevokeAPIKeyResponse {
   /**
-   * Result of revoking one of your credentials
+   * Result of revoking one of your personal API keys
    */
   data: MeRevokeAPIKeyResponse.Data;
 }
 
 export namespace MeRevokeAPIKeyResponse {
   /**
-   * Result of revoking one of your credentials
+   * Result of revoking one of your personal API keys
    */
   export interface Data {
     id: string;
 
     /**
-     * Always true when the credential was revoked
+     * Always true when the key was revoked
      */
     deleted: true;
   }
