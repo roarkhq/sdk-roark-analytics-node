@@ -389,7 +389,8 @@ export namespace AgentDraftCreateResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -416,7 +417,14 @@ export namespace AgentDraftCreateResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+          provider:
+            | 'DEEPGRAM'
+            | 'OPENAI_WHISPER'
+            | 'SPEECHMATICS'
+            | 'ASSEMBLYAI'
+            | 'ELEVENLABS'
+            | 'SONIOX'
+            | 'SMALLEST';
 
           smartFormat: boolean | null;
 
@@ -432,7 +440,15 @@ export namespace AgentDraftCreateResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+          provider:
+            | 'CARTESIA'
+            | 'ELEVENLABS'
+            | 'OPENAI'
+            | 'RIME'
+            | 'ASSEMBLYAI'
+            | 'DEEPGRAM'
+            | 'FISH_AUDIO'
+            | 'SMALLEST';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -498,7 +514,8 @@ export namespace AgentDraftCreateResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -828,7 +845,8 @@ export namespace AgentDraftUpdateResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -855,7 +873,14 @@ export namespace AgentDraftUpdateResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+          provider:
+            | 'DEEPGRAM'
+            | 'OPENAI_WHISPER'
+            | 'SPEECHMATICS'
+            | 'ASSEMBLYAI'
+            | 'ELEVENLABS'
+            | 'SONIOX'
+            | 'SMALLEST';
 
           smartFormat: boolean | null;
 
@@ -871,7 +896,15 @@ export namespace AgentDraftUpdateResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+          provider:
+            | 'CARTESIA'
+            | 'ELEVENLABS'
+            | 'OPENAI'
+            | 'RIME'
+            | 'ASSEMBLYAI'
+            | 'DEEPGRAM'
+            | 'FISH_AUDIO'
+            | 'SMALLEST';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -937,7 +970,8 @@ export namespace AgentDraftUpdateResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -1267,7 +1301,8 @@ export namespace AgentDraftDeleteResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -1294,7 +1329,14 @@ export namespace AgentDraftDeleteResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+          provider:
+            | 'DEEPGRAM'
+            | 'OPENAI_WHISPER'
+            | 'SPEECHMATICS'
+            | 'ASSEMBLYAI'
+            | 'ELEVENLABS'
+            | 'SONIOX'
+            | 'SMALLEST';
 
           smartFormat: boolean | null;
 
@@ -1310,7 +1352,15 @@ export namespace AgentDraftDeleteResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+          provider:
+            | 'CARTESIA'
+            | 'ELEVENLABS'
+            | 'OPENAI'
+            | 'RIME'
+            | 'ASSEMBLYAI'
+            | 'DEEPGRAM'
+            | 'FISH_AUDIO'
+            | 'SMALLEST';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -1376,7 +1426,8 @@ export namespace AgentDraftDeleteResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -1706,7 +1757,8 @@ export namespace AgentDraftGetResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -1733,7 +1785,14 @@ export namespace AgentDraftGetResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+          provider:
+            | 'DEEPGRAM'
+            | 'OPENAI_WHISPER'
+            | 'SPEECHMATICS'
+            | 'ASSEMBLYAI'
+            | 'ELEVENLABS'
+            | 'SONIOX'
+            | 'SMALLEST';
 
           smartFormat: boolean | null;
 
@@ -1749,7 +1808,15 @@ export namespace AgentDraftGetResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+          provider:
+            | 'CARTESIA'
+            | 'ELEVENLABS'
+            | 'OPENAI'
+            | 'RIME'
+            | 'ASSEMBLYAI'
+            | 'DEEPGRAM'
+            | 'FISH_AUDIO'
+            | 'SMALLEST';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -1815,7 +1882,8 @@ export namespace AgentDraftGetResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -2145,7 +2213,8 @@ export namespace AgentDraftPublishResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -2172,7 +2241,14 @@ export namespace AgentDraftPublishResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+          provider:
+            | 'DEEPGRAM'
+            | 'OPENAI_WHISPER'
+            | 'SPEECHMATICS'
+            | 'ASSEMBLYAI'
+            | 'ELEVENLABS'
+            | 'SONIOX'
+            | 'SMALLEST';
 
           smartFormat: boolean | null;
 
@@ -2188,7 +2264,15 @@ export namespace AgentDraftPublishResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+          provider:
+            | 'CARTESIA'
+            | 'ELEVENLABS'
+            | 'OPENAI'
+            | 'RIME'
+            | 'ASSEMBLYAI'
+            | 'DEEPGRAM'
+            | 'FISH_AUDIO'
+            | 'SMALLEST';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -2254,7 +2338,8 @@ export namespace AgentDraftPublishResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -2438,7 +2523,8 @@ export namespace AgentDraftUpdateParams {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           maxTokens?: number | null;
 
@@ -2448,7 +2534,14 @@ export namespace AgentDraftUpdateParams {
         export interface Stt {
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+          provider:
+            | 'DEEPGRAM'
+            | 'OPENAI_WHISPER'
+            | 'SPEECHMATICS'
+            | 'ASSEMBLYAI'
+            | 'ELEVENLABS'
+            | 'SONIOX'
+            | 'SMALLEST';
 
           endpointingMs?: number | null;
 
@@ -2462,7 +2555,15 @@ export namespace AgentDraftUpdateParams {
         export interface Tt {
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+          provider:
+            | 'CARTESIA'
+            | 'ELEVENLABS'
+            | 'OPENAI'
+            | 'RIME'
+            | 'ASSEMBLYAI'
+            | 'DEEPGRAM'
+            | 'FISH_AUDIO'
+            | 'SMALLEST';
 
           voiceId: string;
 
@@ -2495,7 +2596,8 @@ export namespace AgentDraftUpdateParams {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           backendModel?: string | null;
 

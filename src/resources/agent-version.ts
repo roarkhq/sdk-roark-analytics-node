@@ -360,7 +360,8 @@ export namespace AgentVersionListResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -387,7 +388,14 @@ export namespace AgentVersionListResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+          provider:
+            | 'DEEPGRAM'
+            | 'OPENAI_WHISPER'
+            | 'SPEECHMATICS'
+            | 'ASSEMBLYAI'
+            | 'ELEVENLABS'
+            | 'SONIOX'
+            | 'SMALLEST';
 
           smartFormat: boolean | null;
 
@@ -403,7 +411,15 @@ export namespace AgentVersionListResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+          provider:
+            | 'CARTESIA'
+            | 'ELEVENLABS'
+            | 'OPENAI'
+            | 'RIME'
+            | 'ASSEMBLYAI'
+            | 'DEEPGRAM'
+            | 'FISH_AUDIO'
+            | 'SMALLEST';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -469,7 +485,8 @@ export namespace AgentVersionListResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -816,7 +833,8 @@ export namespace AgentVersionGetByIDResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -843,7 +861,14 @@ export namespace AgentVersionGetByIDResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+          provider:
+            | 'DEEPGRAM'
+            | 'OPENAI_WHISPER'
+            | 'SPEECHMATICS'
+            | 'ASSEMBLYAI'
+            | 'ELEVENLABS'
+            | 'SONIOX'
+            | 'SMALLEST';
 
           smartFormat: boolean | null;
 
@@ -859,7 +884,15 @@ export namespace AgentVersionGetByIDResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+          provider:
+            | 'CARTESIA'
+            | 'ELEVENLABS'
+            | 'OPENAI'
+            | 'RIME'
+            | 'ASSEMBLYAI'
+            | 'DEEPGRAM'
+            | 'FISH_AUDIO'
+            | 'SMALLEST';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -925,7 +958,8 @@ export namespace AgentVersionGetByIDResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -1255,7 +1289,8 @@ export namespace AgentVersionRollbackResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
@@ -1282,7 +1317,14 @@ export namespace AgentVersionRollbackResponse {
            */
           model: string;
 
-          provider: 'DEEPGRAM' | 'OPENAI_WHISPER' | 'SPEECHMATICS' | 'ASSEMBLYAI' | 'ELEVENLABS' | 'SONIOX';
+          provider:
+            | 'DEEPGRAM'
+            | 'OPENAI_WHISPER'
+            | 'SPEECHMATICS'
+            | 'ASSEMBLYAI'
+            | 'ELEVENLABS'
+            | 'SONIOX'
+            | 'SMALLEST';
 
           smartFormat: boolean | null;
 
@@ -1298,7 +1340,15 @@ export namespace AgentVersionRollbackResponse {
            */
           model: string;
 
-          provider: 'CARTESIA' | 'ELEVENLABS' | 'OPENAI' | 'RIME' | 'ASSEMBLYAI' | 'DEEPGRAM' | 'FISH_AUDIO';
+          provider:
+            | 'CARTESIA'
+            | 'ELEVENLABS'
+            | 'OPENAI'
+            | 'RIME'
+            | 'ASSEMBLYAI'
+            | 'DEEPGRAM'
+            | 'FISH_AUDIO'
+            | 'SMALLEST';
 
           /**
            * 0 to 1, ElevenLabs.
@@ -1364,7 +1414,8 @@ export namespace AgentVersionRollbackResponse {
             | 'GROQ'
             | 'META'
             | 'RIME'
-            | 'PHONIC';
+            | 'PHONIC'
+            | 'SMALLEST';
 
           /**
            * 0 to 2.
