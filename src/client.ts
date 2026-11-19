@@ -441,6 +441,10 @@ import {
   SimulationPersonaUpdateResponse,
 } from './resources/simulation-persona';
 import {
+  SimulationPhoneNumber,
+  SimulationPhoneNumberListResponse,
+} from './resources/simulation-phone-number';
+import {
   SimulationRunGroup,
   SimulationRunGroupCreateParams,
   SimulationRunGroupCreateResponse,
@@ -1274,6 +1278,7 @@ export class Roark {
   simulationJob: API.SimulationJob = new API.SimulationJob(this);
   simulationJobToolMock: API.SimulationJobToolMock = new API.SimulationJobToolMock(this);
   simulationAudioClip: API.SimulationAudioClip = new API.SimulationAudioClip(this);
+  simulationPhoneNumber: API.SimulationPhoneNumber = new API.SimulationPhoneNumber(this);
   simulationToolFixture: API.SimulationToolFixture = new API.SimulationToolFixture(this);
   simulationGroup: API.SimulationGroup = new API.SimulationGroup(this);
   simulationRunGroup: API.SimulationRunGroup = new API.SimulationRunGroup(this);
@@ -1322,6 +1327,7 @@ Roark.Simulation = Simulation;
 Roark.SimulationJob = SimulationJob;
 Roark.SimulationJobToolMock = SimulationJobToolMock;
 Roark.SimulationAudioClip = SimulationAudioClip;
+Roark.SimulationPhoneNumber = SimulationPhoneNumber;
 Roark.SimulationToolFixture = SimulationToolFixture;
 Roark.SimulationGroup = SimulationGroup;
 Roark.SimulationRunGroup = SimulationRunGroup;
@@ -1519,6 +1525,11 @@ export declare namespace Roark {
   export {
     SimulationAudioClip as SimulationAudioClip,
     type SimulationAudioClipListResponse as SimulationAudioClipListResponse,
+  };
+
+  export {
+    SimulationPhoneNumber as SimulationPhoneNumber,
+    type SimulationPhoneNumberListResponse as SimulationPhoneNumberListResponse,
   };
 
   export {
