@@ -270,6 +270,16 @@ Methods:
 
 - <code title="get /v1/simulation/audio-clip">client.simulationAudioClip.<a href="./src/resources/simulation-audio-clip.ts">list</a>() -> SimulationAudioClipListResponse</code>
 
+# SimulationPhoneNumber
+
+Types:
+
+- <code><a href="./src/resources/simulation-phone-number.ts">SimulationPhoneNumberListResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/simulation/phone-number">client.simulationPhoneNumber.<a href="./src/resources/simulation-phone-number.ts">list</a>() -> SimulationPhoneNumberListResponse</code>
+
 # SimulationToolFixture
 
 Types:
