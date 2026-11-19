@@ -367,7 +367,7 @@ export namespace CalendarConnectionCreateResponse {
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
-    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
+    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY' | 'GO_HIGH_LEVEL';
 
     /**
      * Scopes the credential carries, when the provider issues scoped credentials. Null
@@ -509,7 +509,7 @@ export namespace CalendarConnectionUpdateResponse {
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
-    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
+    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY' | 'GO_HIGH_LEVEL';
 
     /**
      * Scopes the credential carries, when the provider issues scoped credentials. Null
@@ -649,7 +649,7 @@ export namespace CalendarConnectionListResponse {
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
-    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
+    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY' | 'GO_HIGH_LEVEL';
 
     /**
      * Scopes the credential carries, when the provider issues scoped credentials. Null
@@ -826,7 +826,7 @@ export namespace CalendarConnectionCheckResponse {
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
-    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
+    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY' | 'GO_HIGH_LEVEL';
 
     /**
      * Scopes the credential carries, when the provider issues scoped credentials. Null
@@ -1132,7 +1132,7 @@ export namespace CalendarConnectionGetByIDResponse {
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
      */
-    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
+    provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY' | 'GO_HIGH_LEVEL';
 
     /**
      * Scopes the credential carries, when the provider issues scoped credentials. Null
@@ -1780,7 +1780,7 @@ export interface CalendarConnectionCreateParams {
    * `POST /v1/connections/calendar/google/authorize-url` and
    * `POST /v1/connections/calendar/calendly/authorize-url`.
    */
-  provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
+  provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY' | 'GO_HIGH_LEVEL';
 
   /**
    * The named IANA timezone to offer slots in, for example `America/Los_Angeles`.
@@ -1816,7 +1816,7 @@ export interface CalendarConnectionListParams {
    * `POST /v1/connections/calendar/google/authorize-url` and
    * `POST /v1/connections/calendar/calendly/authorize-url`.
    */
-  provider?: 'CAL_COM' | 'GOOGLE' | 'CALENDLY';
+  provider?: 'CAL_COM' | 'GOOGLE' | 'CALENDLY' | 'GO_HIGH_LEVEL';
 }
 
 export interface CalendarConnectionCreateTargetParams {
