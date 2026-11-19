@@ -420,6 +420,7 @@ export {
   type SimulationPersonaUpdateParams,
   type SimulationPersonaListParams,
 } from './simulation-persona';
+export { SimulationPhoneNumber, type SimulationPhoneNumberListResponse } from './simulation-phone-number';
 export {
   SimulationRunGroup,
   type SimulationRunGroupCreateResponse,
