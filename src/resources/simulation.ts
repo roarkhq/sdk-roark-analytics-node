@@ -248,6 +248,13 @@ export namespace SimulationAnswerResourceGenerationResponse {
 
     createdAt: string;
 
+    /**
+     * The quick test: a smaller run plan built from the agent’s own material before
+     * Roark calls the agent. You can start it while the generation is still running.
+     * Null when the generation does not call the agent.
+     */
+    draftRunPlanId: string | null;
+
     errorMessage: string | null;
 
     explore: Data.Explore;
@@ -284,7 +291,7 @@ export namespace SimulationAnswerResourceGenerationResponse {
     question: Data.Question | null;
 
     /**
-     * The run plan to start once the generation completes
+     * The full suite: the run plan to start once the generation completes
      */
     runPlanId: string | null;
 
@@ -332,9 +339,10 @@ export namespace SimulationAnswerResourceGenerationResponse {
       id: string;
 
       /**
-       * CREATED, or SKIPPED with the reason
+       * CREATED, SKIPPED with the reason, or UPDATED when scenarios were added to a flow
+       * it built
        */
-      action: 'CREATED' | 'SKIPPED';
+      action: 'CREATED' | 'SKIPPED' | 'UPDATED';
 
       capability:
         | 'APPOINTMENT_BOOKING'
@@ -512,6 +520,13 @@ export namespace SimulationCancelResourceGenerationResponse {
 
     createdAt: string;
 
+    /**
+     * The quick test: a smaller run plan built from the agent’s own material before
+     * Roark calls the agent. You can start it while the generation is still running.
+     * Null when the generation does not call the agent.
+     */
+    draftRunPlanId: string | null;
+
     errorMessage: string | null;
 
     explore: Data.Explore;
@@ -548,7 +563,7 @@ export namespace SimulationCancelResourceGenerationResponse {
     question: Data.Question | null;
 
     /**
-     * The run plan to start once the generation completes
+     * The full suite: the run plan to start once the generation completes
      */
     runPlanId: string | null;
 
@@ -596,9 +611,10 @@ export namespace SimulationCancelResourceGenerationResponse {
       id: string;
 
       /**
-       * CREATED, or SKIPPED with the reason
+       * CREATED, SKIPPED with the reason, or UPDATED when scenarios were added to a flow
+       * it built
        */
-      action: 'CREATED' | 'SKIPPED';
+      action: 'CREATED' | 'SKIPPED' | 'UPDATED';
 
       capability:
         | 'APPOINTMENT_BOOKING'
@@ -776,6 +792,13 @@ export namespace SimulationGenerateResourcesResponse {
 
     createdAt: string;
 
+    /**
+     * The quick test: a smaller run plan built from the agent’s own material before
+     * Roark calls the agent. You can start it while the generation is still running.
+     * Null when the generation does not call the agent.
+     */
+    draftRunPlanId: string | null;
+
     errorMessage: string | null;
 
     explore: Data.Explore;
@@ -812,7 +835,7 @@ export namespace SimulationGenerateResourcesResponse {
     question: Data.Question | null;
 
     /**
-     * The run plan to start once the generation completes
+     * The full suite: the run plan to start once the generation completes
      */
     runPlanId: string | null;
 
@@ -860,9 +883,10 @@ export namespace SimulationGenerateResourcesResponse {
       id: string;
 
       /**
-       * CREATED, or SKIPPED with the reason
+       * CREATED, SKIPPED with the reason, or UPDATED when scenarios were added to a flow
+       * it built
        */
-      action: 'CREATED' | 'SKIPPED';
+      action: 'CREATED' | 'SKIPPED' | 'UPDATED';
 
       capability:
         | 'APPOINTMENT_BOOKING'
@@ -1040,6 +1064,13 @@ export namespace SimulationGetResourceGenerationResponse {
 
     createdAt: string;
 
+    /**
+     * The quick test: a smaller run plan built from the agent’s own material before
+     * Roark calls the agent. You can start it while the generation is still running.
+     * Null when the generation does not call the agent.
+     */
+    draftRunPlanId: string | null;
+
     errorMessage: string | null;
 
     explore: Data.Explore;
@@ -1076,7 +1107,7 @@ export namespace SimulationGetResourceGenerationResponse {
     question: Data.Question | null;
 
     /**
-     * The run plan to start once the generation completes
+     * The full suite: the run plan to start once the generation completes
      */
     runPlanId: string | null;
 
@@ -1124,9 +1155,10 @@ export namespace SimulationGetResourceGenerationResponse {
       id: string;
 
       /**
-       * CREATED, or SKIPPED with the reason
+       * CREATED, SKIPPED with the reason, or UPDATED when scenarios were added to a flow
+       * it built
        */
-      action: 'CREATED' | 'SKIPPED';
+      action: 'CREATED' | 'SKIPPED' | 'UPDATED';
 
       capability:
         | 'APPOINTMENT_BOOKING'
@@ -1304,6 +1336,13 @@ export namespace SimulationGuideResourceGenerationResponse {
 
     createdAt: string;
 
+    /**
+     * The quick test: a smaller run plan built from the agent’s own material before
+     * Roark calls the agent. You can start it while the generation is still running.
+     * Null when the generation does not call the agent.
+     */
+    draftRunPlanId: string | null;
+
     errorMessage: string | null;
 
     explore: Data.Explore;
@@ -1340,7 +1379,7 @@ export namespace SimulationGuideResourceGenerationResponse {
     question: Data.Question | null;
 
     /**
-     * The run plan to start once the generation completes
+     * The full suite: the run plan to start once the generation completes
      */
     runPlanId: string | null;
 
@@ -1388,9 +1427,10 @@ export namespace SimulationGuideResourceGenerationResponse {
       id: string;
 
       /**
-       * CREATED, or SKIPPED with the reason
+       * CREATED, SKIPPED with the reason, or UPDATED when scenarios were added to a flow
+       * it built
        */
-      action: 'CREATED' | 'SKIPPED';
+      action: 'CREATED' | 'SKIPPED' | 'UPDATED';
 
       capability:
         | 'APPOINTMENT_BOOKING'
@@ -1564,6 +1604,13 @@ export namespace SimulationListResourceGenerationsResponse {
 
     createdAt: string;
 
+    /**
+     * The quick test: a smaller run plan built from the agent’s own material before
+     * Roark calls the agent. You can start it while the generation is still running.
+     * Null when the generation does not call the agent.
+     */
+    draftRunPlanId: string | null;
+
     errorMessage: string | null;
 
     explore: Data.Explore;
@@ -1600,7 +1647,7 @@ export namespace SimulationListResourceGenerationsResponse {
     question: Data.Question | null;
 
     /**
-     * The run plan to start once the generation completes
+     * The full suite: the run plan to start once the generation completes
      */
     runPlanId: string | null;
 
@@ -1648,9 +1695,10 @@ export namespace SimulationListResourceGenerationsResponse {
       id: string;
 
       /**
-       * CREATED, or SKIPPED with the reason
+       * CREATED, SKIPPED with the reason, or UPDATED when scenarios were added to a flow
+       * it built
        */
-      action: 'CREATED' | 'SKIPPED';
+      action: 'CREATED' | 'SKIPPED' | 'UPDATED';
 
       capability:
         | 'APPOINTMENT_BOOKING'
