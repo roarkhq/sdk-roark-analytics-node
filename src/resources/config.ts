@@ -1240,6 +1240,8 @@ export namespace Bundle {
 
         eventTypeUri?: string | null;
 
+        goHighLevelCalendar?: string | null;
+
         whenToUse?: string | null;
       }
     }
@@ -2840,6 +2842,8 @@ export namespace Bundle {
           eventTypeId?: number | null;
 
           eventTypeUri?: string | null;
+
+          goHighLevelCalendar?: string | null;
 
           whenToUse?: string | null;
         }
@@ -4601,6 +4605,8 @@ export namespace ConfigApplyParams {
 
         eventTypeUri?: string | null;
 
+        goHighLevelCalendar?: string | null;
+
         whenToUse?: string | null;
       }
     }
@@ -6201,6 +6207,8 @@ export namespace ConfigApplyParams {
           eventTypeId?: number | null;
 
           eventTypeUri?: string | null;
+
+          goHighLevelCalendar?: string | null;
 
           whenToUse?: string | null;
         }
@@ -7773,6 +7781,8 @@ export namespace ConfigDiffParams {
 
         eventTypeUri?: string | null;
 
+        goHighLevelCalendar?: string | null;
+
         whenToUse?: string | null;
       }
     }
@@ -9373,6 +9383,8 @@ export namespace ConfigDiffParams {
           eventTypeId?: number | null;
 
           eventTypeUri?: string | null;
+
+          goHighLevelCalendar?: string | null;
 
           whenToUse?: string | null;
         }

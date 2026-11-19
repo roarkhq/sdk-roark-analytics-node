@@ -208,6 +208,11 @@ export namespace ToolCreateResponse {
         eventTypeUri: string | null;
 
         /**
+         * For GoHighLevel: the calendar it books into, by its own id
+         */
+        goHighLevelCalendar: string | null;
+
+        /**
          * What the agent passes to name it
          */
         name: string;
@@ -486,6 +491,11 @@ export namespace ToolUpdateResponse {
         eventTypeUri: string | null;
 
         /**
+         * For GoHighLevel: the calendar it books into, by its own id
+         */
+        goHighLevelCalendar: string | null;
+
+        /**
          * What the agent passes to name it
          */
         name: string;
@@ -762,6 +772,11 @@ export namespace ToolListResponse {
          * For Calendly: the event type it books, which Calendly names by URI
          */
         eventTypeUri: string | null;
+
+        /**
+         * For GoHighLevel: the calendar it books into, by its own id
+         */
+        goHighLevelCalendar: string | null;
 
         /**
          * What the agent passes to name it
@@ -1054,6 +1069,11 @@ export namespace ToolGetByIDResponse {
         eventTypeUri: string | null;
 
         /**
+         * For GoHighLevel: the calendar it books into, by its own id
+         */
+        goHighLevelCalendar: string | null;
+
+        /**
          * What the agent passes to name it
          */
         name: string;
@@ -1290,6 +1310,11 @@ export namespace ToolCreateParams {
        */
       eventTypeUri?: string | null;
 
+      /**
+       * For GoHighLevel: the calendar to book into, by its own id
+       */
+      goHighLevelCalendar?: string | null;
+
       whenToUse?: string | null;
     }
 
@@ -1456,6 +1481,11 @@ export namespace ToolUpdateParams {
        * For Calendly: the event type to book, by URI
        */
       eventTypeUri?: string | null;
+
+      /**
+       * For GoHighLevel: the calendar to book into, by its own id
+       */
+      goHighLevelCalendar?: string | null;
 
       whenToUse?: string | null;
     }
