@@ -362,7 +362,8 @@ export namespace CalendarConnectionCreateResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * Who holds the calendar. CAL_COM and GO_HIGH_LEVEL are connected with a key,
+     * GO_HIGH_LEVEL also needing the sub-account the key belongs to; GOOGLE and
      * CALENDLY are connected by consent, through
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
@@ -504,7 +505,8 @@ export namespace CalendarConnectionUpdateResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * Who holds the calendar. CAL_COM and GO_HIGH_LEVEL are connected with a key,
+     * GO_HIGH_LEVEL also needing the sub-account the key belongs to; GOOGLE and
      * CALENDLY are connected by consent, through
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
@@ -644,7 +646,8 @@ export namespace CalendarConnectionListResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * Who holds the calendar. CAL_COM and GO_HIGH_LEVEL are connected with a key,
+     * GO_HIGH_LEVEL also needing the sub-account the key belongs to; GOOGLE and
      * CALENDLY are connected by consent, through
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
@@ -821,7 +824,8 @@ export namespace CalendarConnectionCheckResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * Who holds the calendar. CAL_COM and GO_HIGH_LEVEL are connected with a key,
+     * GO_HIGH_LEVEL also needing the sub-account the key belongs to; GOOGLE and
      * CALENDLY are connected by consent, through
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
@@ -969,7 +973,7 @@ export namespace CalendarConnectionCreateTargetResponse {
     /**
      * Ready to put on a calendar tool, so nothing has to assemble one by hand.
      */
-    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2;
+    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2 | Data.UnionMember3;
   }
 
   export namespace Data {
@@ -1058,6 +1062,22 @@ export namespace CalendarConnectionCreateTargetResponse {
 
       provider: 'CALENDLY';
     }
+
+    export interface UnionMember3 {
+      /**
+       * The calendar, by its own GoHighLevel id.
+       */
+      goHighLevelCalendar: string;
+
+      provider: 'GO_HIGH_LEVEL';
+
+      /**
+       * The length to book, for a calendar offering the booker a choice. GoHighLevel
+       * takes it on the availability read, so it decides which slots are offered. Omit
+       * to use the calendar’s own length.
+       */
+      durationMinutes?: number;
+    }
   }
 }
 
@@ -1127,7 +1147,8 @@ export namespace CalendarConnectionGetByIDResponse {
     lastCheckedAt: string | null;
 
     /**
-     * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+     * Who holds the calendar. CAL_COM and GO_HIGH_LEVEL are connected with a key,
+     * GO_HIGH_LEVEL also needing the sub-account the key belongs to; GOOGLE and
      * CALENDLY are connected by consent, through
      * `POST /v1/connections/calendar/google/authorize-url` and
      * `POST /v1/connections/calendar/calendly/authorize-url`.
@@ -1289,7 +1310,7 @@ export namespace CalendarConnectionGetTargetResponse {
     /**
      * Ready to put on a calendar tool, so nothing has to assemble one by hand.
      */
-    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2;
+    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2 | Data.UnionMember3;
   }
 
   export namespace Data {
@@ -1377,6 +1398,22 @@ export namespace CalendarConnectionGetTargetResponse {
       eventTypeUri: string;
 
       provider: 'CALENDLY';
+    }
+
+    export interface UnionMember3 {
+      /**
+       * The calendar, by its own GoHighLevel id.
+       */
+      goHighLevelCalendar: string;
+
+      provider: 'GO_HIGH_LEVEL';
+
+      /**
+       * The length to book, for a calendar offering the booker a choice. GoHighLevel
+       * takes it on the availability read, so it decides which slots are offered. Omit
+       * to use the calendar’s own length.
+       */
+      durationMinutes?: number;
     }
   }
 }
@@ -1467,7 +1504,7 @@ export namespace CalendarConnectionListTargetsResponse {
     /**
      * Ready to put on a calendar tool, so nothing has to assemble one by hand.
      */
-    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2;
+    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2 | Data.UnionMember3;
   }
 
   export namespace Data {
@@ -1555,6 +1592,22 @@ export namespace CalendarConnectionListTargetsResponse {
       eventTypeUri: string;
 
       provider: 'CALENDLY';
+    }
+
+    export interface UnionMember3 {
+      /**
+       * The calendar, by its own GoHighLevel id.
+       */
+      goHighLevelCalendar: string;
+
+      provider: 'GO_HIGH_LEVEL';
+
+      /**
+       * The length to book, for a calendar offering the booker a choice. GoHighLevel
+       * takes it on the availability read, so it decides which slots are offered. Omit
+       * to use the calendar’s own length.
+       */
+      durationMinutes?: number;
     }
   }
 }
@@ -1668,7 +1721,7 @@ export namespace CalendarConnectionUpdateTargetResponse {
     /**
      * Ready to put on a calendar tool, so nothing has to assemble one by hand.
      */
-    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2;
+    target: Data.UnionMember0 | Data.UnionMember1 | Data.UnionMember2 | Data.UnionMember3;
   }
 
   export namespace Data {
@@ -1757,13 +1810,30 @@ export namespace CalendarConnectionUpdateTargetResponse {
 
       provider: 'CALENDLY';
     }
+
+    export interface UnionMember3 {
+      /**
+       * The calendar, by its own GoHighLevel id.
+       */
+      goHighLevelCalendar: string;
+
+      provider: 'GO_HIGH_LEVEL';
+
+      /**
+       * The length to book, for a calendar offering the booker a choice. GoHighLevel
+       * takes it on the availability read, so it decides which slots are offered. Omit
+       * to use the calendar’s own length.
+       */
+      durationMinutes?: number;
+    }
   }
 }
 
 export interface CalendarConnectionCreateParams {
   /**
    * The provider account’s API key. For CAL*COM, a Cal.com API key (starts with
-   * `cal*`). It is verified against the provider before anything is stored, so an
+   * `cal*`). For GO_HIGH_LEVEL, a sub-account Private Integration Token, which must carry the `calendars.readonly`, `calendars/events.readonly`, `calendars/events.write`, `contacts.readonly`, `contacts.write`and`locations.readonly`
+   * scopes. It is verified against the provider before anything is stored, so an
    * invalid key is a 400 and no connection is created. Stored encrypted and never
    * returned.
    */
@@ -1775,12 +1845,22 @@ export interface CalendarConnectionCreateParams {
   label: string;
 
   /**
-   * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+   * Who holds the calendar. CAL_COM and GO_HIGH_LEVEL are connected with a key,
+   * GO_HIGH_LEVEL also needing the sub-account the key belongs to; GOOGLE and
    * CALENDLY are connected by consent, through
    * `POST /v1/connections/calendar/google/authorize-url` and
    * `POST /v1/connections/calendar/calendly/authorize-url`.
    */
   provider: 'CAL_COM' | 'GOOGLE' | 'CALENDLY' | 'GO_HIGH_LEVEL';
+
+  /**
+   * Required for GO_HIGH_LEVEL and ignored by every other provider: the sub-account
+   * the token belongs to, for example `ve9EPM428h8vShlRW1KT`. A Private Integration
+   * Token does not name its own sub-account and every calendar call needs one, so
+   * the two are stored and verified together: a token minted in a different
+   * sub-account is a 400.
+   */
+  goHighLevelLocation?: string | null;
 
   /**
    * The named IANA timezone to offer slots in, for example `America/Los_Angeles`.
@@ -1799,6 +1879,13 @@ export interface CalendarConnectionUpdateParams {
   apiKey?: string | null;
 
   /**
+   * Only with `apiKey`, and only for GO_HIGH_LEVEL: the sub-account the rotated
+   * token belongs to. Required there because the token and the sub-account are one
+   * credential, so a rotation has to name both.
+   */
+  goHighLevelLocation?: string | null;
+
+  /**
    * Rename the connection.
    */
   label?: string | null;
@@ -1811,7 +1898,8 @@ export interface CalendarConnectionUpdateParams {
 
 export interface CalendarConnectionListParams {
   /**
-   * Who holds the calendar. CAL_COM is connected with an API key; GOOGLE and
+   * Who holds the calendar. CAL_COM and GO_HIGH_LEVEL are connected with a key,
+   * GO_HIGH_LEVEL also needing the sub-account the key belongs to; GOOGLE and
    * CALENDLY are connected by consent, through
    * `POST /v1/connections/calendar/google/authorize-url` and
    * `POST /v1/connections/calendar/calendly/authorize-url`.
