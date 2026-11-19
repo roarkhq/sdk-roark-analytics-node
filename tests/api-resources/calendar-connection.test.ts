@@ -28,6 +28,7 @@ describe('resource calendarConnection', () => {
       apiKey: 'x',
       label: 'x',
       provider: 'CAL_COM',
+      goHighLevelLocation: 'x',
       timezone: 'x',
     });
   });
@@ -50,6 +51,7 @@ describe('resource calendarConnection', () => {
         'connectionId',
         {
           apiKey: 'x',
+          goHighLevelLocation: 'x',
           label: 'x',
           timezone: 'x',
         },
