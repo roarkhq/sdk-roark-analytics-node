@@ -142,7 +142,9 @@ export class AgentConnection extends APIResource {
   /**
    * Lists the agents a Retell, Vapi, ElevenLabs or Bland API key can see, without
    * storing anything. Use it to check a key and to pick `agentIds` before
-   * connecting. A key the platform refuses returns 400.
+   * connecting. Any failure returns 400: `invalid_credentials` when the platform
+   * refuses the key, `too_many_requests` when it rate limits the request, and
+   * `dependency_failure` when it returns an error.
    *
    * @example
    * ```ts
