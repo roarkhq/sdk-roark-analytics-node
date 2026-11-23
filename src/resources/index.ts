@@ -233,9 +233,11 @@ export {
 export {
   CustomerFlowFolder,
   type CustomerFlowFolderCreateResponse,
+  type CustomerFlowFolderUpdateResponse,
   type CustomerFlowFolderListResponse,
   type CustomerFlowFolderDeleteResponse,
   type CustomerFlowFolderCreateParams,
+  type CustomerFlowFolderUpdateParams,
 } from './customer-flow-folder';
 export {
   Dashboard,

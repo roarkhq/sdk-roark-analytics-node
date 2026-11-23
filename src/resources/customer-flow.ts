@@ -673,7 +673,8 @@ export namespace CustomerFlowCreateResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ScriptedCustomerFlow.Folder | null;
 
@@ -1232,7 +1233,8 @@ export namespace CustomerFlowCreateResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -1272,9 +1274,14 @@ export namespace CustomerFlowCreateResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -1768,7 +1775,8 @@ export namespace CustomerFlowCreateResponse {
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ImprovCustomerFlow.Folder | null;
 
@@ -2560,7 +2568,8 @@ export namespace CustomerFlowCreateResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -2600,9 +2609,14 @@ export namespace CustomerFlowCreateResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -3336,7 +3350,8 @@ export namespace CustomerFlowCreateResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: VoicemailCustomerFlow.Folder | null;
 
@@ -3856,7 +3871,8 @@ export namespace CustomerFlowCreateResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -3896,9 +3912,14 @@ export namespace CustomerFlowCreateResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -4382,7 +4403,8 @@ export namespace CustomerFlowUpdateResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ScriptedCustomerFlow.Folder | null;
 
@@ -4941,7 +4963,8 @@ export namespace CustomerFlowUpdateResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -4981,9 +5004,14 @@ export namespace CustomerFlowUpdateResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -5477,7 +5505,8 @@ export namespace CustomerFlowUpdateResponse {
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ImprovCustomerFlow.Folder | null;
 
@@ -6269,7 +6298,8 @@ export namespace CustomerFlowUpdateResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -6309,9 +6339,14 @@ export namespace CustomerFlowUpdateResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -7045,7 +7080,8 @@ export namespace CustomerFlowUpdateResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: VoicemailCustomerFlow.Folder | null;
 
@@ -7565,7 +7601,8 @@ export namespace CustomerFlowUpdateResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -7605,9 +7642,14 @@ export namespace CustomerFlowUpdateResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -8094,7 +8136,8 @@ export namespace CustomerFlowListResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ScriptedCustomerFlow.Folder | null;
 
@@ -8653,7 +8696,8 @@ export namespace CustomerFlowListResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -8693,9 +8737,14 @@ export namespace CustomerFlowListResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -9189,7 +9238,8 @@ export namespace CustomerFlowListResponse {
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ImprovCustomerFlow.Folder | null;
 
@@ -9981,7 +10031,8 @@ export namespace CustomerFlowListResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -10021,9 +10072,14 @@ export namespace CustomerFlowListResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -10757,7 +10813,8 @@ export namespace CustomerFlowListResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: VoicemailCustomerFlow.Folder | null;
 
@@ -11277,7 +11334,8 @@ export namespace CustomerFlowListResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -11317,9 +11375,14 @@ export namespace CustomerFlowListResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -11833,7 +11896,8 @@ export namespace CustomerFlowDuplicateResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ScriptedCustomerFlow.Folder | null;
 
@@ -12392,7 +12456,8 @@ export namespace CustomerFlowDuplicateResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -12432,9 +12497,14 @@ export namespace CustomerFlowDuplicateResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -12928,7 +12998,8 @@ export namespace CustomerFlowDuplicateResponse {
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ImprovCustomerFlow.Folder | null;
 
@@ -13720,7 +13791,8 @@ export namespace CustomerFlowDuplicateResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -13760,9 +13832,14 @@ export namespace CustomerFlowDuplicateResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -14496,7 +14573,8 @@ export namespace CustomerFlowDuplicateResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: VoicemailCustomerFlow.Folder | null;
 
@@ -15016,7 +15094,8 @@ export namespace CustomerFlowDuplicateResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -15056,9 +15135,14 @@ export namespace CustomerFlowDuplicateResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -15542,7 +15626,8 @@ export namespace CustomerFlowGetByIDResponse {
     edgeCases: Array<ScriptedCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ScriptedCustomerFlow.Folder | null;
 
@@ -16101,7 +16186,8 @@ export namespace CustomerFlowGetByIDResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -16141,9 +16227,14 @@ export namespace CustomerFlowGetByIDResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -16637,7 +16728,8 @@ export namespace CustomerFlowGetByIDResponse {
     edgeCases: Array<ImprovCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: ImprovCustomerFlow.Folder | null;
 
@@ -17429,7 +17521,8 @@ export namespace CustomerFlowGetByIDResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -17469,9 +17562,14 @@ export namespace CustomerFlowGetByIDResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -18205,7 +18303,8 @@ export namespace CustomerFlowGetByIDResponse {
     edgeCases: Array<VoicemailCustomerFlow.EdgeCase>;
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     folder: VoicemailCustomerFlow.Folder | null;
 
@@ -18725,7 +18824,8 @@ export namespace CustomerFlowGetByIDResponse {
     }
 
     /**
-     * A folder that groups customer flows. A flow sits in at most one folder.
+     * A folder that groups customer flows. A flow sits in at most one folder. Folders
+     * can sit inside other folders, up to 5 levels deep.
      */
     export interface Folder {
       id: string;
@@ -18765,9 +18865,14 @@ export namespace CustomerFlowGetByIDResponse {
       description: string | null;
 
       /**
-       * The folder name, unique within the project.
+       * The folder name, unique within its parent folder.
        */
       name: string;
+
+      /**
+       * The folder this one sits inside, or null when it is a top-level folder.
+       */
+      parentId: string | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -22721,6 +22826,8 @@ export interface CustomerFlowListParams {
   after?: string;
 
   folderId?: string;
+
+  includeSubfolders?: 'true' | 'false';
 
   includeSystem?: 'true' | 'false';
 

@@ -7,9 +7,11 @@ import { path } from '../internal/utils/path';
 
 export class CustomerFlowFolder extends APIResource {
   /**
-   * Creates a folder to group customer flows. File a flow into it by sending its
-   * `folderId` when you create or update the flow. Names are unique within a
-   * project, ignoring case. Customer flows were previously called scenarios.
+   * Creates a folder to group customer flows, at the top level or inside another
+   * folder with `parentId`. Folders nest up to 5 levels deep. File a flow into it by
+   * sending its `folderId` when you create or update the flow. Names are unique
+   * within their parent folder, ignoring case. Customer flows were previously called
+   * scenarios.
    *
    * @example
    * ```ts
@@ -25,10 +27,33 @@ export class CustomerFlowFolder extends APIResource {
   }
 
   /**
+   * Renames, recolors or moves a folder. Send `parentId` to move it, with its flows
+   * and subfolders, inside another folder, or null to move it to the top level.
+   * Fields you omit are left as they are. Built-in folders cannot be changed.
+   * Customer flows were previously called scenarios.
+   *
+   * @example
+   * ```ts
+   * const customerFlowFolder =
+   *   await client.customerFlowFolder.update(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
+   */
+  update(
+    folderID: string,
+    body: CustomerFlowFolderUpdateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomerFlowFolderUpdateResponse> {
+    return this._client.put(path`/v1/customer-flow/folder/${folderID}`, { body, ...options });
+  }
+
+  /**
    * Returns every folder the project groups its customer flows into, with how many
-   * flows each holds, in the order the app shows them. Filter the flow list to one
-   * folder with `GET /v1/customer-flow?folderId=`. Customer flows were previously
-   * called scenarios.
+   * flows each holds, in the order the app shows them. Subfolders are included, each
+   * with the `parentId` of the folder it sits in. Filter the flow list to one folder
+   * with `GET /v1/customer-flow?folderId=`, adding `includeSubfolders=true` to take
+   * in the folders inside it. Customer flows were previously called scenarios.
    *
    * @example
    * ```ts
@@ -41,7 +66,8 @@ export class CustomerFlowFolder extends APIResource {
   }
 
   /**
-   * Deletes a folder. The flows in it are kept and no longer sit in any folder.
+   * Deletes a folder. Its flows and subfolders are kept and move up one level: into
+   * the folder it sat in, or out of any folder when it was a top-level folder.
    * Built-in folders cannot be deleted.
    *
    * @example
@@ -59,14 +85,16 @@ export class CustomerFlowFolder extends APIResource {
 
 export interface CustomerFlowFolderCreateResponse {
   /**
-   * A folder that groups customer flows. A flow sits in at most one folder.
+   * A folder that groups customer flows. A flow sits in at most one folder. Folders
+   * can sit inside other folders, up to 5 levels deep.
    */
   data: CustomerFlowFolderCreateResponse.Data;
 }
 
 export namespace CustomerFlowFolderCreateResponse {
   /**
-   * A folder that groups customer flows. A flow sits in at most one folder.
+   * A folder that groups customer flows. A flow sits in at most one folder. Folders
+   * can sit inside other folders, up to 5 levels deep.
    */
   export interface Data {
     id: string;
@@ -106,9 +134,81 @@ export namespace CustomerFlowFolderCreateResponse {
     description: string | null;
 
     /**
-     * The folder name, unique within the project.
+     * The folder name, unique within its parent folder.
      */
     name: string;
+
+    /**
+     * The folder this one sits inside, or null when it is a top-level folder.
+     */
+    parentId: string | null;
+
+    /**
+     * Last update timestamp in ISO 8601 format
+     */
+    updatedAt: string;
+  }
+}
+
+export interface CustomerFlowFolderUpdateResponse {
+  /**
+   * A folder that groups customer flows. A flow sits in at most one folder. Folders
+   * can sit inside other folders, up to 5 levels deep.
+   */
+  data: CustomerFlowFolderUpdateResponse.Data;
+}
+
+export namespace CustomerFlowFolderUpdateResponse {
+  /**
+   * A folder that groups customer flows. A flow sits in at most one folder. Folders
+   * can sit inside other folders, up to 5 levels deep.
+   */
+  export interface Data {
+    id: string;
+
+    /**
+     * Whether Roark curates this folder. Built-in folders cannot be deleted or have
+     * your flows filed in them.
+     */
+    builtIn: boolean;
+
+    /**
+     * The color the folder is shown with in the app. Folders share the palette labels
+     * use.
+     */
+    color:
+      | 'GREEN'
+      | 'RED'
+      | 'ORANGE'
+      | 'PURPLE'
+      | 'GREY'
+      | 'BLUE'
+      | 'PEACH'
+      | 'TEAL'
+      | 'INDIGO'
+      | 'AMBER'
+      | 'ROSE'
+      | 'CYAN';
+
+    /**
+     * Creation timestamp in ISO 8601 format
+     */
+    createdAt: string;
+
+    /**
+     * What belongs in this folder.
+     */
+    description: string | null;
+
+    /**
+     * The folder name, unique within its parent folder.
+     */
+    name: string;
+
+    /**
+     * The folder this one sits inside, or null when it is a top-level folder.
+     */
+    parentId: string | null;
 
     /**
      * Last update timestamp in ISO 8601 format
@@ -118,7 +218,8 @@ export namespace CustomerFlowFolderCreateResponse {
 }
 
 /**
- * The project's customer flow folders, in the order the app shows them.
+ * The project's customer flow folders, in the order the app shows them. Subfolders
+ * are listed with the rest; rebuild the tree from each folder's `parentId`.
  */
 export interface CustomerFlowFolderListResponse {
   data: Array<CustomerFlowFolderListResponse.Data>;
@@ -126,7 +227,8 @@ export interface CustomerFlowFolderListResponse {
 
 export namespace CustomerFlowFolderListResponse {
   /**
-   * A folder that groups customer flows. A flow sits in at most one folder.
+   * A folder that groups customer flows. A flow sits in at most one folder. Folders
+   * can sit inside other folders, up to 5 levels deep.
    */
   export interface Data {
     id: string;
@@ -166,14 +268,19 @@ export namespace CustomerFlowFolderListResponse {
     description: string | null;
 
     /**
-     * How many flows are in this folder.
+     * How many flows are directly in this folder, not counting its subfolders.
      */
     flowCount: number;
 
     /**
-     * The folder name, unique within the project.
+     * The folder name, unique within its parent folder.
      */
     name: string;
+
+    /**
+     * The folder this one sits inside, or null when it is a top-level folder.
+     */
+    parentId: string | null;
 
     /**
      * Last update timestamp in ISO 8601 format
@@ -197,7 +304,7 @@ export namespace CustomerFlowFolderDeleteResponse {
 
 export interface CustomerFlowFolderCreateParams {
   /**
-   * The folder name. Must be unique in the project.
+   * The folder name. Must be unique within its parent folder, ignoring case.
    */
   name: string;
 
@@ -223,13 +330,57 @@ export interface CustomerFlowFolderCreateParams {
    * What belongs in this folder.
    */
   description?: string | null;
+
+  /**
+   * Create the folder inside this folder. Omit it, or send null, for a top-level
+   * folder.
+   */
+  parentId?: string | null;
+}
+
+export interface CustomerFlowFolderUpdateParams {
+  /**
+   * The color the folder is shown with in the app. Folders share the palette labels
+   * use.
+   */
+  color?:
+    | 'GREEN'
+    | 'RED'
+    | 'ORANGE'
+    | 'PURPLE'
+    | 'GREY'
+    | 'BLUE'
+    | 'PEACH'
+    | 'TEAL'
+    | 'INDIGO'
+    | 'AMBER'
+    | 'ROSE'
+    | 'CYAN';
+
+  /**
+   * What belongs in this folder. Null clears it.
+   */
+  description?: string | null;
+
+  /**
+   * A new name. Must be unique within the parent folder, ignoring case.
+   */
+  name?: string;
+
+  /**
+   * Moves the folder, with everything in it, inside this folder. Null moves it to
+   * the top level; omit it to leave it where it is.
+   */
+  parentId?: string | null;
 }
 
 export declare namespace CustomerFlowFolder {
   export {
     type CustomerFlowFolderCreateResponse as CustomerFlowFolderCreateResponse,
+    type CustomerFlowFolderUpdateResponse as CustomerFlowFolderUpdateResponse,
     type CustomerFlowFolderListResponse as CustomerFlowFolderListResponse,
     type CustomerFlowFolderDeleteResponse as CustomerFlowFolderDeleteResponse,
     type CustomerFlowFolderCreateParams as CustomerFlowFolderCreateParams,
+    type CustomerFlowFolderUpdateParams as CustomerFlowFolderUpdateParams,
   };
 }

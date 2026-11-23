@@ -253,6 +253,8 @@ import {
   CustomerFlowFolderCreateResponse,
   CustomerFlowFolderDeleteResponse,
   CustomerFlowFolderListResponse,
+  CustomerFlowFolderUpdateParams,
+  CustomerFlowFolderUpdateResponse,
 } from './resources/customer-flow-folder';
 import {
   Dashboard,
@@ -1698,9 +1700,11 @@ export declare namespace Roark {
   export {
     CustomerFlowFolder as CustomerFlowFolder,
     type CustomerFlowFolderCreateResponse as CustomerFlowFolderCreateResponse,
+    type CustomerFlowFolderUpdateResponse as CustomerFlowFolderUpdateResponse,
     type CustomerFlowFolderListResponse as CustomerFlowFolderListResponse,
     type CustomerFlowFolderDeleteResponse as CustomerFlowFolderDeleteResponse,
     type CustomerFlowFolderCreateParams as CustomerFlowFolderCreateParams,
+    type CustomerFlowFolderUpdateParams as CustomerFlowFolderUpdateParams,
   };
 
   export {
