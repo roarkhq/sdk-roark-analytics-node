@@ -345,6 +345,8 @@ export namespace Bundle {
 
     expectations?: Array<string>;
 
+    folder?: string;
+
     title?: string;
   }
 
@@ -402,6 +404,8 @@ export namespace Bundle {
     environment?: string;
 
     expectations?: Array<string>;
+
+    folder?: string;
 
     offScript?: ScriptedFlowConfig.OffScript;
 
@@ -1942,6 +1946,8 @@ export namespace Bundle {
 
       expectations?: Array<string>;
 
+      folder?: string;
+
       title?: string;
     }
 
@@ -1999,6 +2005,8 @@ export namespace Bundle {
       environment?: string;
 
       expectations?: Array<string>;
+
+      folder?: string;
 
       offScript?: ScriptedFlowConfig.OffScript;
 
@@ -3710,6 +3718,8 @@ export namespace ConfigApplyParams {
 
     expectations?: Array<string>;
 
+    folder?: string;
+
     title?: string;
   }
 
@@ -3767,6 +3777,8 @@ export namespace ConfigApplyParams {
     environment?: string;
 
     expectations?: Array<string>;
+
+    folder?: string;
 
     offScript?: ScriptedFlowConfig.OffScript;
 
@@ -5307,6 +5319,8 @@ export namespace ConfigApplyParams {
 
       expectations?: Array<string>;
 
+      folder?: string;
+
       title?: string;
     }
 
@@ -5364,6 +5378,8 @@ export namespace ConfigApplyParams {
       environment?: string;
 
       expectations?: Array<string>;
+
+      folder?: string;
 
       offScript?: ScriptedFlowConfig.OffScript;
 
@@ -6886,6 +6902,8 @@ export namespace ConfigDiffParams {
 
     expectations?: Array<string>;
 
+    folder?: string;
+
     title?: string;
   }
 
@@ -6943,6 +6961,8 @@ export namespace ConfigDiffParams {
     environment?: string;
 
     expectations?: Array<string>;
+
+    folder?: string;
 
     offScript?: ScriptedFlowConfig.OffScript;
 
@@ -8483,6 +8503,8 @@ export namespace ConfigDiffParams {
 
       expectations?: Array<string>;
 
+      folder?: string;
+
       title?: string;
     }
 
@@ -8540,6 +8562,8 @@ export namespace ConfigDiffParams {
       environment?: string;
 
       expectations?: Array<string>;
+
+      folder?: string;
 
       offScript?: ScriptedFlowConfig.OffScript;
 
