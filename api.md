@@ -528,12 +528,14 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/customer-flow-folder.ts">CustomerFlowFolderCreateResponse</a></code>
+- <code><a href="./src/resources/customer-flow-folder.ts">CustomerFlowFolderUpdateResponse</a></code>
 - <code><a href="./src/resources/customer-flow-folder.ts">CustomerFlowFolderListResponse</a></code>
 - <code><a href="./src/resources/customer-flow-folder.ts">CustomerFlowFolderDeleteResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/customer-flow/folder">client.customerFlowFolder.<a href="./src/resources/customer-flow-folder.ts">create</a>({ ...params }) -> CustomerFlowFolderCreateResponse</code>
+- <code title="put /v1/customer-flow/folder/{folderId}">client.customerFlowFolder.<a href="./src/resources/customer-flow-folder.ts">update</a>(folderID, { ...params }) -> CustomerFlowFolderUpdateResponse</code>
 - <code title="get /v1/customer-flow/folder">client.customerFlowFolder.<a href="./src/resources/customer-flow-folder.ts">list</a>() -> CustomerFlowFolderListResponse</code>
 - <code title="delete /v1/customer-flow/folder/{folderId}">client.customerFlowFolder.<a href="./src/resources/customer-flow-folder.ts">delete</a>(folderID) -> CustomerFlowFolderDeleteResponse</code>
 

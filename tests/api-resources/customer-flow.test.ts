@@ -167,6 +167,7 @@ describe('resource customerFlow', () => {
         {
           after: 'after',
           folderId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          includeSubfolders: 'true',
           includeSystem: 'true',
           limit: 1,
           searchText: 'searchText',
