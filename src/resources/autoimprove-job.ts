@@ -205,6 +205,10 @@ export interface AutoimproveLogEntry {
 
   questionOptions: Array<string> | null;
 
+  sentById: string | null;
+
+  sentVia: 'PLATFORM' | 'ROARKY' | 'API' | null;
+
   simulationRunPlanJobId: string | null;
 
   text: string;
