@@ -10,11 +10,14 @@ export class AgentConnection extends APIResource {
    * Connects the platform a project’s agents run on. The body is shaped by
    * `provider`; `GET /v1/connections/agent/providers` lists what each needs. Retell,
    * Vapi, ElevenLabs and Bland keys are checked by listing agents first, so a
-   * refused key returns 400 and nothing is stored. Platforms that pull agents start
-   * syncing straight away. For LIVEKIT_SELF_HOSTED and the Pipecat providers, the
-   * response carries `observerApiKey`, shown once, for your SDK to report calls
-   * with. Most platforms connect once per project, and a second create returns 409;
-   * LiveKit Cloud may connect several accounts.
+   * refused key returns 400 and nothing is stored. An account with more agents than
+   * the project allows for `agentScope` ALL (25 unless raised for the project)
+   * returns 400 `too_many_agents`, including when `agentScope` is left out: send
+   * SELECTED with the `agentIds` to bring in, up to 1,000. Platforms that pull
+   * agents start syncing straight away. For LIVEKIT_SELF_HOSTED and the Pipecat
+   * providers, the response carries `observerApiKey`, shown once, for your SDK to
+   * report calls with. Most platforms connect once per project, and a second create
+   * returns 409; LiveKit Cloud may connect several accounts.
    *
    * @example
    * ```ts
@@ -38,8 +41,10 @@ export class AgentConnection extends APIResource {
    * Changes a connection’s settings or rotates its credential. Send `provider` (it
    * must match the connection’s) and only the fields to change; the rest keep their
    * stored values. A new Retell, Vapi, ElevenLabs or Bland key is checked by listing
-   * agents first. Set `status` to INACTIVE to pause syncing without deleting
-   * anything.
+   * agents first. Moving to `agentScope` ALL, or giving an ALL connection a new key,
+   * on an account with more agents than the project allows returns 400
+   * `too_many_agents`, as does selecting more than 1,000. Set `status` to INACTIVE
+   * to pause syncing without deleting anything.
    *
    * @example
    * ```ts
@@ -1362,8 +1367,9 @@ export declare namespace AgentConnectionCreateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
@@ -1407,8 +1413,9 @@ export declare namespace AgentConnectionCreateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
@@ -1458,8 +1465,9 @@ export declare namespace AgentConnectionCreateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
@@ -1503,8 +1511,9 @@ export declare namespace AgentConnectionCreateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
@@ -1578,8 +1587,9 @@ export declare namespace AgentConnectionCreateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
@@ -1856,8 +1866,9 @@ export declare namespace AgentConnectionUpdateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
@@ -1909,8 +1920,9 @@ export declare namespace AgentConnectionUpdateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
@@ -1968,8 +1980,9 @@ export declare namespace AgentConnectionUpdateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
@@ -2021,8 +2034,9 @@ export declare namespace AgentConnectionUpdateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
@@ -2103,8 +2117,9 @@ export declare namespace AgentConnectionUpdateParams {
     agentNames?: Array<string>;
 
     /**
-     * ALL brings in every agent on the account. SELECTED brings in only `agentIds` and
-     * `agentNames`.
+     * ALL brings in every agent on the account, and is refused with `too_many_agents`
+     * when the account has more agents than the project allows (25 unless raised for
+     * the project). SELECTED brings in only `agentIds` and `agentNames`, up to 1,000.
      */
     agentScope?: 'ALL' | 'SELECTED';
 
