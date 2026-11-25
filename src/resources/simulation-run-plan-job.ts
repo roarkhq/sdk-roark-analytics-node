@@ -1462,6 +1462,13 @@ export namespace SimulationRunPlanJobGetByIDResponse {
       checks: Array<Verdict.Check>;
 
       /**
+       * Every simulation of the run that counts: the most any check can have in scope.
+       * Compare a check's `inScopeSims` against it to see how much of the run the check
+       * covers.
+       */
+      countedSims: number;
+
+      /**
        * Every criterion the run missed. Empty when it passed.
        */
       failures: Array<
@@ -1507,7 +1514,22 @@ export namespace SimulationRunPlanJobGetByIDResponse {
        * never appear here. Put a threshold on one to judge it.
        */
       export interface Check {
+        /**
+         * The flows this check is attached to. It is evaluated only on simulations of
+         * these flows, and the rest of the run is out of its scope. Null when the check is
+         * run-wide: attached to the run plan, so every simulation is in scope.
+         */
+        customerFlows: Array<Check.CustomerFlow> | null;
+
         evaluatedSims: number;
+
+        /**
+         * Simulations the check applies to: every counted simulation for a run-wide check,
+         * those of `customerFlows` otherwise. `evaluatedSims` can be lower: a check
+         * returns no verdict on a simulation with nothing for it to grade, and that
+         * simulation is left out of `passRate`.
+         */
+        inScopeSims: number;
 
         /**
          * Whether `minPassRate` is the 80% default (`true`) or a minimum this metric set
@@ -1537,6 +1559,23 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         passedSims: number;
 
         metricName?: string | null;
+      }
+
+      export namespace Check {
+        /**
+         * A flow one of the run's metrics is attached to.
+         */
+        export interface CustomerFlow {
+          /**
+           * The flow.
+           */
+          id: string;
+
+          /**
+           * The flow as the run ran it. Null when no simulation of the run ran the flow.
+           */
+          name: string | null;
+        }
       }
 
       export interface UnionMember0 {
@@ -2277,6 +2316,12 @@ export namespace SimulationRunPlanJobGetResultsResponse {
       check: Metric.Check | null;
 
       /**
+       * The flows the metric is attached to: it is collected only on simulations of
+       * these flows. Null when it is run-wide, collected on every simulation.
+       */
+      customerFlows: Array<Metric.CustomerFlow> | null;
+
+      /**
        * How many values took each reading, for BOOLEAN, SCALE and CLASSIFICATION
        * metrics. Null without the `metric:read` permission.
        */
@@ -2286,6 +2331,12 @@ export namespace SimulationRunPlanJobGetResultsResponse {
        * Counted simulations with at least one value.
        */
       evaluatedCalls: number;
+
+      /**
+       * Counted simulations the metric applies to: all of them for a run-wide metric,
+       * those of `customerFlows` otherwise.
+       */
+      inScopeCalls: number;
 
       /**
        * A threshold: one of the checks the run is judged on.
@@ -2335,6 +2386,21 @@ export namespace SimulationRunPlanJobGetResultsResponse {
         passRate: number | null;
 
         passedCalls: number;
+      }
+
+      /**
+       * A flow one of the run's metrics is attached to.
+       */
+      export interface CustomerFlow {
+        /**
+         * The flow.
+         */
+        id: string;
+
+        /**
+         * The flow as the run ran it. Null when no simulation of the run ran the flow.
+         */
+        name: string | null;
       }
 
       export interface Distribution {
@@ -2741,6 +2807,13 @@ export namespace SimulationRunPlanJobGetResultsResponse {
       checks: Array<Verdict.Check>;
 
       /**
+       * Every simulation of the run that counts: the most any check can have in scope.
+       * Compare a check's `inScopeSims` against it to see how much of the run the check
+       * covers.
+       */
+      countedSims: number;
+
+      /**
        * Every criterion the run missed. Empty when it passed.
        */
       failures: Array<
@@ -2786,7 +2859,22 @@ export namespace SimulationRunPlanJobGetResultsResponse {
        * never appear here. Put a threshold on one to judge it.
        */
       export interface Check {
+        /**
+         * The flows this check is attached to. It is evaluated only on simulations of
+         * these flows, and the rest of the run is out of its scope. Null when the check is
+         * run-wide: attached to the run plan, so every simulation is in scope.
+         */
+        customerFlows: Array<Check.CustomerFlow> | null;
+
         evaluatedSims: number;
+
+        /**
+         * Simulations the check applies to: every counted simulation for a run-wide check,
+         * those of `customerFlows` otherwise. `evaluatedSims` can be lower: a check
+         * returns no verdict on a simulation with nothing for it to grade, and that
+         * simulation is left out of `passRate`.
+         */
+        inScopeSims: number;
 
         /**
          * Whether `minPassRate` is the 80% default (`true`) or a minimum this metric set
@@ -2816,6 +2904,23 @@ export namespace SimulationRunPlanJobGetResultsResponse {
         passedSims: number;
 
         metricName?: string | null;
+      }
+
+      export namespace Check {
+        /**
+         * A flow one of the run's metrics is attached to.
+         */
+        export interface CustomerFlow {
+          /**
+           * The flow.
+           */
+          id: string;
+
+          /**
+           * The flow as the run ran it. Null when no simulation of the run ran the flow.
+           */
+          name: string | null;
+        }
       }
 
       export interface UnionMember0 {
