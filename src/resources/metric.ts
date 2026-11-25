@@ -92,6 +92,15 @@ export namespace MetricCreateDefinitionResponse {
     id: string;
 
     /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
+
+    /**
      * For a BOOLEAN metric, what a `false` value means. Also given to the judge as its
      * polarity rule.
      */
@@ -254,6 +263,15 @@ export namespace MetricCreateDefinitionResponse {
      * Unique identifier for the metric definition
      */
     id: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
 
     /**
      * Metric computed by evaluating an expression over other metrics.
@@ -422,6 +440,15 @@ export namespace MetricCreateDefinitionResponse {
      * Unique identifier for the metric definition
      */
     id: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
 
     /**
      * Metric detecting a trigger condition followed by an outcome within a window.
@@ -630,6 +657,15 @@ export namespace MetricCreateDefinitionResponse {
      * Unique identifier for the metric definition
      */
     id: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
 
     /**
      * What a failed check is called
@@ -834,6 +870,15 @@ export namespace MetricListDefinitionsResponse {
     id: string;
 
     /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
+
+    /**
      * For a BOOLEAN metric, what a `false` value means. Also given to the judge as its
      * polarity rule.
      */
@@ -998,6 +1043,15 @@ export namespace MetricListDefinitionsResponse {
     id: string;
 
     /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
+
+    /**
      * System-managed metric produced by an analysis provider.
      */
     calculationType: 'PROVIDER';
@@ -1142,6 +1196,15 @@ export namespace MetricListDefinitionsResponse {
      * Unique identifier for the metric definition
      */
     id: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
 
     /**
      * Boolean metric derived by comparing a source metric against a threshold.
@@ -1320,6 +1383,15 @@ export namespace MetricListDefinitionsResponse {
     id: string;
 
     /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
+
+    /**
      * Metric computed by evaluating an expression over other metrics.
      */
     calculationType: 'FORMULA';
@@ -1486,6 +1558,15 @@ export namespace MetricListDefinitionsResponse {
      * Unique identifier for the metric definition
      */
     id: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
 
     /**
      * Metric detecting a trigger condition followed by an outcome within a window.
@@ -1694,6 +1775,15 @@ export namespace MetricListDefinitionsResponse {
      * Unique identifier for the metric definition
      */
     id: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
 
     /**
      * What a failed check is called
@@ -1902,6 +1992,15 @@ export namespace MetricUpdateDefinitionResponse {
     id: string;
 
     /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
+
+    /**
      * For a BOOLEAN metric, what a `false` value means. Also given to the judge as its
      * polarity rule.
      */
@@ -2064,6 +2163,15 @@ export namespace MetricUpdateDefinitionResponse {
      * Unique identifier for the metric definition
      */
     id: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
 
     /**
      * Metric computed by evaluating an expression over other metrics.
@@ -2232,6 +2340,15 @@ export namespace MetricUpdateDefinitionResponse {
      * Unique identifier for the metric definition
      */
     id: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
 
     /**
      * Metric detecting a trigger condition followed by an outcome within a window.
@@ -2442,6 +2559,15 @@ export namespace MetricUpdateDefinitionResponse {
     id: string;
 
     /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
+
+    /**
      * Boolean metric derived by comparing a source metric against a threshold.
      */
     calculationType: 'THRESHOLD';
@@ -2616,6 +2742,15 @@ export namespace MetricUpdateDefinitionResponse {
      * Unique identifier for the metric definition
      */
     id: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition: string | null;
 
     /**
      * What a failed check is called
@@ -2825,6 +2960,15 @@ export declare namespace MetricCreateDefinitionParams {
      * automatically the first time).
      */
     analysisPackageId?: string;
+
+    /**
+     * When this metric applies, in plain words (for example "the caller asks to stop
+     * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+     * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+     * verdict, and checks on it count only the conversations it applies to. Null or
+     * empty: it applies to every conversation.
+     */
+    applicabilityCondition?: string | null;
 
     /**
      * Label for the false case (only for BOOLEAN type)
@@ -3229,6 +3373,16 @@ export interface MetricListDefinitionsParams {
 
 export interface MetricUpdateDefinitionParams {
   analysisPackageId?: unknown;
+
+  /**
+   * When this metric applies, in plain words (for example "the caller asks to stop
+   * being contacted"). BOOLEAN LLM metrics only. On a conversation that does not
+   * meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of a
+   * verdict, and checks on it count only the conversations it applies to. Null or
+   * empty: it applies to every conversation. Send null or an empty string to remove
+   * it.
+   */
+  applicabilityCondition?: string | null;
 
   /**
    * New label for the false case (BOOLEAN output only)
