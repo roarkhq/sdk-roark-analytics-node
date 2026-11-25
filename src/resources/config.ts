@@ -491,6 +491,8 @@ export namespace Bundle {
 
     type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
+    applicabilityCondition?: string;
+
     calculationType?: 'LLM_JUDGE';
 
     contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
@@ -2091,6 +2093,8 @@ export namespace Bundle {
       prompt: string;
 
       type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
+
+      applicabilityCondition?: string;
 
       calculationType?: 'LLM_JUDGE';
 
@@ -3864,6 +3868,8 @@ export namespace ConfigApplyParams {
 
     type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
+    applicabilityCondition?: string;
+
     calculationType?: 'LLM_JUDGE';
 
     contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
@@ -5464,6 +5470,8 @@ export namespace ConfigApplyParams {
       prompt: string;
 
       type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
+
+      applicabilityCondition?: string;
 
       calculationType?: 'LLM_JUDGE';
 
@@ -7048,6 +7056,8 @@ export namespace ConfigDiffParams {
 
     type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
 
+    applicabilityCondition?: string;
+
     calculationType?: 'LLM_JUDGE';
 
     contexts?: Array<'CALL' | 'SEGMENT' | 'TURN'>;
@@ -8648,6 +8658,8 @@ export namespace ConfigDiffParams {
       prompt: string;
 
       type: 'BOOLEAN' | 'SCALE' | 'NUMERIC' | 'TEXT' | 'CLASSIFICATION';
+
+      applicabilityCondition?: string;
 
       calculationType?: 'LLM_JUDGE';
 

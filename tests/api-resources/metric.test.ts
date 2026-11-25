@@ -29,6 +29,7 @@ describe('resource metric', () => {
       name: 'Customer Satisfaction',
       outputType: 'BOOLEAN',
       analysisPackageId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      applicabilityCondition: 'applicabilityCondition',
       booleanFalseLabel: 'booleanFalseLabel',
       booleanTrueLabel: 'booleanTrueLabel',
       classificationOptions: [{ description: 'description', displayOrder: 0, label: 'label' }],
@@ -92,6 +93,7 @@ describe('resource metric', () => {
         'idOrSlug',
         {
           analysisPackageId: 'analysisPackageId',
+          applicabilityCondition: 'applicabilityCondition',
           booleanFalseLabel: 'booleanFalseLabel',
           booleanTrueLabel: 'booleanTrueLabel',
           calcType: 'calcType',

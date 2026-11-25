@@ -39,6 +39,7 @@ describe('resource metricVariant', () => {
   test('update: required and optional params', async () => {
     const response = await client.metricVariant.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       idOrSlug: 'idOrSlug',
+      applicabilityCondition: 'applicabilityCondition',
       booleanFalseLabel: 'booleanFalseLabel',
       booleanTrueLabel: 'booleanTrueLabel',
       changeReason: 'changeReason',

@@ -386,6 +386,15 @@ export interface MetricVariantUpdateParams {
   idOrSlug: string;
 
   /**
+   * Body param: When this metric applies, in plain words (for example "the caller
+   * asks to stop being contacted"). BOOLEAN LLM metrics only. On a conversation that
+   * does not meet it, the metric records `captureStatus: NOT_APPLICABLE` instead of
+   * a verdict, and checks on it count only the conversations it applies to. Null or
+   * empty: it applies to every conversation.
+   */
+  applicabilityCondition?: string | null;
+
+  /**
    * Body param: What a `false` value means. Given to the judge as its polarity rule,
    * so keep it accurate.
    */
