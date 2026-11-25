@@ -162,15 +162,18 @@ export class SimulationRunPlanJob extends APIResource {
   }
 
   /**
-   * Grade a finished run's calls again, without placing new calls: the same calls
-   * and metrics, with each metric's current version and the flows' current agent
-   * expectations. Use it after editing a metric or a flow's expectations, to see how
-   * the run you already have scores against them.
+   * Grade a finished run's calls again, without placing new calls: the same calls,
+   * graded on the run plan's metrics as they are now. Metrics on the plan grade
+   * every call of the run, metrics attached to a flow grade that flow's calls, each
+   * at its current version, and Agent Expectations grades against the flows' current
+   * expectations. Use it after changing a plan's metrics, a metric, or a flow's
+   * expectations, to see how the run you already have scores against them.
    *
-   * The new values replace the run's current ones; earlier values stay in each
-   * metric value's history. The grading is billed like any metric collection. A run
-   * is re-scored one at a time: while one re-score runs, another is refused
-   * with 409.
+   * The metrics graded are listed in `metrics` and become the run's metric set: the
+   * run's results, checks and report read them from then on. The new values replace
+   * the run's current ones; earlier values stay in each metric value's history. The
+   * grading is billed like any metric collection. A run is re-scored one at a time:
+   * while one re-score runs, another is refused with 409.
    *
    * Returns immediately. Poll GET /v1/simulation/plan/job/{jobId}/rescore until
    * `status` is COMPLETED or FAILED, then read the new values from GET
@@ -1928,6 +1931,12 @@ export namespace SimulationRunPlanJobGetRescoreResponse {
     jobId: string;
 
     /**
+     * The metrics this re-score grades, one per metric and scope: the run plan's
+     * metrics when it was requested. They become the run's metric set.
+     */
+    metrics: Array<Data.Metric>;
+
+    /**
      * Re-score ID
      */
     rescoreId: string;
@@ -1947,6 +1956,26 @@ export namespace SimulationRunPlanJobGetRescoreResponse {
      * Conversations this re-score grades
      */
     totalConversations: number;
+  }
+
+  export namespace Data {
+    export interface Metric {
+      /**
+       * The flow whose simulations it grades. Null when it grades every simulation of
+       * the run.
+       */
+      customerFlowId: string | null;
+
+      /**
+       * The flow's title. Null for a run-wide metric.
+       */
+      customerFlowName: string | null;
+
+      /**
+       * The metric graded
+       */
+      metricDefinitionId: string;
+    }
   }
 }
 
@@ -3233,6 +3262,12 @@ export namespace SimulationRunPlanJobRescoreResponse {
     jobId: string;
 
     /**
+     * The metrics this re-score grades, one per metric and scope: the run plan's
+     * metrics when it was requested. They become the run's metric set.
+     */
+    metrics: Array<Data.Metric>;
+
+    /**
      * Re-score ID
      */
     rescoreId: string;
@@ -3252,6 +3287,26 @@ export namespace SimulationRunPlanJobRescoreResponse {
      * Conversations this re-score grades
      */
     totalConversations: number;
+  }
+
+  export namespace Data {
+    export interface Metric {
+      /**
+       * The flow whose simulations it grades. Null when it grades every simulation of
+       * the run.
+       */
+      customerFlowId: string | null;
+
+      /**
+       * The flow's title. Null for a run-wide metric.
+       */
+      customerFlowName: string | null;
+
+      /**
+       * The metric graded
+       */
+      metricDefinitionId: string;
+    }
   }
 }
 
