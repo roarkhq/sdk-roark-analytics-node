@@ -1378,6 +1378,8 @@ export namespace LiveReportGetDocumentResponse {
         checks?: Array<Theme.Check>;
 
         memberCalls?: Array<Theme.MemberCall>;
+
+        supportedByTranscript?: boolean;
       }
 
       export namespace Theme {
@@ -2014,6 +2016,8 @@ export namespace LiveReportListDocumentsResponse {
           checks?: Array<Theme.Check>;
 
           memberCalls?: Array<Theme.MemberCall>;
+
+          supportedByTranscript?: boolean;
         }
 
         export namespace Theme {
@@ -2649,6 +2653,8 @@ export namespace LiveReportRunResponse {
         checks?: Array<Theme.Check>;
 
         memberCalls?: Array<Theme.MemberCall>;
+
+        supportedByTranscript?: boolean;
       }
 
       export namespace Theme {
