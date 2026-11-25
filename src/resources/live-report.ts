@@ -1177,6 +1177,10 @@ export namespace LiveReportGetDocumentResponse {
           title: string;
 
           calls?: Array<KeyFinding.Call>;
+
+          metricDefinitionIds?: Array<string>;
+
+          themeSlugs?: Array<string>;
         }
 
         export namespace KeyFinding {
@@ -1195,6 +1199,10 @@ export namespace LiveReportGetDocumentResponse {
           body: string;
 
           heading: string | null;
+
+          metricDefinitionIds?: Array<string>;
+
+          themeSlugs?: Array<string>;
         }
       }
 
@@ -1367,6 +1375,8 @@ export namespace LiveReportGetDocumentResponse {
 
         totalConversationCount: number;
 
+        checks?: Array<Theme.Check>;
+
         memberCalls?: Array<Theme.MemberCall>;
       }
 
@@ -1415,6 +1425,14 @@ export namespace LiveReportGetDocumentResponse {
           status: string;
 
           title: string;
+        }
+
+        export interface Check {
+          checkName: string;
+
+          conversationIds: Array<string>;
+
+          metricDefinitionId: string;
         }
 
         export interface MemberCall {
@@ -1795,6 +1813,10 @@ export namespace LiveReportListDocumentsResponse {
             title: string;
 
             calls?: Array<KeyFinding.Call>;
+
+            metricDefinitionIds?: Array<string>;
+
+            themeSlugs?: Array<string>;
           }
 
           export namespace KeyFinding {
@@ -1813,6 +1835,10 @@ export namespace LiveReportListDocumentsResponse {
             body: string;
 
             heading: string | null;
+
+            metricDefinitionIds?: Array<string>;
+
+            themeSlugs?: Array<string>;
           }
         }
 
@@ -1985,6 +2011,8 @@ export namespace LiveReportListDocumentsResponse {
 
           totalConversationCount: number;
 
+          checks?: Array<Theme.Check>;
+
           memberCalls?: Array<Theme.MemberCall>;
         }
 
@@ -2033,6 +2061,14 @@ export namespace LiveReportListDocumentsResponse {
             status: string;
 
             title: string;
+          }
+
+          export interface Check {
+            checkName: string;
+
+            conversationIds: Array<string>;
+
+            metricDefinitionId: string;
           }
 
           export interface MemberCall {
@@ -2412,6 +2448,10 @@ export namespace LiveReportRunResponse {
           title: string;
 
           calls?: Array<KeyFinding.Call>;
+
+          metricDefinitionIds?: Array<string>;
+
+          themeSlugs?: Array<string>;
         }
 
         export namespace KeyFinding {
@@ -2430,6 +2470,10 @@ export namespace LiveReportRunResponse {
           body: string;
 
           heading: string | null;
+
+          metricDefinitionIds?: Array<string>;
+
+          themeSlugs?: Array<string>;
         }
       }
 
@@ -2602,6 +2646,8 @@ export namespace LiveReportRunResponse {
 
         totalConversationCount: number;
 
+        checks?: Array<Theme.Check>;
+
         memberCalls?: Array<Theme.MemberCall>;
       }
 
@@ -2650,6 +2696,14 @@ export namespace LiveReportRunResponse {
           status: string;
 
           title: string;
+        }
+
+        export interface Check {
+          checkName: string;
+
+          conversationIds: Array<string>;
+
+          metricDefinitionId: string;
         }
 
         export interface MemberCall {
