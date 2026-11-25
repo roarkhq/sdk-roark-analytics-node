@@ -121,6 +121,12 @@ export namespace HTTPRequestDefinitionCreateResponse {
     isConfigManaged: boolean;
 
     /**
+     * How many times Roark sends the request before the simulation fails: once, plus a
+     * retry after each timeout or failed response. Null is the default, 3.
+     */
+    maxAttempts: number | null;
+
+    /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
     method: 'POST' | 'PUT' | 'PATCH' | 'GET' | 'DELETE';
@@ -139,6 +145,12 @@ export namespace HTTPRequestDefinitionCreateResponse {
      * Signing secret (only returned on creation)
      */
     signingSecret: string;
+
+    /**
+     * How long Roark waits for each attempt, in milliseconds. Null is the
+     * default, 30000.
+     */
+    timeoutMs: number | null;
 
     /**
      * Last update timestamp
@@ -197,6 +209,12 @@ export namespace HTTPRequestDefinitionUpdateResponse {
     isConfigManaged: boolean;
 
     /**
+     * How many times Roark sends the request before the simulation fails: once, plus a
+     * retry after each timeout or failed response. Null is the default, 3.
+     */
+    maxAttempts: number | null;
+
+    /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
     method: 'POST' | 'PUT' | 'PATCH' | 'GET' | 'DELETE';
@@ -210,6 +228,12 @@ export namespace HTTPRequestDefinitionUpdateResponse {
      * Scope of the HTTP request definition
      */
     scope: 'AGENT_OUTBOUND_DIAL';
+
+    /**
+     * How long Roark waits for each attempt, in milliseconds. Null is the
+     * default, 30000.
+     */
+    timeoutMs: number | null;
 
     /**
      * Last update timestamp
@@ -267,6 +291,12 @@ export namespace HTTPRequestDefinitionListResponse {
     isConfigManaged: boolean;
 
     /**
+     * How many times Roark sends the request before the simulation fails: once, plus a
+     * retry after each timeout or failed response. Null is the default, 3.
+     */
+    maxAttempts: number | null;
+
+    /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
     method: 'POST' | 'PUT' | 'PATCH' | 'GET' | 'DELETE';
@@ -280,6 +310,12 @@ export namespace HTTPRequestDefinitionListResponse {
      * Scope of the HTTP request definition
      */
     scope: 'AGENT_OUTBOUND_DIAL';
+
+    /**
+     * How long Roark waits for each attempt, in milliseconds. Null is the
+     * default, 30000.
+     */
+    timeoutMs: number | null;
 
     /**
      * Last update timestamp
@@ -355,6 +391,12 @@ export namespace HTTPRequestDefinitionGetByIDResponse {
     isConfigManaged: boolean;
 
     /**
+     * How many times Roark sends the request before the simulation fails: once, plus a
+     * retry after each timeout or failed response. Null is the default, 3.
+     */
+    maxAttempts: number | null;
+
+    /**
      * HTTP method: POST, PUT, PATCH, or GET
      */
     method: 'POST' | 'PUT' | 'PATCH' | 'GET' | 'DELETE';
@@ -368,6 +410,12 @@ export namespace HTTPRequestDefinitionGetByIDResponse {
      * Scope of the HTTP request definition
      */
     scope: 'AGENT_OUTBOUND_DIAL';
+
+    /**
+     * How long Roark waits for each attempt, in milliseconds. Null is the
+     * default, 30000.
+     */
+    timeoutMs: number | null;
 
     /**
      * Last update timestamp
@@ -409,9 +457,21 @@ export interface HTTPRequestDefinitionCreateParams {
   headers?: { [key: string]: string };
 
   /**
+   * How many times to send the request, from 1 to 5. Set 1 so a slow answer is never
+   * sent again, which would start a second call. Null or omitted is the default, 3.
+   */
+  maxAttempts?: number | null;
+
+  /**
    * HTTP method (default: POST)
    */
   method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+
+  /**
+   * How long to wait for each attempt, in milliseconds, from 1000 to 300000. Raise
+   * it while you debug your endpoint. Null or omitted is the default, 30000.
+   */
+  timeoutMs?: number | null;
 }
 
 export interface HTTPRequestDefinitionUpdateParams {
@@ -432,9 +492,21 @@ export interface HTTPRequestDefinitionUpdateParams {
   headers?: { [key: string]: string };
 
   /**
+   * How many times to send the request, from 1 to 5. Set 1 so a slow answer is never
+   * sent again, which would start a second call. Null or omitted is the default, 3.
+   */
+  maxAttempts?: number | null;
+
+  /**
    * HTTP method: POST, PUT, PATCH, or GET
    */
   method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+
+  /**
+   * How long to wait for each attempt, in milliseconds, from 1000 to 300000. Raise
+   * it while you debug your endpoint. Null or omitted is the default, 30000.
+   */
+  timeoutMs?: number | null;
 
   /**
    * URL for the HTTP request
