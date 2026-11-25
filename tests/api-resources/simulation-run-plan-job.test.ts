@@ -104,6 +104,17 @@ describe('resource simulationRunPlanJob', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
+  test('getRescore', async () => {
+    const responsePromise = client.simulationRunPlanJob.getRescore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
   test('getResults', async () => {
     const responsePromise = client.simulationRunPlanJob.getResults('jobId');
     const rawResponse = await responsePromise.asResponse();
@@ -126,6 +137,17 @@ describe('resource simulationRunPlanJob', () => {
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Roark.NotFoundError);
+  });
+
+  test('rescore', async () => {
+    const responsePromise = client.simulationRunPlanJob.rescore('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 
   test('start', async () => {

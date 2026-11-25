@@ -119,6 +119,22 @@ export class SimulationRunPlanJob extends APIResource {
   }
 
   /**
+   * The run's most recent re-score, with its status and how many conversations have
+   * been graded.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.simulationRunPlanJob.getRescore(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
+   */
+  getRescore(jobID: string, options?: RequestOptions): APIPromise<SimulationRunPlanJobGetRescoreResponse> {
+    return this._client.get(path`/v1/simulation/plan/job/${jobID}/rescore`, options);
+  }
+
+  /**
    * Everything the run report shows, in one request: the summary and score, the
    * pass/fail verdict, per-metric aggregates, every simulation with its check
    * results, breakdowns by agent and persona, the comparison against the previous
@@ -143,6 +159,32 @@ export class SimulationRunPlanJob extends APIResource {
     options?: RequestOptions,
   ): APIPromise<SimulationRunPlanJobGetResultsResponse> {
     return this._client.get(path`/v1/simulation/plan/job/${jobID}/results`, { query, ...options });
+  }
+
+  /**
+   * Grade a finished run's calls again, without placing new calls: the same calls
+   * and metrics, with each metric's current version and the flows' current agent
+   * expectations. Use it after editing a metric or a flow's expectations, to see how
+   * the run you already have scores against them.
+   *
+   * The new values replace the run's current ones; earlier values stay in each
+   * metric value's history. The grading is billed like any metric collection. A run
+   * is re-scored one at a time: while one re-score runs, another is refused
+   * with 409.
+   *
+   * Returns immediately. Poll GET /v1/simulation/plan/job/{jobId}/rescore until
+   * `status` is COMPLETED or FAILED, then read the new values from GET
+   * /v1/simulation/plan/job/{jobId}/results.
+   *
+   * @example
+   * ```ts
+   * const response = await client.simulationRunPlanJob.rescore(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  rescore(jobID: string, options?: RequestOptions): APIPromise<SimulationRunPlanJobRescoreResponse> {
+    return this._client.post(path`/v1/simulation/plan/job/${jobID}/rescore`, options);
   }
 
   /**
@@ -1814,6 +1856,61 @@ export namespace SimulationRunPlanJobGetCostResponse {
   }
 }
 
+export interface SimulationRunPlanJobGetRescoreResponse {
+  data: SimulationRunPlanJobGetRescoreResponse.Data;
+}
+
+export namespace SimulationRunPlanJobGetRescoreResponse {
+  export interface Data {
+    /**
+     * When the grading finished. Null while it runs.
+     */
+    completedAt: string | null;
+
+    /**
+     * When the re-score was requested
+     */
+    createdAt: string;
+
+    /**
+     * When the run's debrief was queued for a rewrite after this re-score. Null until
+     * then, and for a run without a debrief.
+     */
+    debriefRequestedAt: string | null;
+
+    /**
+     * Why the re-score failed to start, when it did
+     */
+    errorMessage: string | null;
+
+    /**
+     * The simulation run plan job that was re-scored
+     */
+    jobId: string;
+
+    /**
+     * Re-score ID
+     */
+    rescoreId: string;
+
+    /**
+     * Conversations whose grading has finished
+     */
+    scoredConversations: number;
+
+    /**
+     * RUNNING while the calls are graded again, then COMPLETED. FAILED when the
+     * re-score could not start or its grading failed.
+     */
+    status: 'RUNNING' | 'COMPLETED' | 'FAILED';
+
+    /**
+     * Conversations this re-score grades
+     */
+    totalConversations: number;
+  }
+}
+
 export interface SimulationRunPlanJobGetResultsResponse {
   /**
    * Everything the run report shows, in one response.
@@ -3025,6 +3122,61 @@ export namespace SimulationRunPlanJobGetResultsResponse {
   }
 }
 
+export interface SimulationRunPlanJobRescoreResponse {
+  data: SimulationRunPlanJobRescoreResponse.Data;
+}
+
+export namespace SimulationRunPlanJobRescoreResponse {
+  export interface Data {
+    /**
+     * When the grading finished. Null while it runs.
+     */
+    completedAt: string | null;
+
+    /**
+     * When the re-score was requested
+     */
+    createdAt: string;
+
+    /**
+     * When the run's debrief was queued for a rewrite after this re-score. Null until
+     * then, and for a run without a debrief.
+     */
+    debriefRequestedAt: string | null;
+
+    /**
+     * Why the re-score failed to start, when it did
+     */
+    errorMessage: string | null;
+
+    /**
+     * The simulation run plan job that was re-scored
+     */
+    jobId: string;
+
+    /**
+     * Re-score ID
+     */
+    rescoreId: string;
+
+    /**
+     * Conversations whose grading has finished
+     */
+    scoredConversations: number;
+
+    /**
+     * RUNNING while the calls are graded again, then COMPLETED. FAILED when the
+     * re-score could not start or its grading failed.
+     */
+    status: 'RUNNING' | 'COMPLETED' | 'FAILED';
+
+    /**
+     * Conversations this re-score grades
+     */
+    totalConversations: number;
+  }
+}
+
 export interface SimulationRunPlanJobStartResponse {
   /**
    * Response when triggering a simulation run plan
@@ -3212,7 +3364,9 @@ export declare namespace SimulationRunPlanJob {
     type SimulationRunPlanJobCreateDebriefResponse as SimulationRunPlanJobCreateDebriefResponse,
     type SimulationRunPlanJobGetByIDResponse as SimulationRunPlanJobGetByIDResponse,
     type SimulationRunPlanJobGetCostResponse as SimulationRunPlanJobGetCostResponse,
+    type SimulationRunPlanJobGetRescoreResponse as SimulationRunPlanJobGetRescoreResponse,
     type SimulationRunPlanJobGetResultsResponse as SimulationRunPlanJobGetResultsResponse,
+    type SimulationRunPlanJobRescoreResponse as SimulationRunPlanJobRescoreResponse,
     type SimulationRunPlanJobStartResponse as SimulationRunPlanJobStartResponse,
     type SimulationRunPlanJobListParams as SimulationRunPlanJobListParams,
     type SimulationRunPlanJobCreateDebriefParams as SimulationRunPlanJobCreateDebriefParams,
