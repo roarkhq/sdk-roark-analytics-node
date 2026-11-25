@@ -821,7 +821,19 @@ export namespace MetricCreateDefinitionResponse {
        */
       headers: { [key: string]: string };
 
+      /**
+       * How many times Roark sends the request before recording an error. Null is the
+       * default, 3.
+       */
+      maxAttempts: number | null;
+
       method: 'GET' | 'POST';
+
+      /**
+       * How long Roark waits for each attempt, in milliseconds. Null is the
+       * default, 30000.
+       */
+      timeoutMs: number | null;
 
       /**
        * The URL the request is sent to, placeholders included
@@ -1939,7 +1951,19 @@ export namespace MetricListDefinitionsResponse {
        */
       headers: { [key: string]: string };
 
+      /**
+       * How many times Roark sends the request before recording an error. Null is the
+       * default, 3.
+       */
+      maxAttempts: number | null;
+
       method: 'GET' | 'POST';
+
+      /**
+       * How long Roark waits for each attempt, in milliseconds. Null is the
+       * default, 30000.
+       */
+      timeoutMs: number | null;
 
       /**
        * The URL the request is sent to, placeholders included
@@ -2906,7 +2930,19 @@ export namespace MetricUpdateDefinitionResponse {
        */
       headers: { [key: string]: string };
 
+      /**
+       * How many times Roark sends the request before recording an error. Null is the
+       * default, 3.
+       */
+      maxAttempts: number | null;
+
       method: 'GET' | 'POST';
+
+      /**
+       * How long Roark waits for each attempt, in milliseconds. Null is the
+       * default, 30000.
+       */
+      timeoutMs: number | null;
 
       /**
        * The URL the request is sent to, placeholders included
@@ -3358,9 +3394,22 @@ export declare namespace MetricCreateDefinitionParams {
       headers?: { [key: string]: string };
 
       /**
+       * How many times to send the request before recording an error: once, plus retries
+       * after a timeout, a connection failure or an HTTP 5xx. At most 5. Omit or pass
+       * null for 3.
+       */
+      maxAttempts?: number | null;
+
+      /**
        * GET or POST (default POST). A GET request has no body.
        */
       method?: 'GET' | 'POST';
+
+      /**
+       * How long to wait for each attempt, in milliseconds. At most 300000. Omit or pass
+       * null for 30000.
+       */
+      timeoutMs?: number | null;
     }
   }
 }
@@ -3533,9 +3582,22 @@ export namespace MetricUpdateDefinitionParams {
     headers?: { [key: string]: string };
 
     /**
+     * How many times to send the request before recording an error: once, plus retries
+     * after a timeout, a connection failure or an HTTP 5xx. At most 5. Omit or pass
+     * null for 3.
+     */
+    maxAttempts?: number | null;
+
+    /**
      * GET or POST (default POST). A GET request has no body.
      */
     method?: 'GET' | 'POST';
+
+    /**
+     * How long to wait for each attempt, in milliseconds. At most 300000. Omit or pass
+     * null for 30000.
+     */
+    timeoutMs?: number | null;
   }
 
   export interface ScaleLabel {
