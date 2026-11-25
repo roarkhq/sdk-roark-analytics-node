@@ -1636,13 +1636,20 @@ export namespace SimulationRunPlanJobGetByIDResponse {
         passRate: number | null;
 
         /**
-         * `passRate >= minPassRate`.
+         * `passRate >= minPassRate`. True for a check that was not applicable to any call.
          */
         passed: boolean;
 
         passedSims: number;
 
         metricName?: string | null;
+
+        /**
+         * Present and `true` when every call the check graded was not applicable to it
+         * (each value has `captureStatus: NOT_APPLICABLE`). It neither passes nor fails
+         * the run, and `passRate` is null.
+         */
+        notApplicable?: boolean;
       }
 
       export namespace Check {
@@ -3101,13 +3108,20 @@ export namespace SimulationRunPlanJobGetResultsResponse {
         passRate: number | null;
 
         /**
-         * `passRate >= minPassRate`.
+         * `passRate >= minPassRate`. True for a check that was not applicable to any call.
          */
         passed: boolean;
 
         passedSims: number;
 
         metricName?: string | null;
+
+        /**
+         * Present and `true` when every call the check graded was not applicable to it
+         * (each value has `captureStatus: NOT_APPLICABLE`). It neither passes nor fails
+         * the run, and `passRate` is null.
+         */
+        notApplicable?: boolean;
       }
 
       export namespace Check {
