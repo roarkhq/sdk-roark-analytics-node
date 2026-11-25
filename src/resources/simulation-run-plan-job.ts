@@ -432,6 +432,19 @@ export namespace SimulationRunPlanJobCreateDebriefResponse {
           body: string;
 
           heading: string | null;
+
+          /**
+           * Ids of the checks this text names. Empty when it names none, and on reports
+           * generated before references were recorded.
+           */
+          metricDefinitionIds: Array<string>;
+
+          /**
+           * Slugs of the failure themes this text is about. Each matches a `slug` in
+           * `themes`, which lists the calls. Empty when it is about none, and on reports
+           * generated before references were recorded.
+           */
+          themeSlugs: Array<string>;
         }
       }
 
@@ -442,6 +455,19 @@ export namespace SimulationRunPlanJobCreateDebriefResponse {
          * The calls the finding is about.
          */
         callIds: Array<string>;
+
+        /**
+         * Ids of the checks this text names. Empty when it names none, and on reports
+         * generated before references were recorded.
+         */
+        metricDefinitionIds: Array<string>;
+
+        /**
+         * Slugs of the failure themes this text is about. Each matches a `slug` in
+         * `themes`, which lists the calls. Empty when it is about none, and on reports
+         * generated before references were recorded.
+         */
+        themeSlugs: Array<string>;
 
         title: string;
       }
@@ -542,6 +568,19 @@ export namespace SimulationRunPlanJobCreateDebriefResponse {
          * The calls the finding is about.
          */
         callIds: Array<string>;
+
+        /**
+         * Ids of the checks this text names. Empty when it names none, and on reports
+         * generated before references were recorded.
+         */
+        metricDefinitionIds: Array<string>;
+
+        /**
+         * Slugs of the failure themes this text is about. Each matches a `slug` in
+         * `themes`, which lists the calls. Empty when it is about none, and on reports
+         * generated before references were recorded.
+         */
+        themeSlugs: Array<string>;
 
         title: string;
       }
@@ -2290,6 +2329,19 @@ export namespace SimulationRunPlanJobGetResultsResponse {
             body: string;
 
             heading: string | null;
+
+            /**
+             * Ids of the checks this text names. Empty when it names none, and on reports
+             * generated before references were recorded.
+             */
+            metricDefinitionIds: Array<string>;
+
+            /**
+             * Slugs of the failure themes this text is about. Each matches a `slug` in
+             * `themes`, which lists the calls. Empty when it is about none, and on reports
+             * generated before references were recorded.
+             */
+            themeSlugs: Array<string>;
           }
         }
 
@@ -2300,6 +2352,19 @@ export namespace SimulationRunPlanJobGetResultsResponse {
            * The calls the finding is about.
            */
           callIds: Array<string>;
+
+          /**
+           * Ids of the checks this text names. Empty when it names none, and on reports
+           * generated before references were recorded.
+           */
+          metricDefinitionIds: Array<string>;
+
+          /**
+           * Slugs of the failure themes this text is about. Each matches a `slug` in
+           * `themes`, which lists the calls. Empty when it is about none, and on reports
+           * generated before references were recorded.
+           */
+          themeSlugs: Array<string>;
 
           title: string;
         }
@@ -2400,6 +2465,19 @@ export namespace SimulationRunPlanJobGetResultsResponse {
            * The calls the finding is about.
            */
           callIds: Array<string>;
+
+          /**
+           * Ids of the checks this text names. Empty when it names none, and on reports
+           * generated before references were recorded.
+           */
+          metricDefinitionIds: Array<string>;
+
+          /**
+           * Slugs of the failure themes this text is about. Each matches a `slug` in
+           * `themes`, which lists the calls. Empty when it is about none, and on reports
+           * generated before references were recorded.
+           */
+          themeSlugs: Array<string>;
 
           title: string;
         }
