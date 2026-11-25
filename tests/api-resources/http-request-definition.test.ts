@@ -29,7 +29,9 @@ describe('resource httpRequestDefinition', () => {
       body: 'string',
       description: 'description',
       headers: { foo: 'string' },
+      maxAttempts: 1,
       method: 'POST',
+      timeoutMs: 120000,
     });
   });
 
@@ -53,7 +55,9 @@ describe('resource httpRequestDefinition', () => {
           body: 'string',
           description: 'description',
           headers: { foo: 'string' },
+          maxAttempts: 1,
           method: 'POST',
+          timeoutMs: 120000,
           url: 'https://example.com',
         },
         { path: '/_stainless_unknown_path' },

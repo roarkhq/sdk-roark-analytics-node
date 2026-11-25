@@ -189,7 +189,11 @@ export namespace Bundle {
 
     headers?: { [key: string]: string };
 
+    maxAttempts?: number;
+
     method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+
+    timeoutMs?: number;
   }
 
   export interface PersonaConfig {
@@ -570,7 +574,11 @@ export namespace Bundle {
 
       headers?: { [key: string]: string };
 
+      maxAttempts?: number;
+
       method?: 'GET' | 'POST';
+
+      timeoutMs?: number;
     }
   }
 
@@ -1792,7 +1800,11 @@ export namespace Bundle {
 
       headers?: { [key: string]: string };
 
+      maxAttempts?: number;
+
       method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+
+      timeoutMs?: number;
     }
 
     export interface PersonaConfig {
@@ -2173,7 +2185,11 @@ export namespace Bundle {
 
         headers?: { [key: string]: string };
 
+        maxAttempts?: number;
+
         method?: 'GET' | 'POST';
+
+        timeoutMs?: number;
       }
     }
 
@@ -3566,7 +3582,11 @@ export namespace ConfigApplyParams {
 
     headers?: { [key: string]: string };
 
+    maxAttempts?: number;
+
     method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+
+    timeoutMs?: number;
   }
 
   export interface PersonaConfig {
@@ -3947,7 +3967,11 @@ export namespace ConfigApplyParams {
 
       headers?: { [key: string]: string };
 
+      maxAttempts?: number;
+
       method?: 'GET' | 'POST';
+
+      timeoutMs?: number;
     }
   }
 
@@ -5169,7 +5193,11 @@ export namespace ConfigApplyParams {
 
       headers?: { [key: string]: string };
 
+      maxAttempts?: number;
+
       method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+
+      timeoutMs?: number;
     }
 
     export interface PersonaConfig {
@@ -5550,7 +5578,11 @@ export namespace ConfigApplyParams {
 
         headers?: { [key: string]: string };
 
+        maxAttempts?: number;
+
         method?: 'GET' | 'POST';
+
+        timeoutMs?: number;
       }
     }
 
@@ -6754,7 +6786,11 @@ export namespace ConfigDiffParams {
 
     headers?: { [key: string]: string };
 
+    maxAttempts?: number;
+
     method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+
+    timeoutMs?: number;
   }
 
   export interface PersonaConfig {
@@ -7135,7 +7171,11 @@ export namespace ConfigDiffParams {
 
       headers?: { [key: string]: string };
 
+      maxAttempts?: number;
+
       method?: 'GET' | 'POST';
+
+      timeoutMs?: number;
     }
   }
 
@@ -8357,7 +8397,11 @@ export namespace ConfigDiffParams {
 
       headers?: { [key: string]: string };
 
+      maxAttempts?: number;
+
       method?: 'POST' | 'PUT' | 'PATCH' | 'GET';
+
+      timeoutMs?: number;
     }
 
     export interface PersonaConfig {
@@ -8738,7 +8782,11 @@ export namespace ConfigDiffParams {
 
         headers?: { [key: string]: string };
 
+        maxAttempts?: number;
+
         method?: 'GET' | 'POST';
+
+        timeoutMs?: number;
       }
     }
 
