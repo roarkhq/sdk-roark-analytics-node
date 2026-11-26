@@ -91,6 +91,23 @@ export namespace AgentCreateResponse {
     id: string;
 
     /**
+     * What the agent handles. Null until it has been said.
+     */
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    > | null;
+
+    /**
      * Creation timestamp in ISO 8601 format
      */
     createdAt: string;
@@ -124,8 +141,15 @@ export namespace AgentCreateResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in the customer's own words, when none of the listed ones fits
+     * (industry OTHER)
+     */
+    industryDescription: string | null;
 
     /**
      * Name of the agent
@@ -136,6 +160,11 @@ export namespace AgentCreateResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    /**
+     * The business's website, which simulation setup reads
+     */
+    websiteUrl: string | null;
   }
 }
 
@@ -151,6 +180,23 @@ export namespace AgentUpdateResponse {
     id: string;
 
     /**
+     * What the agent handles. Null until it has been said.
+     */
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    > | null;
+
+    /**
      * Creation timestamp in ISO 8601 format
      */
     createdAt: string;
@@ -184,8 +230,15 @@ export namespace AgentUpdateResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in the customer's own words, when none of the listed ones fits
+     * (industry OTHER)
+     */
+    industryDescription: string | null;
 
     /**
      * Name of the agent
@@ -196,6 +249,11 @@ export namespace AgentUpdateResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    /**
+     * The business's website, which simulation setup reads
+     */
+    websiteUrl: string | null;
   }
 }
 
@@ -213,6 +271,23 @@ export namespace AgentListResponse {
     id: string;
 
     /**
+     * What the agent handles. Null until it has been said.
+     */
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    > | null;
+
+    /**
      * Creation timestamp in ISO 8601 format
      */
     createdAt: string;
@@ -246,8 +321,15 @@ export namespace AgentListResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in the customer's own words, when none of the listed ones fits
+     * (industry OTHER)
+     */
+    industryDescription: string | null;
 
     /**
      * Name of the agent
@@ -258,6 +340,11 @@ export namespace AgentListResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    /**
+     * The business's website, which simulation setup reads
+     */
+    websiteUrl: string | null;
   }
 
   export interface Pagination {
@@ -290,6 +377,23 @@ export namespace AgentBuildResponse {
     id: string;
 
     /**
+     * What the agent handles. Null until it has been said.
+     */
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    > | null;
+
+    /**
      * Creation timestamp in ISO 8601 format
      */
     createdAt: string;
@@ -323,8 +427,15 @@ export namespace AgentBuildResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in the customer's own words, when none of the listed ones fits
+     * (industry OTHER)
+     */
+    industryDescription: string | null;
 
     /**
      * Name of the agent
@@ -335,6 +446,11 @@ export namespace AgentBuildResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    /**
+     * The business's website, which simulation setup reads
+     */
+    websiteUrl: string | null;
   }
 }
 
@@ -350,6 +466,23 @@ export namespace AgentGetByIDResponse {
     id: string;
 
     /**
+     * What the agent handles. Null until it has been said.
+     */
+    capabilities: Array<
+      | 'APPOINTMENT_BOOKING'
+      | 'FAQ'
+      | 'IDENTITY_VERIFICATION'
+      | 'ACCOUNT_MANAGEMENT'
+      | 'BILLING_AND_PAYMENTS'
+      | 'ORDER_MANAGEMENT'
+      | 'TROUBLESHOOTING'
+      | 'CALL_ROUTING'
+      | 'LEAD_QUALIFICATION'
+      | 'COLLECTIONS'
+      | 'OUTBOUND_CALLING'
+    > | null;
+
+    /**
      * Creation timestamp in ISO 8601 format
      */
     createdAt: string;
@@ -383,8 +516,15 @@ export namespace AgentGetByIDResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in the customer's own words, when none of the listed ones fits
+     * (industry OTHER)
+     */
+    industryDescription: string | null;
 
     /**
      * Name of the agent
@@ -395,6 +535,11 @@ export namespace AgentGetByIDResponse {
      * Last update timestamp in ISO 8601 format
      */
     updatedAt: string;
+
+    /**
+     * The business's website, which simulation setup reads
+     */
+    websiteUrl: string | null;
   }
 }
 
@@ -403,6 +548,23 @@ export interface AgentCreateParams {
    * Name of the agent
    */
   name: string;
+
+  /**
+   * What the agent handles. Simulation setup tests each one.
+   */
+  capabilities?: Array<
+    | 'APPOINTMENT_BOOKING'
+    | 'FAQ'
+    | 'IDENTITY_VERIFICATION'
+    | 'ACCOUNT_MANAGEMENT'
+    | 'BILLING_AND_PAYMENTS'
+    | 'ORDER_MANAGEMENT'
+    | 'TROUBLESHOOTING'
+    | 'CALL_ROUTING'
+    | 'LEAD_QUALIFICATION'
+    | 'COLLECTIONS'
+    | 'OUTBOUND_CALLING'
+  > | null;
 
   /**
    * Custom identifier for the agent. Must be unique in the project.
@@ -438,13 +600,25 @@ export interface AgentCreateParams {
     | 'HOME_SERVICES'
     | 'RESTAURANTS'
     | 'EDUCATION'
+    | 'RECRUITING_AND_STAFFING'
     | 'OTHER'
     | null;
+
+  /**
+   * The industry in your own words, when none of the listed ones fits. Use it with
+   * industry OTHER.
+   */
+  industryDescription?: string | null;
 
   /**
    * The agent's system prompt.
    */
   prompt?: string | null;
+
+  /**
+   * The business's website. Simulation setup reads it.
+   */
+  websiteUrl?: string | null;
 }
 
 export namespace AgentCreateParams {
@@ -483,14 +657,65 @@ export namespace AgentCreateParams {
 
 export interface AgentUpdateParams {
   /**
+   * What the agent handles. Simulation setup tests each one.
+   */
+  capabilities?: Array<
+    | 'APPOINTMENT_BOOKING'
+    | 'FAQ'
+    | 'IDENTITY_VERIFICATION'
+    | 'ACCOUNT_MANAGEMENT'
+    | 'BILLING_AND_PAYMENTS'
+    | 'ORDER_MANAGEMENT'
+    | 'TROUBLESHOOTING'
+    | 'CALL_ROUTING'
+    | 'LEAD_QUALIFICATION'
+    | 'COLLECTIONS'
+    | 'OUTBOUND_CALLING'
+  > | null;
+
+  /**
    * Description of the agent
    */
   description?: string | null;
 
   /**
+   * The industry the agent serves.
+   */
+  industry?:
+    | 'HEALTHCARE'
+    | 'FINANCIAL_SERVICES'
+    | 'INSURANCE'
+    | 'DEBT_COLLECTION'
+    | 'RETAIL'
+    | 'TRAVEL_AND_HOSPITALITY'
+    | 'TELECOMMUNICATIONS'
+    | 'TECHNOLOGY'
+    | 'PUBLIC_SECTOR'
+    | 'UTILITIES'
+    | 'LOGISTICS'
+    | 'AUTOMOTIVE'
+    | 'HOME_SERVICES'
+    | 'RESTAURANTS'
+    | 'EDUCATION'
+    | 'RECRUITING_AND_STAFFING'
+    | 'OTHER'
+    | null;
+
+  /**
+   * The industry in your own words, when none of the listed ones fits. Use it with
+   * industry OTHER.
+   */
+  industryDescription?: string | null;
+
+  /**
    * Name of the agent
    */
   name?: string;
+
+  /**
+   * The business's website. Simulation setup reads it.
+   */
+  websiteUrl?: string | null;
 }
 
 export interface AgentListParams {
@@ -514,6 +739,54 @@ export interface AgentBuildParams {
   name: string;
 
   /**
+   * What the agent handles. Recorded on the agent, so its simulation setup tests
+   * each.
+   */
+  capabilities?: Array<
+    | 'APPOINTMENT_BOOKING'
+    | 'FAQ'
+    | 'IDENTITY_VERIFICATION'
+    | 'ACCOUNT_MANAGEMENT'
+    | 'BILLING_AND_PAYMENTS'
+    | 'ORDER_MANAGEMENT'
+    | 'TROUBLESHOOTING'
+    | 'CALL_ROUTING'
+    | 'LEAD_QUALIFICATION'
+    | 'COLLECTIONS'
+    | 'OUTBOUND_CALLING'
+  > | null;
+
+  /**
+   * The industry the agent serves. Recorded on the agent, so its simulation setup
+   * starts from that industry.
+   */
+  industry?:
+    | 'HEALTHCARE'
+    | 'FINANCIAL_SERVICES'
+    | 'INSURANCE'
+    | 'DEBT_COLLECTION'
+    | 'RETAIL'
+    | 'TRAVEL_AND_HOSPITALITY'
+    | 'TELECOMMUNICATIONS'
+    | 'TECHNOLOGY'
+    | 'PUBLIC_SECTOR'
+    | 'UTILITIES'
+    | 'LOGISTICS'
+    | 'AUTOMOTIVE'
+    | 'HOME_SERVICES'
+    | 'RESTAURANTS'
+    | 'EDUCATION'
+    | 'RECRUITING_AND_STAFFING'
+    | 'OTHER'
+    | null;
+
+  /**
+   * The industry in your own words, when none of the listed ones fits. Use it with
+   * industry OTHER.
+   */
+  industryDescription?: string | null;
+
+  /**
    * Optional text model the hosted agent thinks with. Roark's default when omitted
    */
   llm?: AgentBuildParams.Llm | null;
@@ -533,6 +806,11 @@ export interface AgentBuildParams {
    * delivery to it.
    */
   voice?: string | null;
+
+  /**
+   * The business's website. The agent's prompt is written from the facts it states.
+   */
+  websiteUrl?: string | null;
 }
 
 export namespace AgentBuildParams {
