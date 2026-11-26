@@ -471,7 +471,9 @@ export namespace SimulationJobGetByIDResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -532,6 +534,8 @@ export namespace SimulationJobGetByIDResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -1034,7 +1038,9 @@ export namespace SimulationJobLookupResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -1095,6 +1101,8 @@ export namespace SimulationJobLookupResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
