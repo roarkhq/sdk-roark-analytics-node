@@ -222,8 +222,11 @@ export namespace MetricPolicyCreateResponse {
         screeningBrief?: string;
 
         /**
-         * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
-         * every tool the agent has.
+         * Tool invocation metrics: the tool definitions to score. Required, with at least
+         * one tool, for Tool Invocation Correct, Order Correct, Parameters Correct and
+         * Result Correct, which score only the tools listed (a tool added to the agent
+         * later is not scored until it is listed). Tool Invocation Count and Tool
+         * Hallucination score every tool call when it is empty or omitted.
          */
         toolDefinitionIds?: Array<string>;
 
@@ -378,8 +381,11 @@ export namespace MetricPolicyUpdateResponse {
         screeningBrief?: string;
 
         /**
-         * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
-         * every tool the agent has.
+         * Tool invocation metrics: the tool definitions to score. Required, with at least
+         * one tool, for Tool Invocation Correct, Order Correct, Parameters Correct and
+         * Result Correct, which score only the tools listed (a tool added to the agent
+         * later is not scored until it is listed). Tool Invocation Count and Tool
+         * Hallucination score every tool call when it is empty or omitted.
          */
         toolDefinitionIds?: Array<string>;
 
@@ -536,8 +542,11 @@ export namespace MetricPolicyListResponse {
         screeningBrief?: string;
 
         /**
-         * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
-         * every tool the agent has.
+         * Tool invocation metrics: the tool definitions to score. Required, with at least
+         * one tool, for Tool Invocation Correct, Order Correct, Parameters Correct and
+         * Result Correct, which score only the tools listed (a tool added to the agent
+         * later is not scored until it is listed). Tool Invocation Count and Tool
+         * Hallucination score every tool call when it is empty or omitted.
          */
         toolDefinitionIds?: Array<string>;
 
@@ -722,8 +731,11 @@ export namespace MetricPolicyGetByIDResponse {
         screeningBrief?: string;
 
         /**
-         * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
-         * every tool the agent has.
+         * Tool invocation metrics: the tool definitions to score. Required, with at least
+         * one tool, for Tool Invocation Correct, Order Correct, Parameters Correct and
+         * Result Correct, which score only the tools listed (a tool added to the agent
+         * later is not scored until it is listed). Tool Invocation Count and Tool
+         * Hallucination score every tool call when it is empty or omitted.
          */
         toolDefinitionIds?: Array<string>;
 
@@ -819,8 +831,11 @@ export namespace MetricPolicyCreateParams {
       screeningBrief?: string;
 
       /**
-       * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
-       * every tool the agent has.
+       * Tool invocation metrics: the tool definitions to score. Required, with at least
+       * one tool, for Tool Invocation Correct, Order Correct, Parameters Correct and
+       * Result Correct, which score only the tools listed (a tool added to the agent
+       * later is not scored until it is listed). Tool Invocation Count and Tool
+       * Hallucination score every tool call when it is empty or omitted.
        */
       toolDefinitionIds?: Array<string>;
 
@@ -988,8 +1003,11 @@ export namespace MetricPolicyUpdateParams {
       screeningBrief?: string;
 
       /**
-       * Tool invocation metrics: the tool definitions to score. Empty or omitted scores
-       * every tool the agent has.
+       * Tool invocation metrics: the tool definitions to score. Required, with at least
+       * one tool, for Tool Invocation Correct, Order Correct, Parameters Correct and
+       * Result Correct, which score only the tools listed (a tool added to the agent
+       * later is not scored until it is listed). Tool Invocation Count and Tool
+       * Hallucination score every tool call when it is empty or omitted.
        */
       toolDefinitionIds?: Array<string>;
 
