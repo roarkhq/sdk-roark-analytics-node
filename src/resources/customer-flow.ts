@@ -1179,7 +1179,9 @@ export namespace CustomerFlowCreateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -1240,6 +1242,8 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -1688,7 +1692,9 @@ export namespace CustomerFlowCreateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -1749,6 +1755,8 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -2323,7 +2331,9 @@ export namespace CustomerFlowCreateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -2384,6 +2394,8 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -2575,7 +2587,9 @@ export namespace CustomerFlowCreateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -2636,6 +2650,8 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -3097,7 +3113,9 @@ export namespace CustomerFlowCreateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -3158,6 +3176,8 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -3349,7 +3369,9 @@ export namespace CustomerFlowCreateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -3410,6 +3432,8 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -3939,7 +3963,9 @@ export namespace CustomerFlowCreateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -4000,6 +4026,8 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -4441,7 +4469,9 @@ export namespace CustomerFlowCreateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -4502,6 +4532,8 @@ export namespace CustomerFlowCreateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -5092,7 +5124,9 @@ export namespace CustomerFlowUpdateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -5153,6 +5187,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -5601,7 +5637,9 @@ export namespace CustomerFlowUpdateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -5662,6 +5700,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -6236,7 +6276,9 @@ export namespace CustomerFlowUpdateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -6297,6 +6339,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -6488,7 +6532,9 @@ export namespace CustomerFlowUpdateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -6549,6 +6595,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -7010,7 +7058,9 @@ export namespace CustomerFlowUpdateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -7071,6 +7121,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -7262,7 +7314,9 @@ export namespace CustomerFlowUpdateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -7323,6 +7377,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -7852,7 +7908,9 @@ export namespace CustomerFlowUpdateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -7913,6 +7971,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -8354,7 +8414,9 @@ export namespace CustomerFlowUpdateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -8415,6 +8477,8 @@ export namespace CustomerFlowUpdateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -9008,7 +9072,9 @@ export namespace CustomerFlowListResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -9069,6 +9135,8 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -9517,7 +9585,9 @@ export namespace CustomerFlowListResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -9578,6 +9648,8 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -10152,7 +10224,9 @@ export namespace CustomerFlowListResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -10213,6 +10287,8 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -10404,7 +10480,9 @@ export namespace CustomerFlowListResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -10465,6 +10543,8 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -10926,7 +11006,9 @@ export namespace CustomerFlowListResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -10987,6 +11069,8 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -11178,7 +11262,9 @@ export namespace CustomerFlowListResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -11239,6 +11325,8 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -11768,7 +11856,9 @@ export namespace CustomerFlowListResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -11829,6 +11919,8 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -12270,7 +12362,9 @@ export namespace CustomerFlowListResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -12331,6 +12425,8 @@ export namespace CustomerFlowListResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -12951,7 +13047,9 @@ export namespace CustomerFlowDuplicateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -13012,6 +13110,8 @@ export namespace CustomerFlowDuplicateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -13460,7 +13560,9 @@ export namespace CustomerFlowDuplicateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -13521,6 +13623,8 @@ export namespace CustomerFlowDuplicateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -14095,7 +14199,9 @@ export namespace CustomerFlowDuplicateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -14156,6 +14262,8 @@ export namespace CustomerFlowDuplicateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -14347,7 +14455,9 @@ export namespace CustomerFlowDuplicateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -14408,6 +14518,8 @@ export namespace CustomerFlowDuplicateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -14869,7 +14981,9 @@ export namespace CustomerFlowDuplicateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -14930,6 +15044,8 @@ export namespace CustomerFlowDuplicateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -15121,7 +15237,9 @@ export namespace CustomerFlowDuplicateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -15182,6 +15300,8 @@ export namespace CustomerFlowDuplicateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -15711,7 +15831,9 @@ export namespace CustomerFlowDuplicateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -15772,6 +15894,8 @@ export namespace CustomerFlowDuplicateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -16213,7 +16337,9 @@ export namespace CustomerFlowDuplicateResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -16274,6 +16400,8 @@ export namespace CustomerFlowDuplicateResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -16864,7 +16992,9 @@ export namespace CustomerFlowGetByIDResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -16925,6 +17055,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -17373,7 +17505,9 @@ export namespace CustomerFlowGetByIDResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -17434,6 +17568,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -18008,7 +18144,9 @@ export namespace CustomerFlowGetByIDResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -18069,6 +18207,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -18260,7 +18400,9 @@ export namespace CustomerFlowGetByIDResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -18321,6 +18463,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -18782,7 +18926,9 @@ export namespace CustomerFlowGetByIDResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -18843,6 +18989,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -19034,7 +19182,9 @@ export namespace CustomerFlowGetByIDResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -19095,6 +19245,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -19624,7 +19776,9 @@ export namespace CustomerFlowGetByIDResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -19685,6 +19839,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -20126,7 +20282,9 @@ export namespace CustomerFlowGetByIDResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -20187,6 +20345,8 @@ export namespace CustomerFlowGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -20608,7 +20768,9 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -20669,6 +20831,8 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -21073,7 +21237,9 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -21134,6 +21300,8 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -21325,7 +21493,9 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -21386,6 +21556,8 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -21770,7 +21942,9 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -21831,6 +22005,8 @@ export namespace CustomerFlowReplaceGraphResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**
@@ -22235,7 +22411,9 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -22296,6 +22474,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -22700,7 +22880,9 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -22761,6 +22943,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -22952,7 +23136,9 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -23013,6 +23199,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -23397,7 +23585,9 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -23458,6 +23648,8 @@ export namespace CustomerFlowUpdateHappyPathResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**

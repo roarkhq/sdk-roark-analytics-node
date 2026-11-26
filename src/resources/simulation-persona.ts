@@ -231,7 +231,9 @@ export namespace SimulationPersonaCreateResponse {
       | 'ZH'
       | 'TR'
       | 'PT'
-      | 'HE';
+      | 'HE'
+      | 'GU'
+      | 'MR';
 
     /**
      * How reliable the persona's memory is
@@ -292,6 +294,8 @@ export namespace SimulationPersonaCreateResponse {
       | 'TR'
       | 'PT'
       | 'HE'
+      | 'GU'
+      | 'MR'
     >;
 
     /**
@@ -486,7 +490,9 @@ export namespace SimulationPersonaUpdateResponse {
       | 'ZH'
       | 'TR'
       | 'PT'
-      | 'HE';
+      | 'HE'
+      | 'GU'
+      | 'MR';
 
     /**
      * How reliable the persona's memory is
@@ -547,6 +553,8 @@ export namespace SimulationPersonaUpdateResponse {
       | 'TR'
       | 'PT'
       | 'HE'
+      | 'GU'
+      | 'MR'
     >;
 
     /**
@@ -743,7 +751,9 @@ export namespace SimulationPersonaListResponse {
       | 'ZH'
       | 'TR'
       | 'PT'
-      | 'HE';
+      | 'HE'
+      | 'GU'
+      | 'MR';
 
     /**
      * How reliable the persona's memory is
@@ -804,6 +814,8 @@ export namespace SimulationPersonaListResponse {
       | 'TR'
       | 'PT'
       | 'HE'
+      | 'GU'
+      | 'MR'
     >;
 
     /**
@@ -1015,7 +1027,9 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'ZH'
       | 'TR'
       | 'PT'
-      | 'HE';
+      | 'HE'
+      | 'GU'
+      | 'MR';
 
     /**
      * How reliable the persona's memory is
@@ -1076,6 +1090,8 @@ export namespace SimulationPersonaGetByIDResponse {
       | 'TR'
       | 'PT'
       | 'HE'
+      | 'GU'
+      | 'MR'
     >;
 
     /**
@@ -1169,7 +1185,9 @@ export interface SimulationPersonaCreateParams {
     | 'ZH'
     | 'TR'
     | 'PT'
-    | 'HE';
+    | 'HE'
+    | 'GU'
+    | 'MR';
 
   /**
    * The name the agent will identify as during conversations
@@ -1332,6 +1350,8 @@ export interface SimulationPersonaCreateParams {
     | 'TR'
     | 'PT'
     | 'HE'
+    | 'GU'
+    | 'MR'
   >;
 }
 
@@ -1494,7 +1514,9 @@ export interface SimulationPersonaUpdateParams {
     | 'ZH'
     | 'TR'
     | 'PT'
-    | 'HE';
+    | 'HE'
+    | 'GU'
+    | 'MR';
 
   /**
    * How reliable the persona's memory is
@@ -1560,6 +1582,8 @@ export interface SimulationPersonaUpdateParams {
     | 'TR'
     | 'PT'
     | 'HE'
+    | 'GU'
+    | 'MR'
   >;
 }
 

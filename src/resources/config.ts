@@ -244,7 +244,9 @@ export namespace Bundle {
       | 'ZH'
       | 'TR'
       | 'PT'
-      | 'HE';
+      | 'HE'
+      | 'GU'
+      | 'MR';
 
     name: string;
 
@@ -329,6 +331,8 @@ export namespace Bundle {
       | 'TR'
       | 'PT'
       | 'HE'
+      | 'GU'
+      | 'MR'
     >;
   }
 
@@ -1855,7 +1859,9 @@ export namespace Bundle {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       name: string;
 
@@ -1940,6 +1946,8 @@ export namespace Bundle {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
     }
 
@@ -3637,7 +3645,9 @@ export namespace ConfigApplyParams {
       | 'ZH'
       | 'TR'
       | 'PT'
-      | 'HE';
+      | 'HE'
+      | 'GU'
+      | 'MR';
 
     name: string;
 
@@ -3722,6 +3732,8 @@ export namespace ConfigApplyParams {
       | 'TR'
       | 'PT'
       | 'HE'
+      | 'GU'
+      | 'MR'
     >;
   }
 
@@ -5248,7 +5260,9 @@ export namespace ConfigApplyParams {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       name: string;
 
@@ -5333,6 +5347,8 @@ export namespace ConfigApplyParams {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
     }
 
@@ -6841,7 +6857,9 @@ export namespace ConfigDiffParams {
       | 'ZH'
       | 'TR'
       | 'PT'
-      | 'HE';
+      | 'HE'
+      | 'GU'
+      | 'MR';
 
     name: string;
 
@@ -6926,6 +6944,8 @@ export namespace ConfigDiffParams {
       | 'TR'
       | 'PT'
       | 'HE'
+      | 'GU'
+      | 'MR'
     >;
   }
 
@@ -8452,7 +8472,9 @@ export namespace ConfigDiffParams {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       name: string;
 
@@ -8537,6 +8559,8 @@ export namespace ConfigDiffParams {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
     }
 
