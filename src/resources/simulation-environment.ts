@@ -145,6 +145,12 @@ export namespace SimulationEnvironmentCreateResponse {
     lineCustom: Data.LineCustom | null;
 
     /**
+     * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+     * speech). Combines with the phone and lineQuality.
+     */
+    lineNoise: number;
+
+    /**
      * The phone line the simulated caller is on: packet loss applied to its 20 ms
      * audio packets, per direction. The loss pattern is seeded per call, so a redial
      * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -156,6 +162,16 @@ export namespace SimulationEnvironmentCreateResponse {
     lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
     name: string;
+
+    /**
+     * The phone the simulated caller is on: the codecs the call passes through, both
+     * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+     * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+     * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+     * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+     * mobile codec.
+     */
+    phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
     /**
      * Last update timestamp in ISO 8601 format
@@ -264,6 +280,12 @@ export namespace SimulationEnvironmentUpdateResponse {
     lineCustom: Data.LineCustom | null;
 
     /**
+     * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+     * speech). Combines with the phone and lineQuality.
+     */
+    lineNoise: number;
+
+    /**
      * The phone line the simulated caller is on: packet loss applied to its 20 ms
      * audio packets, per direction. The loss pattern is seeded per call, so a redial
      * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -275,6 +297,16 @@ export namespace SimulationEnvironmentUpdateResponse {
     lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
     name: string;
+
+    /**
+     * The phone the simulated caller is on: the codecs the call passes through, both
+     * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+     * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+     * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+     * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+     * mobile codec.
+     */
+    phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
     /**
      * Last update timestamp in ISO 8601 format
@@ -384,6 +416,12 @@ export namespace SimulationEnvironmentListResponse {
     lineCustom: Data.LineCustom | null;
 
     /**
+     * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+     * speech). Combines with the phone and lineQuality.
+     */
+    lineNoise: number;
+
+    /**
      * The phone line the simulated caller is on: packet loss applied to its 20 ms
      * audio packets, per direction. The loss pattern is seeded per call, so a redial
      * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -395,6 +433,16 @@ export namespace SimulationEnvironmentListResponse {
     lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
     name: string;
+
+    /**
+     * The phone the simulated caller is on: the codecs the call passes through, both
+     * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+     * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+     * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+     * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+     * mobile codec.
+     */
+    phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
     /**
      * Last update timestamp in ISO 8601 format
@@ -538,6 +586,12 @@ export namespace SimulationEnvironmentGetByIDResponse {
     lineCustom: Data.LineCustom | null;
 
     /**
+     * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+     * speech). Combines with the phone and lineQuality.
+     */
+    lineNoise: number;
+
+    /**
      * The phone line the simulated caller is on: packet loss applied to its 20 ms
      * audio packets, per direction. The loss pattern is seeded per call, so a redial
      * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -549,6 +603,16 @@ export namespace SimulationEnvironmentGetByIDResponse {
     lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
     name: string;
+
+    /**
+     * The phone the simulated caller is on: the codecs the call passes through, both
+     * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+     * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+     * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+     * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+     * mobile codec.
+     */
+    phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
     /**
      * Last update timestamp in ISO 8601 format
@@ -653,6 +717,12 @@ export interface SimulationEnvironmentCreateParams {
   lineCustom?: SimulationEnvironmentCreateParams.LineCustom | null;
 
   /**
+   * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+   * speech). Combines with the phone and lineQuality. Defaults to 0.
+   */
+  lineNoise?: number;
+
+  /**
    * The phone line the simulated caller is on: packet loss applied to its 20 ms
    * audio packets, per direction. The loss pattern is seeded per call, so a redial
    * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -662,6 +732,16 @@ export interface SimulationEnvironmentCreateParams {
    * burst of up to 10 packets (omit it for random loss). Defaults to CLEAR.
    */
   lineQuality?: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
+
+  /**
+   * The phone the simulated caller is on: the codecs the call passes through, both
+   * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+   * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+   * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+   * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+   * mobile codec. Defaults to null.
+   */
+  phone?: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 }
 
 export namespace SimulationEnvironmentCreateParams {
@@ -753,6 +833,12 @@ export interface SimulationEnvironmentUpdateParams {
   lineCustom?: SimulationEnvironmentUpdateParams.LineCustom | null;
 
   /**
+   * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+   * speech). Combines with the phone and lineQuality. Defaults to 0.
+   */
+  lineNoise?: number;
+
+  /**
    * The phone line the simulated caller is on: packet loss applied to its 20 ms
    * audio packets, per direction. The loss pattern is seeded per call, so a redial
    * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -767,6 +853,16 @@ export interface SimulationEnvironmentUpdateParams {
    * Display name, shown wherever a flow variant references the environment
    */
   name?: string;
+
+  /**
+   * The phone the simulated caller is on: the codecs the call passes through, both
+   * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+   * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+   * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+   * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+   * mobile codec. Defaults to null.
+   */
+  phone?: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 }
 
 export namespace SimulationEnvironmentUpdateParams {
