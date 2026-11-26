@@ -906,6 +906,12 @@ export namespace CustomerFlowCreateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -917,6 +923,16 @@ export namespace CustomerFlowCreateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -1399,6 +1415,12 @@ export namespace CustomerFlowCreateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -1410,6 +1432,16 @@ export namespace CustomerFlowCreateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -1992,6 +2024,12 @@ export namespace CustomerFlowCreateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -2003,6 +2041,16 @@ export namespace CustomerFlowCreateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -2750,6 +2798,12 @@ export namespace CustomerFlowCreateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -2761,6 +2815,16 @@ export namespace CustomerFlowCreateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -3544,6 +3608,12 @@ export namespace CustomerFlowCreateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -3555,6 +3625,16 @@ export namespace CustomerFlowCreateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -4030,6 +4110,12 @@ export namespace CustomerFlowCreateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -4041,6 +4127,16 @@ export namespace CustomerFlowCreateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -4636,6 +4732,12 @@ export namespace CustomerFlowUpdateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -4647,6 +4749,16 @@ export namespace CustomerFlowUpdateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -5129,6 +5241,12 @@ export namespace CustomerFlowUpdateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -5140,6 +5258,16 @@ export namespace CustomerFlowUpdateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -5722,6 +5850,12 @@ export namespace CustomerFlowUpdateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -5733,6 +5867,16 @@ export namespace CustomerFlowUpdateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -6480,6 +6624,12 @@ export namespace CustomerFlowUpdateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -6491,6 +6641,16 @@ export namespace CustomerFlowUpdateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -7274,6 +7434,12 @@ export namespace CustomerFlowUpdateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -7285,6 +7451,16 @@ export namespace CustomerFlowUpdateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -7760,6 +7936,12 @@ export namespace CustomerFlowUpdateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -7771,6 +7953,16 @@ export namespace CustomerFlowUpdateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -8369,6 +8561,12 @@ export namespace CustomerFlowListResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -8380,6 +8578,16 @@ export namespace CustomerFlowListResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -8862,6 +9070,12 @@ export namespace CustomerFlowListResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -8873,6 +9087,16 @@ export namespace CustomerFlowListResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -9455,6 +9679,12 @@ export namespace CustomerFlowListResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -9466,6 +9696,16 @@ export namespace CustomerFlowListResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -10213,6 +10453,12 @@ export namespace CustomerFlowListResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -10224,6 +10470,16 @@ export namespace CustomerFlowListResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -11007,6 +11263,12 @@ export namespace CustomerFlowListResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -11018,6 +11280,16 @@ export namespace CustomerFlowListResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -11493,6 +11765,12 @@ export namespace CustomerFlowListResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -11504,6 +11782,16 @@ export namespace CustomerFlowListResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -12129,6 +12417,12 @@ export namespace CustomerFlowDuplicateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -12140,6 +12434,16 @@ export namespace CustomerFlowDuplicateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -12622,6 +12926,12 @@ export namespace CustomerFlowDuplicateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -12633,6 +12943,16 @@ export namespace CustomerFlowDuplicateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -13215,6 +13535,12 @@ export namespace CustomerFlowDuplicateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -13226,6 +13552,16 @@ export namespace CustomerFlowDuplicateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -13973,6 +14309,12 @@ export namespace CustomerFlowDuplicateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -13984,6 +14326,16 @@ export namespace CustomerFlowDuplicateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -14767,6 +15119,12 @@ export namespace CustomerFlowDuplicateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -14778,6 +15136,16 @@ export namespace CustomerFlowDuplicateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -15253,6 +15621,12 @@ export namespace CustomerFlowDuplicateResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -15264,6 +15638,16 @@ export namespace CustomerFlowDuplicateResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -15859,6 +16243,12 @@ export namespace CustomerFlowGetByIDResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -15870,6 +16260,16 @@ export namespace CustomerFlowGetByIDResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -16352,6 +16752,12 @@ export namespace CustomerFlowGetByIDResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -16363,6 +16769,16 @@ export namespace CustomerFlowGetByIDResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -16945,6 +17361,12 @@ export namespace CustomerFlowGetByIDResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -16956,6 +17378,16 @@ export namespace CustomerFlowGetByIDResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -17703,6 +18135,12 @@ export namespace CustomerFlowGetByIDResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -17714,6 +18152,16 @@ export namespace CustomerFlowGetByIDResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -18497,6 +18945,12 @@ export namespace CustomerFlowGetByIDResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -18508,6 +18962,16 @@ export namespace CustomerFlowGetByIDResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -18983,6 +19447,12 @@ export namespace CustomerFlowGetByIDResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -18994,6 +19464,16 @@ export namespace CustomerFlowGetByIDResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -19449,6 +19929,12 @@ export namespace CustomerFlowReplaceGraphResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -19460,6 +19946,16 @@ export namespace CustomerFlowReplaceGraphResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -19901,6 +20397,12 @@ export namespace CustomerFlowReplaceGraphResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -19912,6 +20414,16 @@ export namespace CustomerFlowReplaceGraphResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -20579,6 +21091,12 @@ export namespace CustomerFlowReplaceGraphResponse {
         lineCustom: Environment.LineCustom | null;
 
         /**
+         * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+         * speech). Combines with the phone and lineQuality.
+         */
+        lineNoise: number;
+
+        /**
          * The phone line the simulated caller is on: packet loss applied to its 20 ms
          * audio packets, per direction. The loss pattern is seeded per call, so a redial
          * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -20590,6 +21108,16 @@ export namespace CustomerFlowReplaceGraphResponse {
         lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
         name: string;
+
+        /**
+         * The phone the simulated caller is on: the codecs the call passes through, both
+         * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+         * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+         * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+         * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+         * mobile codec.
+         */
+        phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
         /**
          * Last update timestamp in ISO 8601 format
@@ -21028,6 +21556,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       lineCustom: Environment.LineCustom | null;
 
       /**
+       * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+       * speech). Combines with the phone and lineQuality.
+       */
+      lineNoise: number;
+
+      /**
        * The phone line the simulated caller is on: packet loss applied to its 20 ms
        * audio packets, per direction. The loss pattern is seeded per call, so a redial
        * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -21039,6 +21573,16 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
       name: string;
+
+      /**
+       * The phone the simulated caller is on: the codecs the call passes through, both
+       * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+       * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+       * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+       * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+       * mobile codec.
+       */
+      phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -21480,6 +22024,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       lineCustom: Environment.LineCustom | null;
 
       /**
+       * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+       * speech). Combines with the phone and lineQuality.
+       */
+      lineNoise: number;
+
+      /**
        * The phone line the simulated caller is on: packet loss applied to its 20 ms
        * audio packets, per direction. The loss pattern is seeded per call, so a redial
        * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -21491,6 +22041,16 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
       name: string;
+
+      /**
+       * The phone the simulated caller is on: the codecs the call passes through, both
+       * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+       * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+       * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+       * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+       * mobile codec.
+       */
+      phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
       /**
        * Last update timestamp in ISO 8601 format
@@ -22158,6 +22718,12 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       lineCustom: Environment.LineCustom | null;
 
       /**
+       * Hiss on the line, both ways, from 0 (none) to 1 (heavy, about 10 dB under phone
+       * speech). Combines with the phone and lineQuality.
+       */
+      lineNoise: number;
+
+      /**
        * The phone line the simulated caller is on: packet loss applied to its 20 ms
        * audio packets, per direction. The loss pattern is seeded per call, so a redial
        * loses the same packets. CLEAR: No loss. MINOR_LOSS: 1% random, both ways.
@@ -22169,6 +22735,16 @@ export namespace CustomerFlowUpdateHappyPathResponse {
       lineQuality: 'CLEAR' | 'MINOR_LOSS' | 'CELL_EDGE' | 'POOR_CONNECTION' | 'ONE_WAY_DEGRADED' | 'CUSTOM';
 
       name: string;
+
+      /**
+       * The phone the simulated caller is on: the codecs the call passes through, both
+       * ways, on top of any loss in lineQuality. Null is no phone. LANDLINE: The narrow
+       * band of a phone handset and the codec of the phone network. MOBILE: The narrow
+       * band and the compressed voice codec of a mobile call. BLUETOOTH: A mobile on a
+       * car kit or headset: the Bluetooth link adds fizz under the voice, then the
+       * mobile codec.
+       */
+      phone: 'LANDLINE' | 'MOBILE' | 'BLUETOOTH' | null;
 
       /**
        * Last update timestamp in ISO 8601 format
