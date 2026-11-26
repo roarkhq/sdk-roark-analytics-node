@@ -62,6 +62,7 @@ describe('resource simulation', () => {
       capabilities: ['APPOINTMENT_BOOKING'],
       explore: { enabled: true, maxConversationMinutes: 1, maxConversations: 1 },
       industry: 'HEALTHCARE',
+      industryDescription: 'Funeral services',
       testingInstructions: 'testingInstructions',
       websiteUrl: 'https://example.com',
     });

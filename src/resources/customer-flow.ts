@@ -749,6 +749,23 @@ export namespace CustomerFlowCreateResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -782,8 +799,15 @@ export namespace CustomerFlowCreateResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -794,6 +818,11 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -1851,6 +1880,23 @@ export namespace CustomerFlowCreateResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -1884,8 +1930,15 @@ export namespace CustomerFlowCreateResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -1896,6 +1949,11 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -3458,6 +3516,23 @@ export namespace CustomerFlowCreateResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -3491,8 +3566,15 @@ export namespace CustomerFlowCreateResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -3503,6 +3585,11 @@ export namespace CustomerFlowCreateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -4575,6 +4662,23 @@ export namespace CustomerFlowUpdateResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -4608,8 +4712,15 @@ export namespace CustomerFlowUpdateResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -4620,6 +4731,11 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -5677,6 +5793,23 @@ export namespace CustomerFlowUpdateResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -5710,8 +5843,15 @@ export namespace CustomerFlowUpdateResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -5722,6 +5862,11 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -7284,6 +7429,23 @@ export namespace CustomerFlowUpdateResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -7317,8 +7479,15 @@ export namespace CustomerFlowUpdateResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -7329,6 +7498,11 @@ export namespace CustomerFlowUpdateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -8404,6 +8578,23 @@ export namespace CustomerFlowListResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -8437,8 +8628,15 @@ export namespace CustomerFlowListResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -8449,6 +8647,11 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -9506,6 +9709,23 @@ export namespace CustomerFlowListResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -9539,8 +9759,15 @@ export namespace CustomerFlowListResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -9551,6 +9778,11 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -11113,6 +11345,23 @@ export namespace CustomerFlowListResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -11146,8 +11395,15 @@ export namespace CustomerFlowListResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -11158,6 +11414,11 @@ export namespace CustomerFlowListResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -12260,6 +12521,23 @@ export namespace CustomerFlowDuplicateResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -12293,8 +12571,15 @@ export namespace CustomerFlowDuplicateResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -12305,6 +12590,11 @@ export namespace CustomerFlowDuplicateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -13362,6 +13652,23 @@ export namespace CustomerFlowDuplicateResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -13395,8 +13702,15 @@ export namespace CustomerFlowDuplicateResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -13407,6 +13721,11 @@ export namespace CustomerFlowDuplicateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -14969,6 +15288,23 @@ export namespace CustomerFlowDuplicateResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -15002,8 +15338,15 @@ export namespace CustomerFlowDuplicateResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -15014,6 +15357,11 @@ export namespace CustomerFlowDuplicateResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -16086,6 +16434,23 @@ export namespace CustomerFlowGetByIDResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -16119,8 +16484,15 @@ export namespace CustomerFlowGetByIDResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -16131,6 +16503,11 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -17188,6 +17565,23 @@ export namespace CustomerFlowGetByIDResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -17221,8 +17615,15 @@ export namespace CustomerFlowGetByIDResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -17233,6 +17634,11 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**
@@ -18795,6 +19201,23 @@ export namespace CustomerFlowGetByIDResponse {
       id: string;
 
       /**
+       * What the agent handles. Null until it has been said.
+       */
+      capabilities: Array<
+        | 'APPOINTMENT_BOOKING'
+        | 'FAQ'
+        | 'IDENTITY_VERIFICATION'
+        | 'ACCOUNT_MANAGEMENT'
+        | 'BILLING_AND_PAYMENTS'
+        | 'ORDER_MANAGEMENT'
+        | 'TROUBLESHOOTING'
+        | 'CALL_ROUTING'
+        | 'LEAD_QUALIFICATION'
+        | 'COLLECTIONS'
+        | 'OUTBOUND_CALLING'
+      > | null;
+
+      /**
        * Creation timestamp in ISO 8601 format
        */
       createdAt: string;
@@ -18828,8 +19251,15 @@ export namespace CustomerFlowGetByIDResponse {
         | 'HOME_SERVICES'
         | 'RESTAURANTS'
         | 'EDUCATION'
+        | 'RECRUITING_AND_STAFFING'
         | 'OTHER'
         | null;
+
+      /**
+       * The industry in the customer's own words, when none of the listed ones fits
+       * (industry OTHER)
+       */
+      industryDescription: string | null;
 
       /**
        * Name of the agent
@@ -18840,6 +19270,11 @@ export namespace CustomerFlowGetByIDResponse {
        * Last update timestamp in ISO 8601 format
        */
       updatedAt: string;
+
+      /**
+       * The business's website, which simulation setup reads
+       */
+      websiteUrl: string | null;
     }
 
     /**

@@ -275,8 +275,14 @@ export namespace SimulationAnswerResourceGenerationResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in your own words, when none of the listed ones fits
+     */
+    industryDescription: string | null;
 
     items: Array<Data.Item>;
 
@@ -547,8 +553,14 @@ export namespace SimulationCancelResourceGenerationResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in your own words, when none of the listed ones fits
+     */
+    industryDescription: string | null;
 
     items: Array<Data.Item>;
 
@@ -819,8 +831,14 @@ export namespace SimulationGenerateResourcesResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in your own words, when none of the listed ones fits
+     */
+    industryDescription: string | null;
 
     items: Array<Data.Item>;
 
@@ -1091,8 +1109,14 @@ export namespace SimulationGetResourceGenerationResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in your own words, when none of the listed ones fits
+     */
+    industryDescription: string | null;
 
     items: Array<Data.Item>;
 
@@ -1363,8 +1387,14 @@ export namespace SimulationGuideResourceGenerationResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in your own words, when none of the listed ones fits
+     */
+    industryDescription: string | null;
 
     items: Array<Data.Item>;
 
@@ -1631,8 +1661,14 @@ export namespace SimulationListResourceGenerationsResponse {
       | 'HOME_SERVICES'
       | 'RESTAURANTS'
       | 'EDUCATION'
+      | 'RECRUITING_AND_STAFFING'
       | 'OTHER'
       | null;
+
+    /**
+     * The industry in your own words, when none of the listed ones fits
+     */
+    industryDescription: string | null;
 
     items: Array<Data.Item>;
 
@@ -1987,7 +2023,14 @@ export interface SimulationGenerateResourcesParams {
     | 'HOME_SERVICES'
     | 'RESTAURANTS'
     | 'EDUCATION'
+    | 'RECRUITING_AND_STAFFING'
     | 'OTHER';
+
+  /**
+   * The industry in your own words, when none of the listed ones fits. Use it with
+   * industry OTHER.
+   */
+  industryDescription?: string;
 
   /**
    * What you want tested, in your own words. Each scenario you describe becomes a
