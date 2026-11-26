@@ -32,7 +32,9 @@ describe('resource simulationEnvironment', () => {
         fromAgent: { packetLossPercent: 3, meanBurstPackets: 3 },
         toAgent: { packetLossPercent: 3, meanBurstPackets: 3 },
       },
+      lineNoise: 0.4,
       lineQuality: 'CELL_EDGE',
+      phone: 'MOBILE',
     });
   });
 
@@ -60,8 +62,10 @@ describe('resource simulationEnvironment', () => {
             fromAgent: { packetLossPercent: 3, meanBurstPackets: 3 },
             toAgent: { packetLossPercent: 3, meanBurstPackets: 3 },
           },
+          lineNoise: 0.4,
           lineQuality: 'CELL_EDGE',
           name: 'Busy call centre',
+          phone: 'MOBILE',
         },
         { path: '/_stainless_unknown_path' },
       ),
