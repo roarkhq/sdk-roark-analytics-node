@@ -1121,7 +1121,9 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'ZH'
           | 'TR'
           | 'PT'
-          | 'HE';
+          | 'HE'
+          | 'GU'
+          | 'MR';
 
         /**
          * How reliable the persona's memory is
@@ -1182,6 +1184,8 @@ export namespace SimulationRunPlanJobGetByIDResponse {
           | 'TR'
           | 'PT'
           | 'HE'
+          | 'GU'
+          | 'MR'
         >;
 
         /**

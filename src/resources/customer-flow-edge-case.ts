@@ -467,7 +467,9 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -528,6 +530,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -932,7 +936,9 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -993,6 +999,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -1184,7 +1192,9 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -1245,6 +1255,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -1629,7 +1641,9 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -1690,6 +1704,8 @@ export namespace CustomerFlowEdgeCaseUpdateResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -2093,7 +2109,9 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -2154,6 +2172,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -2558,7 +2578,9 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -2619,6 +2641,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -2810,7 +2834,9 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -2871,6 +2897,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -3255,7 +3283,9 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -3316,6 +3346,8 @@ export namespace CustomerFlowEdgeCaseAddResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -3719,7 +3751,9 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -3780,6 +3814,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -4184,7 +4220,9 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -4245,6 +4283,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -4436,7 +4476,9 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -4497,6 +4539,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
@@ -4881,7 +4925,9 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'ZH'
         | 'TR'
         | 'PT'
-        | 'HE';
+        | 'HE'
+        | 'GU'
+        | 'MR';
 
       /**
        * How reliable the persona's memory is
@@ -4942,6 +4988,8 @@ export namespace CustomerFlowEdgeCasePromoteResponse {
         | 'TR'
         | 'PT'
         | 'HE'
+        | 'GU'
+        | 'MR'
       >;
 
       /**
