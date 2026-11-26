@@ -1,5 +1,17 @@
 # Changelog
 
+## [9.24.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v9.23.0...v9.24.0) (2026-11-26)
+
+
+### Features
+
+* **api:** api update ([#1527](https://github.com/roarkhq/sdk-roark-analytics-node/issues/1527)) ([a240694](https://github.com/roarkhq/sdk-roark-analytics-node/commit/a240694c66f9e0c96b01d03fda55a64a8edfa2a3))
+
+
+### Chores
+
+* fold next into main ([53dfcb2](https://github.com/roarkhq/sdk-roark-analytics-node/commit/53dfcb2437544db7a92089890c3ce4e7af409abd))
+
 ## [9.23.0](https://github.com/roarkhq/sdk-roark-analytics-node/compare/v9.22.0...v9.23.0) (2026-11-26)
 
 
