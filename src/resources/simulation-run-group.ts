@@ -215,6 +215,8 @@ export namespace SimulationRunGroupCreateResponse {
           metricName: string;
 
           p95Label: string | null;
+
+          nonZeroCount?: number;
         }
 
         export interface ExecutiveSummary {
@@ -769,6 +771,8 @@ export namespace SimulationRunGroupGetByIDResponse {
           metricName: string;
 
           p95Label: string | null;
+
+          nonZeroCount?: number;
         }
 
         export interface ExecutiveSummary {
@@ -1173,6 +1177,8 @@ export namespace SimulationRunGroupRegenerateReportResponse {
         metricName: string;
 
         p95Label: string | null;
+
+        nonZeroCount?: number;
       }
 
       export interface ExecutiveSummary {

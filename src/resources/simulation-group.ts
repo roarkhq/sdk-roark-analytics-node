@@ -638,6 +638,8 @@ export namespace SimulationGroupRunResponse {
           metricName: string;
 
           p95Label: string | null;
+
+          nonZeroCount?: number;
         }
 
         export interface ExecutiveSummary {
