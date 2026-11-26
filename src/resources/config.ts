@@ -1121,7 +1121,7 @@ export namespace Bundle {
 
   export namespace AlertConfig {
     export interface AlertThresholdTrigger {
-      aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+      aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN' | 'SUM';
 
       metric: string;
 
@@ -2736,7 +2736,7 @@ export namespace Bundle {
 
     export namespace AlertConfig {
       export interface AlertThresholdTrigger {
-        aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+        aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN' | 'SUM';
 
         metric: string;
 
@@ -4522,7 +4522,7 @@ export namespace ConfigApplyParams {
 
   export namespace AlertConfig {
     export interface AlertThresholdTrigger {
-      aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+      aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN' | 'SUM';
 
       metric: string;
 
@@ -6137,7 +6137,7 @@ export namespace ConfigApplyParams {
 
     export namespace AlertConfig {
       export interface AlertThresholdTrigger {
-        aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+        aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN' | 'SUM';
 
         metric: string;
 
@@ -7734,7 +7734,7 @@ export namespace ConfigDiffParams {
 
   export namespace AlertConfig {
     export interface AlertThresholdTrigger {
-      aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+      aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN' | 'SUM';
 
       metric: string;
 
@@ -9349,7 +9349,7 @@ export namespace ConfigDiffParams {
 
     export namespace AlertConfig {
       export interface AlertThresholdTrigger {
-        aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN';
+        aggregation: 'COUNT' | 'RATE_PER_MINUTE' | 'MEAN' | 'SUM';
 
         metric: string;
 
