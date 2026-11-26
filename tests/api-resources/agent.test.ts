@@ -22,6 +22,7 @@ describe('resource agent', () => {
   test('create: required and optional params', async () => {
     const response = await client.agent.create({
       name: 'x',
+      capabilities: ['APPOINTMENT_BOOKING'],
       customId: 'customId',
       description: 'description',
       endpoint: {
@@ -32,7 +33,9 @@ describe('resource agent', () => {
         value: 'value',
       },
       industry: 'HEALTHCARE',
+      industryDescription: 'industryDescription',
       prompt: 'x',
+      websiteUrl: 'https://example.com',
     });
   });
 
@@ -53,8 +56,12 @@ describe('resource agent', () => {
       client.agent.update(
         'agentId',
         {
+          capabilities: ['APPOINTMENT_BOOKING'],
           description: 'description',
+          industry: 'HEALTHCARE',
+          industryDescription: 'industryDescription',
           name: 'x',
+          websiteUrl: 'https://example.com',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -101,10 +108,14 @@ describe('resource agent', () => {
     const response = await client.agent.build({
       jobDescription: 'x',
       name: 'x',
+      capabilities: ['APPOINTMENT_BOOKING'],
+      industry: 'HEALTHCARE',
+      industryDescription: 'industryDescription',
       llm: { model: 'x', provider: 'OPENAI' },
       stt: { model: 'x', provider: 'DEEPGRAM' },
       tts: { provider: 'CARTESIA', voiceId: 'x', model: 'x' },
       voice: 'voice',
+      websiteUrl: 'https://example.com',
     });
   });
 
