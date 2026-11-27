@@ -639,6 +639,8 @@ export namespace SimulationGroupRunResponse {
 
           p95Label: string | null;
 
+          isCore?: true;
+
           nonZeroCount?: number;
         }
 

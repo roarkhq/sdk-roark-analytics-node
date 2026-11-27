@@ -216,6 +216,8 @@ export namespace SimulationRunGroupCreateResponse {
 
           p95Label: string | null;
 
+          isCore?: true;
+
           nonZeroCount?: number;
         }
 
@@ -772,6 +774,8 @@ export namespace SimulationRunGroupGetByIDResponse {
 
           p95Label: string | null;
 
+          isCore?: true;
+
           nonZeroCount?: number;
         }
 
@@ -1177,6 +1181,8 @@ export namespace SimulationRunGroupRegenerateReportResponse {
         metricName: string;
 
         p95Label: string | null;
+
+        isCore?: true;
 
         nonZeroCount?: number;
       }

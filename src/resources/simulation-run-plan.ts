@@ -189,6 +189,16 @@ export namespace SimulationRunPlanCreateResponse {
         | null;
 
       /**
+       * The Core Analysis metrics every run collects on every simulation, on top of
+       * `metrics`: timing, latency, turn-taking and how the call ended. Read-only: a run
+       * adds them by itself, and a simulation collects only the ones that apply to it (a
+       * chat skips the call-only ones). They cost nothing and never decide pass or fail.
+       * To gate a run on one, add its check to `metrics`, such as
+       * `agent_responsive_check`.
+       */
+      coreMetrics: Array<RunPlan.CoreMetric>;
+
+      /**
        * When the run plan was created
        */
       createdAt: string;
@@ -230,8 +240,10 @@ export namespace SimulationRunPlanCreateResponse {
       flows: Array<RunPlan.Flow>;
 
       /**
-       * Whether this plan lets a run add metrics by itself off the attached flows, on
-       * top of its own list. False means the `metrics` list is the whole answer.
+       * Whether this plan lets a run add metrics by itself off the attached flows (Agent
+       * Expectations, Keypad Entry), on top of its own list. False means no flow-earned
+       * metrics: the run collects `metrics` plus the Core Analysis set in `coreMetrics`,
+       * which every run collects whatever this is set to.
        */
       includeAutomaticMetrics: boolean;
 
@@ -346,6 +358,18 @@ export namespace SimulationRunPlanCreateResponse {
     export namespace RunPlan {
       export interface AgentEndpoint {
         id: string;
+      }
+
+      export interface CoreMetric {
+        /**
+         * Metric definition ID
+         */
+        id: string;
+
+        /**
+         * Stable metric slug
+         */
+        slug: string;
       }
 
       export interface Evaluator {
@@ -619,6 +643,16 @@ export namespace SimulationRunPlanUpdateResponse {
       | null;
 
     /**
+     * The Core Analysis metrics every run collects on every simulation, on top of
+     * `metrics`: timing, latency, turn-taking and how the call ended. Read-only: a run
+     * adds them by itself, and a simulation collects only the ones that apply to it (a
+     * chat skips the call-only ones). They cost nothing and never decide pass or fail.
+     * To gate a run on one, add its check to `metrics`, such as
+     * `agent_responsive_check`.
+     */
+    coreMetrics: Array<Data.CoreMetric>;
+
+    /**
      * When the run plan was created
      */
     createdAt: string;
@@ -660,8 +694,10 @@ export namespace SimulationRunPlanUpdateResponse {
     flows: Array<Data.Flow>;
 
     /**
-     * Whether this plan lets a run add metrics by itself off the attached flows, on
-     * top of its own list. False means the `metrics` list is the whole answer.
+     * Whether this plan lets a run add metrics by itself off the attached flows (Agent
+     * Expectations, Keypad Entry), on top of its own list. False means no flow-earned
+     * metrics: the run collects `metrics` plus the Core Analysis set in `coreMetrics`,
+     * which every run collects whatever this is set to.
      */
     includeAutomaticMetrics: boolean;
 
@@ -776,6 +812,18 @@ export namespace SimulationRunPlanUpdateResponse {
   export namespace Data {
     export interface AgentEndpoint {
       id: string;
+    }
+
+    export interface CoreMetric {
+      /**
+       * Metric definition ID
+       */
+      id: string;
+
+      /**
+       * Stable metric slug
+       */
+      slug: string;
     }
 
     export interface Evaluator {
@@ -1013,6 +1061,16 @@ export namespace SimulationRunPlanListResponse {
       | null;
 
     /**
+     * The Core Analysis metrics every run collects on every simulation, on top of
+     * `metrics`: timing, latency, turn-taking and how the call ended. Read-only: a run
+     * adds them by itself, and a simulation collects only the ones that apply to it (a
+     * chat skips the call-only ones). They cost nothing and never decide pass or fail.
+     * To gate a run on one, add its check to `metrics`, such as
+     * `agent_responsive_check`.
+     */
+    coreMetrics: Array<Data.CoreMetric>;
+
+    /**
      * When the run plan was created
      */
     createdAt: string;
@@ -1054,8 +1112,10 @@ export namespace SimulationRunPlanListResponse {
     flows: Array<Data.Flow>;
 
     /**
-     * Whether this plan lets a run add metrics by itself off the attached flows, on
-     * top of its own list. False means the `metrics` list is the whole answer.
+     * Whether this plan lets a run add metrics by itself off the attached flows (Agent
+     * Expectations, Keypad Entry), on top of its own list. False means no flow-earned
+     * metrics: the run collects `metrics` plus the Core Analysis set in `coreMetrics`,
+     * which every run collects whatever this is set to.
      */
     includeAutomaticMetrics: boolean;
 
@@ -1170,6 +1230,18 @@ export namespace SimulationRunPlanListResponse {
   export namespace Data {
     export interface AgentEndpoint {
       id: string;
+    }
+
+    export interface CoreMetric {
+      /**
+       * Metric definition ID
+       */
+      id: string;
+
+      /**
+       * Stable metric slug
+       */
+      slug: string;
     }
 
     export interface Evaluator {
@@ -1435,6 +1507,16 @@ export namespace SimulationRunPlanGetByIDResponse {
       | null;
 
     /**
+     * The Core Analysis metrics every run collects on every simulation, on top of
+     * `metrics`: timing, latency, turn-taking and how the call ended. Read-only: a run
+     * adds them by itself, and a simulation collects only the ones that apply to it (a
+     * chat skips the call-only ones). They cost nothing and never decide pass or fail.
+     * To gate a run on one, add its check to `metrics`, such as
+     * `agent_responsive_check`.
+     */
+    coreMetrics: Array<Data.CoreMetric>;
+
+    /**
      * When the run plan was created
      */
     createdAt: string;
@@ -1476,8 +1558,10 @@ export namespace SimulationRunPlanGetByIDResponse {
     flows: Array<Data.Flow>;
 
     /**
-     * Whether this plan lets a run add metrics by itself off the attached flows, on
-     * top of its own list. False means the `metrics` list is the whole answer.
+     * Whether this plan lets a run add metrics by itself off the attached flows (Agent
+     * Expectations, Keypad Entry), on top of its own list. False means no flow-earned
+     * metrics: the run collects `metrics` plus the Core Analysis set in `coreMetrics`,
+     * which every run collects whatever this is set to.
      */
     includeAutomaticMetrics: boolean;
 
@@ -1592,6 +1676,18 @@ export namespace SimulationRunPlanGetByIDResponse {
   export namespace Data {
     export interface AgentEndpoint {
       id: string;
+    }
+
+    export interface CoreMetric {
+      /**
+       * Metric definition ID
+       */
+      id: string;
+
+      /**
+       * Stable metric slug
+       */
+      slug: string;
     }
 
     export interface Evaluator {
@@ -1937,10 +2033,11 @@ export declare namespace SimulationRunPlanCreateParams {
      * the agent is expected to press keys. Both grade something authored on the flow
      * that nothing else measures, which is why it is on by default.
      *
-     * Set false when the `metrics` list is meant to be exhaustive: a plan testing only
+     * Set false when no flow-earned metric should be added: a plan testing only
      * whether the caller can complete the flow may not want the agent graded on its
-     * expectations as well. False also pins the plan against any automatic metric
-     * Roark adds later.
+     * expectations as well. False also pins the plan against any flow-earned metric
+     * Roark adds later. It does not affect the Core Analysis metrics (`coreMetrics` on
+     * the plan), which every run collects and which never decide pass or fail.
      */
     includeAutomaticMetrics?: boolean;
 
