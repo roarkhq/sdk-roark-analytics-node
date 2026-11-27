@@ -366,6 +366,12 @@ export namespace Bundle {
 
       expectations?: Array<string>;
 
+      holdInstructions?: string;
+
+      holdMaxSeconds?: number;
+
+      holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
+
       openingLine?: string;
 
       prompt?: string;
@@ -379,6 +385,12 @@ export namespace Bundle {
       environment?: string;
 
       expectations?: Array<string>;
+
+      holdInstructions?: string;
+
+      holdMaxSeconds?: number;
+
+      holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
 
       includeFlowExpectations?: boolean;
 
@@ -1981,6 +1993,12 @@ export namespace Bundle {
 
         expectations?: Array<string>;
 
+        holdInstructions?: string;
+
+        holdMaxSeconds?: number;
+
+        holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
+
         openingLine?: string;
 
         prompt?: string;
@@ -1994,6 +2012,12 @@ export namespace Bundle {
         environment?: string;
 
         expectations?: Array<string>;
+
+        holdInstructions?: string;
+
+        holdMaxSeconds?: number;
+
+        holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
 
         includeFlowExpectations?: boolean;
 
@@ -3767,6 +3791,12 @@ export namespace ConfigApplyParams {
 
       expectations?: Array<string>;
 
+      holdInstructions?: string;
+
+      holdMaxSeconds?: number;
+
+      holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
+
       openingLine?: string;
 
       prompt?: string;
@@ -3780,6 +3810,12 @@ export namespace ConfigApplyParams {
       environment?: string;
 
       expectations?: Array<string>;
+
+      holdInstructions?: string;
+
+      holdMaxSeconds?: number;
+
+      holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
 
       includeFlowExpectations?: boolean;
 
@@ -5382,6 +5418,12 @@ export namespace ConfigApplyParams {
 
         expectations?: Array<string>;
 
+        holdInstructions?: string;
+
+        holdMaxSeconds?: number;
+
+        holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
+
         openingLine?: string;
 
         prompt?: string;
@@ -5395,6 +5437,12 @@ export namespace ConfigApplyParams {
         environment?: string;
 
         expectations?: Array<string>;
+
+        holdInstructions?: string;
+
+        holdMaxSeconds?: number;
+
+        holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
 
         includeFlowExpectations?: boolean;
 
@@ -6979,6 +7027,12 @@ export namespace ConfigDiffParams {
 
       expectations?: Array<string>;
 
+      holdInstructions?: string;
+
+      holdMaxSeconds?: number;
+
+      holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
+
       openingLine?: string;
 
       prompt?: string;
@@ -6992,6 +7046,12 @@ export namespace ConfigDiffParams {
       environment?: string;
 
       expectations?: Array<string>;
+
+      holdInstructions?: string;
+
+      holdMaxSeconds?: number;
+
+      holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
 
       includeFlowExpectations?: boolean;
 
@@ -8594,6 +8654,12 @@ export namespace ConfigDiffParams {
 
         expectations?: Array<string>;
 
+        holdInstructions?: string;
+
+        holdMaxSeconds?: number;
+
+        holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
+
         openingLine?: string;
 
         prompt?: string;
@@ -8607,6 +8673,12 @@ export namespace ConfigDiffParams {
         environment?: string;
 
         expectations?: Array<string>;
+
+        holdInstructions?: string;
+
+        holdMaxSeconds?: number;
+
+        holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER';
 
         includeFlowExpectations?: boolean;
 
