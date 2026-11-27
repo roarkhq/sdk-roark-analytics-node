@@ -148,12 +148,12 @@ export class CustomerFlow extends APIResource {
   }
 
   /**
-   * Updates the happy path's title, persona, environment, brief or expectations.
-   * Omitted fields are left alone; `additionalExpectations` replaces the set
-   * wholesale rather than appending.
+   * Updates the happy path's title, persona, environment, brief, hold settings or
+   * expectations. Omitted fields are left alone; `additionalExpectations` replaces
+   * the set wholesale rather than appending.
    *
-   * Its persona and environment are what the edge cases inherit, so changing them
-   * here changes every edge case that does not name its own.
+   * Its persona, environment and hold settings are what the edge cases inherit, so
+   * changing them here changes every edge case that does not name its own.
    *
    * @example
    * ```ts
@@ -850,6 +850,32 @@ export namespace CustomerFlowCreateResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -1361,6 +1387,32 @@ export namespace CustomerFlowCreateResponse {
        * project.
        */
       environment: HappyPath.Environment | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -1992,6 +2044,32 @@ export namespace CustomerFlowCreateResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<EdgeCase.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -2774,6 +2852,32 @@ export namespace CustomerFlowCreateResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<HappyPath.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -3640,6 +3744,32 @@ export namespace CustomerFlowCreateResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -4144,6 +4274,32 @@ export namespace CustomerFlowCreateResponse {
        * project.
        */
       environment: HappyPath.Environment | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -4795,6 +4951,32 @@ export namespace CustomerFlowUpdateResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -5306,6 +5488,32 @@ export namespace CustomerFlowUpdateResponse {
        * project.
        */
       environment: HappyPath.Environment | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -5937,6 +6145,32 @@ export namespace CustomerFlowUpdateResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<EdgeCase.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -6719,6 +6953,32 @@ export namespace CustomerFlowUpdateResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<HappyPath.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -7585,6 +7845,32 @@ export namespace CustomerFlowUpdateResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -8089,6 +8375,32 @@ export namespace CustomerFlowUpdateResponse {
        * project.
        */
       environment: HappyPath.Environment | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -8743,6 +9055,32 @@ export namespace CustomerFlowListResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -9254,6 +9592,32 @@ export namespace CustomerFlowListResponse {
        * project.
        */
       environment: HappyPath.Environment | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -9885,6 +10249,32 @@ export namespace CustomerFlowListResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<EdgeCase.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -10667,6 +11057,32 @@ export namespace CustomerFlowListResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<HappyPath.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -11533,6 +11949,32 @@ export namespace CustomerFlowListResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -12037,6 +12479,32 @@ export namespace CustomerFlowListResponse {
        * project.
        */
       environment: HappyPath.Environment | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -12718,6 +13186,32 @@ export namespace CustomerFlowDuplicateResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -13229,6 +13723,32 @@ export namespace CustomerFlowDuplicateResponse {
        * project.
        */
       environment: HappyPath.Environment | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -13860,6 +14380,32 @@ export namespace CustomerFlowDuplicateResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<EdgeCase.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -14642,6 +15188,32 @@ export namespace CustomerFlowDuplicateResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<HappyPath.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -15508,6 +16080,32 @@ export namespace CustomerFlowDuplicateResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -16012,6 +16610,32 @@ export namespace CustomerFlowDuplicateResponse {
        * project.
        */
       environment: HappyPath.Environment | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -16663,6 +17287,32 @@ export namespace CustomerFlowGetByIDResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -17174,6 +17824,32 @@ export namespace CustomerFlowGetByIDResponse {
        * project.
        */
       environment: HappyPath.Environment | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -17805,6 +18481,32 @@ export namespace CustomerFlowGetByIDResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<EdgeCase.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -18587,6 +19289,32 @@ export namespace CustomerFlowGetByIDResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<HappyPath.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -19453,6 +20181,32 @@ export namespace CustomerFlowGetByIDResponse {
       environment: EdgeCase.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -19959,6 +20713,32 @@ export namespace CustomerFlowGetByIDResponse {
       environment: HappyPath.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -20439,6 +21219,32 @@ export namespace CustomerFlowReplaceGraphResponse {
       environment: ScriptedFlowVariant.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -20898,6 +21704,32 @@ export namespace CustomerFlowReplaceGraphResponse {
        * when the brief inherits the happy path's: read the happy path's list.
        */
       handoffPersonas: Array<ImprovFlowVariant.HandoffPersona>;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -21619,6 +22451,32 @@ export namespace CustomerFlowReplaceGraphResponse {
       environment: VoicemailFlowVariant.Environment | null;
 
       /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+      /**
        * Whether this variant is graded on the flow's agentExpectations as well as its
        * additionalExpectations. False grades it on its additionalExpectations only.
        * Always true on the happy path.
@@ -22082,6 +22940,32 @@ export namespace CustomerFlowUpdateHappyPathResponse {
     environment: ScriptedFlowVariant.Environment | null;
 
     /**
+     * CUSTOM only: when the simulated customer waits quietly, written as instructions
+     * it follows. It stays silent until the agent speaks again or the longest wait
+     * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+     * characters.
+     */
+    holdInstructions: string | null;
+
+    /**
+     * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+     * out the simulated customer takes the turn back. Null uses the default, 180.
+     * Ignored when holdMode is NEVER.
+     */
+    holdMaxSeconds: number | null;
+
+    /**
+     * How the simulated customer waits quietly on hold while your agent is busy.
+     * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+     * ("bear with me", "let me pull that up"), and never in place of answering a
+     * question. CUSTOM follows holdInstructions. NEVER means this customer never
+     * holds. Null on an edge case uses the happy path's mode, instructions and longest
+     * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+     * to the improvised turns of scripted ones.
+     */
+    holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+    /**
      * Whether this variant is graded on the flow's agentExpectations as well as its
      * additionalExpectations. False grades it on its additionalExpectations only.
      * Always true on the happy path.
@@ -22541,6 +23425,32 @@ export namespace CustomerFlowUpdateHappyPathResponse {
      * when the brief inherits the happy path's: read the happy path's list.
      */
     handoffPersonas: Array<ImprovFlowVariant.HandoffPersona>;
+
+    /**
+     * CUSTOM only: when the simulated customer waits quietly, written as instructions
+     * it follows. It stays silent until the agent speaks again or the longest wait
+     * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+     * characters.
+     */
+    holdInstructions: string | null;
+
+    /**
+     * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+     * out the simulated customer takes the turn back. Null uses the default, 180.
+     * Ignored when holdMode is NEVER.
+     */
+    holdMaxSeconds: number | null;
+
+    /**
+     * How the simulated customer waits quietly on hold while your agent is busy.
+     * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+     * ("bear with me", "let me pull that up"), and never in place of answering a
+     * question. CUSTOM follows holdInstructions. NEVER means this customer never
+     * holds. Null on an edge case uses the happy path's mode, instructions and longest
+     * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+     * to the improvised turns of scripted ones.
+     */
+    holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
     /**
      * Whether this variant is graded on the flow's agentExpectations as well as its
@@ -23262,6 +24172,32 @@ export namespace CustomerFlowUpdateHappyPathResponse {
     environment: VoicemailFlowVariant.Environment | null;
 
     /**
+     * CUSTOM only: when the simulated customer waits quietly, written as instructions
+     * it follows. It stays silent until the agent speaks again or the longest wait
+     * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+     * characters.
+     */
+    holdInstructions: string | null;
+
+    /**
+     * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+     * out the simulated customer takes the turn back. Null uses the default, 180.
+     * Ignored when holdMode is NEVER.
+     */
+    holdMaxSeconds: number | null;
+
+    /**
+     * How the simulated customer waits quietly on hold while your agent is busy.
+     * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+     * ("bear with me", "let me pull that up"), and never in place of answering a
+     * question. CUSTOM follows holdInstructions. NEVER means this customer never
+     * holds. Null on an edge case uses the happy path's mode, instructions and longest
+     * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+     * to the improvised turns of scripted ones.
+     */
+    holdMode: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
+    /**
      * Whether this variant is graded on the flow's agentExpectations as well as its
      * additionalExpectations. False grades it on its additionalExpectations only.
      * Always true on the happy path.
@@ -23849,6 +24785,32 @@ export declare namespace CustomerFlowCreateParams {
        */
       additionalExpectations?: Array<HappyPath.AdditionalExpectation>;
 
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions?: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds?: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
+
       openingLine?: string | null;
 
       precededByCustomerFlowId?: string | null;
@@ -23894,6 +24856,32 @@ export declare namespace CustomerFlowCreateParams {
       additionalExpectations?: Array<EdgeCase.AdditionalExpectation>;
 
       environmentId?: string | null;
+
+      /**
+       * CUSTOM only: when the simulated customer waits quietly, written as instructions
+       * it follows. It stays silent until the agent speaks again or the longest wait
+       * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+       * characters.
+       */
+      holdInstructions?: string | null;
+
+      /**
+       * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+       * out the simulated customer takes the turn back. Null uses the default, 180.
+       * Ignored when holdMode is NEVER.
+       */
+      holdMaxSeconds?: number | null;
+
+      /**
+       * How the simulated customer waits quietly on hold while your agent is busy.
+       * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+       * ("bear with me", "let me pull that up"), and never in place of answering a
+       * question. CUSTOM follows holdInstructions. NEVER means this customer never
+       * holds. Null on an edge case uses the happy path's mode, instructions and longest
+       * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+       * to the improvised turns of scripted ones.
+       */
+      holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
       /**
        * Whether this edge case is graded on the flow's agentExpectations as well as its
@@ -24080,6 +25068,32 @@ export interface CustomerFlowUpdateHappyPathParams {
   additionalExpectations?: Array<CustomerFlowUpdateHappyPathParams.AdditionalExpectation>;
 
   environmentId?: string | null;
+
+  /**
+   * CUSTOM only: when the simulated customer waits quietly, written as instructions
+   * it follows. It stays silent until the agent speaks again or the longest wait
+   * runs out, then takes the turn back. Required when holdMode is CUSTOM. Up to 4000
+   * characters.
+   */
+  holdInstructions?: string | null;
+
+  /**
+   * The longest one wait on hold can run, in seconds, from 5 to 600. When it runs
+   * out the simulated customer takes the turn back. Null uses the default, 180.
+   * Ignored when holdMode is NEVER.
+   */
+  holdMaxSeconds?: number | null;
+
+  /**
+   * How the simulated customer waits quietly on hold while your agent is busy.
+   * DEFAULT follows Roark's built-in rules: wait when the agent asks for a moment
+   * ("bear with me", "let me pull that up"), and never in place of answering a
+   * question. CUSTOM follows holdInstructions. NEVER means this customer never
+   * holds. Null on an edge case uses the happy path's mode, instructions and longest
+   * wait together; null on the happy path is DEFAULT. Applies to improv variants and
+   * to the improvised turns of scripted ones.
+   */
+  holdMode?: 'DEFAULT' | 'CUSTOM' | 'NEVER' | null;
 
   /**
    * Whether this edge case is graded on the flow's agentExpectations as well as its
