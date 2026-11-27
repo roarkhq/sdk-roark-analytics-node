@@ -48,6 +48,16 @@ export namespace SimulationTemplateListResponse {
     category: string;
 
     /**
+     * The Core Analysis metrics every run collects on every simulation, on top of
+     * `metrics`: timing, latency, turn-taking and how the call ended. Read-only: a run
+     * adds them by itself, and a simulation collects only the ones that apply to it (a
+     * chat skips the call-only ones). They cost nothing and never decide pass or fail.
+     * To gate a run on one, add its check to `metrics`, such as
+     * `agent_responsive_check`.
+     */
+    coreMetrics: Array<Data.CoreMetric>;
+
+    /**
      * The end-call conditions a run from this template uses unless the request sets
      * its own.
      *
@@ -120,6 +130,18 @@ export namespace SimulationTemplateListResponse {
   }
 
   export namespace Data {
+    export interface CoreMetric {
+      /**
+       * Metric definition ID
+       */
+      id: string;
+
+      /**
+       * Stable metric slug
+       */
+      slug: string;
+    }
+
     export interface Flow {
       /**
        * Customer flow ID
