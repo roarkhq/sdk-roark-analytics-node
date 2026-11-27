@@ -2335,10 +2335,11 @@ export declare namespace SimulationRunParams {
        * the agent is expected to press keys. Both grade something authored on the flow
        * that nothing else measures, which is why it is on by default.
        *
-       * Set false when the `metrics` list is meant to be exhaustive: a plan testing only
+       * Set false when no flow-earned metric should be added: a plan testing only
        * whether the caller can complete the flow may not want the agent graded on its
-       * expectations as well. False also pins the plan against any automatic metric
-       * Roark adds later.
+       * expectations as well. False also pins the plan against any flow-earned metric
+       * Roark adds later. It does not affect the Core Analysis metrics (`coreMetrics` on
+       * the plan), which every run collects and which never decide pass or fail.
        */
       includeAutomaticMetrics?: boolean;
 
